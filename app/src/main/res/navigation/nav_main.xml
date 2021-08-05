@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="br.com.aldemir.myaccounts.ui.main.MainFragment"
+        android:label="@string/main_screen_title"
+        tools:layout="@layout/main_fragment"
+        >
+        <action
+            android:id="@+id/action_mainFragment_to_addFragment"
+            app:destination="@id/addAccount" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAccount"
+        android:name="br.com.aldemir.myaccounts.ui.account.AddAccountFragment"
+        android:label="@string/add_account_screen_title"
+        tools:layout="@layout/add_account_fragment" />
+
+</navigation>
