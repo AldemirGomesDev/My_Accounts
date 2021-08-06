@@ -9,17 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.database.Account
-import br.com.aldemir.myaccounts.data.database.AccountDao
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
-import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
-import br.com.aldemir.myaccounts.ui.main.MainFragment
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 class AddAccountFragment : Fragment() {
 
@@ -50,6 +48,8 @@ class AddAccountFragment : Fragment() {
 
         setupListeners(view)
 
+        collectFlow()
+
         listenersViewModel()
 
     }
@@ -57,6 +57,16 @@ class AddAccountFragment : Fragment() {
     private fun setupListeners(view: View) {
         binding.edtValue.run {
             addTextChangedListener(CurrencyTextWatcher(this))
+        }
+
+        binding.edtName.addTextChangedListener {
+            viewModel.setName(it.toString())
+        }
+        binding.edtValue.addTextChangedListener {
+            viewModel.setValue(it.toString().replace("R$ ", ""))
+        }
+        binding.edtDescription.addTextChangedListener {
+            viewModel.setDescription(it.toString())
         }
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -83,8 +93,25 @@ class AddAccountFragment : Fragment() {
         }
     }
 
+    private fun collectFlow() {
+        lifecycleScope.launch {
+            viewModel.isSubmitEnabled.collect { value ->
+                isEnabled(value)
+            }
+        }
+    }
+
+    private fun isEnabled(enabled: Boolean) {
+        binding.btnAddAccount.isEnabled = enabled
+//        if (enabled) {
+//            mButtonCreateAccount.setBackgroundResource(R.drawable.bg_bottom_blue)
+//        } else {
+//            mButtonCreateAccount.setBackgroundResource(R.drawable.bg_bottom_disabled)
+//        }
+    }
+
     private fun getAllAccounts() {
-        viewModel.getAll()
+//        viewModel.getAll()
     }
 
     override fun onResume() {
@@ -98,11 +125,29 @@ class AddAccountFragment : Fragment() {
     }
 
     private fun listenersViewModel() {
-        viewModel.id.observe(viewLifecycleOwner, Observer {id ->
+        viewModel.id.observe(viewLifecycleOwner, { id ->
             hideLoading()
             if(id > 0) {
                 Log.d(TAG, "Account id: $id")
                 findNavController().popBackStack()
+            }
+        })
+        viewModel.addAccountFormState.observe(viewLifecycleOwner, { formState ->
+
+            if (formState.nameError != null) {
+                binding.edtName.error = getString(formState.nameError)
+            }else {
+                binding.edtName.error = null
+            }
+            if (formState.valueError != null) {
+                binding.edtValue.error = getString(formState.valueError)
+            }else {
+                binding.edtValue.error = null
+            }
+            if (formState.descriptionError != null) {
+                binding.edtDescription.error = getString(formState.descriptionError)
+            }else {
+                binding.edtDescription.error = null
             }
         })
     }

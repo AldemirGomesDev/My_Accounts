@@ -16,7 +16,7 @@ interface AccountDao {
     fun update(account: Account): Int
 
     @Delete
-    fun delete(account: Account)
+    fun delete(account: Account): Int
 
     @Query("SELECT * FROM Account WHERE id = :id")
     fun getById(id: Int): Account

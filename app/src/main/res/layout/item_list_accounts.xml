@@ -43,6 +43,20 @@
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_name_account" />
 
+        <TextView
+            android:id="@+id/tv_type_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="5dp"
+            android:text="Entrada"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_name_account" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

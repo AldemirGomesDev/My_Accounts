@@ -3,4 +3,7 @@
     <string name="main_screen_title">Home</string>
     <string name="add_account">adicionar conta</string>
     <string name="add_account_screen_title">Adicionar conta</string>
+
+    <string name="invalid_name">Mínimo 5 caracteres</string>
+    <string name="invalid_value">Mínimo 0,10 centavos</string>
 </resources>

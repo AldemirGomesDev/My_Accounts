@@ -13,6 +13,10 @@ class AccountRepositoryImpl(private val accountDao: AccountDao): AccountReposito
         return accountDao.update(account)
     }
 
+    override fun delete(account: Account): Int {
+        return accountDao.delete(account)
+    }
+
     override fun getAll(): LiveData<List<Account>> {
         return accountDao.getAll()
     }
