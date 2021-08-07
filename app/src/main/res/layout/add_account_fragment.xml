@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_light"
     android:padding="16dp"
-    tools:context=".ui.account.AddAccountFragment">
+    tools:context=".ui.expense.AddAccountFragment">
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:checkedButton="@+id/radio_button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -121,6 +123,159 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_years"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/label"
+        android:layout_marginTop="8dp"
+        app:passwordToggleEnabled="false"
+        android:theme="@style/TextLabelSNA"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/grey"
+        android:textColorHighlight="@color/grey"
+        app:boxStrokeColor="@color/purple_200"
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_description">
+
+        <AutoCompleteTextView
+            android:id="@+id/drop_menu_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:inputType="none"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_jan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Janeiro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_years"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_feb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fevereiro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_jan"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_mar"
+        app:layout_constraintTop_toBottomOf="@+id/til_years"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_mar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Março"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_feb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_years"
+        />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_apr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abril"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_jan"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_jan"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_mai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maio"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_feb"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_feb"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_jun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Junho"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_mar"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_mar"
+        />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_jul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Julho"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@id/checkbox_apr"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_apr"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agosto"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_mai"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_mai"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_sep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Setembro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_jun"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_jun"
+        />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Outubro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@id/checkbox_jul"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_jul"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_nov"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Novembro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_ago"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_ago"
+        />
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_dez"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dezembro"
+        android:textColor="@color/purple_200"
+        android:buttonTint="@color/purple_200"
+        app:layout_constraintStart_toStartOf="@+id/checkbox_sep"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_sep"
+        />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_account"
         android:layout_width="match_parent"
@@ -139,7 +294,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_description" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ProgressBar
         android:id="@+id/loading_add"

@@ -15,12 +15,21 @@
         <action
             android:id="@+id/action_mainFragment_to_addFragment"
             app:destination="@id/addAccount" />
+        <action
+            android:id="@+id/action_mainFragment_to_expenseDetailFragment"
+            app:destination="@id/expenseDetail" />
     </fragment>
 
     <fragment
         android:id="@+id/addAccount"
-        android:name="br.com.aldemir.myaccounts.ui.account.AddAccountFragment"
+        android:name="br.com.aldemir.myaccounts.ui.expense.AddAccountFragment"
         android:label="@string/add_account_screen_title"
         tools:layout="@layout/add_account_fragment" />
+
+    <fragment
+        android:id="@+id/expenseDetail"
+        android:name="br.com.aldemir.myaccounts.ui.expensedetail.ExpenseDetailFragment"
+        android:label="@string/expense_detail_screen_title"
+        tools:layout="@layout/fragment_expense_detail" />
 
 </navigation>

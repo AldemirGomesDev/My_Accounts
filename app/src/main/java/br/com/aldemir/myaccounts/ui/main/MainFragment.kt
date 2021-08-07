@@ -6,19 +6,17 @@ import android.graphics.Color
 import android.graphics.Rect
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.database.Account
+import br.com.aldemir.myaccounts.data.domain.model.Expense
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
@@ -33,7 +31,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         private const val TAG = "mainFragment"
     }
     private lateinit var adapter: MainAdapter
-    private var _list = ArrayList<Account>()
+    private var _list = ArrayList<Expense>()
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
@@ -96,10 +94,10 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
                 c.clipRect (0f, viewHolder.itemView.top.toFloat (),
                     dX, viewHolder.itemView.bottom.toFloat ())
 
-                if(dX < 800 / 3)
+                if(dX < 100 / 3)
                     c.drawColor(Color.GRAY)
                 else
-                    c.drawColor(Color.RED)
+                    c.drawColor(ContextCompat.getColor(mContext, R.color.red))
 
                 val textMargin = resources.getDimension(R.dimen.text_margin)
                     .roundToInt()
@@ -124,7 +122,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         viewModel.accounts.observe(viewLifecycleOwner, { accounts ->
             hideLoading()
             if(accounts.isNotEmpty()) {
-                _list = accounts as ArrayList<Account>
+                _list = accounts as ArrayList<Expense>
                 adapter.updateList(_list)
             }
         })
@@ -153,7 +151,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         }
     }
 
-    private fun setupRecyclerView(list: MutableList<Account>) {
+    private fun setupRecyclerView(list: MutableList<Expense>) {
         adapter = MainAdapter(list)
         binding.recyclerViewListAccounts.adapter = adapter
         val layoutManager = LinearLayoutManager(mContext)
@@ -162,13 +160,17 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     }
 
     override fun onClick(position: Int, aView: View) {
-        Log.d(TAG, "clicado: $position")
+        val bundle = Bundle()
+        bundle.putInt("idExpense", _list[position].id)
+        val navOptions = findNavController().getNavOptions(R.id.expenseDetail)
+        findNavController().navigateWithAnimations(
+            R.id.action_mainFragment_to_expenseDetailFragment, animation = navOptions, bundle = bundle)
     }
 
     private fun setupViewModel() {
         val database = ConfigDataBase.getDataBase(mContext)
         viewModel  = ViewModelProvider(this,
-            MainViewModelFactory(database.accountDao())
+            MainViewModelFactory(database.expenseDao())
         ).get(MainViewModel::class.java)
     }
 

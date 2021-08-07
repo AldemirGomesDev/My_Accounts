@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.database.Account
+import br.com.aldemir.myaccounts.data.domain.model.Expense
 import com.google.android.material.card.MaterialCardView
 
 
 class MainAdapter(
-    private var values: MutableList<Account>,
+    private var values: MutableList<Expense>,
 ) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     lateinit var mClickListener: ClickListener
@@ -37,17 +37,17 @@ class MainAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.nameAccount.text = item.name
-        holder.valueAccount.text = "${item.value}"
-        if (item.type) {
-            holder.typeAccount.text = "Entrada"
-            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.green))
-        }else {
-            holder.typeAccount.text = "Saída"
-            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.red))
-        }
+        holder.valueAccount.text = "${item.description}"
+//        if (item.type) {
+//            holder.typeAccount.text = "Entrada"
+//            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.green))
+//        }else {
+//            holder.typeAccount.text = "Saída"
+//            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.red))
+//        }
     }
 
-    fun updateList(list: MutableList<Account>) {
+    fun updateList(list: MutableList<Expense>) {
         values = list
         notifyDataSetChanged()
     }

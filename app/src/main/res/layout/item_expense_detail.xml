@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp">
+
+    <TextView
+        android:id="@+id/tv_dates"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        tools:text="Fatura cartão Nubank"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/purple_200"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_value"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        tools:text="R$ 580,00"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/purple_200"
+        android:textSize="16sp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/btn_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagar"
+        android:textColor="@color/purple_200"
+        android:textAllCaps="false"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_situation"
+        app:layout_constraintStart_toEndOf="@+id/tv_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        tools:text="Pago"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/green"
+        android:textSize="16sp"
+        android:textStyle="normal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_light"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_situation"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
