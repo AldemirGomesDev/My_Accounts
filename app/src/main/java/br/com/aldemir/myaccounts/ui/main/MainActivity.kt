@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts
+package br.com.aldemir.myaccounts.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,8 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.databinding.MainActivityBinding
-import br.com.aldemir.myaccounts.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

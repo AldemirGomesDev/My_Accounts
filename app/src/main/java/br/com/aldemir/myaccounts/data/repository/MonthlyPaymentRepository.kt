@@ -8,5 +8,6 @@ interface MonthlyPaymentRepository {
     fun update(monthlyPayment: MonthlyPayment): Int
     fun delete(monthlyPayment: MonthlyPayment): Int
     fun getAllByIdExpense(id: Int): LiveData<List<MonthlyPayment>>
+    fun getByIdMonthlyPayment(id: Int): LiveData<MonthlyPayment>
     fun getAll(): LiveData<List<MonthlyPayment>>
 }

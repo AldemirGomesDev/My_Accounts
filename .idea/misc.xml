@@ -4,10 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.1859375" />
+        <entry key="app/src/main/res/drawable/ic_drop_down.xml" value="0.1859375" />
         <entry key="app/src/main/res/layout/add_account_fragment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_expense_detail.xml" value="0.16979166666666667" />
+        <entry key="app/src/main/res/layout/change_expense_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_expense_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_dropmenu.xml" value="0.16979166666666667" />
-        <entry key="app/src/main/res/layout/item_expense_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_expense_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_list_accounts.xml" value="0.33" />
         <entry key="app/src/main/res/layout/main_fragment.xml" value="0.33" />
       </map>

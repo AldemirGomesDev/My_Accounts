@@ -1,30 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MyAccounts" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MyAccounts" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="TextLabelSNA" parent="Widget.Design.TextInputLayout">
-        <!-- Hint color and label color in FALSE state -->
-        <item name="android:textColorHint">@color/grey</item>
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">16sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-        <item name="colorAccent">@color/grey</item>
-        <item name="colorControlNormal">@color/grey</item>
-        <item name="colorControlActivated">@color/grey</item>
-        <item name="backgroundTint">@color/white</item>
-        <item name="colorControlHighlight">@color/grey</item>
-        <item name="boxStrokeColor">@color/grey</item>
+    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:textColor">@color/purple_200</item>
+        <item name="android:textColorPrimary">#595959</item>
+        <item name="android:colorAccent">#1b5e20</item>
+        <item name="android:buttonTint">@color/green</item>
+    </style>
+
+    <style name="TextLabelSNA" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorOnError">@color/red</item>
+        <item name="errorTextColor">@color/green</item>
+        <item name="colorError">@color/green</item>
     </style>
 </resources>

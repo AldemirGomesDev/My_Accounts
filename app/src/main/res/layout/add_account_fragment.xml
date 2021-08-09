@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_light"
+    android:background="@color/white"
     android:padding="16dp"
     tools:context=".ui.expense.AddAccountFragment">
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="false"
-        android:theme="@style/TextLabelSNA"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:passwordToggleTint="@color/grey"
         android:textColorHint="@color/grey"
         android:textColor="@color/grey"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="false"
-        android:theme="@style/TextLabelSNA"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:passwordToggleTint="@color/grey"
         android:textColorHint="@color/grey"
         android:textColor="@color/grey"
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="false"
-        android:theme="@style/TextLabelSNA"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:passwordToggleTint="@color/grey"
         android:textColorHint="@color/grey"
         android:textColor="@color/grey"
@@ -125,18 +125,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_years"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/label"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="false"
-        android:theme="@style/TextLabelSNA"
+        android:theme="@style/ExposedDropdownMenu"
         android:textColorHint="@color/grey"
         android:textColor="@color/grey"
         android:textColorHighlight="@color/grey"
         app:boxStrokeColor="@color/purple_200"
-        app:boxBackgroundColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_description">
 
@@ -145,6 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_200"
+            android:background="@null"
             android:inputType="none"
             />
 

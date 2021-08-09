@@ -21,6 +21,10 @@ class MonthlyPaymentRepositoryImpl(private val monthlyPaymentDao: MonthlyPayment
         return monthlyPaymentDao.getById(id)
     }
 
+    override fun getByIdMonthlyPayment(id: Int): LiveData<MonthlyPayment> {
+        return monthlyPaymentDao.getByIdMonthlyPayment(id)
+    }
+
     override fun getAll(): LiveData<List<MonthlyPayment>> {
         return monthlyPaymentDao.getAll()
     }

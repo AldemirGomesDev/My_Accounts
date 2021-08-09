@@ -20,4 +20,8 @@ class ExpenseDetailViewModel(
     fun getAllByIdExpense(id: Int) {
         monthlyPayment = monthlyPaymentRepository.getAllByIdExpense(id)
     }
+
+    fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) {
+        monthlyPaymentRepository.update(monthlyPayment)
+    }
 }

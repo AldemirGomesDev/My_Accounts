@@ -162,6 +162,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     override fun onClick(position: Int, aView: View) {
         val bundle = Bundle()
         bundle.putInt("idExpense", _list[position].id)
+        bundle.putString("nameExpense", _list[position].name)
         val navOptions = findNavController().getNavOptions(R.id.expenseDetail)
         findNavController().navigateWithAnimations(
             R.id.action_mainFragment_to_expenseDetailFragment, animation = navOptions, bundle = bundle)

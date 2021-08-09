@@ -22,6 +22,9 @@ interface MonthlyPaymentDao {
     @Query("SELECT * FROM monthly_payment WHERE id_expense = :id")
     fun getById(id: Int): LiveData<List<MonthlyPayment>>
 
+    @Query("SELECT * FROM monthly_payment WHERE id = :id")
+    fun getByIdMonthlyPayment(id: Int): LiveData<MonthlyPayment>
+
     @Query("SELECT * FROM monthly_payment")
     fun getAll(): LiveData<List<MonthlyPayment>>
 

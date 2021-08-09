@@ -1,6 +1,7 @@
 package br.com.aldemir.myaccounts.ui.expense
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -59,6 +61,8 @@ class AddAccountFragment : Fragment() {
         val items = listOf("2021", "2022", "2023", "2024" , "2025")
         val adapter = ArrayAdapter(requireContext(), R.layout.item_dropmenu, items)
         binding.dropMenuYear.setAdapter(adapter)
+        binding.dropMenuYear.setDropDownBackgroundDrawable(
+            ColorDrawable(ContextCompat.getColor(mContext, R.color.white)))
 
     }
 

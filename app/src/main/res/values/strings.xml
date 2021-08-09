@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">My Accounts</string>
-    <string name="main_screen_title">Minhas contas</string>
-    <string name="add_account">adicionar conta</string>
-    <string name="add_account_screen_title">Adicionar conta</string>
+    <string name="app_name">Minhas despesas</string>
+    <string name="main_screen_title">Minhas despesas</string>
+    <string name="add_account">adicionar despesa</string>
+    <string name="add_account_screen_title">Adicionar despesa</string>
     <string name="expense_detail_screen_title">Detalhes da despesa</string>
+    <string name="expense_change_screen_title">Editar despesa</string>
 
     <string name="invalid_name">Mínimo 4 caracteres</string>
     <string name="invalid_value">Digite um valor</string>
