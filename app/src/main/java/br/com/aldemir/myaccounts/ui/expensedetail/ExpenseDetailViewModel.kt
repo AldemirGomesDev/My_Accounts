@@ -3,11 +3,16 @@ package br.com.aldemir.myaccounts.ui.expensedetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import androidx.lifecycle.viewModelScope
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
+import br.com.aldemir.myaccounts.domain.usecase.GetAllByIdExpenseUseCase
+import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
+import kotlinx.coroutines.launch
 
 class ExpenseDetailViewModel(
-    private val monthlyPaymentRepository: MonthlyPaymentRepository
+    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
     ) : ViewModel()  {
 
     companion object {
@@ -17,11 +22,15 @@ class ExpenseDetailViewModel(
     private val _monthlyPayment = MutableLiveData<List<MonthlyPayment>>()
     var monthlyPayment: LiveData<List<MonthlyPayment>> = _monthlyPayment
 
-    fun getAllByIdExpense(id: Int) {
-        monthlyPayment = monthlyPaymentRepository.getAllByIdExpense(id)
+    private val _id = MutableLiveData<Int>()
+    val id: LiveData<Int> = _id
+
+    fun getAllByIdExpense(id: Int) = viewModelScope.launch {
+        _monthlyPayment.value = getAllByIdExpenseUseCase(id)!!
     }
 
-    fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) {
-        monthlyPaymentRepository.update(monthlyPayment)
+    fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
+        val id = updateMonthlyPaymentUseCase(monthlyPayment)
+        _id.value = id
     }
 }

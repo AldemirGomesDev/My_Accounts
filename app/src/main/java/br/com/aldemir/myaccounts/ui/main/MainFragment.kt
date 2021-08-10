@@ -16,8 +16,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.domain.model.Expense
+import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
+import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
 import br.com.aldemir.myaccounts.util.getNavOptions
@@ -170,8 +171,9 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     private fun setupViewModel() {
         val database = ConfigDataBase.getDataBase(mContext)
+        val expenseRepository = ExpenseRepositoryImpl(database.expenseDao())
         viewModel  = ViewModelProvider(this,
-            MainViewModelFactory(database.expenseDao())
+            MainViewModelFactory(expenseRepository)
         ).get(MainViewModel::class.java)
     }
 

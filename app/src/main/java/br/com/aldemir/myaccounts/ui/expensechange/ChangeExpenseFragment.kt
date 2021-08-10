@@ -11,12 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
-import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.ChangeExpenseFragmentBinding
-import br.com.aldemir.myaccounts.databinding.FragmentExpenseDetailBinding
-import br.com.aldemir.myaccounts.ui.expense.AddAccountFragment
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
 import br.com.aldemir.myaccounts.util.toCurrency
@@ -92,9 +90,10 @@ class ChangeExpenseFragment : Fragment() {
 
     private fun setupViewModel() {
         val database = ConfigDataBase.getDataBase(mContext)
+        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
         viewModel  = ViewModelProvider(this,
             ChangeExpenseViewModelFactory(
-                database.monthlyPaymentDao()
+                monthlyPaymentRepository
             )
         ).get(ChangeExpenseViewModel::class.java)
     }

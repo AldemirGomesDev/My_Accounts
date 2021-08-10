@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import br.com.aldemir.myaccounts.data.domain.model.Expense
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.util.DateTypeConverter
 
 

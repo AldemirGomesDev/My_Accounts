@@ -1,11 +1,11 @@
 package br.com.aldemir.myaccounts.data.repository
 
 import androidx.lifecycle.LiveData
-import br.com.aldemir.myaccounts.data.domain.model.Expense
+import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.data.database.ExpenseDao
 
-class AccountRepositoryImpl(private val expenseDao: ExpenseDao): AccountRepository {
-    override fun insertAccount(expense: Expense): Long {
+class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao): ExpenseRepository {
+    override suspend fun insertExpense(expense: Expense): Long {
         return expenseDao.insert(expense)
     }
 
@@ -13,11 +13,11 @@ class AccountRepositoryImpl(private val expenseDao: ExpenseDao): AccountReposito
         return expenseDao.update(expense)
     }
 
-    override fun delete(expense: Expense): Int {
+    override suspend fun delete(expense: Expense): Int {
         return expenseDao.delete(expense)
     }
 
-    override fun getAll(): LiveData<List<Expense>> {
+    override suspend fun getAll(): List<Expense> {
         return expenseDao.getAll()
     }
 }

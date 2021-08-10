@@ -4,13 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
+import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.GetByIdMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.ui.expense.AddAccountFormState
+import kotlinx.coroutines.launch
 
 class ChangeExpenseViewModel(
-    private val monthlyPaymentRepository: MonthlyPaymentRepository
+    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {
     companion object {
         private const val TAG = "ChangeDetailFragment"
@@ -28,12 +34,12 @@ class ChangeExpenseViewModel(
     private val _id = MutableLiveData<Int>()
     val id: LiveData<Int> = _id
 
-    fun getAllByIdMonthlyPayment(id: Int) {
-        monthlyPayment = monthlyPaymentRepository.getByIdMonthlyPayment(id)
+    fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
+        _monthlyPayment.value = getByIdMonthlyPaymentUseCase(id)!!
     }
 
-    fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) {
-        _id.value = monthlyPaymentRepository.update(monthlyPayment)
+    fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
+        _id.value = updateMonthlyPaymentUseCase(monthlyPayment)!!
     }
 
     fun setValue(value: Double) {

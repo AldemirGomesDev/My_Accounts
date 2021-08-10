@@ -4,18 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.domain.model.Expense
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.repository.AccountRepository
+import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
+import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
+import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class AddAccountViewModel(
-    private val expenseRepository: AccountRepository,
-    private val monthlyPaymentRepository: MonthlyPaymentRepository
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {
 
     companion object {
@@ -41,9 +44,9 @@ class AddAccountViewModel(
         months: List<String>,
         value: Double,
         situation: Boolean
-    ) {
+    ) = viewModelScope.launch {
         val expense = Expense(name = name,description = description)
-        val idExpense = expenseRepository.insertAccount(expense)
+        val idExpense = addExpenseUseCase(expense)
         _id.value = idExpense
         for (month in months) {
             val monthlyPayment = MonthlyPayment(
@@ -55,12 +58,10 @@ class AddAccountViewModel(
             )
             insertMonthlyPayment(monthlyPayment)
         }
-
     }
 
-    private fun insertMonthlyPayment(monthlyPayment: MonthlyPayment) {
-        val idMonthlyPayment = monthlyPaymentRepository.insertExpense(monthlyPayment)
-        Log.d(TAG, "idMonthlyPayment: $idMonthlyPayment")
+    private fun insertMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
+        val idMonthlyPayment = addMonthlyPaymentUseCase(monthlyPayment)
     }
 
     val isSubmitEnabled: Flow<Boolean> = combine(_name, _value, _description, _year, _months) {

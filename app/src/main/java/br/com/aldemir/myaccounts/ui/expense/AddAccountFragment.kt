@@ -18,7 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
+import br.com.aldemir.myaccounts.data.repository.ExpenseRepository
+import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
+import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
+import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
 import kotlinx.coroutines.launch
@@ -273,10 +277,12 @@ class AddAccountFragment : Fragment() {
 
     private fun setupViewModel() {
         val database = ConfigDataBase.getDataBase(mContext)
+        val expenseRepository = ExpenseRepositoryImpl(database.expenseDao())
+        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
         viewModel  = ViewModelProvider(this,
             AddAccountViewModelFactory(
-                database.expenseDao(),
-                database.monthlyPaymentDao()
+                expenseRepository,
+                monthlyPaymentRepository
             )
         ).get(AddAccountViewModel::class.java)
     }

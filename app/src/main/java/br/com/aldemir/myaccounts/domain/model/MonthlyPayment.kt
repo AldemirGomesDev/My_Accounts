@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.data.domain.model
+package br.com.aldemir.myaccounts.domain.model
 
 import androidx.room.*
 

@@ -5,9 +5,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.FragmentExpenseDetailBinding
 import br.com.aldemir.myaccounts.util.getNavOptions
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
@@ -94,9 +93,10 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
 
     private fun setupViewModel() {
         val database = ConfigDataBase.getDataBase(mContext)
+        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
         viewModel  = ViewModelProvider(this,
             ExpenseDetailViewModelFactory(
-                database.monthlyPaymentDao()
+                monthlyPaymentRepository
             )
         ).get(ExpenseDetailViewModel::class.java)
     }
@@ -109,6 +109,12 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
                     pattern.find(it.month)?.value?.toInt() ?: 0
                 })
                 adapter.updateList(list)
+            }
+        })
+
+        viewModel.id.observe(viewLifecycleOwner, {id ->
+            if (id > 0) {
+                adapter.notifyDataSetChanged()
             }
         })
     }

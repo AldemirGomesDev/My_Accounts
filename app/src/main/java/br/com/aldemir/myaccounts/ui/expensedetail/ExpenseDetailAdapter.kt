@@ -2,7 +2,6 @@ package br.com.aldemir.myaccounts.ui.expensedetail
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.domain.model.Expense
-import br.com.aldemir.myaccounts.data.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.ItemExpenseDetailBinding
-import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
 import br.com.aldemir.myaccounts.util.toCurrency
 
 
