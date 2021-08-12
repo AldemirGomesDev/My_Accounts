@@ -37,13 +37,6 @@ class MainAdapter(
         val item = values[position]
         holder.nameAccount.text = item.name
         holder.valueAccount.text = "${item.description}"
-//        if (item.type) {
-//            holder.typeAccount.text = "Entrada"
-//            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.green))
-//        }else {
-//            holder.typeAccount.text = "Saída"
-//            holder.typeAccount.setTextColor(ContextCompat.getColor(context, R.color.red))
-//        }
     }
 
     fun updateList(list: MutableList<Expense>) {

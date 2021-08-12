@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.ui.expense
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,15 +7,17 @@ import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
 import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddAccountViewModel(
+@HiltViewModel
+class AddAccountViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {

@@ -4,28 +4,29 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Rect
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
+import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
+@AndroidEntryPoint
 class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     companion object {
@@ -37,7 +38,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     private val binding get() = _binding!!
     private lateinit var mContext: Context
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +52,6 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         showLoading()
-
-        setupViewModel()
-
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         setListeners()
 
@@ -162,20 +159,13 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     override fun onClick(position: Int, aView: View) {
         val bundle = Bundle()
-        bundle.putInt("idExpense", _list[position].id)
-        bundle.putString("nameExpense", _list[position].name)
+        bundle.putInt(Constants.ID_EXPENSE.value, _list[position].id)
+        bundle.putString(Constants.NAME_EXPENSE.value, _list[position].name)
         val navOptions = findNavController().getNavOptions(R.id.expenseDetail)
         findNavController().navigateWithAnimations(
             R.id.action_mainFragment_to_expenseDetailFragment, animation = navOptions, bundle = bundle)
     }
 
-    private fun setupViewModel() {
-        val database = ConfigDataBase.getDataBase(mContext)
-        val expenseRepository = ExpenseRepositoryImpl(database.expenseDao())
-        viewModel  = ViewModelProvider(this,
-            MainViewModelFactory(expenseRepository)
-        ).get(MainViewModel::class.java)
-    }
 
     private fun showLoading() {
         binding.loadingMain.visibility = View.VISIBLE
