@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
-import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.ui.expense.AddAccountFormState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChangeExpenseViewModel(
+@HiltViewModel
+class ChangeExpenseViewModel @Inject constructor(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {

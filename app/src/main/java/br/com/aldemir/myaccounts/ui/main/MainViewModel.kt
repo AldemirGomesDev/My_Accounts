@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepository
 import br.com.aldemir.myaccounts.domain.usecase.DeleteExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpenseUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpenseUseCase: GetAllExpenseUseCase
 ) : ViewModel() {

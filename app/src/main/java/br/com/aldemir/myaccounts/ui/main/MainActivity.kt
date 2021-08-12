@@ -8,7 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.databinding.MainActivityBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
@@ -26,11 +28,5 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, MainFragment.newInstance())
-//                .commitNow()
-//        }
     }
 }

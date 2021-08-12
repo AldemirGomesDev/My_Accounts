@@ -1,10 +1,12 @@
 package br.com.aldemir.myaccounts.data.repository
 
-import androidx.lifecycle.LiveData
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.data.database.ExpenseDao
+import javax.inject.Inject
 
-class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao): ExpenseRepository {
+class ExpenseRepositoryImpl @Inject constructor(
+    private val expenseDao: ExpenseDao
+): ExpenseRepository {
     override suspend fun insertExpense(expense: Expense): Long {
         return expenseDao.insert(expense)
     }

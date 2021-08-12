@@ -2,7 +2,6 @@ package br.com.aldemir.myaccounts.ui.expensechange
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,15 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.ChangeExpenseFragmentBinding
+import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
 import br.com.aldemir.myaccounts.util.toCurrency
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChangeExpenseFragment : Fragment() {
 
     companion object {
@@ -27,7 +28,7 @@ class ChangeExpenseFragment : Fragment() {
     private var idMonthlyPayment = 0
     private lateinit var nameExpense: String
     private lateinit var mContext: Context
-    private lateinit var viewModel: ChangeExpenseViewModel
+    private val viewModel: ChangeExpenseViewModel by viewModels()
     private var _binding: ChangeExpenseFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var mMonthlyPayment: MonthlyPayment
@@ -36,8 +37,8 @@ class ChangeExpenseFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            idMonthlyPayment = it.getInt("idMonthlyPayment")
-            nameExpense = it.getString("nameExpense")!!
+            idMonthlyPayment = it.getInt(Constants.ID_MONTHLY_PAYMENT.value)
+            nameExpense = it.getString(Constants.NAME_EXPENSE.value)!!
         }
     }
 
@@ -53,10 +54,6 @@ class ChangeExpenseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvTitleChangeExpense.text = nameExpense
-
-        setupViewModel()
-
-        viewModel = ViewModelProvider(this).get(ChangeExpenseViewModel::class.java)
 
         setupListeners()
 
@@ -86,16 +83,6 @@ class ChangeExpenseFragment : Fragment() {
             mMonthlyPayment.value = binding.edtValueChange.text.toString().fromCurrency()
             viewModel.updateMonthlyPayment(mMonthlyPayment)
         }
-    }
-
-    private fun setupViewModel() {
-        val database = ConfigDataBase.getDataBase(mContext)
-        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
-        viewModel  = ViewModelProvider(this,
-            ChangeExpenseViewModelFactory(
-                monthlyPaymentRepository
-            )
-        ).get(ChangeExpenseViewModel::class.java)
     }
 
     @SuppressLint("SetTextI18n")

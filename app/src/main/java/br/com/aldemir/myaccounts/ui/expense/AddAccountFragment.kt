@@ -2,7 +2,6 @@ package br.com.aldemir.myaccounts.ui.expense
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,24 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepository
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
-import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import java.util.*
 
+@AndroidEntryPoint
 class AddAccountFragment : Fragment() {
 
     companion object {
@@ -36,10 +33,11 @@ class AddAccountFragment : Fragment() {
     private var _binding: AddAccountFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: AddAccountViewModel
+    private val viewModel: AddAccountViewModel by viewModels()
     private lateinit var mContext: Context
     private var months: MutableList<String> = mutableListOf()
     private var isEntry = true
+    private val items = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,22 +50,41 @@ class AddAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViewModel()
-
-        viewModel = ViewModelProvider(this).get(AddAccountViewModel::class.java)
-
         setupListeners(view)
 
         collectFlow()
 
         listenersViewModel()
-
-        val items = listOf("2021", "2022", "2023", "2024" , "2025")
+        getDate()
+        getYears()
         val adapter = ArrayAdapter(requireContext(), R.layout.item_dropmenu, items)
         binding.dropMenuYear.setAdapter(adapter)
         binding.dropMenuYear.setDropDownBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(mContext, R.color.white)))
 
+    }
+
+    private fun getYears() {
+        val c = Calendar.getInstance()
+        var year = c.get(Calendar.YEAR)
+
+        for (i in 1..10) {
+            items.add(year.toString())
+            year =+ year+1
+        }
+    }
+
+    private fun getDate() {
+        val c = Calendar.getInstance()
+
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
+
+        Log.d(TAG, "Ano: $year mês: $month dia: $day hora: $hour minuto: $minute")
     }
 
     private fun setupListeners(view: View) {
@@ -226,20 +243,10 @@ class AddAccountFragment : Fragment() {
 
     private fun isEnabled(enabled: Boolean) {
         binding.btnAddAccount.isEnabled = enabled
-//        if (enabled) {
-//            mButtonCreateAccount.setBackgroundResource(R.drawable.bg_bottom_blue)
-//        } else {
-//            mButtonCreateAccount.setBackgroundResource(R.drawable.bg_bottom_disabled)
-//        }
-    }
-
-    private fun getAllAccounts() {
-//        viewModel.getAll()
     }
 
     override fun onResume() {
         super.onResume()
-        getAllAccounts()
     }
 
     override fun onAttach(context: Context) {
@@ -273,18 +280,6 @@ class AddAccountFragment : Fragment() {
                 binding.edtDescription.error = null
             }
         })
-    }
-
-    private fun setupViewModel() {
-        val database = ConfigDataBase.getDataBase(mContext)
-        val expenseRepository = ExpenseRepositoryImpl(database.expenseDao())
-        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
-        viewModel  = ViewModelProvider(this,
-            AddAccountViewModelFactory(
-                expenseRepository,
-                monthlyPaymentRepository
-            )
-        ).get(AddAccountViewModel::class.java)
     }
 
     private fun showLoading() {

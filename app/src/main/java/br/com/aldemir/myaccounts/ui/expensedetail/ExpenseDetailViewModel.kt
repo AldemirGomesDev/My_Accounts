@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
 import br.com.aldemir.myaccounts.domain.usecase.GetAllByIdExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExpenseDetailViewModel(
+@HiltViewModel
+class ExpenseDetailViewModel @Inject constructor(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
     ) : ViewModel()  {
