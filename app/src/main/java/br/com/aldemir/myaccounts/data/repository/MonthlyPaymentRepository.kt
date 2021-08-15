@@ -10,4 +10,5 @@ interface MonthlyPaymentRepository {
     suspend fun getAllByIdExpense(id: Int): List<MonthlyPayment>
     suspend fun getByIdMonthlyPayment(id: Int): MonthlyPayment
     suspend fun getAll(): List<MonthlyPayment>
+    suspend fun getAllExpensesMonth(month: String, year: String): List<MonthlyPayment>
 }

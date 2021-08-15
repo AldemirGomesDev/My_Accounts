@@ -3,6 +3,7 @@ package br.com.aldemir.myaccounts.ui.expensedetail
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,6 +62,10 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         setupRecyclerView(list)
 
         listenersViewModel()
+
+        binding.swipeRefreshDetail.setOnRefreshListener {
+            viewModel.getAllByIdExpense(idExpense)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -95,6 +100,7 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
                 })
                 adapter.updateList(list)
             }
+            binding.swipeRefreshDetail.isRefreshing = false
         })
 
         viewModel.id.observe(viewLifecycleOwner, {id ->

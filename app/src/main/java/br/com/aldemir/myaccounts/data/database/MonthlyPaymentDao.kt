@@ -24,6 +24,9 @@ interface MonthlyPaymentDao {
     @Query("SELECT * FROM monthly_payment WHERE id = :id")
     suspend fun getByIdMonthlyPayment(id: Int): MonthlyPayment
 
+    @Query("SELECT * FROM monthly_payment WHERE month = :month AND year = :year")
+    suspend fun getAllExpensesMonth(month: String, year: String): List<MonthlyPayment>
+
     @Query("SELECT * FROM monthly_payment")
     suspend fun getAll(): List<MonthlyPayment>
 

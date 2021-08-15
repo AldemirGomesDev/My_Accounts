@@ -8,7 +8,7 @@ import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.util.DateTypeConverter
 
 
-@Database(entities = [Expense::class, MonthlyPayment::class], version = 1)
+@Database(entities = [Expense::class, MonthlyPayment::class], version = 2)
 @TypeConverters(DateTypeConverter::class)
 abstract class ConfigDataBase : RoomDatabase() {
 

@@ -19,10 +19,19 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
+import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import java.text.SimpleDateFormat
 import java.util.*
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+
+
+
 
 @AndroidEntryPoint
 class AddAccountFragment : Fragment() {
@@ -38,6 +47,10 @@ class AddAccountFragment : Fragment() {
     private var months: MutableList<String> = mutableListOf()
     private var isEntry = true
     private val items = mutableListOf<String>()
+    private val days = mutableListOf<Int>()
+    private var cal = Calendar.getInstance()
+    private var dueDate: Int = 0
+    private var createdAt: Date? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +70,16 @@ class AddAccountFragment : Fragment() {
         listenersViewModel()
         getDate()
         getYears()
+        getDays()
+
         val adapter = ArrayAdapter(requireContext(), R.layout.item_dropmenu, items)
         binding.dropMenuYear.setAdapter(adapter)
         binding.dropMenuYear.setDropDownBackgroundDrawable(
+            ColorDrawable(ContextCompat.getColor(mContext, R.color.white)))
+
+        val adapterDays = ArrayAdapter(requireContext(), R.layout.item_dropmenu, days)
+        binding.dropMenuDueDate.setAdapter(adapterDays)
+        binding.dropMenuDueDate.setDropDownBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(mContext, R.color.white)))
 
     }
@@ -74,17 +94,33 @@ class AddAccountFragment : Fragment() {
         }
     }
 
-    private fun getDate() {
-        val c = Calendar.getInstance()
+    private fun getDays() {
+        for (i in 1..30) {
+            days.add(i)
+        }
+    }
 
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+    private fun getDate(): Date {
+        val date = Calendar.getInstance().time
+        val formatter = SimpleDateFormat.getDateInstance() //or use getDateInstance()
+        val formatedDate = formatter.format(date)
 
-        val hour = c.get(Calendar.HOUR_OF_DAY)
-        val minute = c.get(Calendar.MINUTE)
+        Log.d(TAG, "formatedDate: $date ")
+        createdAt = date
+        return date
+    }
 
-        Log.d(TAG, "Ano: $year mês: $month dia: $day hora: $hour minuto: $minute")
+    private fun formatDateDataBase(date: Date): Date? {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        val outputFormat = inputFormat.format(date)
+        val date = inputFormat.parse(outputFormat)
+        return date
+    }
+
+    private fun updateDateInView(): String {
+        val myFormat = "dd/MM/yyyy"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        return sdf.format(cal.time)
     }
 
     private fun setupListeners(view: View) {
@@ -105,6 +141,9 @@ class AddAccountFragment : Fragment() {
         }
         binding.dropMenuYear.addTextChangedListener {
             viewModel.setYear(it.toString())
+        }
+        binding.dropMenuDueDate.addTextChangedListener {
+            dueDate = it.toString().toInt()
         }
         binding.checkboxJan.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -224,7 +263,9 @@ class AddAccountFragment : Fragment() {
                 binding.dropMenuYear.text.toString(),
                 months.sortedBy { "s(\\d+)".toRegex().matchEntire(it)?.groups?.get(1)?.value?.toInt()  },
                 binding.edtValue.text.toString().fromCurrency(),
-                false
+                false,
+                createdAt,
+                dueDate
             )
         }
     }

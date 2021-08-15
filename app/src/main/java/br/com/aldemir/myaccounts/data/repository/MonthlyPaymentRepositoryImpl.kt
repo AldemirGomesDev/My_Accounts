@@ -30,4 +30,8 @@ class MonthlyPaymentRepositoryImpl @Inject constructor(
     override suspend fun getAll(): List<MonthlyPayment> {
         return monthlyPaymentDao.getAll()
     }
+
+    override suspend fun getAllExpensesMonth(month: String, year: String): List<MonthlyPayment> {
+        return monthlyPaymentDao.getAllExpensesMonth(month, year)
+    }
 }

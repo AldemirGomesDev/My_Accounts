@@ -30,4 +30,7 @@ interface DomainModule {
 
     @Binds
     fun bindUpdateMonthlyPaymentUseCase(useCase: UpdateMonthlyPaymentUseCaseImpl) : UpdateMonthlyPaymentUseCase
+
+    @Binds
+    fun bindGetAllExpensesMonthUseCase(useCase: GetAllExpensesMonthUseCaseImpl) : GetAllExpensesMonthUseCase
 }

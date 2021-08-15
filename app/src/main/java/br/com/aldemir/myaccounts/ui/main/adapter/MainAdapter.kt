@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import com.google.android.material.card.MaterialCardView
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainAdapter(
@@ -37,11 +39,20 @@ class MainAdapter(
         val item = values[position]
         holder.nameAccount.text = item.name
         holder.valueAccount.text = "${item.description}"
+        if(item.due_date != null) {
+            holder.dueDate.text = String.format("%02d", item.due_date)
+        }
     }
 
     fun updateList(list: MutableList<Expense>) {
         values = list
         notifyDataSetChanged()
+    }
+
+    private fun dateFormat(date: Date): String {
+        val myFormat = "dd/MM/yyyy"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        return sdf.format(date)
     }
 
     override fun getItemCount(): Int = values.size
@@ -50,7 +61,7 @@ class MainAdapter(
         val containerItem: MaterialCardView = view.findViewById(R.id.material_cardView)
         val nameAccount: TextView = view.findViewById(R.id.tv_name_account)
         val valueAccount: TextView = view.findViewById(R.id.tv_value_account)
-        val typeAccount: TextView = view.findViewById(R.id.tv_type_account)
+        val dueDate: TextView = view.findViewById(R.id.tv_due_date)
 
         override fun onClick(v: View) {
             mClickListener.onClick(adapterPosition, v)

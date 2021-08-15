@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,9 +45,11 @@ class AddAccountViewModel @Inject constructor(
         year: String,
         months: List<String>,
         value: Double,
-        situation: Boolean
+        situation: Boolean,
+        createdAt: Date?,
+        dueDate: Int
     ) = viewModelScope.launch {
-        val expense = Expense(name = name,description = description)
+        val expense = Expense(name = name,description = description, created_at = createdAt, due_date = dueDate)
         val idExpense = addExpenseUseCase(expense)
         _id.value = idExpense
         for (month in months) {
@@ -55,7 +58,7 @@ class AddAccountViewModel @Inject constructor(
                 year = year,
                 month = month,
                 value = value,
-                situation = situation
+                situation = situation,
             )
             insertMonthlyPayment(monthlyPayment)
         }
