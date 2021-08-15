@@ -3,15 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bottom_navigation_colors.xml" value="0.1859375" />
+        <entry key="app/src/main/res/drawable/ic_check_circle.xml" value="0.1859375" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.1859375" />
         <entry key="app/src/main/res/drawable/ic_drop_down.xml" value="0.1859375" />
+        <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1859375" />
+        <entry key="app/src/main/res/drawable/ic_report_problem.xml" value="0.1859375" />
         <entry key="app/src/main/res/layout/add_account_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/change_expense_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_expense_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_dropmenu.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/item_expense_detail.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/item_list_accounts.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_list_accounts.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/main_activity.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/main_activity2.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/revenue_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_bottom_app_bar.xml" value="0.16979166666666667" />
       </map>
     </option>
   </component>
