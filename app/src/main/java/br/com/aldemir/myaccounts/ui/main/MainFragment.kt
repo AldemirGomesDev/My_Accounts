@@ -66,8 +66,6 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
         showLoading()
 
-        setListeners()
-
         setupRecyclerView(_list)
 
         getAllExpenses()
@@ -136,20 +134,6 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         }
         val myHelper = ItemTouchHelper(myCallback)
         myHelper.attachToRecyclerView(binding.recyclerViewListAccounts)
-
-//        binding.bottomAppBar.setNavigationOnClickListener {
-//
-//            Log.d(TAG, "clicou em menu")
-//
-//        }
-//        binding.bottomAppBar.setOnMenuItemClickListener {
-//            when (it.itemId) {
-//                R.id.menuSettings -> {
-//                    Log.d(TAG, "clicou em settings")
-//                }
-//            }
-//            return@setOnMenuItemClickListener true
-//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -202,16 +186,6 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     private fun getAllMonthExpenses() {
         viewModel.getAllExpensesMonth(_month, _year)
-    }
-
-    private fun setListeners() {
-//        binding.floatButtonAdd.setOnClickListener {
-//            val navOptions = findNavController().getNavOptions(R.id.addAccount)
-//            findNavController().navigateWithAnimations(
-//                R.id.action_mainFragment_to_addFragment,
-//                animation = navOptions
-//            )
-//        }
     }
 
     private fun setupRecyclerView(list: MutableList<Expense>) {

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.FragmentExpenseDetailBinding
 import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
+import br.com.aldemir.myaccounts.util.hideKeyboard
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,6 +76,7 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
     }
 
     override fun onResume() {
+        hideKeyboard()
         super.onResume()
     }
 
@@ -155,5 +158,13 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
+    }
+
+    private fun hideKeyboard() {
+        val parentActivity = requireActivity()
+        if (parentActivity is AppCompatActivity) {
+            parentActivity.hideKeyboard()
+            parentActivity.window.decorView.clearFocus()
+        }
     }
 }
