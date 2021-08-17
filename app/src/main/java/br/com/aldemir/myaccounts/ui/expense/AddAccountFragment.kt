@@ -27,10 +27,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
-
-
+import com.google.android.material.transition.MaterialFadeThrough
 
 
 @AndroidEntryPoint
@@ -51,6 +52,20 @@ class AddAccountFragment : Fragment() {
     private var cal = Calendar.getInstance()
     private var dueDate: Int = 0
     private var createdAt: Date? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        enterTransition = MaterialFadeThrough()
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
+        } else {
+            AnimationUtils.loadAnimation(context, R.anim.slide_out_right)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

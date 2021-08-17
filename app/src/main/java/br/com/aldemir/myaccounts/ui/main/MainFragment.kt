@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -27,6 +29,7 @@ import br.com.aldemir.myaccounts.util.getNavOptions
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
 import br.com.aldemir.myaccounts.util.toCurrency
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,6 +53,20 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     private var _valueTotal: Double = 0.0
 
     private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        exitTransition = MaterialFadeThrough()
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, R.anim.slide_in_left)
+        } else {
+            AnimationUtils.loadAnimation(context, R.anim.slide_out_left)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
