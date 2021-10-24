@@ -29,6 +29,9 @@ interface DomainModule {
     fun bindGetByIdMonthlyPaymentUseCase(useCase: GetByIdMonthlyPaymentUseCaseImpl) : GetByIdMonthlyPaymentUseCase
 
     @Binds
+    fun bindGetAllMonthlyPaymentUseCase(useCase: GetAllMonthlyPaymentUseCaseImpl) : GetAllMonthlyPaymentUseCase
+
+    @Binds
     fun bindUpdateMonthlyPaymentUseCase(useCase: UpdateMonthlyPaymentUseCaseImpl) : UpdateMonthlyPaymentUseCase
 
     @Binds

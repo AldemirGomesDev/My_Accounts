@@ -19,19 +19,14 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
-import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
 import java.util.*
-import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
-import com.google.android.material.transition.MaterialFadeThrough
 
 
 @AndroidEntryPoint
@@ -53,11 +48,6 @@ class AddAccountFragment : Fragment() {
     private var dueDate: Int = 0
     private var createdAt: Date? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        enterTransition = MaterialFadeThrough()
-    }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         return if (enter) {
@@ -301,9 +291,6 @@ class AddAccountFragment : Fragment() {
         binding.btnAddAccount.isEnabled = enabled
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

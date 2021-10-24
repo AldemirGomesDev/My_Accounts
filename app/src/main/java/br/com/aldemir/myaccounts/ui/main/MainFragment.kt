@@ -2,6 +2,7 @@ package br.com.aldemir.myaccounts.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Rect
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
 import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
@@ -31,6 +34,7 @@ import br.com.aldemir.myaccounts.util.toCurrency
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Double.NaN
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -106,9 +110,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.delete(_list[viewHolder.adapterPosition])
-                _list.removeAt(viewHolder.adapterPosition)
-                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                dialogDeleteExpense(viewHolder.bindingAdapterPosition)
             }
 
             override fun onChildDraw(
@@ -182,13 +184,15 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
                     pending += item.value
                 }
             }
-            var percentage = (paidOut / _valueTotal) * 100
+            val percentage = (paidOut / _valueTotal) * 100
             Log.d(TAG, "Porcentagem: $percentage %")
-            binding.progressValue.progress = percentage.roundToInt()
+            if(!percentage.isNaN()){
+                binding.progressValue.progress = percentage.roundToInt()
+                binding.tvProgressText.text = "${percentage.roundToInt()} %"
+            }
             binding.tvTotalMonth.text = _valueTotal.toCurrency()
             binding.tvPaidOut.text = paidOut.toCurrency()
             binding.tvPayable.text = pending.toCurrency()
-            binding.tvProgressText.text = "${percentage.roundToInt()} %"
         })
     }
 
@@ -239,7 +243,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     private fun getMonthAndYear() {
         val date = Calendar.getInstance()
         _year = date.get(Calendar.YEAR).toString()
-        var sdf = SimpleDateFormat("MMMM")
+        val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
         val month = sdf.format(date.time)
         Log.d(TAG, "Mês -> $month")
         when (date.get(Calendar.MONTH)) {
@@ -256,6 +260,37 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
             10 -> _month = "11 - Novembro"
             11 -> _month = "12 - Dezembro"
         }
+    }
+
+    private fun dialogDeleteExpense(position: Int){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(mContext,
+            R.style.AlertDialogCustom)
+        builder.setTitle("Aviso")
+        builder.setMessage("Deseja excluir esta despesa?")
+        builder.setPositiveButton("Sim") { dialog, _ ->
+            viewModel.delete(_list[position])
+            _list.removeAt(position)
+            adapter.notifyItemRemoved(position)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Não") { dialog, _ ->
+            adapter.notifyItemChanged(position)
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+        val buttonYes = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        val buttonNo = dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+        with(buttonYes) {
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+        }
+        with(buttonNo) {
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+        }
+
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+
     }
 
 }

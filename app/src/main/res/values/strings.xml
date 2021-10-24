@@ -6,6 +6,7 @@
     <string name="add_revenue_screen_title">Adicionar receita</string>
     <string name="expense_detail_screen_title">Detalhes da despesa</string>
     <string name="expense_change_screen_title">Editar despesa</string>
+    <string name="historic_screen_title">Histórico</string>
 
     <string name="invalid_name">Mínimo 4 caracteres</string>
     <string name="invalid_value">Digite um valor</string>
@@ -13,5 +14,6 @@
     <string name="settings">Settings</string>
     <string name="add_expense">Despesa</string>
     <string name="add_revenue">Receita</string>
+    <string name="historic">Histórico</string>
     <string name="home">Home</string>
 </resources>

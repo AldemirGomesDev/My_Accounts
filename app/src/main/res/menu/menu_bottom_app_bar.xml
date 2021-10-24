@@ -13,7 +13,7 @@
         android:title="@string/add_expense"
         android:icon="@drawable/ic_add_circle"/>
     <item
-        android:id="@+id/addRevenue"
-        android:title="@string/add_revenue"
-        android:icon="@drawable/ic_add_circle"/>
+        android:id="@+id/historic"
+        android:title="@string/historic"
+        android:icon="@drawable/ic_historic"/>
 </menu>

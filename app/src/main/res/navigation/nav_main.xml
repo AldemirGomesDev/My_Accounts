@@ -23,8 +23,8 @@
             android:id="@+id/action_mainFragment_to_expenseDetailFragment"
             app:destination="@id/expenseDetail" />
         <action
-            android:id="@+id/action_mainFragment_to_addRevenue"
-            app:destination="@id/addRevenue" />
+            android:id="@+id/action_mainFragment_to_historic"
+            app:destination="@id/historic" />
 
     </fragment>
 
@@ -52,9 +52,9 @@
         tools:layout="@layout/change_expense_fragment" />
 
     <fragment
-        android:id="@+id/addRevenue"
-        android:name="br.com.aldemir.myaccounts.ui.revenue.RevenueFragment"
-        android:label="@string/add_revenue_screen_title"
-        tools:layout="@layout/revenue_fragment" />
+        android:id="@+id/historic"
+        android:name="br.com.aldemir.myaccounts.ui.historic.HistoricFragment"
+        android:label="@string/historic_screen_title"
+        tools:layout="@layout/historic_fragment" />
 
 </navigation>

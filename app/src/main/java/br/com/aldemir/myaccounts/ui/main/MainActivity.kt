@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.addAccount -> binding.toolbarMain.navigationIcon = null
-                R.id.addRevenue -> binding.toolbarMain.navigationIcon = null
+                R.id.historic -> binding.toolbarMain.navigationIcon = null
                 else -> { }
             }
         }
