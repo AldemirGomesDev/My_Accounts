@@ -1,10 +1,13 @@
 package br.com.aldemir.myaccounts.data.repository
 
-import androidx.lifecycle.LiveData
 import br.com.aldemir.myaccounts.data.database.MonthlyPaymentDao
+import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import javax.inject.Inject
 
-class MonthlyPaymentRepositoryImpl(private val monthlyPaymentDao: MonthlyPaymentDao): MonthlyPaymentRepository {
+class MonthlyPaymentRepositoryImpl @Inject constructor(
+    private val monthlyPaymentDao: MonthlyPaymentDao
+): MonthlyPaymentRepository {
     override suspend fun insertMonthlyPayment(monthlyPayment: MonthlyPayment): Long {
         return monthlyPaymentDao.insert(monthlyPayment)
     }
@@ -27,5 +30,13 @@ class MonthlyPaymentRepositoryImpl(private val monthlyPaymentDao: MonthlyPayment
 
     override suspend fun getAll(): List<MonthlyPayment> {
         return monthlyPaymentDao.getAll()
+    }
+
+    override suspend fun getAllExpensesMonth(month: String, year: String): List<MonthlyPayment> {
+        return monthlyPaymentDao.getAllExpensesMonth(month, year)
+    }
+
+    override suspend fun getAllExpensePerMonth(month: String, year: String): List<ExpensePerMonth> {
+        return monthlyPaymentDao.getAllExpensePerMonth(month, year)
     }
 }

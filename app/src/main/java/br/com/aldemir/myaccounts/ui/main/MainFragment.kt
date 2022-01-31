@@ -1,43 +1,73 @@
 package br.com.aldemir.myaccounts.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Rect
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
+import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
-import com.google.android.material.snackbar.Snackbar
+import br.com.aldemir.myaccounts.util.toCurrency
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
+@AndroidEntryPoint
 class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     companion object {
         private const val TAG = "mainFragment"
     }
+
     private lateinit var adapter: MainAdapter
     private var _list = ArrayList<Expense>()
+    private var _status = ArrayList<Boolean>()
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
+    private lateinit var _month: String
+    private lateinit var _year: String
+    private var _valueTotal: Double = 0.0
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        exitTransition = MaterialFadeThrough()
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, R.anim.slide_in_left)
+        } else {
+            AnimationUtils.loadAnimation(context, R.anim.slide_out_left)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,24 +80,24 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getMonthAndYear()
+
         showLoading()
 
-        setupViewModel()
+        setupRecyclerView(_list, _status)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        getAllMonthExpenses()
 
-        setListeners()
-
-        setupRecyclerView(_list)
-
-        getAllAccounts()
+        getAllExpensesPerMonth()
 
         listenersViewModel()
 
-        val trashBinIcon = ContextCompat.getDrawable(mContext,  R.drawable.ic_delete)
+        val trashBinIcon = ContextCompat.getDrawable(mContext, R.drawable.ic_delete)
 
-        val myCallback = object: ItemTouchHelper.SimpleCallback(0,
-            ItemTouchHelper.RIGHT) {
+        val myCallback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.RIGHT
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -77,12 +107,10 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.delete(_list[viewHolder.adapterPosition])
-                _list.removeAt (viewHolder.adapterPosition)
-                adapter.notifyItemRemoved (viewHolder.adapterPosition)
+                dialogDeleteExpense(viewHolder.bindingAdapterPosition)
             }
 
-            override fun onChildDraw (
+            override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -92,10 +120,12 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
                 isCurrentlyActive: Boolean
             ) {
 
-                c.clipRect (0f, viewHolder.itemView.top.toFloat (),
-                    dX, viewHolder.itemView.bottom.toFloat ())
+                c.clipRect(
+                    0f, viewHolder.itemView.top.toFloat(),
+                    dX, viewHolder.itemView.bottom.toFloat()
+                )
 
-                if(dX < 100 / 3)
+                if (dX < 100 / 3)
                     c.drawColor(Color.GRAY)
                 else
                     c.drawColor(ContextCompat.getColor(mContext, R.color.red))
@@ -108,30 +138,66 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
                     viewHolder.itemView.top + textMargin,
                     textMargin + trashBinIcon.intrinsicWidth,
                     viewHolder.itemView.top + trashBinIcon.intrinsicHeight
-                            + textMargin)
+                            + textMargin
+                )
                 trashBinIcon.draw(c)
 
-                super.onChildDraw (c, recyclerView, viewHolder,
-                    dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c, recyclerView, viewHolder,
+                    dX, dY, actionState, isCurrentlyActive
+                )
             }
         }
-        val myHelper = ItemTouchHelper (myCallback)
-        myHelper.attachToRecyclerView (binding.recyclerViewListAccounts)
+        val myHelper = ItemTouchHelper(myCallback)
+        myHelper.attachToRecyclerView(binding.recyclerViewListAccounts)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun listenersViewModel() {
-        viewModel.accounts.observe(viewLifecycleOwner, { accounts ->
-            hideLoading()
-            if(accounts.isNotEmpty()) {
-                _list = accounts as ArrayList<Expense>
-                adapter.updateList(_list)
+        viewModel.idExpense.observe(viewLifecycleOwner, { id ->
+            if (id > 0) {
+                Toast.makeText(mContext, "Item excluído com sucesso!", Toast.LENGTH_SHORT).show()
+                viewModel.setId(0)
+                getAllMonthExpenses()
             }
         })
-        viewModel.idAccount.observe(viewLifecycleOwner, {id ->
-            if(id > 0) {
-                val snack = view?.let { Snackbar.make(it,"Item excluído com sucesso!",Snackbar.LENGTH_LONG) }
-                snack!!.show()
-                viewModel.setId(0)
+
+        viewModel.monthExpenses.observe(viewLifecycleOwner, { expensesMonths ->
+            _valueTotal = 0.0
+            var paidOut = 0.0
+            var pending = 0.0
+            for (item in expensesMonths) {
+                _valueTotal += item.value
+                if (item.situation) {
+                    paidOut += item.value
+                } else {
+                    pending += item.value
+                }
+            }
+            val percentage = (paidOut / _valueTotal) * 100
+            Log.d(TAG, "Porcentagem: $percentage %")
+            if(!percentage.isNaN()){
+                binding.progressValue.progress = percentage.roundToInt()
+                binding.tvProgressText.text = "${percentage.roundToInt()} %"
+            }
+            binding.tvTotalMonth.text = _valueTotal.toCurrency()
+            binding.tvPaidOut.text = paidOut.toCurrency()
+            binding.tvPayable.text = pending.toCurrency()
+        })
+
+        viewModel.monthStatus.observe(viewLifecycleOwner, { status ->
+            if (status.isNotEmpty()) {
+                _status = status as ArrayList<Boolean>
+                Log.d(TAG, "Total de despesas do mês 1: ${status.size}")
+            }
+
+        })
+        viewModel.expenses.observe(viewLifecycleOwner, { accounts ->
+            hideLoading()
+            if (accounts.isNotEmpty()) {
+                _list = accounts as ArrayList<Expense>
+                adapter.updateList(_list, _status)
+                Log.d(TAG, "Total de despesas do mês 2: ${accounts.size}")
             }
         })
     }
@@ -141,19 +207,16 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         mContext = context
     }
 
-    private fun getAllAccounts() {
-        viewModel.getAll()
+    private fun getAllMonthExpenses() {
+        viewModel.getAllExpensesMonth(_month, _year)
     }
 
-    private fun setListeners() {
-        binding.floatButtonAdd.setOnClickListener {
-            val navOptions = findNavController().getNavOptions(R.id.addAccount)
-            findNavController().navigateWithAnimations(R.id.action_mainFragment_to_addFragment, animation = navOptions)
-        }
+    private fun getAllExpensesPerMonth() {
+        viewModel.getAllExpensePerMonth(_month, _year)
     }
 
-    private fun setupRecyclerView(list: MutableList<Expense>) {
-        adapter = MainAdapter(list)
+    private fun setupRecyclerView(list: MutableList<Expense>, status: ArrayList<Boolean>) {
+        adapter = MainAdapter(list, status)
         binding.recyclerViewListAccounts.adapter = adapter
         val layoutManager = LinearLayoutManager(mContext)
         binding.recyclerViewListAccounts.layoutManager = layoutManager
@@ -162,20 +225,16 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     override fun onClick(position: Int, aView: View) {
         val bundle = Bundle()
-        bundle.putInt("idExpense", _list[position].id)
-        bundle.putString("nameExpense", _list[position].name)
+        bundle.putInt(Constants.ID_EXPENSE.value, _list[position].id)
+        bundle.putString(Constants.NAME_EXPENSE.value, _list[position].name)
         val navOptions = findNavController().getNavOptions(R.id.expenseDetail)
         findNavController().navigateWithAnimations(
-            R.id.action_mainFragment_to_expenseDetailFragment, animation = navOptions, bundle = bundle)
+            R.id.action_mainFragment_to_expenseDetailFragment,
+            animation = navOptions,
+            bundle = bundle
+        )
     }
 
-    private fun setupViewModel() {
-        val database = ConfigDataBase.getDataBase(mContext)
-        val expenseRepository = ExpenseRepositoryImpl(database.expenseDao())
-        viewModel  = ViewModelProvider(this,
-            MainViewModelFactory(expenseRepository)
-        ).get(MainViewModel::class.java)
-    }
 
     private fun showLoading() {
         binding.loadingMain.visibility = View.VISIBLE
@@ -185,6 +244,59 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
     private fun hideLoading() {
         binding.loadingMain.visibility = View.GONE
         binding.recyclerViewListAccounts.visibility = View.VISIBLE
+    }
+
+    private fun getMonthAndYear() {
+        val date = Calendar.getInstance()
+        _year = date.get(Calendar.YEAR).toString()
+        val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
+        val month = sdf.format(date.time)
+        Log.d(TAG, "Mês -> $month")
+        when (date.get(Calendar.MONTH)) {
+            0 -> _month = "1 - Janeiro"
+            1 -> _month = "2 - Fevereiro"
+            2 -> _month = "3 - Março"
+            3 -> _month = "4 - Abril"
+            4 -> _month = "5 - Maio"
+            5 -> _month = "6 - Junho"
+            6 -> _month = "7 - Julho"
+            7 -> _month = "8 - Agosto"
+            8 -> _month = "9 - Setembro"
+            9 -> _month = "10 - Outubro"
+            10 -> _month = "11 - Novembro"
+            11 -> _month = "12 - Dezembro"
+        }
+    }
+
+    private fun dialogDeleteExpense(position: Int){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(mContext,
+            R.style.AlertDialogCustom)
+        builder.setTitle("Aviso")
+        builder.setMessage("Deseja excluir esta despesa?")
+        builder.setPositiveButton("Sim") { dialog, _ ->
+            viewModel.delete(_list[position])
+            _list.removeAt(position)
+            adapter.notifyItemRemoved(position)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Não") { dialog, _ ->
+            adapter.notifyItemChanged(position)
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+        val buttonYes = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        val buttonNo = dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+        with(buttonYes) {
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+        }
+        with(buttonNo) {
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+        }
+
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+
     }
 
 }

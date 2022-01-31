@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
-import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
-import br.com.aldemir.myaccounts.ui.expense.AddAccountFormState
+import br.com.aldemir.myaccounts.ui.expense.AddExpenseFormState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChangeExpenseViewModel(
+@HiltViewModel
+class ChangeExpenseViewModel @Inject constructor(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {
@@ -22,8 +23,8 @@ class ChangeExpenseViewModel(
         private const val TAG = "ChangeDetailFragment"
     }
 
-    private val _changeFormState = MutableLiveData<AddAccountFormState>()
-    val changeFormState: LiveData<AddAccountFormState> = _changeFormState
+    private val _changeFormState = MutableLiveData<AddExpenseFormState>()
+    val changeFormState: LiveData<AddExpenseFormState> = _changeFormState
 
     private val _monthlyPayment = MutableLiveData<MonthlyPayment>()
     var monthlyPayment: LiveData<MonthlyPayment> = _monthlyPayment
@@ -46,9 +47,9 @@ class ChangeExpenseViewModel(
         Log.d(TAG, "isValueValid: ${!isValueValid(value)}")
         _isValidForm.value = isValueValid(value)
         if (!isValueValid(value)) {
-            _changeFormState.value = AddAccountFormState(valueError = R.string.invalid_value)
+            _changeFormState.value = AddExpenseFormState(valueError = R.string.invalid_value)
         } else {
-            _changeFormState.value = AddAccountFormState(valueError = null)
+            _changeFormState.value = AddExpenseFormState(valueError = null)
         }
     }
 

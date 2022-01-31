@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="16dp"
-    tools:context=".ui.expense.AddAccountFragment">
+    tools:context=".ui.expense.AddExpenseFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radio_group"
                 android:checkedButton="@+id/radio_button_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                 app:boxStrokeColor="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group"
                 >
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:hint="Descrição"
-                    android:lines="3"
+                    android:lines="1"
                     android:textColorHint="@color/grey"
                     android:textColor="@color/grey"
                     android:visibility="visible"
@@ -166,6 +166,32 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_due_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Escolha o vencimento"
+                android:layout_marginTop="8dp"
+                app:passwordToggleEnabled="false"
+                android:theme="@style/ExposedDropdownMenu"
+                android:textColorHint="@color/grey"
+                android:textColor="@color/grey"
+                android:textColorHighlight="@color/grey"
+                app:boxStrokeColor="@color/purple_200"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_years">
+
+                <AutoCompleteTextView
+                    android:id="@+id/drop_menu_due_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/purple_200"
+                    android:background="@null"
+                    android:inputType="none"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkbox_jan"
                 android:layout_width="wrap_content"
@@ -174,7 +200,7 @@
                 android:textColor="@color/purple_200"
                 android:buttonTint="@color/purple_200"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_years"
+                app:layout_constraintTop_toBottomOf="@+id/til_due_date"
                 />
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkbox_feb"
@@ -185,7 +211,7 @@
                 android:buttonTint="@color/purple_200"
                 app:layout_constraintStart_toEndOf="@+id/checkbox_jan"
                 app:layout_constraintEnd_toStartOf="@+id/checkbox_mar"
-                app:layout_constraintTop_toBottomOf="@+id/til_years"
+                app:layout_constraintTop_toBottomOf="@+id/til_due_date"
                 />
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkbox_mar"
@@ -196,7 +222,7 @@
                 android:buttonTint="@color/purple_200"
                 app:layout_constraintStart_toEndOf="@+id/checkbox_feb"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_years"
+                app:layout_constraintTop_toBottomOf="@+id/til_due_date"
                 />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -308,7 +334,7 @@
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/checkbox_nov"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox_dez"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 

@@ -3,6 +3,7 @@ package br.com.aldemir.myaccounts.ui.expensedetail
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,26 +11,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.databinding.FragmentExpenseDetailBinding
+import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
+import br.com.aldemir.myaccounts.util.hideKeyboard
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
 
     private lateinit var adapter: ExpenseDetailAdapter
     private var _binding: FragmentExpenseDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
-    private lateinit var viewModel: ExpenseDetailViewModel
+    private val viewModel: ExpenseDetailViewModel by viewModels()
     private var list = listOf<MonthlyPayment>()
     private var idExpense = 0
     private lateinit var nameExpense: String
@@ -38,8 +41,8 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            idExpense = it.getInt("idExpense")
-            nameExpense = it.getString("nameExpense")!!
+            idExpense = it.getInt(Constants.ID_EXPENSE.value)
+            nameExpense = it.getString(Constants.NAME_EXPENSE.value)!!
         }
     }
 
@@ -56,15 +59,15 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
 
         binding.tvTitleExpense.text = nameExpense
 
-        setupViewModel()
-
-        viewModel = ViewModelProvider(this).get(ExpenseDetailViewModel::class.java)
-
         viewModel.getAllByIdExpense(idExpense)
 
         setupRecyclerView(list)
 
         listenersViewModel()
+
+        binding.swipeRefreshDetail.setOnRefreshListener {
+            viewModel.getAllByIdExpense(idExpense)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -73,6 +76,7 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
     }
 
     override fun onResume() {
+        hideKeyboard()
         super.onResume()
     }
 
@@ -90,17 +94,6 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         adapter.setOnItemClickListener(this)
     }
 
-
-    private fun setupViewModel() {
-        val database = ConfigDataBase.getDataBase(mContext)
-        val monthlyPaymentRepository = MonthlyPaymentRepositoryImpl(database.monthlyPaymentDao())
-        viewModel  = ViewModelProvider(this,
-            ExpenseDetailViewModelFactory(
-                monthlyPaymentRepository
-            )
-        ).get(ExpenseDetailViewModel::class.java)
-    }
-
     private fun listenersViewModel() {
         viewModel.monthlyPayment.observe(viewLifecycleOwner, { monthlyPayments ->
             val pattern = """\d+""".toRegex()
@@ -110,6 +103,7 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
                 })
                 adapter.updateList(list)
             }
+            binding.swipeRefreshDetail.isRefreshing = false
         })
 
         viewModel.id.observe(viewLifecycleOwner, {id ->
@@ -131,8 +125,8 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
     override fun onLongClick(position: Int, aView: View) {
         Log.d(TAG, "clicou em clique longo: $position")
         val bundle = Bundle()
-        bundle.putInt("idMonthlyPayment", list[position].id)
-        bundle.putString("nameExpense", nameExpense)
+        bundle.putInt(Constants.ID_MONTHLY_PAYMENT.value, list[position].id)
+        bundle.putString(Constants.NAME_EXPENSE.value, nameExpense)
         val navOptions = findNavController().getNavOptions(R.id.expenseChange)
         findNavController().navigateWithAnimations(
             R.id.action_mainFragment_to_expenseChange, animation = navOptions, bundle = bundle)
@@ -164,5 +158,13 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
+    }
+
+    private fun hideKeyboard() {
+        val parentActivity = requireActivity()
+        if (parentActivity is AppCompatActivity) {
+            parentActivity.hideKeyboard()
+            parentActivity.window.decorView.clearFocus()
+        }
     }
 }
