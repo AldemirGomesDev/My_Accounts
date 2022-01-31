@@ -18,17 +18,17 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AddAccountViewModel @Inject constructor(
+class AddExpenseViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {
 
     companion object {
-        private const val TAG = "AddAccountFragment"
+        private const val TAG = "AddExpenseFragment"
     }
 
-    private val _addAccountFormState = MutableLiveData<AddAccountFormState>()
-    val addAccountFormState: LiveData<AddAccountFormState> = _addAccountFormState
+    private val _addAccountFormState = MutableLiveData<AddExpenseFormState>()
+    val addExpenseFormState: LiveData<AddExpenseFormState> = _addAccountFormState
 
     private val _name = MutableStateFlow("")
     private val _value = MutableStateFlow(0.0)
@@ -100,46 +100,46 @@ class AddAccountViewModel @Inject constructor(
     fun setName(name: String) {
         _name.value = name
         if (!isNameValid(name)) {
-            _addAccountFormState.value = AddAccountFormState(nameError  = R.string.invalid_name)
+            _addAccountFormState.value = AddExpenseFormState(nameError  = R.string.invalid_name)
         } else {
-            _addAccountFormState.value = AddAccountFormState(nameError = null)
+            _addAccountFormState.value = AddExpenseFormState(nameError = null)
         }
     }
 
     fun setValue(value: Double) {
         _value.value = value
         if (!isValueValid(value)) {
-            _addAccountFormState.value = AddAccountFormState(valueError = R.string.invalid_value)
+            _addAccountFormState.value = AddExpenseFormState(valueError = R.string.invalid_value)
         } else {
-            _addAccountFormState.value = AddAccountFormState(valueError = null)
+            _addAccountFormState.value = AddExpenseFormState(valueError = null)
         }
     }
 
     fun setDescription(description: String) {
         _description.value = description
         if (!isDescriptionValid(description)) {
-            _addAccountFormState.value = AddAccountFormState(descriptionError = R.string.invalid_name)
+            _addAccountFormState.value = AddExpenseFormState(descriptionError = R.string.invalid_name)
         } else {
-            _addAccountFormState.value = AddAccountFormState(descriptionError = null)
+            _addAccountFormState.value = AddExpenseFormState(descriptionError = null)
         }
     }
 
     fun setYear(year: String) {
         _year.value = year
         if (!isYearValid(year)) {
-            _addAccountFormState.value = AddAccountFormState(yearError = R.string.invalid_name)
+            _addAccountFormState.value = AddExpenseFormState(yearError = R.string.invalid_name)
         } else {
-            _addAccountFormState.value = AddAccountFormState(yearError = null)
+            _addAccountFormState.value = AddExpenseFormState(yearError = null)
         }
     }
 
     fun setMonths(months: List<String>) {
         if (!isMonthsValid(months)) {
             _months.value = false
-            _addAccountFormState.value = AddAccountFormState(monthsError = R.string.invalid_name)
+            _addAccountFormState.value = AddExpenseFormState(monthsError = R.string.invalid_name)
         } else {
             _months.value = true
-            _addAccountFormState.value = AddAccountFormState(monthsError = null)
+            _addAccountFormState.value = AddExpenseFormState(monthsError = null)
         }
     }
 

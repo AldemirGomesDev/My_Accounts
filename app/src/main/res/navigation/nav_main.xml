@@ -14,23 +14,24 @@
         >
         <action
             android:id="@+id/action_mainFragment_to_addFragment"
-            app:destination="@id/addAccount"
+            app:destination="@id/addAccount"/>
+        <action
+            android:id="@+id/action_mainFragment_to_expenseDetailFragment"
+            app:destination="@id/expenseDetail"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_historic"
+            app:destination="@id/historic"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_mainFragment_to_expenseDetailFragment"
-            app:destination="@id/expenseDetail" />
-        <action
-            android:id="@+id/action_mainFragment_to_historic"
-            app:destination="@id/historic" />
+            app:popExitAnim="@anim/slide_out_right"/>
 
     </fragment>
 
     <fragment
         android:id="@+id/addAccount"
-        android:name="br.com.aldemir.myaccounts.ui.expense.AddAccountFragment"
+        android:name="br.com.aldemir.myaccounts.ui.expense.AddExpenseFragment"
         android:label="@string/add_account_screen_title"
         tools:layout="@layout/add_account_fragment" />
 

@@ -79,6 +79,22 @@
             card_view:layout_constraintStart_toEndOf="@+id/tv_type_account"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_value_account" />
 
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:text="Pago "
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/green"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_value_account" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

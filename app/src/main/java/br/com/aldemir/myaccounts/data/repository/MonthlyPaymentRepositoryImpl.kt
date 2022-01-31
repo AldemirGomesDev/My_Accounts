@@ -1,6 +1,7 @@
 package br.com.aldemir.myaccounts.data.repository
 
 import br.com.aldemir.myaccounts.data.database.MonthlyPaymentDao
+import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import javax.inject.Inject
 
@@ -33,5 +34,9 @@ class MonthlyPaymentRepositoryImpl @Inject constructor(
 
     override suspend fun getAllExpensesMonth(month: String, year: String): List<MonthlyPayment> {
         return monthlyPaymentDao.getAllExpensesMonth(month, year)
+    }
+
+    override suspend fun getAllExpensePerMonth(month: String, year: String): List<ExpensePerMonth> {
+        return monthlyPaymentDao.getAllExpensePerMonth(month, year)
     }
 }

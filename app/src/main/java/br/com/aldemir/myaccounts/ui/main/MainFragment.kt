@@ -25,16 +25,12 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.databinding.MainFragmentBinding
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.ui.main.adapter.MainAdapter
 import br.com.aldemir.myaccounts.util.Constants
 import br.com.aldemir.myaccounts.util.getNavOptions
 import br.com.aldemir.myaccounts.util.navigateWithAnimations
 import br.com.aldemir.myaccounts.util.toCurrency
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Double.NaN
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,6 +45,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     private lateinit var adapter: MainAdapter
     private var _list = ArrayList<Expense>()
+    private var _status = ArrayList<Boolean>()
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
@@ -87,11 +84,11 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
         showLoading()
 
-        setupRecyclerView(_list)
-
-        getAllExpenses()
+        setupRecyclerView(_list, _status)
 
         getAllMonthExpenses()
+
+        getAllExpensesPerMonth()
 
         listenersViewModel()
 
@@ -157,14 +154,7 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun listenersViewModel() {
-        viewModel.accounts.observe(viewLifecycleOwner, { accounts ->
-            hideLoading()
-            if (accounts.isNotEmpty()) {
-                _list = accounts as ArrayList<Expense>
-                adapter.updateList(_list)
-            }
-        })
-        viewModel.idAccount.observe(viewLifecycleOwner, { id ->
+        viewModel.idExpense.observe(viewLifecycleOwner, { id ->
             if (id > 0) {
                 Toast.makeText(mContext, "Item excluído com sucesso!", Toast.LENGTH_SHORT).show()
                 viewModel.setId(0)
@@ -194,6 +184,22 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
             binding.tvPaidOut.text = paidOut.toCurrency()
             binding.tvPayable.text = pending.toCurrency()
         })
+
+        viewModel.monthStatus.observe(viewLifecycleOwner, { status ->
+            if (status.isNotEmpty()) {
+                _status = status as ArrayList<Boolean>
+                Log.d(TAG, "Total de despesas do mês 1: ${status.size}")
+            }
+
+        })
+        viewModel.expenses.observe(viewLifecycleOwner, { accounts ->
+            hideLoading()
+            if (accounts.isNotEmpty()) {
+                _list = accounts as ArrayList<Expense>
+                adapter.updateList(_list, _status)
+                Log.d(TAG, "Total de despesas do mês 2: ${accounts.size}")
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -201,16 +207,16 @@ class MainFragment : Fragment(), MainAdapter.ClickListener {
         mContext = context
     }
 
-    private fun getAllExpenses() {
-        viewModel.getAll()
-    }
-
     private fun getAllMonthExpenses() {
         viewModel.getAllExpensesMonth(_month, _year)
     }
 
-    private fun setupRecyclerView(list: MutableList<Expense>) {
-        adapter = MainAdapter(list)
+    private fun getAllExpensesPerMonth() {
+        viewModel.getAllExpensePerMonth(_month, _year)
+    }
+
+    private fun setupRecyclerView(list: MutableList<Expense>, status: ArrayList<Boolean>) {
+        adapter = MainAdapter(list, status)
         binding.recyclerViewListAccounts.adapter = adapter
         val layoutManager = LinearLayoutManager(mContext)
         binding.recyclerViewListAccounts.layoutManager = layoutManager

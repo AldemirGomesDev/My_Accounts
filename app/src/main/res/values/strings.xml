@@ -11,6 +11,7 @@
     <string name="invalid_name">Mínimo 4 caracteres</string>
     <string name="invalid_value">Digite um valor</string>
     <string name="label">Escolha o ano</string>
+    <string name="label_month">Escolha o mês</string>
     <string name="settings">Settings</string>
     <string name="add_expense">Despesa</string>
     <string name="add_revenue">Receita</string>

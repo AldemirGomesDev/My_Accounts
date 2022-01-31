@@ -30,15 +30,15 @@ import android.view.animation.AnimationUtils
 
 
 @AndroidEntryPoint
-class AddAccountFragment : Fragment() {
+class AddExpenseFragment : Fragment() {
 
     companion object {
-        private const val TAG = "AddAccountFragment"
+        private const val TAG = "AddExpenseFragment"
     }
     private var _binding: AddAccountFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AddAccountViewModel by viewModels()
+    private val viewModel: AddExpenseViewModel by viewModels()
     private lateinit var mContext: Context
     private var months: MutableList<String> = mutableListOf()
     private var isEntry = true
@@ -305,7 +305,7 @@ class AddAccountFragment : Fragment() {
                 findNavController().popBackStack()
             }
         })
-        viewModel.addAccountFormState.observe(viewLifecycleOwner, { formState ->
+        viewModel.addExpenseFormState.observe(viewLifecycleOwner, { formState ->
 
             if (formState.nameError != null) {
                 binding.edtName.error = getString(formState.nameError)
