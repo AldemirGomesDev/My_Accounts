@@ -152,97 +152,97 @@ class AddExpenseFragment : Fragment() {
         }
         binding.checkboxJan.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("1 - Janeiro")
+                months.add("1 - JANEIRO")
             } else {
-                months.remove("1 - Janeiro")
+                months.remove("1 - JANEIRO")
             }
             updateMonths()
         }
         binding.checkboxFeb.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("2 - Fevereiro")
+                months.add("2 - FEVEREIRO")
             } else {
-                months.remove("2 - Fevereiro")
+                months.remove("2 - FEVEREIRO")
             }
             updateMonths()
         }
         binding.checkboxMar.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("3 - Março")
+                months.add("3 - MARÇO")
             } else {
-                months.remove("3 - Março")
+                months.remove("3 - MARÇO")
             }
             updateMonths()
         }
         binding.checkboxApr.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("4 - Abril")
+                months.add("4 - ABRIL")
             } else {
-                months.remove("4 - Abril")
+                months.remove("4 - ABRIL")
             }
             updateMonths()
         }
         binding.checkboxMai.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("5 - Maio")
+                months.add("5 - MAIO")
             } else {
-                months.remove("5 - Maio")
+                months.remove("5 - MAIO")
             }
             updateMonths()
         }
         binding.checkboxJun.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("6 - Junho")
+                months.add("6 - JUNHO")
             } else {
-                months.remove("6 - Junho")
+                months.remove("6 - JUNHO")
             }
             updateMonths()
         }
         binding.checkboxJul.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("7 - Julho")
+                months.add("7 - JULHO")
             } else {
-                months.remove("7 - Julho")
+                months.remove("7 - JULHO")
             }
             updateMonths()
         }
         binding.checkboxAgo.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("8 - Agosto")
+                months.add("8 - AGOSTO")
             } else {
-                months.remove("8 - Agosto")
+                months.remove("8 - AGOSTO")
             }
             updateMonths()
         }
         binding.checkboxSep.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("9 - Setembro")
+                months.add("9 - SETEMBRO")
             } else {
-                months.remove("9 - Setembro")
+                months.remove("9 - SETEMBRO")
             }
             updateMonths()
         }
         binding.checkboxOut.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("10 - Outubro")
+                months.add("10 - OUTUBRO")
             } else {
-                months.remove("10 - Outubro")
+                months.remove("10 - OUTUBRO")
             }
             updateMonths()
         }
         binding.checkboxNov.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("11 - Novembro")
+                months.add("11 - NOVEMBRO")
             } else {
-                months.remove("11 - Novembro")
+                months.remove("11 - NOVEMBRO")
             }
             updateMonths()
         }
         binding.checkboxDez.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                months.add("12 - Dezembro")
+                months.add("12 - DEZEMBRO")
             } else {
-                months.remove("12 - Dezembro")
+                months.remove("12 - DEZEMBRO")
             }
             updateMonths()
         }
@@ -298,31 +298,31 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun listenersViewModel() {
-        viewModel.id.observe(viewLifecycleOwner, { id ->
-            hideLoading()
-            if(id > 0) {
-                Log.d(TAG, "Expense id: $id")
-                findNavController().popBackStack()
-            }
-        })
-        viewModel.addExpenseFormState.observe(viewLifecycleOwner, { formState ->
+//        viewModel.id.observe(viewLifecycleOwner) { id ->
+//            hideLoading()
+//            if (id > 0) {
+//                Log.d(TAG, "Expense id: $id")
+//                findNavController().popBackStack()
+//            }
+//        }
+        viewModel.addExpenseFormState.observe(viewLifecycleOwner) { formState ->
 
             if (formState.nameError != null) {
                 binding.edtName.error = getString(formState.nameError)
-            }else {
+            } else {
                 binding.edtName.error = null
             }
             if (formState.valueError != null) {
                 binding.edtValue.error = getString(formState.valueError)
-            }else {
+            } else {
                 binding.edtValue.error = null
             }
             if (formState.descriptionError != null) {
                 binding.edtDescription.error = getString(formState.descriptionError)
-            }else {
+            } else {
                 binding.edtDescription.error = null
             }
-        })
+        }
     }
 
     private fun showLoading() {

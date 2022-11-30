@@ -1,5 +1,7 @@
 package br.com.aldemir.myaccounts.ui.expense
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.util.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,14 +33,32 @@ class AddExpenseViewModel @Inject constructor(
     private val _addAccountFormState = MutableLiveData<AddExpenseFormState>()
     val addExpenseFormState: LiveData<AddExpenseFormState> = _addAccountFormState
 
+    val id: MutableState<Int> = mutableStateOf(0)
+    val name: MutableState<String> = mutableStateOf("")
+    val value: MutableState<String> = mutableStateOf("")
+    val description: MutableState<String> = mutableStateOf("")
+
     private val _name = MutableStateFlow("")
     private val _value = MutableStateFlow(0.0)
     private val _description = MutableStateFlow("")
     private val _year = MutableStateFlow("")
     private val _months = MutableStateFlow(false)
 
-    private val _id = MutableLiveData<Long>()
-    val id: LiveData<Long> = _id
+    fun addAccount() = viewModelScope.launch {
+        val expense = Expense(name = name.value, description = description.value, created_at = DateUtils.getDate(), due_date = 10)
+        val idExpense = addExpenseUseCase(expense)
+        id.value = idExpense.toInt()
+        for (month in listOf("1 - JANEIRO", "10 - OUTUBRO", "11 - NOVEMBRO")){
+            val monthlyPayment = MonthlyPayment(
+                id_expense = idExpense.toInt(),
+                year = "2022",
+                month = month,
+                value = value.value.toDouble(),
+                situation = false
+            )
+            insertMonthlyPayment(monthlyPayment)
+        }
+    }
 
     fun insertExpense(
         name: String,
@@ -51,7 +72,7 @@ class AddExpenseViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val expense = Expense(name = name,description = description, created_at = createdAt, due_date = dueDate)
         val idExpense = addExpenseUseCase(expense)
-        _id.value = idExpense
+        id.value = idExpense.toInt()
         for (month in months) {
             val monthlyPayment = MonthlyPayment(
                 id_expense = idExpense.toInt(),

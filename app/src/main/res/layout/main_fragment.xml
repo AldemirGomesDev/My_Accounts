@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/grey_light"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
@@ -12,7 +12,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_light"
+        android:background="@color/white"
         android:layout_marginBottom="55dp"
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
@@ -171,37 +171,25 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_list_accounts"
-            android:name="br.com.aldemir.myaccounts.ui.main.MainFragment"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_header"
-            tools:context=".ui.requisition.RequisitionFragment"
-            tools:listitem="@layout/item_list_accounts" />
-
-        <ProgressBar
-            android:id="@+id/loading_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="64dp"
-            android:elevation="8dp"
-            android:indeterminateTint="@color/purple_200"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/greeting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </FrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

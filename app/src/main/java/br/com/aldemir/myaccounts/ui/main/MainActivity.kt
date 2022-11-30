@@ -1,58 +1,94 @@
 package br.com.aldemir.myaccounts.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
-import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.databinding.MainActivityBinding
-import br.com.aldemir.myaccounts.util.getNavOptions
-import br.com.aldemir.myaccounts.util.navigateWithAnimations
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import br.com.aldemir.myaccounts.ui.SplashScreen
+import br.com.aldemir.myaccounts.ui.expense.AddAccountScreen
+import br.com.aldemir.myaccounts.ui.expensedetail.ExpenseDetailScreen
+import br.com.aldemir.myaccounts.ui.navigation.Route
+import br.com.aldemir.myaccounts.ui.theme.MyAccountsTheme
+import br.com.aldemir.myaccounts.util.Const.EXPENSE_ID
+import br.com.aldemir.myaccounts.util.Const.EXPENSE_NAME
+import br.com.aldemir.myaccounts.util.Const.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private const val TAG = "mainActivity"
-    }
-
-
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = MainActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-
-        binding.toolbarMain.setupWithNavController(navController, appBarConfiguration)
-
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.addAccount -> binding.toolbarMain.navigationIcon = null
-                R.id.historic -> binding.toolbarMain.navigationIcon = null
-                else -> { }
+        setContent {
+            MyAccountsTheme {
+                val navHostController = rememberNavController()
+                NavHost(
+                    navController = navHostController,
+                    startDestination = Route.Splash.route
+                ) {
+                    composable(route = Route.Splash.route) {
+                        SplashScreen(navigateToListScreen = {
+                            navHostController.navigate(Route.Home.route) {
+                                popUpTo(Route.Splash.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        )
+                    }
+                    composable(route = Route.Home.route) {
+                        HomeScreen(
+                            navigateToTaskScreen = { expenseId, expenseName ->
+                                navHostController.navigate(
+                                    Route.ExpenseDetail.createRoute(expenseId, expenseName)
+                                )
+                            },
+                            navigateToAddScreen = {
+                                navHostController.navigate(
+                                    Route.ExpenseAdd.route
+                                )
+                            }
+                        )
+                    }
+                    composable(route = Route.ExpenseAdd.route) {
+                        AddAccountScreen(
+                            navigateToHomeScreen = {
+                                navHostController.navigate(
+                                    Route.Home.route
+                                )
+                            }
+                        )
+                    }
+                    composable(route = Route.ExpenseDetail.route,
+                        arguments = listOf(
+                            navArgument(EXPENSE_ID) {
+                                type = NavType.IntType
+                            },
+                            navArgument(EXPENSE_NAME) {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) { backStackEntry ->
+                        val expenseId = backStackEntry.arguments?.getInt(EXPENSE_ID)
+                        val expenseName = backStackEntry.arguments?.getString(EXPENSE_NAME)
+                        ExpenseDetailScreen(
+                            expenseId = expenseId ?: 0,
+                            expenseName = expenseName ?: ""
+                        )
+                    }
+                }
             }
         }
-
 
     }
 }

@@ -1,9 +1,11 @@
 package br.com.aldemir.myaccounts.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
@@ -11,7 +13,11 @@ import br.com.aldemir.myaccounts.domain.usecase.DeleteExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensePerMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensesMonthUseCase
+import br.com.aldemir.myaccounts.util.Const.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,14 +28,12 @@ class MainViewModel @Inject constructor(
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
 ) : ViewModel() {
-    private val _expenses = MutableLiveData<List<Expense>>()
-    var expenses: LiveData<List<Expense>> = _expenses
 
-    private val _monthExpenses = MutableLiveData<List<MonthlyPayment>>()
-    val monthExpenses: LiveData<List<MonthlyPayment>> = _monthExpenses
+    private val _expenses = MutableStateFlow<List<Expense>>(emptyList())
+    var expenses: StateFlow<List<Expense>> = _expenses
 
-    private val _monthStatus = MutableLiveData<List<Boolean>>()
-    val monthStatus: LiveData<List<Boolean>> = _monthStatus
+    private val _monthExpenses = MutableStateFlow<List<MonthlyPayment>>(emptyList())
+    val monthExpenses: StateFlow<List<MonthlyPayment>> = _monthExpenses
 
     private val _idExpense = MutableLiveData(0)
     val idExpense: LiveData<Int> = _idExpense
@@ -46,7 +50,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
-        val expensePerMonth = getAllExpensePerMonthUseCase(month, year)!!
+        val expensePerMonth = getAllExpensePerMonthUseCase(month, year)
         convertToExpenses(expensePerMonth)
     }
 
@@ -61,12 +65,12 @@ class MainViewModel @Inject constructor(
             expense.name = item.name
             expense.description = item.description
             expense.due_date = item.due_date
+            expense.status = item.situation
 
             status.add(item.situation)
             expenses.add(expense)
 
         }
-        _monthStatus.value = status
-        _expenses.value = expenses
+        _expenses.value = expenses.toList()
     }
 }

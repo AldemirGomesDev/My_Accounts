@@ -19,4 +19,6 @@ data class Expense(
     var created_at: Date? = null,
     @ColumnInfo(name = "due_date")
     var due_date: Int = 0,
+    @ColumnInfo(name = "status")
+    var status: Boolean = false
 )

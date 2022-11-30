@@ -95,22 +95,22 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
     }
 
     private fun listenersViewModel() {
-        viewModel.monthlyPayment.observe(viewLifecycleOwner, { monthlyPayments ->
-            val pattern = """\d+""".toRegex()
-            if (monthlyPayments.isNotEmpty()) {
-                list = monthlyPayments.sortedWith(compareBy {
-                    pattern.find(it.month)?.value?.toInt() ?: 0
-                })
-                adapter.updateList(list)
-            }
-            binding.swipeRefreshDetail.isRefreshing = false
-        })
-
-        viewModel.id.observe(viewLifecycleOwner, {id ->
+//        viewModel.monthlyPayment.observe(viewLifecycleOwner) { monthlyPayments ->
+//            val pattern = """\d+""".toRegex()
+//            if (monthlyPayments.isNotEmpty()) {
+//                list = monthlyPayments.sortedWith(compareBy {
+//                    pattern.find(it.month)?.value?.toInt() ?: 0
+//                })
+//                adapter.updateList(list)
+//            }
+//            binding.swipeRefreshDetail.isRefreshing = false
+//        }
+//
+        viewModel.id.observe(viewLifecycleOwner) { id ->
             if (id > 0) {
                 adapter.notifyDataSetChanged()
             }
-        })
+        }
     }
     companion object {
         private const val TAG = "ExpenseDetailFragment"

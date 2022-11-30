@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">Minhas despesas</string>
     <string name="main_screen_title">Minhas despesas</string>
-    <string name="add_account">adicionar despesa</string>
+    <string name="add_account">Adicionar</string>
     <string name="add_account_screen_title">Adicionar despesa</string>
     <string name="add_revenue_screen_title">Adicionar receita</string>
     <string name="expense_detail_screen_title">Detalhes da despesa</string>
     <string name="expense_change_screen_title">Editar despesa</string>
     <string name="historic_screen_title">Histórico</string>
 
-    <string name="invalid_name">Mínimo 4 caracteres</string>
-    <string name="invalid_value">Digite um valor</string>
+    <string name="invalid_name">O nome deve conter no mínimo 4 caracteres</string>
+    <string name="invalid_value">O valor é obrigatório</string>
+    <string name="invalid_description">A descrição é obrigatória</string>
     <string name="label">Escolha o ano</string>
     <string name="label_month">Escolha o mês</string>
     <string name="settings">Settings</string>
@@ -17,4 +18,27 @@
     <string name="add_revenue">Receita</string>
     <string name="historic">Histórico</string>
     <string name="home">Home</string>
+
+    <string name="delete_icon">Delete Icon</string>
+    <string name="sad_face_icon">Sad Face Icon</string>
+    <string name="empty_content">Nenhuma despesa no mês.</string>
+    <string name="button_yes">Sim</string>
+    <string name="button_no">Não</string>
+    <string name="dialog_delete_title">Excluir dispesa</string>
+    <string name="dialog_delete_message">Deseja excluir esta despesa?</string>
+
+    <string name="expense_due_date">Vencimento: </string>
+    <string name="expense_pending">Pendente</string>
+    <string name="expense_paid_out">Pago</string>
+
+    <string name="to_do_logo">To-Do Logo</string>
+    <string name="total_month">Total no mês</string>
+
+
+    <string name="form_add_name">Nome</string>
+    <string name="form_add_description">Descrição</string>
+    <string name="form_add_value">Valor</string>
+    <string name="label_value">Valor:</string>
+    <string name="button_text_pay">Pagar</string>
+
 </resources>
