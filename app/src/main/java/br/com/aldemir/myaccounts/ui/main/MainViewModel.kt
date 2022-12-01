@@ -9,10 +9,7 @@ import androidx.paging.PagingData
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.domain.usecase.DeleteExpenseUseCase
-import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensePerMonthUseCase
-import br.com.aldemir.myaccounts.domain.usecase.GetAllExpenseUseCase
-import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensesMonthUseCase
+import br.com.aldemir.myaccounts.domain.usecase.*
 import br.com.aldemir.myaccounts.util.Const.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +23,8 @@ class MainViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpenseUseCase: GetAllExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
-    private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
+    private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
+    private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase
 ) : ViewModel() {
 
     private val _expenses = MutableStateFlow<List<Expense>>(emptyList())
@@ -39,7 +37,7 @@ class MainViewModel @Inject constructor(
     val idExpense: LiveData<Int> = _idExpense
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
-        _monthExpenses.value = getAllExpensesMonthUseCase(month, year)!!
+        _monthExpenses.value = getAllExpensesMonthUseCase(month, year)
     }
 
     fun delete(expense: Expense) = viewModelScope.launch {

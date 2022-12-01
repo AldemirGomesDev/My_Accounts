@@ -84,11 +84,11 @@ fun HomeScreenList(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
     val state = rememberLazyListState()
-    viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+    LaunchedEffect(true) {
+        viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+    }
 
     val expenses by viewModel.expenses.collectAsState()
-    Log.i("TAG_jetpackCompose", "Expenses: $expenses")
-
 
     LazyColumn(state = state) {
         items(
@@ -157,8 +157,9 @@ private fun HomeCard(
     viewModel: MainViewModel,
 ) {
 
-    viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
-
+    LaunchedEffect(true) {
+        viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+    }
     val stateList = remember { mutableStateListOf<MonthlyPayment>() }
 
     val expensesMonths by viewModel.monthExpenses.collectAsState()

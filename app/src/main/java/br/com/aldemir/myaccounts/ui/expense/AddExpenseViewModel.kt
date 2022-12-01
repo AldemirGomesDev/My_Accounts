@@ -1,5 +1,6 @@
 package br.com.aldemir.myaccounts.ui.expense
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -48,7 +49,7 @@ class AddExpenseViewModel @Inject constructor(
         val expense = Expense(name = name.value, description = description.value, created_at = DateUtils.getDate(), due_date = 10)
         val idExpense = addExpenseUseCase(expense)
         id.value = idExpense.toInt()
-        for (month in listOf("1 - JANEIRO", "10 - OUTUBRO", "11 - NOVEMBRO")){
+        for (month in listOf("1 - JANEIRO", "11 - NOVEMBRO", "12 - DEZEMBRO")){
             val monthlyPayment = MonthlyPayment(
                 id_expense = idExpense.toInt(),
                 year = "2022",
@@ -58,6 +59,7 @@ class AddExpenseViewModel @Inject constructor(
             )
             insertMonthlyPayment(monthlyPayment)
         }
+        Log.i(TAG, "addAccount - idExpense: $idExpense")
     }
 
     fun insertExpense(
@@ -87,6 +89,7 @@ class AddExpenseViewModel @Inject constructor(
 
     private fun insertMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
         val idMonthlyPayment = addMonthlyPaymentUseCase(monthlyPayment)
+        Log.i(TAG, "addAccount - idMonthlyPayment: $idMonthlyPayment")
     }
 
     val isSubmitEnabled: Flow<Boolean> = combine(_name, _value, _description, _year, _months) {
