@@ -127,9 +127,7 @@ class ExpenseDetailFragment : Fragment(), ExpenseDetailAdapter.ClickListener {
         val bundle = Bundle()
         bundle.putInt(Constants.ID_MONTHLY_PAYMENT.value, list[position].id)
         bundle.putString(Constants.NAME_EXPENSE.value, nameExpense)
-        val navOptions = findNavController().getNavOptions(R.id.expenseChange)
-        findNavController().navigateWithAnimations(
-            R.id.action_mainFragment_to_expenseChange, animation = navOptions, bundle = bundle)
+
     }
 
     private fun dialogUpdateExpense(monthlyPayment: MonthlyPayment){

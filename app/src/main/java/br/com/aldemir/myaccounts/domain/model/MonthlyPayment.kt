@@ -20,7 +20,7 @@ data class MonthlyPayment(
     @ColumnInfo(name = "month")
     var month: String = "",
     @ColumnInfo(name = "value")
-    var value: Double,
+    var value: Double = 0.0,
     @ColumnInfo(name = "situation")
     var situation: Boolean = false
 )

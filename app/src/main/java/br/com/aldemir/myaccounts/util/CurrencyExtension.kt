@@ -1,11 +1,5 @@
 package br.com.aldemir.myaccounts.util
 
-
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
@@ -24,4 +18,22 @@ fun Double.toCurrency(): String = DecimalFormat(CURRENCY_PATTERN)
 fun Float.toDecimal(): Float = roundToInt().toFloat() / 100
 
 fun emptyFloat(): Float = 0.0f
+
+fun maskCurrency(s: String?): String {
+
+    val stringValue = s.toString()
+
+    return if (stringValue != emptyString()) {
+
+        val doubleValue = stringValue.fromCurrency()
+
+        getFormattedValue(doubleValue)
+
+    } else emptyString()
+}
+
+private fun getFormattedValue(value: Double): String = if (value == 0.0) {
+    emptyString()
+} else value.toCurrency()
+
 
