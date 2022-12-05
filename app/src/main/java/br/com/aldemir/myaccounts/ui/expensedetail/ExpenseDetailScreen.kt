@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.ui.expensedetail
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,9 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -23,7 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.ui.theme.*
-import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.swapList
 import br.com.aldemir.myaccounts.util.toCurrency
@@ -36,6 +38,7 @@ import br.com.aldemir.myaccounts.util.updateList
 @Composable
 fun ExpenseDetailScreen(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
+    navigateToBackScreen: () -> Unit,
     viewModel: ExpenseDetailViewModel = hiltViewModel(),
     expenseId: Int = -1,
     expenseName: String = emptyString()
@@ -57,7 +60,18 @@ fun ExpenseDetailScreen(
                 title = {
                     Text(text = expenseName, color = White)
                 },
-                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor
+                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor,
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navigateToBackScreen() }
+                    ) {
+                        Icon(
+                            Icons.Filled.KeyboardArrowLeft,
+                            contentDescription = emptyString(),
+                            tint = Color.White
+                        )
+                    }
+                },
             )
         },
         content = { padding ->

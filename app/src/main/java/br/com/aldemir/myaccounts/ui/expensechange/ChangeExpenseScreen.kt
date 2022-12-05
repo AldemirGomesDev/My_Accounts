@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +43,7 @@ fun ChangeExpenseScreen(
 
     mMonthlyPayments.value = monthlyPayments
 
-    viewModel.value.value = viewModel.verifyValueFinishWithZero(mMonthlyPayments.value.value.toString())
+    viewModel.value.value = viewModel.getValueWithTwoDecimal(mMonthlyPayments.value.value.toString())
 
     LaunchedEffect(key1 = mIdMonthlyPayment) {
         if (mIdMonthlyPayment > 0) navigateToDetailScreen()
@@ -54,7 +56,18 @@ fun ChangeExpenseScreen(
                 title = {
                     Text(text = expenseName, color = White)
                 },
-                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor
+                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor,
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navigateToDetailScreen() }
+                    ) {
+                        Icon(
+                            Icons.Filled.KeyboardArrowLeft,
+                            contentDescription = emptyString(),
+                            tint = Color.White
+                        )
+                    }
+                },
             )
         },
         content = { padding ->

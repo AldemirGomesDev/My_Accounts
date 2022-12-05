@@ -95,7 +95,8 @@ class MainActivity : ComponentActivity() {
                                         expenseName ?: emptyString()
                                     )
                                 )
-                            }
+                            },
+                            navigateToBackScreen = { navHostController.navigateUp() }
                         )
                     }
                     composable(route = Route.ExpenseChange.route,
@@ -115,7 +116,7 @@ class MainActivity : ComponentActivity() {
                             expenseName = expenseName ?: emptyString(),
                             navigateToDetailScreen = {
                                 navHostController.navigateUp()
-                            }
+                            },
                         )
                     }
                 }
