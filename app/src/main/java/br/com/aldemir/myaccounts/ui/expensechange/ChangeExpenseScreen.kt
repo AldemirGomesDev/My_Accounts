@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.ui.expensechange
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -20,8 +19,6 @@ import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.ui.component.LoadingButton
 import br.com.aldemir.myaccounts.ui.theme.*
 import br.com.aldemir.myaccounts.util.*
-import br.com.aldemir.myaccounts.util.Const.TAG
-import kotlin.math.roundToInt
 
 @Composable
 fun ChangeExpenseScreen(
@@ -44,11 +41,7 @@ fun ChangeExpenseScreen(
 
     mMonthlyPayments.value = monthlyPayments
 
-    Log.i(TAG, "value: ${mMonthlyPayments.value.value.toString()}")
-//    val bd = BigDecimal(_monthlyPayments.value.value.toString().replace(".", ""))
-//    viewModel.value.value = bd.setScale(2, RoundingMode.FLOOR).toString()
-//    viewModel.value.value = mMonthlyPayments.value.value.roundToInt().toString()
-    viewModel.value.value = mMonthlyPayments.value.value.toString()
+    viewModel.value.value = viewModel.verifyValueFinishWithZero(mMonthlyPayments.value.value.toString())
 
     LaunchedEffect(key1 = mIdMonthlyPayment) {
         if (mIdMonthlyPayment > 0) navigateToDetailScreen()

@@ -1,5 +1,6 @@
 package br.com.aldemir.myaccounts.ui.expensechange
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
+import br.com.aldemir.myaccounts.util.pointString
+import br.com.aldemir.myaccounts.util.zeroString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,5 +41,21 @@ class ChangeExpenseViewModel @Inject constructor(
     fun updateMonthlyPayment() = viewModelScope.launch {
         _monthlyPayment.value.value = value.value.fromCurrency()
         _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_monthlyPayment.value)!!
+    }
+
+    fun verifyValueFinishWithZero(value: String): String {
+        val newValue = if (verifyTwoCharactersAfterPoint(value)) {
+            "$value${zeroString()}"
+        } else removePointString(value)
+        return removePointString(newValue)
+    }
+
+    private fun removePointString(value: String): String {
+        return value.replace(pointString(), emptyString())
+    }
+
+    private fun verifyTwoCharactersAfterPoint(value: String): Boolean {
+        val string = value.split(pointString())
+        return string[1].length == 1
     }
 }

@@ -6,7 +6,7 @@ fun emptyString(): String = ""
 
 fun pointString(): String = "."
 
-fun zeroMoneyString(): String = "R$ 0,00"
+fun zeroString(): String = "0"
 
 fun <T> SnapshotStateList<T>.swapList(newList: List<T>){
     clear()

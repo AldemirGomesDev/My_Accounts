@@ -12,7 +12,10 @@ import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.DateUtils
+import br.com.aldemir.myaccounts.util.fromCurrency
+import br.com.aldemir.myaccounts.util.toDecimal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,10 +29,6 @@ class AddExpenseViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {
-
-    companion object {
-        private const val TAG = "AddExpenseFragment"
-    }
 
     private val _addAccountFormState = MutableLiveData<AddExpenseFormState>()
     val addExpenseFormState: LiveData<AddExpenseFormState> = _addAccountFormState
@@ -54,12 +53,11 @@ class AddExpenseViewModel @Inject constructor(
                 id_expense = idExpense.toInt(),
                 year = "2022",
                 month = month,
-                value = value.value.toDouble(),
+                value = value.value.fromCurrency(),
                 situation = false
             )
             insertMonthlyPayment(monthlyPayment)
         }
-        Log.i(TAG, "addAccount - idExpense: $idExpense")
     }
 
     fun insertExpense(

@@ -1,7 +1,5 @@
 package br.com.aldemir.myaccounts.util
 
-import android.util.Log
-import br.com.aldemir.myaccounts.ui.expense.AddExpenseFragment
 import java.text.SimpleDateFormat
 import java.util.*
 

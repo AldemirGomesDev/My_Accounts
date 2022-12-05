@@ -112,8 +112,7 @@ private fun ExpenseDetailList(
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onLongPress = {
-                                navigateToChangeScreen(monthlyPayment.id)
-                                    Log.i(TAG, "ExpenseDetailList: onLongPress")
+                                    navigateToChangeScreen(monthlyPayment.id)
                                 },
                             )
                         },

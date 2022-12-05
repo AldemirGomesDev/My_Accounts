@@ -21,8 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.ui.component.LoadingButton
 import br.com.aldemir.myaccounts.ui.main.component.LoadingAnimation
 import br.com.aldemir.myaccounts.ui.theme.*
+import br.com.aldemir.myaccounts.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.myaccounts.util.emptyString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -97,6 +99,12 @@ private fun AddAccountContent(
 
     val isLoading = remember { mutableStateOf(false) }
 
+    var enabled by remember {
+        mutableStateOf(false)
+    }
+
+    enabled = (value.isNotEmpty() && description.isNotEmpty() && title.isNotEmpty() && !isLoading.value)
+
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = title,
@@ -128,6 +136,7 @@ private fun AddAccountContent(
         textStyle = MaterialTheme.typography.body1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        visualTransformation = MaskCurrencyVisualTransformation(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
             unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
@@ -167,7 +176,7 @@ private fun AddAccountContent(
         modifier = Modifier.height(LARGEST_PADDING),
         color = MaterialTheme.colors.background
     )
-    Button(
+    LoadingButton(
         onClick = {
             isLoading.value = true
             onClickSave()
@@ -175,15 +184,9 @@ private fun AddAccountContent(
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp),
+        loading = isLoading.value,
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
-        contentPadding = PaddingValues(
-            start = LARGEST_PADDING,
-            top = MEDIUM_PADDING,
-            end = LARGEST_PADDING,
-            bottom = MEDIUM_PADDING
-        ),
-        shape = Shapes.large,
-        enabled = (value.isNotEmpty() && description.isNotEmpty() && title.isNotEmpty() || isLoading.value)
     ) {
         Text(
             color = Color.White,
@@ -191,5 +194,4 @@ private fun AddAccountContent(
             fontSize = FONT_SIZE_16,
         )
     }
-    if (isLoading.value) LoadingAnimation()
 }
