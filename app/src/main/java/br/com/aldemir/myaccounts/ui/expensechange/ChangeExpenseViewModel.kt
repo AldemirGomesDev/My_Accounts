@@ -42,9 +42,8 @@ class ChangeExpenseViewModel @Inject constructor(
     }
 
     fun getValueWithTwoDecimal(value: String): String {
-        val newValue = if (verifyTwoCharactersAfterPoint(value)) {
-            "$value${zeroString()}"
-        } else removePointString(value)
+        val newValue = if (verifyTwoCharactersAfterPoint(value)) "$value${zeroString()}"
+        else removePointString(value)
         return removePointString(newValue)
     }
 

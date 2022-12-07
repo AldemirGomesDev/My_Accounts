@@ -344,6 +344,6 @@ private fun deleteExpense(viewModel: MainViewModel, expense: Expense) {
     CoroutineScope(Dispatchers.Default).launch {
         delay(300)
         viewModel.delete(expense)
-        viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
     }
 }

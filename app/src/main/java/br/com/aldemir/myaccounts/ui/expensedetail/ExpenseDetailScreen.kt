@@ -66,7 +66,7 @@ fun ExpenseDetailScreen(
                         onClick = { navigateToBackScreen() }
                     ) {
                         Icon(
-                            Icons.Filled.KeyboardArrowLeft,
+                            Icons.Filled.ArrowBack,
                             contentDescription = emptyString(),
                             tint = Color.White
                         )
@@ -111,84 +111,101 @@ private fun ExpenseDetailList(
         itemsIndexed(
             items = monthlyPayments,
         ) { index, monthlyPayment ->
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                color = MaterialTheme.colors.taskItemBackgroundColor,
-                shape = RectangleShape,
-                elevation = TASK_ITEM_ELEVATION,
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(all = LARGE_PADDING)
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.background)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onLongPress = {
-                                    navigateToChangeScreen(monthlyPayment.id)
-                                },
-                            )
+            ExpenseDetailContent(
+                navigateToChangeScreen = navigateToChangeScreen,
+                monthlyPayment = monthlyPayment,
+                onClickUpdate = onClickUpdate,
+                viewModel = viewModel,
+                index = index
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExpenseDetailContent(
+    navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
+    monthlyPayment: MonthlyPayment,
+    onClickUpdate: (Int, MonthlyPayment) -> Unit,
+    viewModel: ExpenseDetailViewModel,
+    index: Int,
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+        color = MaterialTheme.colors.taskItemBackgroundColor,
+        shape = RectangleShape,
+        elevation = TASK_ITEM_ELEVATION,
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(all = LARGE_PADDING)
+                .fillMaxWidth()
+                .background(MaterialTheme.colors.background)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = {
+                            navigateToChangeScreen(monthlyPayment.id)
                         },
-                ) {
-                    Text(
-                        text = monthlyPayment.month,
-                        color = MaterialTheme.colors.taskItemTextColor,
-                        style = MaterialTheme.typography.h6,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
+                },
+        ) {
+            Text(
+                text = monthlyPayment.month,
+                color = MaterialTheme.colors.taskItemTextColor,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(
+                    text = stringResource(id = R.string.label_value),
+                    color = MaterialTheme.colors.taskItemTextColor,
+                    style = MaterialTheme.typography.subtitle1,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier.padding(start = SMALL_PADDING),
+                    text = monthlyPayment.value.toCurrency(),
+                    color = MaterialTheme.colors.taskItemTextColor,
+                    style = MaterialTheme.typography.subtitle1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier.padding(start = SMALL_PADDING),
+                    text = " - ",
+                    color = MaterialTheme.colors.taskItemTextColor,
+                    style = MaterialTheme.typography.subtitle1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier.padding(start = SMALL_PADDING),
+                    text = viewModel.checkPaidOut(monthlyPayment.situation),
+                    color = if (monthlyPayment.situation) LowPriorityColor else MediumPriorityColor,
+                    style = MaterialTheme.typography.subtitle1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                if (!monthlyPayment.situation) {
+                    OutlinedButton(
+                        onClick = { onClickUpdate(index, monthlyPayment) }
                     ) {
                         Text(
-                            text = stringResource(id = R.string.label_value),
+                            text = stringResource(id = R.string.button_text_pay),
                             color = MaterialTheme.colors.taskItemTextColor,
-                            style = MaterialTheme.typography.subtitle1,
+                            style = MaterialTheme.typography.button,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            textAlign = TextAlign.Center
                         )
-                        Text(
-                            modifier = Modifier.padding(start = SMALL_PADDING),
-                            text = monthlyPayment.value.toCurrency(),
-                            color = MaterialTheme.colors.taskItemTextColor,
-                            style = MaterialTheme.typography.subtitle1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            modifier = Modifier.padding(start = SMALL_PADDING),
-                            text = " - ",
-                            color = MaterialTheme.colors.taskItemTextColor,
-                            style = MaterialTheme.typography.subtitle1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            modifier = Modifier.padding(start = SMALL_PADDING),
-                            text = viewModel.checkPaidOut(monthlyPayment.situation),
-                            color = if (monthlyPayment.situation) LowPriorityColor else MediumPriorityColor,
-                            style = MaterialTheme.typography.subtitle1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        if (!monthlyPayment.situation) {
-                            OutlinedButton(
-                                onClick = { onClickUpdate(index, monthlyPayment) }
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.button_text_pay),
-                                    color = MaterialTheme.colors.taskItemTextColor,
-                                    style = MaterialTheme.typography.button,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
                     }
                 }
             }

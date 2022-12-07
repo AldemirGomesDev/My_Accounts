@@ -62,7 +62,7 @@ fun ChangeExpenseScreen(
                         onClick = { navigateToDetailScreen() }
                     ) {
                         Icon(
-                            Icons.Filled.KeyboardArrowLeft,
+                            Icons.Filled.ArrowBack,
                             contentDescription = emptyString(),
                             tint = Color.White
                         )
