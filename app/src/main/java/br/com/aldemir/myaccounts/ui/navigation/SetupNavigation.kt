@@ -1,32 +1,33 @@
 package br.com.aldemir.myaccounts.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.ui.navigation.destinations.homeComposable
-import br.com.aldemir.myaccounts.ui.navigation.destinations.splashComposable
-import br.com.aldemir.myaccounts.util.Const.SPLASH_SCREEN
+import br.com.aldemir.myaccounts.ui.navigation.destinations.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun SetupNavigation(
-    navController: NavHostController
+    navHostController: NavHostController
 )
 {
-    val screen = remember(navController) {
-        Screens(navController = navController)
-    }
-
-
     AnimatedNavHost(
-        navController = navController,
-        startDestination = SPLASH_SCREEN
+        navController = navHostController,
+        startDestination = Route.Splash.route
     ) {
-        splashComposable(navigateToListScreen = screen.splash)
-        homeComposable(navigateToListScreen = screen.home)
+        splashComposable(navHostController)
+
+        homeComposable(navHostController)
+
+        addAccountComposable(navHostController)
+
+        detailExpenseComposable(navHostController)
+
+        changeExpenseComposable(navHostController)
     }
 }
