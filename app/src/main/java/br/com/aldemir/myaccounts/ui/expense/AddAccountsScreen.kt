@@ -9,9 +9,13 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.ui.component.LoadingButton
@@ -26,6 +30,8 @@ fun AddAccountScreen(
     navigateToHomeScreen: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
+
+    val focusManager = LocalFocusManager.current
 
     val id: Int by viewModel.id
     val name: String by viewModel.name
@@ -66,6 +72,7 @@ fun AddAccountScreen(
                     },
                     onClickSave = {
                         viewModel.addAccount()
+                        focusManager.clearFocus()
                     }
                 )
             }
@@ -181,4 +188,10 @@ private fun AddAccountContent(
             fontSize = FONT_SIZE_16,
         )
     }
+}
+
+@Composable
+fun keyboardAsState(): State<Boolean> {
+    val isImeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+    return rememberUpdatedState(isImeVisible)
 }

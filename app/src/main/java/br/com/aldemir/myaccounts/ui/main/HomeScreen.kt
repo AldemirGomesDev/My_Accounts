@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.ui.main.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.ui.main.component.RedBackground
 import br.com.aldemir.myaccounts.ui.main.component.TaskItem
 import br.com.aldemir.myaccounts.ui.theme.*
@@ -90,6 +91,10 @@ fun HomeScreenList(
 
     val expenses by viewModel.expenses.collectAsState()
 
+    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+
+    viewModel.onOpenDialogClicked()
+
     LazyColumn(state = state) {
         items(
             items = expenses,
@@ -100,9 +105,28 @@ fun HomeScreenList(
             val dismissState = rememberDismissState()
             val dismissDirection = dismissState.dismissDirection
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+            val progress = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
 
+            Log.w(TAG, "HomeScreenList progress: ${progress.compareTo(1.0)}" )
+            if (progress.compareTo(0.9) == -1) {
+                Log.w(TAG, "HomeScreenList: ${dismissState.currentValue}" )
+                viewModel.onOpenDialogClicked()
+            }
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-                deleteExpense(viewModel, account)
+
+                DisplayAlertDialog(
+                    title = "Aviso",
+                    message = "Deseja realmente excluir?",
+                    openDialog = showDialogState,
+                    closeDialog = {
+                        viewModel.onDialogDismiss()
+                        getAllExpenseMonth(viewModel)
+                    },
+                    onYesClicked = {
+                        viewModel.onDialogConfirm()
+                        deleteExpense(viewModel, account)
+                    }
+                )
             }
 
             val degrees by animateFloatAsState(
@@ -344,6 +368,9 @@ private fun deleteExpense(viewModel: MainViewModel, expense: Expense) {
     CoroutineScope(Dispatchers.Default).launch {
         delay(300)
         viewModel.delete(expense)
-        viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
     }
+}
+
+private fun getAllExpenseMonth(viewModel: MainViewModel) {
+    viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
 }

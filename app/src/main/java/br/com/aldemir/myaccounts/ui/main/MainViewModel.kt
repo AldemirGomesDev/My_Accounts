@@ -11,10 +11,12 @@ import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
 import br.com.aldemir.myaccounts.util.Const.TAG
+import br.com.aldemir.myaccounts.util.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,8 +35,23 @@ class MainViewModel @Inject constructor(
     private val _monthExpenses = MutableStateFlow<List<MonthlyPayment>>(emptyList())
     val monthExpenses: StateFlow<List<MonthlyPayment>> = _monthExpenses
 
-    private val _idExpense = MutableLiveData(0)
-    val idExpense: LiveData<Int> = _idExpense
+    private val _idExpense = MutableStateFlow(0)
+    val idExpense: StateFlow<Int> = _idExpense
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
+    }
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
         _monthExpenses.value = getAllExpensesMonthUseCase(month, year)
@@ -42,6 +59,10 @@ class MainViewModel @Inject constructor(
 
     fun delete(expense: Expense) = viewModelScope.launch {
         _idExpense.value = deleteExpenseUseCase(expense)
+        if (_idExpense.value > 0) {
+            getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+            setId(0)
+        }
     }
     fun setId(id: Int) {
       _idExpense.value = id

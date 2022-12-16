@@ -85,14 +85,14 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun listenersViewModel() {
-        viewModel.idExpense.observe( viewLifecycleOwner) { id ->
-            if (id > 0) {
-                Toast.makeText(mContext, "Item excluído com sucesso!", Toast.LENGTH_SHORT).show()
-                viewModel.setId(0)
-                getAllMonthExpenses()
-                getAllExpensesPerMonth()
-            }
-        }
+//        viewModel.idExpense.observe( viewLifecycleOwner) { id ->
+//            if (id > 0) {
+//                Toast.makeText(mContext, "Item excluído com sucesso!", Toast.LENGTH_SHORT).show()
+//                viewModel.setId(0)
+//                getAllMonthExpenses()
+//                getAllExpensesPerMonth()
+//            }
+//        }
 
 //        viewModel.monthExpenses.observe(viewLifecycleOwner) { expensesMonths ->
 //            _valueTotal = 0.0

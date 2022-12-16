@@ -4,6 +4,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
 
 @Composable
@@ -53,4 +54,16 @@ fun DisplayAlertDialog(
         )
     }
 
+}
+
+@Preview
+@Composable
+private fun DisplayAlertDialogPreview() {
+    DisplayAlertDialog(
+        "Aviso",
+        "Deseja realmente excluir?",
+        true,
+        {},
+        {}
+    )
 }
