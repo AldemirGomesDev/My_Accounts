@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
+    tools:context=".presentation.main.MainFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -17,7 +17,7 @@
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="8dp"
-        tools:context=".ui.main.MainFragment">
+        tools:context=".presentation.main.MainFragment">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_header"

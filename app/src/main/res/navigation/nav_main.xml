@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="br.com.aldemir.myaccounts.ui.main.MainFragment"
+        android:name="br.com.aldemir.myaccounts.presentation.main.MainFragment"
         android:label="@string/main_screen_title"
         tools:layout="@layout/main_fragment"
         >
@@ -31,13 +31,13 @@
 
     <fragment
         android:id="@+id/addAccount"
-        android:name="br.com.aldemir.myaccounts.ui.expense.AddExpenseFragment"
+        android:name="br.com.aldemir.myaccounts.presentation.expense.AddExpenseFragment"
         android:label="@string/add_account_screen_title"
         tools:layout="@layout/add_account_fragment" />
 
     <fragment
         android:id="@+id/expenseDetail"
-        android:name="br.com.aldemir.myaccounts.ui.expensedetail.ExpenseDetailFragment"
+        android:name="br.com.aldemir.myaccounts.presentation.expensedetail.ExpenseDetailFragment"
         android:label="@string/expense_detail_screen_title"
         tools:layout="@layout/fragment_expense_detail">
 
@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/historic"
-        android:name="br.com.aldemir.myaccounts.ui.historic.HistoricFragment"
+        android:name="br.com.aldemir.myaccounts.presentation.historic.HistoricFragment"
         android:label="@string/historic_screen_title"
         tools:layout="@layout/historic_fragment" />
 

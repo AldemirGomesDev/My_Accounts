@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.expensedetail.ExpenseDetailFragment"
+    tools:context=".presentation.expensedetail.ExpenseDetailFragment"
     android:id="@+id/swipe_refresh_detail">
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
     android:background="@color/white"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context=".ui.expensedetail.ExpenseDetailFragment">
+    tools:context=".presentation.expensedetail.ExpenseDetailFragment">
 
     <TextView
         android:id="@+id/tv_title_expense"

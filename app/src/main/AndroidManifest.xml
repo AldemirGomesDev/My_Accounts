@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:name=".MyApplication"
         android:theme="@style/Theme.MyAccounts">
-        <activity android:name=".ui.main.MainActivity"
+        <activity android:name=".presentation.main.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
