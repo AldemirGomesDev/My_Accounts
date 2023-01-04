@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -50,25 +49,6 @@ fun ChangeExpenseScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = expenseName, color = White)
-                },
-                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor,
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navigateToDetailScreen() }
-                    ) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = emptyString(),
-                            tint = Color.White
-                        )
-                    }
-                },
-            )
-        },
         content = { padding ->
             ChangeExpenseContent(
                 month = mMonthlyPayments.value.month,

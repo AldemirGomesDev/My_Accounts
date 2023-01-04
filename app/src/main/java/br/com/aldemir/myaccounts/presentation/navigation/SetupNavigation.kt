@@ -13,12 +13,13 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 @ExperimentalMaterialApi
 @Composable
 fun SetupNavigation(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    startDestination: String
 )
 {
     AnimatedNavHost(
         navController = navHostController,
-        startDestination = Route.Splash.route
+        startDestination = startDestination
     ) {
         splashComposable(navHostController)
 

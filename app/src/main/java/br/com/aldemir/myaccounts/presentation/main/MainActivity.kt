@@ -6,9 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
+import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
 import br.com.aldemir.myaccounts.presentation.theme.MyAccountsTheme
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalFoundationApi
@@ -22,10 +21,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyAccountsTheme {
-                val navHostController = rememberAnimatedNavController()
-                SetupNavigation(navHostController = navHostController)
+                DrawerNavigationScreen()
             }
         }
-
     }
 }

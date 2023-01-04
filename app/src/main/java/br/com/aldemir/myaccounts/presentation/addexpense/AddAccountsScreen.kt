@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expense
+package br.com.aldemir.myaccounts.presentation.addexpense
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -44,27 +44,22 @@ fun AddAccountScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.add_account_screen_title), color = White)
-                },
-                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor
-            )
-        },
         content = { padding ->
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(padding)
-                .padding(16.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(padding)
+                    .padding(16.dp)
+            ) {
                 AddAccountContent(
+                    viewModel = viewModel,
                     title = name,
                     onTitleChange = {
                         viewModel.name.value = it
                     },
                     value = value,
                     onValueChange = {
-                      viewModel.value.value = it
+                        viewModel.value.value = it
                     },
                     description = description,
                     onDescriptionChange = {
@@ -82,6 +77,7 @@ fun AddAccountScreen(
 
 @Composable
 private fun AddAccountContent(
+    viewModel: AddExpenseViewModel,
     title: String,
     onTitleChange: (String) -> Unit,
     value: String,
@@ -97,12 +93,15 @@ private fun AddAccountContent(
         mutableStateOf(false)
     }
 
-    enabled = (value.isNotEmpty() && description.isNotEmpty() && title.isNotEmpty() && !isLoading.value)
+    enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
 
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = title,
-        onValueChange = { onTitleChange(it) },
+        onValueChange = {
+            onTitleChange(it)
+            viewModel.validateName()
+        },
         label = { Text(text = stringResource(R.string.form_add_name)) },
         textStyle = MaterialTheme.typography.body1,
         singleLine = true,
@@ -114,10 +113,15 @@ private fun AddAccountContent(
             textColor = MaterialTheme.colors.addAccountBorderColor,
             disabledTextColor = MaterialTheme.colors.addAccountBorderColor
         ),
-        isError = title.length < 4,
-        trailingIcon = { if (title.length < 4) Icon(imageVector = Icons.Filled.Info, contentDescription = "") },
+        isError = viewModel.isNameValid.value,
+        trailingIcon = {
+            if (viewModel.isNameValid.value) Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = ""
+            )
+        },
     )
-    if (title.length < 4) Text(text = stringResource(id = R.string.invalid_name), color = Purple700, fontSize = FONT_SIZE_12)
+    Text(text = viewModel.nameError.value, color = Purple700, fontSize = FONT_SIZE_12)
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
@@ -125,7 +129,10 @@ private fun AddAccountContent(
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
-        onValueChange = { onValueChange(it) },
+        onValueChange = {
+            onValueChange(it)
+            viewModel.validateValue()
+                        },
         label = { Text(text = stringResource(R.string.form_add_value)) },
         textStyle = MaterialTheme.typography.body1,
         singleLine = true,
@@ -139,10 +146,19 @@ private fun AddAccountContent(
             textColor = MaterialTheme.colors.addAccountBorderColor,
             disabledTextColor = MaterialTheme.colors.addAccountBorderColor
         ),
-        isError = value.isEmpty(),
-        trailingIcon = { if (value.isEmpty()) Icon(imageVector = Icons.Filled.Info, contentDescription = "") },
+        isError = viewModel.isValueValid.value,
+        trailingIcon = {
+            if (viewModel.isValueValid.value) Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = ""
+            )
+        },
     )
-    if (value.isEmpty()) Text(text = stringResource(id = R.string.invalid_value), color = Purple700, fontSize = FONT_SIZE_12)
+    Text(
+        text = viewModel.valueError.value,
+        color = Purple700,
+        fontSize = FONT_SIZE_12
+    )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
@@ -150,7 +166,10 @@ private fun AddAccountContent(
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = description,
-        onValueChange = { onDescriptionChange(it) },
+        onValueChange = {
+            onDescriptionChange(it)
+                        viewModel.validateDescription()
+                        },
         label = { Text(text = stringResource(R.string.form_add_description)) },
         textStyle = MaterialTheme.typography.body1,
         singleLine = true,
@@ -162,10 +181,19 @@ private fun AddAccountContent(
             textColor = MaterialTheme.colors.addAccountBorderColor,
             disabledTextColor = MaterialTheme.colors.addAccountBorderColor
         ),
-        isError = description.isEmpty(),
-        trailingIcon = { if (description.isEmpty()) Icon(imageVector = Icons.Filled.Info, contentDescription = "") },
+        isError = viewModel.isDescriptionValid.value,
+        trailingIcon = {
+            if (viewModel.isDescriptionValid.value) Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = ""
+            )
+        },
     )
-    if (description.isEmpty()) Text(text = stringResource(id = R.string.invalid_description), color = Purple700, fontSize = FONT_SIZE_12)
+    Text(
+        text = viewModel.descriptionError.value,
+        color = Purple700,
+        fontSize = FONT_SIZE_12
+    )
     Divider(
         modifier = Modifier.height(LARGEST_PADDING),
         color = MaterialTheme.colors.background

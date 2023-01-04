@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expense
+package br.com.aldemir.myaccounts.presentation.addexpense
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -14,11 +14,10 @@ import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.DateUtils
+import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -33,13 +32,21 @@ class AddExpenseViewModel @Inject constructor(
     val addExpenseFormState: LiveData<AddExpenseFormState> = _addAccountFormState
 
     val id: MutableState<Int> = mutableStateOf(0)
-    val name: MutableState<String> = mutableStateOf("")
-    val value: MutableState<String> = mutableStateOf("")
-    val description: MutableState<String> = mutableStateOf("")
 
-    private val _name = MutableStateFlow("")
-    private val _value = MutableStateFlow(0.0)
-    private val _description = MutableStateFlow("")
+    val name: MutableState<String> = mutableStateOf(emptyString())
+    val isNameValid: MutableState<Boolean> = mutableStateOf(false)
+    val nameError: MutableState<String> = mutableStateOf(emptyString())
+
+    val value: MutableState<String> = mutableStateOf(emptyString())
+    val isValueValid: MutableState<Boolean> = mutableStateOf(false)
+    val valueError: MutableState<String> = mutableStateOf(emptyString())
+
+    val description: MutableState<String> = mutableStateOf(emptyString())
+    val isDescriptionValid: MutableState<Boolean> = mutableStateOf(false)
+    val descriptionError: MutableState<String> = mutableStateOf(emptyString())
+
+    var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
+
     private val _year = MutableStateFlow("")
     private val _months = MutableStateFlow(false)
 
@@ -50,7 +57,7 @@ class AddExpenseViewModel @Inject constructor(
         for (month in listOf("1 - JANEIRO", "11 - NOVEMBRO", "12 - DEZEMBRO")){
             val monthlyPayment = MonthlyPayment(
                 id_expense = idExpense.toInt(),
-                year = "2022",
+                year = "2023",
                 month = month,
                 value = value.value.fromCurrency(),
                 situation = false
@@ -89,25 +96,43 @@ class AddExpenseViewModel @Inject constructor(
         Log.i(TAG, "addAccount - idMonthlyPayment: $idMonthlyPayment")
     }
 
-    val isSubmitEnabled: Flow<Boolean> = combine(_name, _value, _description, _year, _months) {
-            name, value, description, year, months ->
-        val isNameCorrect = isNameValid(name)
-        val isValueCorrect = isValueValid(value)
-        val isDescriptionCorrect = isDescriptionValid(description)
-        val isYear = isYearValid(year)
-        return@combine isNameCorrect and isValueCorrect and isDescriptionCorrect and isYear and months
+    private fun shouldEnabledRegisterButton() {
+        isEnabledRegisterButton.value = nameError.value.isEmpty()
+                && valueError.value.isEmpty()
+                && descriptionError.value.isEmpty()
     }
 
-    private fun isNameValid(name: String): Boolean {
-        return name.length > 3
+    fun validateName() {
+        if (name.value.length < 4) {
+            isNameValid.value = true
+            nameError.value = "O nome deve conter no mínimo 4 caracteres"
+        } else {
+            isNameValid.value = false
+            nameError.value = emptyString()
+        }
+        shouldEnabledRegisterButton()
     }
 
-    private fun isValueValid(value: Double): Boolean {
-        return value != 0.0
+    fun validateValue() {
+        if (value.value.isEmpty()) {
+            isValueValid.value = true
+            valueError.value = "O valor é obrigatório"
+        } else {
+            isValueValid.value = false
+            valueError.value = emptyString()
+        }
+        shouldEnabledRegisterButton()
     }
 
-    private fun isDescriptionValid(description: String): Boolean {
-        return description.length > 3
+    fun validateDescription() {
+        if (description.value.isEmpty()) {
+            isDescriptionValid.value = true
+            descriptionError.value = "a descrição é obrigatória"
+        } else {
+            isDescriptionValid.value = false
+            descriptionError.value = emptyString()
+        }
+        shouldEnabledRegisterButton()
     }
 
     private fun isYearValid(year: String): Boolean {
@@ -116,33 +141,6 @@ class AddExpenseViewModel @Inject constructor(
 
     private fun isMonthsValid(months: List<String>): Boolean {
         return months.isNotEmpty()
-    }
-
-    fun setName(name: String) {
-        _name.value = name
-        if (!isNameValid(name)) {
-            _addAccountFormState.value = AddExpenseFormState(nameError  = R.string.invalid_name)
-        } else {
-            _addAccountFormState.value = AddExpenseFormState(nameError = null)
-        }
-    }
-
-    fun setValue(value: Double) {
-        _value.value = value
-        if (!isValueValid(value)) {
-            _addAccountFormState.value = AddExpenseFormState(valueError = R.string.invalid_value)
-        } else {
-            _addAccountFormState.value = AddExpenseFormState(valueError = null)
-        }
-    }
-
-    fun setDescription(description: String) {
-        _description.value = description
-        if (!isDescriptionValid(description)) {
-            _addAccountFormState.value = AddExpenseFormState(descriptionError = R.string.invalid_name)
-        } else {
-            _addAccountFormState.value = AddExpenseFormState(descriptionError = null)
-        }
     }
 
     fun setYear(year: String) {

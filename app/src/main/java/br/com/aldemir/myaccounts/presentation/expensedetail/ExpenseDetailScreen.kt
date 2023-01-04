@@ -9,12 +9,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -54,25 +51,6 @@ fun ExpenseDetailScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = expenseName, color = White)
-                },
-                backgroundColor = MaterialTheme.colors.topAppBarBackGroundColor,
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navigateToBackScreen() }
-                    ) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = emptyString(),
-                            tint = Color.White
-                        )
-                    }
-                },
-            )
-        },
         content = { padding ->
             Column(modifier = Modifier.padding(padding)) {
                 ExpenseDetailList(

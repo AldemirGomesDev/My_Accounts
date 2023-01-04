@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expense
+package br.com.aldemir.myaccounts.presentation.addexpense
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
@@ -13,13 +13,11 @@ import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.databinding.AddAccountFragmentBinding
 import br.com.aldemir.myaccounts.util.CurrencyTextWatcher
 import br.com.aldemir.myaccounts.util.fromCurrency
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.animation.Animation
@@ -131,17 +129,17 @@ class AddExpenseFragment : Fragment() {
             addTextChangedListener(CurrencyTextWatcher(this))
         }
 
-        binding.edtName.addTextChangedListener {
-            viewModel.setName(it.toString())
-        }
-        binding.edtValue.addTextChangedListener {
-            if (it.toString() != "") {
-                viewModel.setValue(it.toString().fromCurrency())
-            }
-        }
-        binding.edtDescription.addTextChangedListener {
-            viewModel.setDescription(it.toString())
-        }
+//        binding.edtName.addTextChangedListener {
+//            viewModel.setName(it.toString())
+//        }
+//        binding.edtValue.addTextChangedListener {
+//            if (it.toString() != "") {
+//                viewModel.setValue(it.toString().fromCurrency())
+//            }
+//        }
+//        binding.edtDescription.addTextChangedListener {
+//            viewModel.setDescription(it.toString())
+//        }
         binding.dropMenuYear.addTextChangedListener {
             viewModel.setYear(it.toString())
         }
@@ -278,11 +276,11 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun collectFlow() {
-        lifecycleScope.launch {
-            viewModel.isSubmitEnabled.collect { value ->
-                isEnabled(value)
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.isSubmitEnabled.collect { value ->
+//                isEnabled(value)
+//            }
+//        }
     }
 
     private fun isEnabled(enabled: Boolean) {

@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expense
+package br.com.aldemir.myaccounts.presentation.addexpense
 
 data class AddExpenseFormState(
     val nameError: Int? = null,
