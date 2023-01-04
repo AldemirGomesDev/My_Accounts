@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
@@ -27,20 +26,21 @@ fun NavGraphBuilder.detailExpenseComposable(
         route = Route.ExpenseDetail.route,
         enterTransition = {
             slideInHorizontally(
-                initialOffsetX = { fullWidth -> -fullWidth },
-                animationSpec = tween(
-                    durationMillis = 1000
-                )
+                initialOffsetX = { 1000 },
+                animationSpec = tween(500)
             )
-        },
-        popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1500 }, animationSpec = tween(1500))
         },
         exitTransition = {
-            slideOutVertically(
-                targetOffsetY = { fullHeight -> -fullHeight },
-                animationSpec = tween(durationMillis = 1000)
+            slideOutHorizontally(
+                targetOffsetX = { -1000 },
+                animationSpec = tween(500)
             )
+        },
+        popEnterTransition = {
+            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+        },
+        popExitTransition = {
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
         },
         arguments = listOf(
             navArgument(Const.EXPENSE_ID) {
@@ -55,7 +55,7 @@ fun NavGraphBuilder.detailExpenseComposable(
         val expenseName = backStackEntry.arguments?.getString(Const.EXPENSE_NAME)
         ExpenseDetailScreen(
             expenseId = expenseId ?: 0,
-            expenseName = expenseName ?: "",
+            expenseName = expenseName ?: emptyString(),
             navigateToChangeScreen = { idMonthlyPayment ->
                 navHostController.navigate(
                     Route.ExpenseChange.createRoute(

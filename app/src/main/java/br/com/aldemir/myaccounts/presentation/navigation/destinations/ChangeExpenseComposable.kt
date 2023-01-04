@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
@@ -26,21 +25,16 @@ fun NavGraphBuilder.changeExpenseComposable(
     composable(
         route = Route.ExpenseChange.route,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { fullWidth -> -fullWidth },
-                animationSpec = tween(
-                    durationMillis = 1000
-                )
-            )
-        },
-        popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1500 }, animationSpec = tween(1500))
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(500))
         },
         exitTransition = {
-            slideOutVertically(
-                targetOffsetY = { fullHeight -> -fullHeight },
-                animationSpec = tween(durationMillis = 1000)
-            )
+            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(500))
+        },
+        popEnterTransition = {
+            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+        },
+        popExitTransition = {
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
         },
         arguments = listOf(
             navArgument(Const.EXPENSE_ID) {
