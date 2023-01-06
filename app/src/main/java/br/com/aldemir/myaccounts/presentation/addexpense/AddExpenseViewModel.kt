@@ -45,6 +45,9 @@ class AddExpenseViewModel @Inject constructor(
     val isDescriptionValid: MutableState<Boolean> = mutableStateOf(false)
     val descriptionError: MutableState<String> = mutableStateOf(emptyString())
 
+    val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
+    val isAccountRepeat: MutableState<Boolean> = mutableStateOf(false)
+
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
     private val _year = MutableStateFlow("")
@@ -60,7 +63,7 @@ class AddExpenseViewModel @Inject constructor(
                 year = "2023",
                 month = month,
                 value = value.value.fromCurrency(),
-                situation = false
+                situation = isCheckedPaid.value
             )
             insertMonthlyPayment(monthlyPayment)
         }
@@ -97,15 +100,17 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     private fun shouldEnabledRegisterButton() {
-        isEnabledRegisterButton.value = nameError.value.isEmpty()
-                && valueError.value.isEmpty()
-                && descriptionError.value.isEmpty()
+        isEnabledRegisterButton.value = !validateLength(name.value, 3)
+                && value.value.isNotEmpty()
+                && !validateLength(description.value, 2)
     }
 
+    private fun validateLength(text: String, minLength: Int) = text.length < minLength
+
     fun validateName() {
-        if (name.value.length < 4) {
+        if (validateLength(name.value, 3)) {
             isNameValid.value = true
-            nameError.value = "O nome deve conter no mínimo 4 caracteres"
+            nameError.value = "O nome deve conter no mínimo 3 dígitos"
         } else {
             isNameValid.value = false
             nameError.value = emptyString()
@@ -125,9 +130,9 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     fun validateDescription() {
-        if (description.value.isEmpty()) {
+        if (validateLength(description.value, 2)) {
             isDescriptionValid.value = true
-            descriptionError.value = "a descrição é obrigatória"
+            descriptionError.value = "a descrição deve conter no mínimo 2 dígitos"
         } else {
             isDescriptionValid.value = false
             descriptionError.value = emptyString()

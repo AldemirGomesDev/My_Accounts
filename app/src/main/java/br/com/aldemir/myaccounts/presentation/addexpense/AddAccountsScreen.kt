@@ -15,9 +15,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.presentation.component.CheckboxWithText
+import br.com.aldemir.myaccounts.presentation.component.InputTextOutlinedTextField
 import br.com.aldemir.myaccounts.presentation.component.LoadingButton
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.MaskCurrencyVisualTransformation
@@ -68,7 +72,7 @@ fun AddAccountScreen(
                     onClickSave = {
                         viewModel.addAccount()
                         focusManager.clearFocus()
-                    }
+                    },
                 )
             }
         },
@@ -95,64 +99,30 @@ private fun AddAccountContent(
 
     enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
 
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+    InputTextOutlinedTextField(
         value = title,
         onValueChange = {
             onTitleChange(it)
             viewModel.validateName()
         },
-        label = { Text(text = stringResource(R.string.form_add_name)) },
-        textStyle = MaterialTheme.typography.body1,
-        singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-            textColor = MaterialTheme.colors.addAccountBorderColor,
-            disabledTextColor = MaterialTheme.colors.addAccountBorderColor
-        ),
-        isError = viewModel.isNameValid.value,
-        trailingIcon = {
-            if (viewModel.isNameValid.value) Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = ""
-            )
-        },
+        label = stringResource(R.string.form_add_name),
+        isError = viewModel.isNameValid.value
     )
     Text(text = viewModel.nameError.value, color = Purple700, fontSize = FONT_SIZE_12)
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
     )
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+    InputTextOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
             viewModel.validateValue()
-                        },
-        label = { Text(text = stringResource(R.string.form_add_value)) },
-        textStyle = MaterialTheme.typography.body1,
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        visualTransformation = MaskCurrencyVisualTransformation(),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-            textColor = MaterialTheme.colors.addAccountBorderColor,
-            disabledTextColor = MaterialTheme.colors.addAccountBorderColor
-        ),
-        isError = viewModel.isValueValid.value,
-        trailingIcon = {
-            if (viewModel.isValueValid.value) Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = ""
-            )
         },
+        label = stringResource(R.string.form_add_value),
+        isError = viewModel.isValueValid.value,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        visualTransformation = MaskCurrencyVisualTransformation()
     )
     Text(
         text = viewModel.valueError.value,
@@ -163,36 +133,37 @@ private fun AddAccountContent(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
     )
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+    InputTextOutlinedTextField(
         value = description,
         onValueChange = {
             onDescriptionChange(it)
-                        viewModel.validateDescription()
-                        },
-        label = { Text(text = stringResource(R.string.form_add_description)) },
-        textStyle = MaterialTheme.typography.body1,
-        singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-            textColor = MaterialTheme.colors.addAccountBorderColor,
-            disabledTextColor = MaterialTheme.colors.addAccountBorderColor
-        ),
-        isError = viewModel.isDescriptionValid.value,
-        trailingIcon = {
-            if (viewModel.isDescriptionValid.value) Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = ""
-            )
+            viewModel.validateDescription()
         },
+        label = stringResource(R.string.form_add_description),
+        isError = viewModel.isDescriptionValid.value
     )
     Text(
         text = viewModel.descriptionError.value,
         color = Purple700,
         fontSize = FONT_SIZE_12
+    )
+    Divider(
+        modifier = Modifier.height(SMALL_PADDING),
+        color = MaterialTheme.colors.background
+    )
+    CheckboxWithText(
+        text = stringResource(id = R.string.add_expense_text_checkbox),
+        isChecked = viewModel.isCheckedPaid.value,
+        onCheckedChange = { viewModel.isCheckedPaid.value = it }
+    )
+    Divider(
+        modifier = Modifier.height(SMALL_PADDING),
+        color = MaterialTheme.colors.background
+    )
+    CheckboxWithText(
+        text = stringResource(id = R.string.add_expense_text_checkbox_repeat),
+        isChecked = viewModel.isAccountRepeat.value,
+        onCheckedChange = { viewModel.isAccountRepeat.value = it }
     )
     Divider(
         modifier = Modifier.height(LARGEST_PADDING),

@@ -18,6 +18,8 @@
     <string name="add_revenue">Receita</string>
     <string name="historic">Histórico</string>
     <string name="home">Home</string>
+    <string name="add_expense_text_checkbox">Este valor já foi pago?</string>
+    <string name="add_expense_text_checkbox_repeat">Esta conta repete-se?</string>
 
     <string name="delete_icon">Delete Icon</string>
     <string name="sad_face_icon">Sad Face Icon</string>
