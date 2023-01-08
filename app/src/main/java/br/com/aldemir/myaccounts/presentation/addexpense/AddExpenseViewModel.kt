@@ -40,8 +40,8 @@ class AddExpenseViewModel @Inject constructor(
     val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
     val isAccountRepeat: MutableState<Boolean> = mutableStateOf(false)
 
-    val numberOfTimesItRepeats: MutableState<Int> = mutableStateOf(1)
-    val dueDate: MutableState<Int> = mutableStateOf(1)
+    val amountThatRepeatsSelected: MutableState<Int> = mutableStateOf(1)
+    val dueDateSelected: MutableState<Int> = mutableStateOf(1)
 
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
@@ -50,12 +50,12 @@ class AddExpenseViewModel @Inject constructor(
             name = name.value,
             description = description.value,
             created_at = DateUtils.getDate(),
-            due_date = dueDate.value
+            due_date = dueDateSelected.value
         )
         val idExpense = addExpenseUseCase(expense)
         id.value = idExpense.toInt()
-        val years = DateUtils.getYears(numberOfTimesItRepeats.value)
-        val months = DateUtils.getMonths(numberOfTimesItRepeats.value)
+        val years = DateUtils.getYears(amountThatRepeatsSelected.value)
+        val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
             val monthlyPayment = MonthlyPayment(
@@ -80,6 +80,10 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     private fun validateLength(text: String, minLength: Int) = text.length < minLength
+
+    fun clearRepeatAmount(isChecked: Boolean) {
+        if (!isChecked) amountThatRepeatsSelected.value = 1
+    }
 
     fun validateName() {
         if (validateLength(name.value, 3)) {

@@ -104,7 +104,7 @@ private fun AddAccountContent(
     val repeatOptions = stringArrayResource(id = R.array.numbers)
     val dueDateOptions = stringArrayResource(id = R.array.days)
 
-    var repeatOptionSelected by remember { mutableStateOf(repeatOptions[0]) }
+//    var repeatOptionSelected by remember { mutableStateOf(repeatOptions[0]) }
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
     enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
@@ -175,7 +175,7 @@ private fun AddAccountContent(
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
             dueDateOptionSelected = item
-            viewModel.dueDate.value = item.toInt()
+            viewModel.dueDateSelected.value = item.toInt()
         },
         modifier = Modifier.fillMaxWidth()
     )
@@ -195,7 +195,10 @@ private fun AddAccountContent(
     CheckboxWithText(
         text = stringResource(id = R.string.add_expense_text_checkbox_repeat),
         isChecked = viewModel.isAccountRepeat.value,
-        onCheckedChange = { viewModel.isAccountRepeat.value = it }
+        onCheckedChange = {
+            viewModel.isAccountRepeat.value = it
+            viewModel.clearRepeatAmount(it)
+        }
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
@@ -205,10 +208,9 @@ private fun AddAccountContent(
         MyExposedDropdownMenu(
             label = "Quantas vezes repete-se?",
             listItems = repeatOptions.toList(),
-            selected = repeatOptionSelected,
+            selected = viewModel.amountThatRepeatsSelected.value.toString(),
             onItemSelected = { item ->
-                repeatOptionSelected = item
-                viewModel.numberOfTimesItRepeats.value = item.toInt()
+                viewModel.amountThatRepeatsSelected.value = item.toInt()
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -235,24 +237,6 @@ private fun AddAccountContent(
             fontSize = FONT_SIZE_16,
         )
     }
-
-//    LoadingButton(
-//        onClick = {
-//            Log.w(TAG, "AddAccountContent: ${DateUtils.getMonths(12)}", )
-//        },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(52.dp),
-//        loading = false,
-//        enabled = true,
-//        colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
-//    ) {
-//        Text(
-//            color = Color.White,
-//            text = stringResource(id = R.string.add_account),
-//            fontSize = FONT_SIZE_16,
-//        )
-//    }
 }
 
 @Composable
