@@ -13,26 +13,39 @@ object DateUtils {
     fun getMonth() : String {
         val date = Calendar.getInstance()
         val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
-        val month = sdf.format(date.time).uppercase()
-        return when (date.get(Calendar.MONTH)) {
-            0 -> "1 - $month"
-            1 -> "2 - $month"
-            2 -> "3 - $month"
-            3 -> "4 - $month"
-            4 -> "5 - $month"
-            5 -> "6 - $month"
-            6 -> "7 - $month"
-            7 -> "8 - $month"
-            8 -> "9 - $month"
-            9 -> "10 - $month"
-            10 -> "11 - $month"
-            11 -> "12 - $month"
-            else -> ""
-        }
+        return sdf.format(date.time).uppercase()
     }
 
     fun getDate(): Date {
         return Calendar.getInstance().time
+    }
+
+    fun getMonths(amountOfTimes: Int): MutableList<String> {
+        var cal: Calendar = Calendar.getInstance()
+        val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
+        val months = arrayListOf<String>()
+        months.add(sdf.format(cal.time).uppercase())
+
+        for (item in 1 until amountOfTimes) {
+            cal = Calendar.getInstance()
+            cal.add(Calendar.MONTH, item)
+            val month = sdf.format(cal.time).uppercase()
+            months.add(month)
+        }
+        return months
+    }
+
+    fun getYears(amountOfTimes: Int): MutableList<String> {
+        var cal: Calendar = Calendar.getInstance()
+        val years = arrayListOf<String>()
+        years.add(cal.get(Calendar.YEAR).toString())
+
+        for (item in 1 until amountOfTimes) {
+            cal = Calendar.getInstance()
+            cal.add(Calendar.MONTH, item)
+            years.add(cal.get(Calendar.YEAR).toString())
+        }
+        return years
     }
 
 }

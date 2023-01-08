@@ -97,9 +97,9 @@ fun HomeScreenList(
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
             val progress = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
 
-            Log.w(TAG, "HomeScreenList progress: ${progress.compareTo(1.0)}" )
+//            Log.w(TAG, "HomeScreenList progress: ${progress.compareTo(1.0)}" )
             if (progress.compareTo(0.9) == -1) {
-                Log.w(TAG, "HomeScreenList: ${dismissState.currentValue}" )
+//                Log.w(TAG, "HomeScreenList: ${dismissState.currentValue}" )
                 viewModel.onOpenDialogClicked()
             }
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {

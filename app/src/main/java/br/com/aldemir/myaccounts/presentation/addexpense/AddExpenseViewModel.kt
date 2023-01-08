@@ -3,11 +3,8 @@ package br.com.aldemir.myaccounts.presentation.addexpense
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
@@ -17,9 +14,7 @@ import br.com.aldemir.myaccounts.util.DateUtils
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,9 +22,6 @@ class AddExpenseViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {
-
-    private val _addAccountFormState = MutableLiveData<AddExpenseFormState>()
-    val addExpenseFormState: LiveData<AddExpenseFormState> = _addAccountFormState
 
     val id: MutableState<Int> = mutableStateOf(0)
 
@@ -48,47 +40,30 @@ class AddExpenseViewModel @Inject constructor(
     val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
     val isAccountRepeat: MutableState<Boolean> = mutableStateOf(false)
 
+    val numberOfTimesItRepeats: MutableState<Int> = mutableStateOf(1)
+    val dueDate: MutableState<Int> = mutableStateOf(1)
+
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
-    private val _year = MutableStateFlow("")
-    private val _months = MutableStateFlow(false)
-
-    fun addAccount() = viewModelScope.launch {
-        val expense = Expense(name = name.value, description = description.value, created_at = DateUtils.getDate(), due_date = 10)
+    fun saveAccount() = viewModelScope.launch {
+        val expense = Expense(
+            name = name.value,
+            description = description.value,
+            created_at = DateUtils.getDate(),
+            due_date = dueDate.value
+        )
         val idExpense = addExpenseUseCase(expense)
         id.value = idExpense.toInt()
-        for (month in listOf("1 - JANEIRO", "11 - NOVEMBRO", "12 - DEZEMBRO")){
+        val years = DateUtils.getYears(numberOfTimesItRepeats.value)
+        val months = DateUtils.getMonths(numberOfTimesItRepeats.value)
+
+        for ((index, month) in months.withIndex()){
             val monthlyPayment = MonthlyPayment(
                 id_expense = idExpense.toInt(),
-                year = "2023",
+                year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),
-                situation = isCheckedPaid.value
-            )
-            insertMonthlyPayment(monthlyPayment)
-        }
-    }
-
-    fun insertExpense(
-        name: String,
-        description: String,
-        year: String,
-        months: List<String>,
-        value: Double,
-        situation: Boolean,
-        createdAt: Date?,
-        dueDate: Int
-    ) = viewModelScope.launch {
-        val expense = Expense(name = name,description = description, created_at = createdAt, due_date = dueDate)
-        val idExpense = addExpenseUseCase(expense)
-        id.value = idExpense.toInt()
-        for (month in months) {
-            val monthlyPayment = MonthlyPayment(
-                id_expense = idExpense.toInt(),
-                year = year,
-                month = month,
-                value = value,
-                situation = situation,
+                situation = if (index == 0) isCheckedPaid.value else false
             )
             insertMonthlyPayment(monthlyPayment)
         }
@@ -96,7 +71,6 @@ class AddExpenseViewModel @Inject constructor(
 
     private fun insertMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
         val idMonthlyPayment = addMonthlyPaymentUseCase(monthlyPayment)
-        Log.i(TAG, "addAccount - idMonthlyPayment: $idMonthlyPayment")
     }
 
     private fun shouldEnabledRegisterButton() {
@@ -140,31 +114,14 @@ class AddExpenseViewModel @Inject constructor(
         shouldEnabledRegisterButton()
     }
 
-    private fun isYearValid(year: String): Boolean {
-        return year.isNotEmpty()
-    }
+    fun getNumberOfTimesItRepeats(): MutableList<String> {
+        Log.w(TAG, "getNumberOfTimesItRepeats: ")
 
-    private fun isMonthsValid(months: List<String>): Boolean {
-        return months.isNotEmpty()
-    }
-
-    fun setYear(year: String) {
-        _year.value = year
-        if (!isYearValid(year)) {
-            _addAccountFormState.value = AddExpenseFormState(yearError = R.string.invalid_name)
-        } else {
-            _addAccountFormState.value = AddExpenseFormState(yearError = null)
+        val numberOfTimesItRepeats = arrayListOf<String>()
+        for (i in 1..100) {
+            numberOfTimesItRepeats.add(i.toString())
         }
-    }
-
-    fun setMonths(months: List<String>) {
-        if (!isMonthsValid(months)) {
-            _months.value = false
-            _addAccountFormState.value = AddExpenseFormState(monthsError = R.string.invalid_name)
-        } else {
-            _months.value = true
-            _addAccountFormState.value = AddExpenseFormState(monthsError = null)
-        }
+        return numberOfTimesItRepeats
     }
 
 }

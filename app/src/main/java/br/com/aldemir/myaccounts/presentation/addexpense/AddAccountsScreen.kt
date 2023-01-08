@@ -2,29 +2,30 @@ package br.com.aldemir.myaccounts.presentation.addexpense
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.CheckboxWithText
 import br.com.aldemir.myaccounts.presentation.component.InputTextOutlinedTextField
 import br.com.aldemir.myaccounts.presentation.component.LoadingButton
+import br.com.aldemir.myaccounts.presentation.component.MyExposedDropdownMenu
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.MaskCurrencyVisualTransformation
+import java.util.*
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -45,15 +46,18 @@ fun AddAccountScreen(
     LaunchedEffect(key1 = id) {
         if (id > 0) navigateToHomeScreen()
     }
+    val state = rememberScrollState()
+    LaunchedEffect(Unit) { state.animateScrollTo(10) }
 
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(padding)
                     .padding(16.dp)
+                    .verticalScroll(state)
             ) {
                 AddAccountContent(
                     viewModel = viewModel,
@@ -70,7 +74,7 @@ fun AddAccountScreen(
                         viewModel.description.value = it
                     },
                     onClickSave = {
-                        viewModel.addAccount()
+                        viewModel.saveAccount()
                         focusManager.clearFocus()
                     },
                 )
@@ -79,6 +83,7 @@ fun AddAccountScreen(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AddAccountContent(
     viewModel: AddExpenseViewModel,
@@ -96,6 +101,11 @@ private fun AddAccountContent(
     var enabled by remember {
         mutableStateOf(false)
     }
+    val repeatOptions = stringArrayResource(id = R.array.numbers)
+    val dueDateOptions = stringArrayResource(id = R.array.days)
+
+    var repeatOptionSelected by remember { mutableStateOf(repeatOptions[0]) }
+    var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
     enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
 
@@ -121,7 +131,10 @@ private fun AddAccountContent(
         },
         label = stringResource(R.string.form_add_value),
         isError = viewModel.isValueValid.value,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Next,
+        ),
         visualTransformation = MaskCurrencyVisualTransformation()
     )
     Text(
@@ -140,12 +153,31 @@ private fun AddAccountContent(
             viewModel.validateDescription()
         },
         label = stringResource(R.string.form_add_description),
-        isError = viewModel.isDescriptionValid.value
+        isError = viewModel.isDescriptionValid.value,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+        )
     )
     Text(
         text = viewModel.descriptionError.value,
         color = Purple700,
         fontSize = FONT_SIZE_12
+    )
+    Divider(
+        modifier = Modifier.height(SMALL_PADDING),
+        color = MaterialTheme.colors.background
+    )
+    MyExposedDropdownMenu(
+        label = "Dia do vencimento:",
+        listItems = dueDateOptions.toList(),
+        selected = dueDateOptionSelected,
+        onItemSelected = { item ->
+            dueDateOptionSelected = item
+            viewModel.dueDate.value = item.toInt()
+        },
+        modifier = Modifier.fillMaxWidth()
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
@@ -166,9 +198,25 @@ private fun AddAccountContent(
         onCheckedChange = { viewModel.isAccountRepeat.value = it }
     )
     Divider(
-        modifier = Modifier.height(LARGEST_PADDING),
+        modifier = Modifier.height(SMALL_PADDING),
         color = MaterialTheme.colors.background
     )
+    if (viewModel.isAccountRepeat.value) {
+        MyExposedDropdownMenu(
+            label = "Quantas vezes repete-se?",
+            listItems = repeatOptions.toList(),
+            selected = repeatOptionSelected,
+            onItemSelected = { item ->
+                repeatOptionSelected = item
+                viewModel.numberOfTimesItRepeats.value = item.toInt()
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Divider(
+            modifier = Modifier.height(LARGEST_PADDING),
+            color = MaterialTheme.colors.background
+        )
+    }
     LoadingButton(
         onClick = {
             isLoading.value = true
@@ -187,6 +235,24 @@ private fun AddAccountContent(
             fontSize = FONT_SIZE_16,
         )
     }
+
+//    LoadingButton(
+//        onClick = {
+//            Log.w(TAG, "AddAccountContent: ${DateUtils.getMonths(12)}", )
+//        },
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(52.dp),
+//        loading = false,
+//        enabled = true,
+//        colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+//    ) {
+//        Text(
+//            color = Color.White,
+//            text = stringResource(id = R.string.add_account),
+//            fontSize = FONT_SIZE_16,
+//        )
+//    }
 }
 
 @Composable
