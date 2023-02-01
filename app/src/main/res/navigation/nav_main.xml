@@ -3,45 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/historic">
 
-
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="br.com.aldemir.myaccounts.presentation.main.MainFragment"
-        android:label="@string/main_screen_title"
-        tools:layout="@layout/main_fragment"
-        >
-        <action
-            android:id="@+id/action_mainFragment_to_addFragment"
-            app:destination="@id/addAccount"/>
-        <action
-            android:id="@+id/action_mainFragment_to_expenseDetailFragment"
-            app:destination="@id/expenseDetail"
-            />
-        <action
-            android:id="@+id/action_mainFragment_to_historic"
-            app:destination="@id/historic"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/addAccount"
-        android:name="br.com.aldemir.myaccounts.presentation.addexpense.AddExpenseFragment"
-        android:label="@string/add_account_screen_title"
-        tools:layout="@layout/add_account_fragment" />
-
-    <fragment
-        android:id="@+id/expenseDetail"
-        android:name="br.com.aldemir.myaccounts.presentation.expensedetail.ExpenseDetailFragment"
-        android:label="@string/expense_detail_screen_title"
-        tools:layout="@layout/fragment_expense_detail">
-
-    </fragment>
 
     <fragment
         android:id="@+id/historic"

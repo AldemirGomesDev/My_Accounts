@@ -125,19 +125,18 @@ class HistoricFragment : Fragment(), HistoricAdapter.ClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun listenersViewModel() {
-        viewModel.monthlyPayment.observe(viewLifecycleOwner, {monthlyPayments ->
+        viewModel.monthlyPayment.observe(viewLifecycleOwner) { monthlyPayments ->
             if (monthlyPayments.isNotEmpty()) {
                 _monthlyPayments = monthlyPayments as MutableList<MonthlyPayment>
                 for (item in monthlyPayments.distinctBy { it.year }) {
                     Log.d(TAG, "Ano: ${item.year}")
                     years.add(item.year)
                 }
-
                 setDropDownYear()
             }
-        })
+        }
 
-        viewModel.expensePerMonth.observe(viewLifecycleOwner, { expensesMonths ->
+        viewModel.expensePerMonth.observe(viewLifecycleOwner) { expensesMonths ->
             if (expensesMonths.isNotEmpty()) {
                 binding.recyclerViewListHistoric.visibility = View.VISIBLE
                 _list = expensesMonths as ArrayList<ExpensePerMonth>
@@ -161,7 +160,7 @@ class HistoricFragment : Fragment(), HistoricAdapter.ClickListener {
                 Log.d(TAG, "Total pendentes: ${pending.toCurrency()}")
             }
 
-        })
+        }
     }
 
     private fun getAllMonthExpenses() {
@@ -171,6 +170,4 @@ class HistoricFragment : Fragment(), HistoricAdapter.ClickListener {
     override fun onClick(position: Int, aView: View) {
         Log.d(TAG, "Nome: ${_list[position].name}")
     }
-
-
 }

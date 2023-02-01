@@ -1,6 +1,8 @@
 package br.com.aldemir.myaccounts.presentation.main
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -17,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -81,7 +84,7 @@ fun HomeScreenList(
 
     val expenses by viewModel.expenses.collectAsState()
 
-    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+    val context = LocalContext.current
 
     viewModel.onOpenDialogClicked()
 
@@ -92,32 +95,19 @@ fun HomeScreenList(
                 account.id
             }
         ) { account ->
-            val dismissState = rememberDismissState()
+            val dismissState = rememberDismissState(
+                confirmStateChange = {
+                    if (it == DismissValue.DismissedToStart) {
+                        deleteExpense(viewModel, account)
+                        showToast(context, context.getString(R.string.delete_expense_message_toast, account.id))
+                    }
+                    true
+                }
+            )
             val dismissDirection = dismissState.dismissDirection
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-            val progress = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
+            val progress: Double = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
 
-//            Log.w(TAG, "HomeScreenList progress: ${progress.compareTo(1.0)}" )
-            if (progress.compareTo(0.9) == -1) {
-//                Log.w(TAG, "HomeScreenList: ${dismissState.currentValue}" )
-                viewModel.onOpenDialogClicked()
-            }
-            if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-
-                DisplayAlertDialog(
-                    title = "Aviso",
-                    message = "Deseja realmente excluir?",
-                    openDialog = showDialogState,
-                    closeDialog = {
-                        viewModel.onDialogDismiss()
-                        getAllExpenseMonth(viewModel)
-                    },
-                    onYesClicked = {
-                        viewModel.onDialogConfirm()
-                        deleteExpense(viewModel, account)
-                    }
-                )
-            }
 
             val degrees by animateFloatAsState(
                 if (dismissState.targetValue == DismissValue.Default)
@@ -147,7 +137,7 @@ fun HomeScreenList(
                 SwipeToDismiss(
                     state = dismissState,
                     directions = setOf(DismissDirection.EndToStart),
-                    dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
+                    dismissThresholds = { FractionalThreshold(fraction = 0.5f) },
                     background = { RedBackground(degrees = degrees) },
                     dismissContent = {
                         TaskItem(
@@ -359,6 +349,10 @@ private fun deleteExpense(viewModel: MainViewModel, expense: Expense) {
         delay(300)
         viewModel.delete(expense)
     }
+}
+
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 private fun getAllExpenseMonth(viewModel: MainViewModel) {

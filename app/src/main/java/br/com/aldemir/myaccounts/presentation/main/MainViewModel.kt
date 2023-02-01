@@ -1,7 +1,10 @@
 package br.com.aldemir.myaccounts.presentation.main
 
+import androidx.annotation.IdRes
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
@@ -85,5 +88,10 @@ class MainViewModel @Inject constructor(
 
         }
         _expenses.value = expenses.toList()
+    }
+
+    fun getMessageToast(message: String) {
+        val contentString = ObservableInt()
+        contentString.set(R.string.delete_expense_message_toast)
     }
 }
