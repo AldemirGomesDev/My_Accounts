@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.main.component
+package br.com.aldemir.myaccounts.presentation.component
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.presentation.theme.Purple200
@@ -84,4 +85,10 @@ fun LoadingAnimation(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingAnimationPreview() {
+    LoadingAnimation()
 }

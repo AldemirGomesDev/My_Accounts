@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.main.component
+package br.com.aldemir.myaccounts.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -30,12 +30,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
-import br.com.aldemir.myaccounts.presentation.main.component.DisplayAlertDialog
+import br.com.aldemir.myaccounts.presentation.component.EmptyContent
 import br.com.aldemir.myaccounts.presentation.main.component.RedBackground
 import br.com.aldemir.myaccounts.presentation.main.component.TaskItem
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
-import br.com.aldemir.myaccounts.util.Const.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -88,71 +87,71 @@ fun HomeScreenList(
 
     viewModel.onOpenDialogClicked()
 
-    LazyColumn(state = state) {
-        items(
-            items = expenses,
-            key = { account ->
-                account.id
-            }
-        ) { account ->
-            val dismissState = rememberDismissState(
-                confirmStateChange = {
-                    if (it == DismissValue.DismissedToStart) {
-                        deleteExpense(viewModel, account)
-                        showToast(context, context.getString(R.string.delete_expense_message_toast, account.id))
-                    }
-                    true
+    if (expenses.isEmpty()) {
+        EmptyContent()
+    } else {
+        LazyColumn(state = state) {
+            items(
+                items = expenses,
+                key = { account ->
+                    account.id
                 }
-            )
-            val dismissDirection = dismissState.dismissDirection
-            val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-            val progress: Double = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
-
-
-            val degrees by animateFloatAsState(
-                if (dismissState.targetValue == DismissValue.Default)
-                    0f
-                else
-                    -45f
-            )
-
-            var itemAppeared by remember { mutableStateOf(false) }
-            LaunchedEffect(key1 = true) {
-                itemAppeared = true
-            }
-
-            AnimatedVisibility(
-                visible = itemAppeared && !isDismissed,
-                enter = expandVertically(
-                    animationSpec = tween(
-                        durationMillis = 300
-                    )
-                ),
-                exit = shrinkHorizontally(
-                    animationSpec = tween(
-                        durationMillis = 300
-                    )
-                )
-            ) {
-                SwipeToDismiss(
-                    state = dismissState,
-                    directions = setOf(DismissDirection.EndToStart),
-                    dismissThresholds = { FractionalThreshold(fraction = 0.5f) },
-                    background = { RedBackground(degrees = degrees) },
-                    dismissContent = {
-                        TaskItem(
-                            expense = account,
-                            navigateToTaskScreen = navigateToTaskScreen
-                        )
+            ) { account ->
+                val dismissState = rememberDismissState(
+                    confirmStateChange = {
+                        if (it == DismissValue.DismissedToStart) {
+                            deleteExpense(viewModel, account)
+                            showToast(context, context.getString(R.string.delete_expense_message_toast, account.id))
+                        }
+                        true
                     }
                 )
+                val dismissDirection = dismissState.dismissDirection
+                val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+                val progress: Double = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
 
-                Divider(
-                    color = colorResource(id = R.color.grey)
+
+                val degrees by animateFloatAsState(
+                    if (dismissState.targetValue == DismissValue.Default) 0f
+                    else -45f
                 )
+
+                var itemAppeared by remember { mutableStateOf(false) }
+                LaunchedEffect(key1 = true) {
+                    itemAppeared = true
+                }
+
+                AnimatedVisibility(
+                    visible = itemAppeared && !isDismissed,
+                    enter = expandVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
+                    ),
+                    exit = shrinkHorizontally(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
+                    )
+                ) {
+                    SwipeToDismiss(
+                        state = dismissState,
+                        directions = setOf(DismissDirection.EndToStart),
+                        dismissThresholds = { FractionalThreshold(fraction = 0.5f) },
+                        background = { RedBackground(degrees = degrees) },
+                        dismissContent = {
+                            TaskItem(
+                                expense = account,
+                                navigateToTaskScreen = navigateToTaskScreen
+                            )
+                        }
+                    )
+                    Divider(
+                        color = colorResource(id = R.color.grey)
+                    )
+                }
             }
         }
-
     }
 }
 
@@ -226,7 +225,7 @@ private fun HomeCard(
                         start.linkTo(parent.start)
                     },
                     painter = painterResource(id = R.drawable.ic_check_circle),
-                    contentDescription = ""
+                    contentDescription = emptyString()
                 )
                 Text(
                     modifier = Modifier
@@ -236,7 +235,7 @@ private fun HomeCard(
                         }
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Bold,
-                    text = "Pago",
+                    text = stringResource(id = R.string.expense_paid_out),
                     color = Color.White
                 )
                 Text(
@@ -269,7 +268,7 @@ private fun HomeCard(
                         }
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Bold,
-                    text = "À pagar",
+                    text = stringResource(id = R.string.expense_to_pay),
                     color = Color.White
                 )
                 Text(
@@ -346,8 +345,9 @@ fun ListFab(
 
 private fun deleteExpense(viewModel: MainViewModel, expense: Expense) {
     CoroutineScope(Dispatchers.Default).launch {
-        delay(300)
         viewModel.delete(expense)
+        delay(300)
+        getAllExpenseMonth(viewModel)
     }
 }
 
