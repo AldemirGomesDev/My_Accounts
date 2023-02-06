@@ -1,5 +1,6 @@
 package br.com.aldemir.myaccounts.presentation.addexpense
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -42,6 +43,10 @@ fun AddAccountScreen(
     val name: String by viewModel.name
     val value: String by viewModel.value
     val description: String by viewModel.description
+
+    BackHandler {
+        navigateToHomeScreen()
+    }
 
     LaunchedEffect(key1 = id) {
         if (id > 0) navigateToHomeScreen()

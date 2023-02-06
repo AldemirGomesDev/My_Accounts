@@ -1,8 +1,9 @@
 package br.com.aldemir.myaccounts.presentation.main
 
+import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -51,6 +52,10 @@ fun HomeScreen(
     viewModel: MainViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
+
+    val activity = (LocalContext.current as? Activity)
+
+    BackHandler{ activity?.finish() }
 
     Scaffold(
         scaffoldState = scaffoldState,

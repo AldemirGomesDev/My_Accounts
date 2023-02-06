@@ -6,16 +6,20 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import br.com.aldemir.myaccounts.presentation.theme.LARGEST_PADDING
-import br.com.aldemir.myaccounts.presentation.theme.MEDIUM_PADDING
-import br.com.aldemir.myaccounts.presentation.theme.MarginSingle
-import br.com.aldemir.myaccounts.presentation.theme.Shapes
+import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.AnimationType
 
 
@@ -61,5 +65,21 @@ fun LoadingButton(
                 content()
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingButtonPreview() {
+    LoadingButton(
+        enabled = true,
+        colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+        onClick = {}
+    ) {
+        Text(
+            color = Color.White,
+            text = stringResource(id = R.string.add_account),
+            fontSize = FONT_SIZE_16,
+        )
     }
 }
