@@ -44,6 +44,24 @@
     <string name="form_add_value">Valor</string>
     <string name="label_value">Valor:</string>
     <string name="button_text_pay">Pagar</string>
+    <string name="month_text">Mês</string>
+    <string name="year_text">Ano</string>
+    <string name="search_button">Buscar</string>
+
+    <string-array name="months">
+        <item>JANEIRO</item>
+        <item>FEVEREIRO</item>
+        <item>MARÇO</item>
+        <item>ABRIL</item>
+        <item>MAIO</item>
+        <item>JUNHO</item>
+        <item>JULHO</item>
+        <item>AGOSTO</item>
+        <item>SETEMBRO</item>
+        <item>OUTUBRO</item>
+        <item>NOVEMBRO</item>
+        <item>DEZEMBRO</item>
+    </string-array>
 
     <string-array name="days">
         <item>1</item>

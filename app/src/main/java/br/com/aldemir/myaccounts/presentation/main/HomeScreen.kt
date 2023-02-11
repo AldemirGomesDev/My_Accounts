@@ -152,7 +152,7 @@ fun HomeScreenList(
                         }
                     )
                     Divider(
-                        color = colorResource(id = R.color.grey)
+                        color = LightGray
                     )
                 }
             }

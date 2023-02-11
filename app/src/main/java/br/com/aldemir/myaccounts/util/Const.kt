@@ -6,6 +6,7 @@ object Const {
     const val EXPENSE_SCREEN = "expense"
     const val EXPENSE_ADD_SCREEN = "expenseAdd"
     const val EXPENSE_CHANGE_SCREEN = "expenseChange"
+    const val HISTORIC_SCREEN = "historic"
     const val SPLASH_SCREEN_DELAY = 1000L
     const val LIST_ARGUMENT_KEY = "action"
     const val EXPENSE_ID = "expenseId"

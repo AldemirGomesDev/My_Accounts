@@ -20,11 +20,12 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.theme.MediumGray
 
 @Composable
-fun EmptyContent() {
+fun EmptyContent(
+    modifier: Modifier = Modifier.fillMaxSize()
+        .background(MaterialTheme.colors.background),
+) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background),
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

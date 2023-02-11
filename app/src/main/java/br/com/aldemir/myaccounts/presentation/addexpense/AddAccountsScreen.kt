@@ -109,7 +109,6 @@ private fun AddAccountContent(
     val repeatOptions = stringArrayResource(id = R.array.numbers)
     val dueDateOptions = stringArrayResource(id = R.array.days)
 
-//    var repeatOptionSelected by remember { mutableStateOf(repeatOptions[0]) }
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
     enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)

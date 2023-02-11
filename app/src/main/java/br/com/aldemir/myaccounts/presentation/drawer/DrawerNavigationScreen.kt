@@ -66,6 +66,12 @@ fun DrawerNavigationScreen() {
                         onClick = { navController.navigateUp() }
                     )
                 }
+                Route.Historic.route -> {
+                    TopBar(titleResId = R.string.historic,
+                        imageIcon = Icons.Filled.ArrowBack,
+                        onClick = { navController.navigateUp() }
+                    )
+                }
             }
         },
         drawerGesturesEnabled = true,

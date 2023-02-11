@@ -30,5 +30,7 @@ fun SetupNavigation(
         detailExpenseComposable(navHostController)
 
         changeExpenseComposable(navHostController)
+
+        historicComposable(navHostController)
     }
 }

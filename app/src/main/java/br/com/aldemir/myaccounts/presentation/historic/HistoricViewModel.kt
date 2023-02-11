@@ -1,5 +1,8 @@
 package br.com.aldemir.myaccounts.presentation.historic
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +23,8 @@ class HistoricViewModel @Inject constructor (
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
     ) : ViewModel() {
 
+    val isLoading: MutableState<Boolean> = mutableStateOf(false)
+
     private val _monthlyPayment = MutableLiveData<List<MonthlyPayment>>()
     var monthlyPayment: LiveData<List<MonthlyPayment>> = _monthlyPayment
 
@@ -29,15 +34,31 @@ class HistoricViewModel @Inject constructor (
     private val _expensePerMonth = MutableLiveData<List<ExpensePerMonth>>()
     val expensePerMonth: LiveData<List<ExpensePerMonth>> = _expensePerMonth
 
+    private val _yearsList = MutableLiveData<List<String>>()
+    val yearsList: LiveData<List<String>> = _yearsList
+
     fun getAllMonthlyPayment() = viewModelScope.launch {
-        _monthlyPayment.value = getAllMonthlyPaymentUseCase()!!
+        val result = getAllMonthlyPaymentUseCase()
+        _monthlyPayment.value = result
+        getDistinctYears(monthList = result)
     }
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
-        _monthExpenses.value = getAllExpensesMonthUseCase(month, year)!!
+        val result = getAllExpensesMonthUseCase(month, year)
+        _monthExpenses.value = result
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
-        _expensePerMonth.value = getAllExpensePerMonthUseCase(month, year)!!
+        isLoading.value = true
+        val result = getAllExpensePerMonthUseCase(month, year)
+        _expensePerMonth.value = result
+        isLoading.value = false
+    }
+
+    private fun getDistinctYears(monthList: List<MonthlyPayment>) {
+        val myYears = mutableListOf<String>()
+        val yearUnique = monthList.distinctBy { it.year }
+        yearUnique.forEach { myYears.add(it.year) }
+        _yearsList.value = myYears
     }
 }

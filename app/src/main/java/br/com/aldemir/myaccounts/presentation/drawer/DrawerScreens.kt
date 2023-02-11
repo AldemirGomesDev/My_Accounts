@@ -19,9 +19,9 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
         route = Route.ExpenseAdd.route, imageIcon =
         Icons.Filled.Add
     )
-    object Help : DrawerScreens(
+    object Historic : DrawerScreens(
         titleResourceId = R.string.historic,
-        route = Route.ExpenseAdd.route,
+        route = Route.Historic.route,
         imageIcon = Icons.Filled.List
     )
 }
@@ -29,5 +29,5 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
 val screens = listOf(
     DrawerScreens.Home,
     DrawerScreens.Statistic,
-    DrawerScreens.Help
+    DrawerScreens.Historic
 )
