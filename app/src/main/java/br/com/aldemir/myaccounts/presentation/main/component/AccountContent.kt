@@ -14,12 +14,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
+import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
+import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
+import br.com.aldemir.myaccounts.presentation.component.TextTitleItem
 import br.com.aldemir.myaccounts.presentation.theme.*
 
 @Composable
@@ -61,14 +62,7 @@ fun TaskItem(
                 .background(MaterialTheme.colors.background),
         ) {
             Row {
-                Text(
-                    modifier = Modifier.weight(8f),
-                    text = expense.name,
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.h5,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
+                TextTitleItem(text = expense.name, modifier = Modifier.weight(8f))
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
@@ -78,52 +72,29 @@ fun TaskItem(
                         modifier = Modifier
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
-//                        drawCircle(
-//                            color = toDoTask.priority.color
-//                        )
+                        drawCircle(
+                            color = if (expense.status) LowPriorityColor else MediumPriorityColor
+                        )
                     }
                 }
             }
-            Text(
-                modifier = Modifier.fillMaxWidth(),
+            TextDescriptionItem(
                 text = expense.description,
-                color = MaterialTheme.colors.taskItemTextColor,
-                style = MaterialTheme.typography.subtitle1,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                modifier = Modifier.fillMaxWidth()
             )
             Divider(
                 modifier = Modifier.height(SMALL_PADDING),
                 color = MaterialTheme.colors.background
             )
             Row {
-                Text(
-                    text = stringResource(id = R.string.expense_due_date),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = expense.due_date.toString(),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    textAlign = TextAlign.End,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
+                TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                TextBodyTwoItem(text = expense.due_date.toString())
+                TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
                     text = if (expense.status) stringResource(id = R.string.expense_paid_out) else stringResource(
                         id = R.string.expense_pending
                     ),
                     color = if (expense.status) MaterialTheme.colors.paidTextColor else MediumPriorityColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.End,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

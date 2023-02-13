@@ -15,12 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.presentation.component.*
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.swapList
@@ -107,6 +105,8 @@ private fun ExpenseDetailContent(
     viewModel: ExpenseDetailViewModel,
     index: Int,
 ) {
+    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
@@ -116,7 +116,7 @@ private fun ExpenseDetailContent(
     ) {
         Column(
             modifier = Modifier
-                .padding(all = LARGE_PADDING)
+                .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.background)
                 .pointerInput(Unit) {
@@ -127,65 +127,48 @@ private fun ExpenseDetailContent(
                     )
                 },
         ) {
-            Text(
-                text = monthlyPayment.month,
-                color = MaterialTheme.colors.taskItemTextColor,
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1
+            TextTitleItem(
+                text = "${monthlyPayment.year} - ${monthlyPayment.month}",
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Text(
-                    text = stringResource(id = R.string.label_value),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    modifier = Modifier.padding(start = SMALL_PADDING),
+                TextSubTitleItem(text = stringResource(id = R.string.label_value))
+                TextBodyTwoItem(
                     text = monthlyPayment.value.toCurrency(),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    modifier = Modifier.padding(start = SMALL_PADDING)
                 )
-                Text(
-                    modifier = Modifier.padding(start = SMALL_PADDING),
+                TextBodyTwoItem(
                     text = " - ",
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    modifier = Modifier.padding(start = SMALL_PADDING)
                 )
-                Text(
+                TextBodyTwoItem(
                     modifier = Modifier.padding(start = SMALL_PADDING),
                     text = viewModel.checkPaidOut(monthlyPayment.situation),
                     color = if (monthlyPayment.situation) LowPriorityColor else MediumPriorityColor,
-                    style = MaterialTheme.typography.subtitle1,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (!monthlyPayment.situation) {
                     OutlinedButton(
                         onClick = { onClickUpdate(index, monthlyPayment) }
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.button_text_pay),
-                            color = MaterialTheme.colors.taskItemTextColor,
-                            style = MaterialTheme.typography.button,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            textAlign = TextAlign.Center
-                        )
+                        TextMyButton(text = stringResource(id = R.string.button_text_pay))
                     }
                 }
             }
+            DisplayAlertDialog(
+                title = "Aviso",
+                message = "Deseja confirmar o pagamento?",
+                openDialog = showDialogState,
+                closeDialog = {
+                    viewModel.onDialogDismiss()
+                },
+                onYesClicked = {
+                    onClickUpdate(index, monthlyPayment)
+                    viewModel.onDialogConfirm()
+                }
+            )
         }
     }
 }

@@ -82,9 +82,9 @@ fun Splash(
 @Composable
 private fun getLogo(): Int {
     return if (isSystemInDarkTheme()) {
-        R.drawable.ic_logo_dark
+        R.drawable.icon_despesa
     } else {
-        R.drawable.ic_logo_light
+        R.drawable.icon_despesa
     }
 }
 

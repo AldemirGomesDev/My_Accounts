@@ -12,6 +12,7 @@ import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +31,21 @@ class ExpenseDetailViewModel @Inject constructor(
 
     private val _id = MutableLiveData<Int>()
     val id: LiveData<Int> = _id
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
+    }
 
     fun getAllByIdExpense(id: Int) = viewModelScope.launch {
         _monthlyPayment.value = getAllByIdExpenseUseCase(id)

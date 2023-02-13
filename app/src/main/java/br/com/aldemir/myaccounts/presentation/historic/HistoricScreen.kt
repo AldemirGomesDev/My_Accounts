@@ -15,22 +15,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.presentation.component.EmptyContent
-import br.com.aldemir.myaccounts.presentation.component.LoadingButton
-import br.com.aldemir.myaccounts.presentation.component.MyExposedDropdownMenu
+import br.com.aldemir.myaccounts.presentation.component.*
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.DateUtils
 
@@ -215,14 +209,7 @@ fun HistoricItem(
                 .background(MaterialTheme.colors.background),
         ) {
             Row {
-                Text(
-                    modifier = Modifier.weight(8f),
-                    text = expense.name,
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = Typography.body1,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
+                TextTitleItem(text = expense.name, modifier = Modifier.weight(8f))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -239,45 +226,23 @@ fun HistoricItem(
                     }
                 }
             }
-            Text(
-                modifier = Modifier.fillMaxWidth(),
+            TextDescriptionItem(
                 text = expense.description,
-                color = MaterialTheme.colors.taskItemTextColor,
-                style = Typography.caption,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                modifier = Modifier.fillMaxWidth()
             )
             Divider(
                 modifier = Modifier.height(SMALL_PADDING),
                 color = MaterialTheme.colors.background
             )
             Row {
-                Text(
-                    text = stringResource(id = R.string.expense_due_date),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = Typography.subtitle2,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = expense.due_date.toString(),
-                    color = MaterialTheme.colors.taskItemTextColor,
-                    style = Typography.body2,
-                    textAlign = TextAlign.End,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
+                TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                TextBodyTwoItem(text = expense.due_date.toString())
+                TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
                     text = if (expense.situation) stringResource(id = R.string.expense_paid_out) else stringResource(
                         id = R.string.expense_pending
                     ),
                     color = if (expense.situation) MaterialTheme.colors.paidTextColor else MediumPriorityColor,
-                    style = Typography.body2,
-                    textAlign = TextAlign.End,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

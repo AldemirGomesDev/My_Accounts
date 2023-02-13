@@ -6,6 +6,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.presentation.theme.Purple200
+import br.com.aldemir.myaccounts.presentation.theme.White
 
 @Composable
 fun DisplayAlertDialog(
@@ -36,9 +38,10 @@ fun DisplayAlertDialog(
                     onClick = {
                         onYesClicked()
                         closeDialog()
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
                 ) {
-                    Text(text = stringResource(R.string.button_yes))
+                    Text(text = stringResource(R.string.button_yes), color = White)
                 }
             },
             dismissButton = {
@@ -47,7 +50,7 @@ fun DisplayAlertDialog(
                         closeDialog()
                     }
                 ) {
-                    Text(text = stringResource(R.string.button_no))
+                    Text(text = stringResource(R.string.button_no), color = Purple200)
                 }
             },
             onDismissRequest = { closeDialog() }
