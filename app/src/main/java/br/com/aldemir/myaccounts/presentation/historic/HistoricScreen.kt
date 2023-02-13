@@ -23,8 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.domain.mapper.toView
 import br.com.aldemir.myaccounts.presentation.component.*
+import br.com.aldemir.myaccounts.presentation.shared.model.ExpensePerMonthView
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.DateUtils
 
@@ -175,7 +176,8 @@ fun HistoricScreenList(
                     }
                 ) { account ->
                     HistoricItem(
-                        expense = account,
+                        expense = account.toView(viewModel.checkIfExpired(DateUtils.getDay(), account.due_date)),
+                        viewModel = viewModel,
                         navigateToHistoricScreen = navigateToHistoricScreen
                     )
                     Divider(
@@ -190,9 +192,12 @@ fun HistoricScreenList(
 @ExperimentalMaterialApi
 @Composable
 fun HistoricItem(
-    expense: ExpensePerMonth,
+    expense: ExpensePerMonthView,
+    viewModel: HistoricViewModel,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
+    val statusColor = viewModel.getStatusColor(expense.situation, expense.expired)
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colors.taskItemBackgroundColor,
@@ -221,7 +226,7 @@ fun HistoricItem(
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
-                            color = if (expense.situation) LowPriorityColor else MediumPriorityColor
+                            color = statusColor
                         )
                     }
                 }
@@ -239,10 +244,8 @@ fun HistoricItem(
                 TextBodyTwoItem(text = expense.due_date.toString())
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    text = if (expense.situation) stringResource(id = R.string.expense_paid_out) else stringResource(
-                        id = R.string.expense_pending
-                    ),
-                    color = if (expense.situation) MaterialTheme.colors.paidTextColor else MediumPriorityColor,
+                    text = stringResource(viewModel.getStatusText(expense.situation, expense.expired)),
+                    color = statusColor
                 )
             }
         }

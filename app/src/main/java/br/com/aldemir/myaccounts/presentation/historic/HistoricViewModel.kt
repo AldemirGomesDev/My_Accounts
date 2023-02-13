@@ -2,16 +2,20 @@ package br.com.aldemir.myaccounts.presentation.historic
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensePerMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensesMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.GetAllMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
+import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
+import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,5 +64,21 @@ class HistoricViewModel @Inject constructor (
         val yearUnique = monthList.distinctBy { it.year }
         yearUnique.forEach { myYears.add(it.year) }
         _yearsList.value = myYears
+    }
+
+    fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
+        return currentDay > dueDay
+    }
+
+    fun getStatusColor(status: Boolean, expired: Boolean): Color {
+        return if (status) LowPriorityColor
+        else if (expired) HighPriorityColor
+        else MediumPriorityColor
+    }
+
+    fun getStatusText(status: Boolean, expired: Boolean): Int {
+        return if (status) R.string.expense_paid_out
+        else if (expired) R.string.expense_expired
+        else R.string.expense_pending
     }
 }

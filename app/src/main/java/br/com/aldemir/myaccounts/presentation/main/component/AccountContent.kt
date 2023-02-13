@@ -16,11 +16,12 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
 import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
 import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
 import br.com.aldemir.myaccounts.presentation.component.TextTitleItem
+import br.com.aldemir.myaccounts.presentation.main.MainViewModel
+import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.*
 
 @Composable
@@ -43,9 +44,13 @@ fun RedBackground(degrees: Float) {
 @ExperimentalMaterialApi
 @Composable
 fun TaskItem(
-    expense: Expense,
+    expense: ExpenseView,
+    viewModel: MainViewModel,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
+
+    val statusColor = viewModel.getStatusColor(expense.status, expense.expired)
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colors.taskItemBackgroundColor,
@@ -73,7 +78,7 @@ fun TaskItem(
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
-                            color = if (expense.status) LowPriorityColor else MediumPriorityColor
+                            color = statusColor
                         )
                     }
                 }
@@ -91,10 +96,8 @@ fun TaskItem(
                 TextBodyTwoItem(text = expense.due_date.toString())
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    text = if (expense.status) stringResource(id = R.string.expense_paid_out) else stringResource(
-                        id = R.string.expense_pending
-                    ),
-                    color = if (expense.status) MaterialTheme.colors.paidTextColor else MediumPriorityColor,
+                    color = statusColor,
+                    text = stringResource(viewModel.getStatusText(expense.status, expense.expired))
                 )
             }
         }

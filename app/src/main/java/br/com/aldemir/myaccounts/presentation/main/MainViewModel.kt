@@ -1,6 +1,6 @@
 package br.com.aldemir.myaccounts.presentation.main
 
-import androidx.annotation.IdRes
+import androidx.compose.ui.graphics.Color
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,9 @@ import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
+import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
+import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
+import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
 import br.com.aldemir.myaccounts.util.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,8 +64,9 @@ class MainViewModel @Inject constructor(
             setId(0)
         }
     }
+
     fun setId(id: Int) {
-      _idExpense.value = id
+        _idExpense.value = id
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
@@ -93,5 +97,21 @@ class MainViewModel @Inject constructor(
     fun getMessageToast(message: String) {
         val contentString = ObservableInt()
         contentString.set(R.string.delete_expense_message_toast)
+    }
+
+    fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
+        return currentDay > dueDay
+    }
+
+    fun getStatusColor(status: Boolean, expired: Boolean): Color {
+        return if (status) LowPriorityColor
+        else if (expired) HighPriorityColor
+        else MediumPriorityColor
+    }
+
+    fun getStatusText(status: Boolean, expired: Boolean): Int {
+        return if (status) R.string.expense_paid_out
+        else if (expired) R.string.expense_expired
+        else R.string.expense_pending
     }
 }

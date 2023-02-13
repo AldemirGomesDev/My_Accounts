@@ -48,4 +48,9 @@ object DateUtils {
         return years
     }
 
+    fun getDay(): Int {
+        var cal: Calendar = Calendar.getInstance()
+        cal = Calendar.getInstance()
+        return cal.get(Calendar.DAY_OF_MONTH)
+    }
 }
