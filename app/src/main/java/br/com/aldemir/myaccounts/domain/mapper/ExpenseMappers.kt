@@ -26,3 +26,12 @@ fun ExpensePerMonth.toView(expired: Boolean) = ExpensePerMonthView(
     situation = situation,
     expired = expired
 )
+
+fun ExpenseView.toDatabase() = Expense(
+    id = id,
+    name = name,
+    description = description,
+    created_at = created_at,
+    due_date = due_date,
+    status = status
+)

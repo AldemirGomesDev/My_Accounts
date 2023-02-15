@@ -35,11 +35,20 @@ class MainViewModel @Inject constructor(
     private val _monthExpenses = MutableStateFlow<List<MonthlyPayment>>(emptyList())
     val monthExpenses: StateFlow<List<MonthlyPayment>> = _monthExpenses
 
-    private val _idExpense = MutableStateFlow(0)
-    val idExpense: StateFlow<Int> = _idExpense
-
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    private var _valueTotal = MutableStateFlow(0.0)
+    val valueTotal: StateFlow<Double> = _valueTotal.asStateFlow()
+
+    private var _paidOut = MutableStateFlow(0.0)
+    val paidOut: StateFlow<Double> = _paidOut.asStateFlow()
+
+    private var _pending = MutableStateFlow(0.0)
+    val pending: StateFlow<Double> = _pending.asStateFlow()
+
+    private var _percentage = MutableStateFlow(0F)
+    val percentage: StateFlow<Float> = _percentage.asStateFlow()
 
     fun onOpenDialogClicked() {
         _showDialog.value = true
@@ -53,20 +62,39 @@ class MainViewModel @Inject constructor(
         _showDialog.value = false
     }
 
+    private fun calculateValues() {
+        clearValues()
+        for (item in monthExpenses.value) {
+            _valueTotal.value += item.value
+            if (item.situation) {
+                _paidOut.value += item.value
+            } else {
+                _pending.value += item.value
+            }
+        }
+        calculatePercentage()
+    }
+
+    private fun clearValues() {
+        _valueTotal.value = 0.0
+        _paidOut.value = 0.0
+        _pending.value = 0.0
+    }
+
+    private fun calculatePercentage() {
+        _percentage.value = ((paidOut.value / valueTotal.value) * 100).toFloat()
+    }
+
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
         _monthExpenses.value = getAllExpensesMonthUseCase(month, year)
+        calculateValues()
     }
 
     fun delete(expense: Expense) = viewModelScope.launch {
-        _idExpense.value = deleteExpenseUseCase(expense)
-        if (_idExpense.value > 0) {
+        val expenseId = deleteExpenseUseCase(expense)
+        if (expenseId > 0) {
             getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
-            setId(0)
         }
-    }
-
-    fun setId(id: Int) {
-        _idExpense.value = id
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {

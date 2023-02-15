@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.mapper.toView
 import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
 import br.com.aldemir.myaccounts.presentation.main.component.RedBackground
 import br.com.aldemir.myaccounts.presentation.main.component.TaskItem
@@ -40,7 +40,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -53,9 +52,17 @@ fun HomeScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+
     val activity = (LocalContext.current as? Activity)
 
-    BackHandler{ activity?.finish() }
+    val context = LocalContext.current
+
+    var expenseToSave by remember {
+        mutableStateOf(Expense())
+    }
+
+    BackHandler { activity?.finish() }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -64,7 +71,30 @@ fun HomeScreen(
                 HomeCard(viewModel = viewModel)
                 HomeScreenList(
                     navigateToTaskScreen = navigateToTaskScreen,
+                    onDelete = { expense ->
+                        expenseToSave = expense
+                        viewModel.onOpenDialogClicked()
+                    },
                     viewModel = viewModel
+                )
+                DisplayAlertDialog(
+                    title = "Aviso",
+                    message = "Deseja confirmar o pagamento?",
+                    openDialog = showDialogState,
+                    closeDialog = {
+                        viewModel.onDialogDismiss()
+                    },
+                    onYesClicked = {
+                        deleteExpense(viewModel, expenseToSave)
+                        showToast(
+                            context,
+                            context.getString(
+                                R.string.delete_expense_message_toast,
+                                expenseToSave.id
+                            )
+                        )
+                        viewModel.onDialogConfirm()
+                    }
                 )
             }
         },
@@ -79,6 +109,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreenList(
     viewModel: MainViewModel,
+    onDelete: (expense: Expense) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
     val state = rememberLazyListState()
@@ -89,8 +120,6 @@ fun HomeScreenList(
     val expenses by viewModel.expenses.collectAsState()
 
     val context = LocalContext.current
-
-    viewModel.onOpenDialogClicked()
 
     if (expenses.isEmpty()) {
         EmptyContent()
@@ -106,15 +135,15 @@ fun HomeScreenList(
                     confirmStateChange = {
                         if (it == DismissValue.DismissedToStart) {
                             deleteExpense(viewModel, account)
-                            showToast(context, context.getString(R.string.delete_expense_message_toast, account.id))
+                            showToast(
+                                context,
+                                context.getString(R.string.delete_expense_message_toast, account.id)
+                            )
                         }
                         true
                     }
                 )
-                val dismissDirection = dismissState.dismissDirection
                 val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-                val progress: Double = (dismissState.progress.fraction * 100.0).roundToInt() / 100.0
-
 
                 val degrees by animateFloatAsState(
                     if (dismissState.targetValue == DismissValue.Default) 0f
@@ -146,8 +175,14 @@ fun HomeScreenList(
                         background = { RedBackground(degrees = degrees) },
                         dismissContent = {
                             TaskItem(
-                                expense = account.toView(viewModel.checkIfExpired(DateUtils.getDay(), account.due_date)),
+                                expense = account.toView(
+                                    viewModel.checkIfExpired(
+                                        DateUtils.getDay(),
+                                        account.due_date
+                                    )
+                                ),
                                 viewModel = viewModel,
+                                onDelete = onDelete,
                                 navigateToTaskScreen = navigateToTaskScreen
                             )
                         }
@@ -169,24 +204,11 @@ private fun HomeCard(
     LaunchedEffect(true) {
         viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
     }
-    val stateList = remember { mutableStateListOf<MonthlyPayment>() }
 
-    val expensesMonths by viewModel.monthExpenses.collectAsState()
-
-    stateList.swapList(expensesMonths)
-
-    var valueTotal = 0.0
-    var paidOut = 0.0
-    var pending = 0.0
-    for (item in stateList) {
-        valueTotal += item.value
-        if (item.situation) {
-            paidOut += item.value
-        } else {
-            pending += item.value
-        }
-    }
-    val percentage = ((paidOut / valueTotal) * 100).toFloat()
+    val valueTotal by viewModel.valueTotal.collectAsState()
+    val paidOut by viewModel.paidOut.collectAsState()
+    val pending by viewModel.pending.collectAsState()
+    val percentage by viewModel.percentage.collectAsState()
 
     Card(
         shape = Shapes.large,

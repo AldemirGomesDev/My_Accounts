@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.domain.mapper.toDatabase
+import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
 import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
 import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
@@ -26,10 +28,11 @@ import br.com.aldemir.myaccounts.presentation.theme.*
 
 @Composable
 fun RedBackground(degrees: Float) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(HighPriorityColor)
-        .padding(horizontal = LARGEST_PADDING),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(HighPriorityColor)
+            .padding(horizontal = LARGEST_PADDING),
         contentAlignment = Alignment.CenterEnd
     ) {
         Icon(
@@ -46,6 +49,7 @@ fun RedBackground(degrees: Float) {
 fun TaskItem(
     expense: ExpenseView,
     viewModel: MainViewModel,
+    onDelete: (expense: Expense) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
 
@@ -67,38 +71,63 @@ fun TaskItem(
                 .background(MaterialTheme.colors.background),
         ) {
             Row {
-                TextTitleItem(text = expense.name, modifier = Modifier.weight(8f))
                 Box(modifier = Modifier
+                    .weight(8f)
                     .fillMaxWidth()
-                    .weight(1f),
-                    contentAlignment = Alignment.TopEnd
                 ) {
-                    Canvas(
-                        modifier = Modifier
-                            .size(PRIORITY_INDICATOR_SIZE)
-                    ) {
-                        drawCircle(
-                            color = statusColor
+                    Column {
+                        Row {
+                            TextTitleItem(text = expense.name, modifier = Modifier.weight(8f))
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Canvas(
+                                    modifier = Modifier
+                                        .size(PRIORITY_INDICATOR_SIZE)
+                                ) {
+//                                    drawCircle(
+//                                        color = statusColor
+//                                    )
+                                }
+                            }
+                        }
+                        TextDescriptionItem(
+                            text = expense.description,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Divider(
+                            modifier = Modifier.height(SMALL_PADDING),
+                            color = MaterialTheme.colors.background
+                        )
+                        Row {
+                            TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                            TextBodyTwoItem(text = expense.due_date.toString())
+                            TextBodyTwoItem(
+                                modifier = Modifier.fillMaxWidth(),
+                                color = statusColor,
+                                text = stringResource(viewModel.getStatusText(expense.status, expense.expired))
+                            )
+                        }
+                    }
+                }
+                Divider(
+                    modifier = Modifier.width(LARGEST_PADDING),
+                    color = MaterialTheme.colors.background
+                )
+                Box(modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                ) {
+                    IconButton(onClick = { onDelete(expense.toDatabase()) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            tint = Purple200,
+                            contentDescription = null
                         )
                     }
                 }
-            }
-            TextDescriptionItem(
-                text = expense.description,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Divider(
-                modifier = Modifier.height(SMALL_PADDING),
-                color = MaterialTheme.colors.background
-            )
-            Row {
-                TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
-                TextBodyTwoItem(text = expense.due_date.toString())
-                TextBodyTwoItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = statusColor,
-                    text = stringResource(viewModel.getStatusText(expense.status, expense.expired))
-                )
             }
         }
     }
