@@ -101,11 +101,18 @@ fun TaskItem(
                             modifier = Modifier.height(SMALL_PADDING),
                             color = MaterialTheme.colors.background
                         )
-                        Row {
+                        Row(
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
                             TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
                             TextBodyTwoItem(text = expense.due_date.toString())
+                            TextSubTitleItem(
+                                modifier = Modifier.padding(start = LARGEST_PADDING),
+                                text = stringResource(id = R.string.expense_status)
+                            )
                             TextBodyTwoItem(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.padding(start = SMALL_PADDING),
                                 color = statusColor,
                                 text = stringResource(viewModel.getStatusText(expense.status, expense.expired))
                             )

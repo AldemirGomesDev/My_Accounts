@@ -78,8 +78,8 @@ fun HomeScreen(
                     viewModel = viewModel
                 )
                 DisplayAlertDialog(
-                    title = "Aviso",
-                    message = "Deseja confirmar o pagamento?",
+                    title = stringResource(id = R.string.dialog_delete_title),
+                    message = stringResource(id = R.string.dialog_delete_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
@@ -118,9 +118,7 @@ fun HomeScreenList(
     }
 
     val expenses by viewModel.expenses.collectAsState()
-
-    val context = LocalContext.current
-
+    
     if (expenses.isEmpty()) {
         EmptyContent()
     } else {
@@ -131,66 +129,20 @@ fun HomeScreenList(
                     account.id
                 }
             ) { account ->
-                val dismissState = rememberDismissState(
-                    confirmStateChange = {
-                        if (it == DismissValue.DismissedToStart) {
-                            deleteExpense(viewModel, account)
-                            showToast(
-                                context,
-                                context.getString(R.string.delete_expense_message_toast, account.id)
-                            )
-                        }
-                        true
-                    }
-                )
-                val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-
-                val degrees by animateFloatAsState(
-                    if (dismissState.targetValue == DismissValue.Default) 0f
-                    else -45f
-                )
-
-                var itemAppeared by remember { mutableStateOf(false) }
-                LaunchedEffect(key1 = true) {
-                    itemAppeared = true
-                }
-
-                AnimatedVisibility(
-                    visible = itemAppeared && !isDismissed,
-                    enter = expandVertically(
-                        animationSpec = tween(
-                            durationMillis = 300
+                TaskItem(
+                    expense = account.toView(
+                        viewModel.checkIfExpired(
+                            DateUtils.getDay(),
+                            account.due_date
                         )
                     ),
-                    exit = shrinkHorizontally(
-                        animationSpec = tween(
-                            durationMillis = 300
-                        )
-                    )
-                ) {
-                    SwipeToDismiss(
-                        state = dismissState,
-                        directions = setOf(DismissDirection.EndToStart),
-                        dismissThresholds = { FractionalThreshold(fraction = 0.5f) },
-                        background = { RedBackground(degrees = degrees) },
-                        dismissContent = {
-                            TaskItem(
-                                expense = account.toView(
-                                    viewModel.checkIfExpired(
-                                        DateUtils.getDay(),
-                                        account.due_date
-                                    )
-                                ),
-                                viewModel = viewModel,
-                                onDelete = onDelete,
-                                navigateToTaskScreen = navigateToTaskScreen
-                            )
-                        }
-                    )
-                    Divider(
-                        color = LightGray
-                    )
-                }
+                    viewModel = viewModel,
+                    onDelete = onDelete,
+                    navigateToTaskScreen = navigateToTaskScreen
+                )
+                Divider(
+                    color = LightGray
+                )
             }
         }
     }

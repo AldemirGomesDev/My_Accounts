@@ -35,6 +35,7 @@
     <string name="expense_paid_out">Pago</string>
     <string name="expense_to_pay">À pagar</string>
     <string name="expense_expired">Atrasado</string>
+    <string name="expense_status">Status:</string>
 
     <string name="to_do_logo">To-Do Logo</string>
     <string name="total_month">Total no mês</string>
