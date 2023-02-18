@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
@@ -118,7 +119,7 @@ private fun ExpenseDetailContent(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colors.taskItemBackgroundColor)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {
@@ -157,6 +158,10 @@ private fun ExpenseDetailContent(
                     }
                 }
             }
+            Divider(
+                modifier = Modifier.height(0.5.dp),
+                color = MaterialTheme.colors.dividerColor
+            )
             DisplayAlertDialog(
                 title = "Aviso",
                 message = "Deseja confirmar o pagamento?",

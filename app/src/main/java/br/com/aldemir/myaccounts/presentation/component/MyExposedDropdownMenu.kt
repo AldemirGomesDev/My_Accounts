@@ -7,8 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import br.com.aldemir.myaccounts.presentation.theme.Purple200
 import br.com.aldemir.myaccounts.presentation.theme.addAccountBorderColor
 import br.com.aldemir.myaccounts.presentation.theme.addAccountLabelColor
+import br.com.aldemir.myaccounts.presentation.theme.taskItemTextColor
 
 @ExperimentalMaterialApi
 @Composable
@@ -45,9 +47,10 @@ fun MyExposedDropdownMenu(
                 focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
                 unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
                 focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
+                unfocusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
                 textColor = MaterialTheme.colors.addAccountBorderColor,
-                disabledTextColor = MaterialTheme.colors.addAccountBorderColor
+                disabledTextColor = MaterialTheme.colors.addAccountBorderColor,
+                trailingIconColor = MaterialTheme.colors.addAccountBorderColor
             ),
         )
         ExposedDropdownMenu(
@@ -63,7 +66,7 @@ fun MyExposedDropdownMenu(
                         expanded = false
                     }
                 ) {
-                    Text(text = selectionOption)
+                    Text(text = selectionOption, color = MaterialTheme.colors.taskItemTextColor)
                 }
             }
         }

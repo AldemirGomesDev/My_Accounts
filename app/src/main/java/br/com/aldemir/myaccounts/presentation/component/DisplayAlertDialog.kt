@@ -8,6 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.theme.Purple200
 import br.com.aldemir.myaccounts.presentation.theme.White
+import br.com.aldemir.myaccounts.presentation.theme.taskItemTextColor
 
 @Composable
 fun DisplayAlertDialog(
@@ -22,15 +23,17 @@ fun DisplayAlertDialog(
             title = {
                 Text(
                     text = title,
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontSize = MaterialTheme.typography.h6.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.taskItemTextColor,
                 )
             },
             text = {
                 Text(
                     text = message,
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colors.taskItemTextColor,
                 )
             },
             confirmButton = {

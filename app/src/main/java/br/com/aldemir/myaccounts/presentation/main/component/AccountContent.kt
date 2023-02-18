@@ -54,6 +54,7 @@ fun TaskItem(
 ) {
 
     val statusColor = viewModel.getStatusColor(expense.status, expense.expired)
+    val dueDate = String.format("%02d", expense.due_date)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -66,14 +67,17 @@ fun TaskItem(
     ) {
         Column(
             modifier = Modifier
-                .padding(all = LARGE_PADDING)
+                .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.background),
         ) {
-            Row {
+            Row(
+                modifier = Modifier.background(MaterialTheme.colors.background),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Box(modifier = Modifier
                     .weight(8f)
-                    .fillMaxWidth()
+                    .fillMaxSize()
                 ) {
                     Column {
                         Row {
@@ -98,7 +102,7 @@ fun TaskItem(
                             modifier = Modifier.fillMaxWidth()
                         )
                         Divider(
-                            modifier = Modifier.height(SMALL_PADDING),
+                            modifier = Modifier.height(MEDIUM_PADDING),
                             color = MaterialTheme.colors.background
                         )
                         Row(
@@ -106,7 +110,10 @@ fun TaskItem(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
-                            TextBodyTwoItem(text = expense.due_date.toString())
+                            TextBodyTwoItem(
+                                modifier = Modifier.padding(start = SMALL_PADDING),
+                                text = dueDate
+                            )
                             TextSubTitleItem(
                                 modifier = Modifier.padding(start = LARGEST_PADDING),
                                 text = stringResource(id = R.string.expense_status)
@@ -125,12 +132,12 @@ fun TaskItem(
                 )
                 Box(modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight()
+                    .fillMaxSize()
                 ) {
                     IconButton(onClick = { onDelete(expense.toDatabase()) }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            tint = Purple200,
+                            tint = MaterialTheme.colors.taskItemTextColor,
                             contentDescription = null
                         )
                     }

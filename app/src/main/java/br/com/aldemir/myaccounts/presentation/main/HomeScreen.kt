@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -67,7 +68,12 @@ fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
-            Column(modifier = Modifier.padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(MaterialTheme.colors.taskItemBackgroundColor),
+            ) {
                 HomeCard(viewModel = viewModel)
                 HomeScreenList(
                     navigateToTaskScreen = navigateToTaskScreen,
@@ -122,7 +128,9 @@ fun HomeScreenList(
     if (expenses.isEmpty()) {
         EmptyContent()
     } else {
-        LazyColumn(state = state) {
+        LazyColumn(
+            state = state
+        ) {
             items(
                 items = expenses,
                 key = { account ->
@@ -141,7 +149,8 @@ fun HomeScreenList(
                     navigateToTaskScreen = navigateToTaskScreen
                 )
                 Divider(
-                    color = LightGray
+                    modifier = Modifier.height(0.5.dp),
+                    color = MaterialTheme.colors.dividerColor
                 )
             }
         }

@@ -181,7 +181,8 @@ fun HistoricScreenList(
                         navigateToHistoricScreen = navigateToHistoricScreen
                     )
                     Divider(
-                        color = LightGray
+                        modifier = Modifier.height(0.5.dp),
+                        color = MaterialTheme.colors.dividerColor
                     )
                 }
             }

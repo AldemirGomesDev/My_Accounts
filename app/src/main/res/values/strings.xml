@@ -27,7 +27,7 @@
     <string name="empty_content">Nenhuma despesa no mês.</string>
     <string name="button_yes">Sim</string>
     <string name="button_no">Não</string>
-    <string name="dialog_delete_title">Excluir dispesa</string>
+    <string name="dialog_delete_title">Excluir</string>
     <string name="dialog_delete_message">Deseja excluir esta despesa?</string>
 
     <string name="expense_due_date">Vencimento: </string>
