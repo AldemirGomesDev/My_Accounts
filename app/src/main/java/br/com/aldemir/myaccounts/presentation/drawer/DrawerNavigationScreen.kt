@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.TopBar
+import br.com.aldemir.myaccounts.presentation.main.MainViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -26,7 +27,9 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun DrawerNavigationScreen() {
+fun DrawerNavigationScreen(
+    viewModel: MainViewModel
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     val scaffoldState = rememberScaffoldState(drawerState)
@@ -92,7 +95,11 @@ fun DrawerNavigationScreen() {
         },
         content = {
             Box(modifier = Modifier.padding(it)) {
-                SetupNavigation(navHostController = navController, startDestination = Route.Splash.route)
+                SetupNavigation(
+                    navHostController = navController,
+                    startDestination = Route.Splash.route,
+                    viewModel = viewModel
+                )
             }
         }
     )

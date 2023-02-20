@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
     navigateToAddScreen: () -> Unit,
-    viewModel: MainViewModel = hiltViewModel(),
+    viewModel: MainViewModel,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -173,7 +173,7 @@ private fun HomeCard(
 
     Card(
         shape = Shapes.large,
-        backgroundColor = MaterialTheme.colors.fabBackgroundColor,
+        backgroundColor = GreenDark,
         modifier = Modifier.padding(16.dp)
     ) {
         Column(

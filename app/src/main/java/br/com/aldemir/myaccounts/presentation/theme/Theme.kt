@@ -28,15 +28,41 @@ private val LightColorPalette = lightColors(
     */
 )
 
+private val LightThemeColors = lightColors(
+    primary = primaryLight,
+    primaryVariant = primaryLightVariant,
+    onPrimary = Black2,
+    secondary = lightSecondary,
+    secondaryVariant = lightSecondaryVariant,
+    onSecondary = Black2,
+    error = RedErrorDark,
+    onError = RedErrorLight,
+
+    )
+
+private val DarkThemeColors = darkColors(
+    primary = primaryDark,
+    primaryVariant = primaryDarkVariant,
+    onPrimary = White2,
+    secondary = darkSecondary,
+    secondaryVariant = darkSecondaryVariant,
+    onSecondary = White2,
+    error = RedErrorLight,
+    onError = RedErrorLight,
+    //surface = Color(0xFF3c506b),
+
+
+)
+
 @Composable
 fun MyAccountsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        DarkThemeColors
     } else {
-        LightColorPalette
+        LightThemeColors
     }
 
     MaterialTheme(

@@ -1,5 +1,7 @@
 package br.com.aldemir.myaccounts.presentation.main
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
+import br.com.aldemir.myaccounts.presentation.main.state.MainUiState
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
@@ -28,6 +31,9 @@ class MainViewModel @Inject constructor(
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
     private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase
 ) : ViewModel() {
+
+    private val _uiState = mutableStateOf(MainUiState())
+    val uiState: State<MainUiState> = _uiState
 
     private val _expenses = MutableStateFlow<List<Expense>>(emptyList())
     var expenses: StateFlow<List<Expense>> = _expenses
@@ -49,6 +55,10 @@ class MainViewModel @Inject constructor(
 
     private var _percentage = MutableStateFlow(0F)
     val percentage: StateFlow<Float> = _percentage.asStateFlow()
+
+    fun setDarkMode(){
+        _uiState.value = _uiState.value.copy(darkMode = !_uiState.value.darkMode)
+    }
 
     fun onOpenDialogClicked() {
         _showDialog.value = true
