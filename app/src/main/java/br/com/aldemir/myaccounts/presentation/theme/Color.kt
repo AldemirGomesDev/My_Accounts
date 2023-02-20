@@ -44,9 +44,13 @@ val Colors.dividerColor: Color
     @Composable
     get() = if (isLight) LightGray else MediumGray
 
+val Colors.textErrorColor: Color
+    @Composable
+    get() = if (isLight) LightGray else MediumGray
+
 val Colors.addAccountLabelColor: Color
     @Composable
-    get() = if (isLight) Purple200 else MediumGray
+    get() = if (isLight) Purple200 else Purple700
 
 val Colors.addAccountBorderColor: Color
     @Composable

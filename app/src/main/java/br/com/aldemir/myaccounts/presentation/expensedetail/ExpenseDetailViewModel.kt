@@ -53,7 +53,9 @@ class ExpenseDetailViewModel @Inject constructor(
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
         val id = updateMonthlyPaymentUseCase(monthlyPayment)
-        _id.value = id
+        if (id > 0) {
+            _id.value = id
+        }
     }
 
     fun checkPaidOut(situation: Boolean): String {

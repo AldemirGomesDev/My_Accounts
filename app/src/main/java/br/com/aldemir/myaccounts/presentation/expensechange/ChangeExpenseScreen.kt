@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +30,8 @@ fun ChangeExpenseScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    val context = LocalContext.current
+
     viewModel.getAllByIdMonthlyPayment(idMonthlyPayment)
 
     val initValue: String by viewModel.value
@@ -41,7 +44,14 @@ fun ChangeExpenseScreen(
 
     mMonthlyPayments.value = monthlyPayments
 
-    viewModel.value.value = viewModel.getValueWithTwoDecimal(mMonthlyPayments.value.value.toString())
+    val title = context.getString(
+        R.string.expense_month_and_year,
+        mMonthlyPayments.value.year,
+        mMonthlyPayments.value.month
+    )
+
+    viewModel.value.value =
+        viewModel.getValueWithTwoDecimal(mMonthlyPayments.value.value.toString())
 
     LaunchedEffect(key1 = mIdMonthlyPayment) {
         if (mIdMonthlyPayment > 0) navigateToDetailScreen()
@@ -51,7 +61,7 @@ fun ChangeExpenseScreen(
         scaffoldState = scaffoldState,
         content = { padding ->
             ChangeExpenseContent(
-                month = mMonthlyPayments.value.month,
+                title = title,
                 value = initValue,
                 paddingValues = padding,
                 onValueChange = {
@@ -68,7 +78,7 @@ fun ChangeExpenseScreen(
 
 @Composable
 private fun ChangeExpenseContent(
-    month: String,
+    title: String,
     value: String,
     paddingValues: PaddingValues,
     onValueChange: (String) -> Unit,
@@ -92,7 +102,7 @@ private fun ChangeExpenseContent(
     ) {
 
         Text(
-            text = month,
+            text = title,
             color = Purple700,
             fontWeight = FontWeight.Bold,
         )
@@ -129,7 +139,7 @@ private fun ChangeExpenseContent(
         )
         if (value.isEmpty()) Text(
             text = stringResource(id = R.string.invalid_value),
-            color = Purple700,
+            color = MaterialTheme.colors.error,
             fontSize = FONT_SIZE_12
         )
         Divider(

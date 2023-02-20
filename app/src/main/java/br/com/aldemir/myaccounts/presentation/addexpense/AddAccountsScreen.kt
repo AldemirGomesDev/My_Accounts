@@ -122,7 +122,7 @@ private fun AddAccountContent(
         label = stringResource(R.string.form_add_name),
         isError = viewModel.isNameValid.value
     )
-    Text(text = viewModel.nameError.value, color = Purple700, fontSize = FONT_SIZE_12)
+    Text(text = viewModel.nameError.value, color = MaterialTheme.colors.error, fontSize = FONT_SIZE_12)
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
@@ -143,7 +143,7 @@ private fun AddAccountContent(
     )
     Text(
         text = viewModel.valueError.value,
-        color = Purple700,
+        color = MaterialTheme.colors.error,
         fontSize = FONT_SIZE_12
     )
     Divider(
@@ -166,7 +166,7 @@ private fun AddAccountContent(
     )
     Text(
         text = viewModel.descriptionError.value,
-        color = Purple700,
+        color = MaterialTheme.colors.error,
         fontSize = FONT_SIZE_12
     )
     Divider(
