@@ -1,5 +1,7 @@
 package br.com.aldemir.myaccounts.presentation.expensedetail
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +25,7 @@ class ExpenseDetailViewModel @Inject constructor(
     ) : ViewModel()  {
 
     companion object {
-        private const val TAG = "ExpenseDetailFragment"
+        const val TAG = "ExpenseDetailFragment"
     }
 
     private val _monthlyPayment = MutableStateFlow<List<MonthlyPayment>>(emptyList())
@@ -52,14 +54,17 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
+        _id.postValue(0)
         val id = updateMonthlyPaymentUseCase(monthlyPayment)
-        if (id > 0) {
-            _id.value = id
-        }
+        _id.postValue(id)
     }
 
     fun checkPaidOut(situation: Boolean): String {
         return if (situation) MyApplication.appContext.getString(R.string.expense_paid_out)
         else MyApplication.appContext.getString(R.string.expense_pending)
+    }
+
+    fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

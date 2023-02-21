@@ -1,5 +1,8 @@
 package br.com.aldemir.myaccounts.presentation.expensedetail
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,25 +48,23 @@ fun ExpenseDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    viewModel.getAllByIdExpense(expenseId)
+    val id by viewModel.id.observeAsState()
 
-    val stateList = remember { mutableStateListOf<MonthlyPayment>() }
+    LaunchedEffect(key1 = expenseId) {
+        viewModel.getAllByIdExpense(expenseId)
+    }
 
     var monthlyPaymentToUpdate by remember {
         mutableStateOf(MonthlyPayment())
     }
 
-    val id by viewModel.id.observeAsState()
-
     id?.let {
-        viewModel.getAllByIdExpense(it)
+        if (it > 0) viewModel.getAllByIdExpense(expenseId)
     }
 
     val monthlyPayments by viewModel.monthlyPayment.collectAsState()
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
-
-    stateList.swapList(monthlyPayments)
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -146,6 +148,7 @@ private fun ExpenseDetailContent(
     viewModel: ExpenseDetailViewModel,
     index: Int,
 ) {
+    val context = LocalContext.current
 
     val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f)
 
@@ -164,7 +167,12 @@ private fun ExpenseDetailContent(
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {
-                            navigateToChangeScreen(monthlyPayment.id)
+                            if (monthlyPayment.situation)
+                                viewModel.showToast(
+                                    context,
+                                    context.getString(R.string.no_update_message_toast)
+                                )
+                            else navigateToChangeScreen(monthlyPayment.id)
                         },
                     )
                 },
@@ -192,6 +200,7 @@ private fun ExpenseDetailContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 OutlinedButton(
+                    enabled = !monthlyPayment.situation,
                     modifier = Modifier.alpha(buttonAlpha),
                     onClick = {
                         onClickUpdate(index, monthlyPayment)

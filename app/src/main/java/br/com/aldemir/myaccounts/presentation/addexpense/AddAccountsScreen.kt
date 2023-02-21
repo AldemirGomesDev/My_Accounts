@@ -122,7 +122,11 @@ private fun AddAccountContent(
         label = stringResource(R.string.form_add_name),
         isError = viewModel.isNameValid.value
     )
-    Text(text = viewModel.nameError.value, color = MaterialTheme.colors.error, fontSize = FONT_SIZE_12)
+    Text(
+        text = viewModel.nameError.value,
+        color = MaterialTheme.colors.error,
+        fontSize = FONT_SIZE_12
+    )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
         color = MaterialTheme.colors.background
@@ -233,7 +237,9 @@ private fun AddAccountContent(
             .height(52.dp),
         loading = isLoading.value,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Purple200,
+        ),
     ) {
         Text(
             color = Color.White,

@@ -21,6 +21,7 @@
     <string name="add_expense_text_checkbox">Este valor já foi pago esse mês?</string>
     <string name="add_expense_text_checkbox_repeat">Esta conta repete-se?</string>
     <string name="delete_expense_message_toast">Despesa com o código: %1$d excluída com sucesso</string>
+    <string name="no_update_message_toast">Essa despesa já foi paga, por isso não poderá ser alterada</string>
 
     <string name="delete_icon">Delete Icon</string>
     <string name="sad_face_icon">Sad Face Icon</string>

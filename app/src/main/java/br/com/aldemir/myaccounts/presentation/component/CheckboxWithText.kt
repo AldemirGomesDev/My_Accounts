@@ -31,7 +31,10 @@ fun CheckboxWithText(
             checked = isChecked,
             onCheckedChange = { onCheckedChange(it) },
             enabled = true,
-            colors = CheckboxDefaults.colors(MaterialTheme.colors.taskItemTextColor)
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.taskItemTextColor,
+                uncheckedColor = MaterialTheme.colors.taskItemTextColor
+            )
         )
     }
 }

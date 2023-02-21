@@ -83,6 +83,6 @@ val Colors.topAppBarBackGroundColor: Color
     @Composable
     get() = if (isLight) Purple200 else Color.Black
 
-val Colors.paidTextColor: Color
+val Colors.buttonTextColor: Color
     @Composable
     get() = if (isLight) LowPriorityColor else LowPriorityColor
