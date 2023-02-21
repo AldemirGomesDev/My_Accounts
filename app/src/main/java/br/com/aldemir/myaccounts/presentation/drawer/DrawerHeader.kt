@@ -14,10 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Switch
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.TextTitleLarge
@@ -28,7 +25,7 @@ import br.com.aldemir.myaccounts.presentation.theme.*
 fun DrawerHeader(
     viewModel: MainViewModel = hiltViewModel(),
 ) {
-    var switchState by remember { mutableStateOf(false) }
+    var switchState = viewModel.uiState.value.darkMode
 
     Box(
         contentAlignment = Alignment.Center,
@@ -54,7 +51,7 @@ fun DrawerHeader(
                     contentDescription = stringResource(id = R.string.to_do_logo)
                 )
                 TextTitleLarge(
-                    text = "Bem Vindo!",
+                    text = stringResource(id = R.string.expense_welcome),
                     modifier = Modifier.padding(start = LARGE_PADDING)
                 )
             }
@@ -68,7 +65,7 @@ fun DrawerHeader(
 
             ) {
                 Text(
-                    text = "Dark mode",
+                    text = stringResource(id = R.string.expense_dark_mode),
                     color = White,
                     style = Typography.h6,
                     modifier = Modifier.weight(1f)
@@ -80,7 +77,7 @@ fun DrawerHeader(
                     onCheckedChange ={
                         switchState = it
                         viewModel.setDarkMode()
-                    },//called when it is clicked
+                    },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = GreenMedium,
                         uncheckedThumbColor = MaterialTheme.colors.primary,

@@ -1,9 +1,6 @@
 package br.com.aldemir.myaccounts.data.repository.di
 
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepository
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepositoryImpl
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepositoryImpl
+import br.com.aldemir.myaccounts.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,5 +15,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindMonthlyPaymentRepository(useCase: MonthlyPaymentRepositoryImpl) : MonthlyPaymentRepository
+
+    @Binds
+    fun bindDataStoreRepository(repository: DataStoreRepositoryImpl) : DataStoreRepository
 
 }

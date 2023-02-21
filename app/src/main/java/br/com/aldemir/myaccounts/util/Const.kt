@@ -11,6 +11,8 @@ object Const {
     const val LIST_ARGUMENT_KEY = "action"
     const val EXPENSE_ID = "expenseId"
     const val EXPENSE_NAME = "expenseName"
+    const val PREFERENCE_NAME = "my_accounts_preferences"
+    const val PREFERENCE_KEY = "dark_mode_state"
 
     const val TAG = "myAccountMainActivity"
 

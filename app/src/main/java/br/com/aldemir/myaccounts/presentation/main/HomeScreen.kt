@@ -138,12 +138,7 @@ fun HomeScreenList(
                 }
             ) { account ->
                 TaskItem(
-                    expense = account.toView(
-                        viewModel.checkIfExpired(
-                            DateUtils.getDay(),
-                            account.due_date
-                        )
-                    ),
+                    expense = account,
                     viewModel = viewModel,
                     onDelete = onDelete,
                     navigateToTaskScreen = navigateToTaskScreen

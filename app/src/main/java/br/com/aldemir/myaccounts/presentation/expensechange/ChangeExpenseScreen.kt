@@ -161,7 +161,7 @@ private fun ChangeExpenseContent(
         ) {
             Text(
                 color = Color.White,
-                text = stringResource(id = R.string.add_account),
+                text = stringResource(id = R.string.expense_update_button),
                 fontSize = FONT_SIZE_16,
             )
         }

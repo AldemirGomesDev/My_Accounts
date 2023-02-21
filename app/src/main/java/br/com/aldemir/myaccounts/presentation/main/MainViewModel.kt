@@ -7,11 +7,15 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.domain.mapper.toExpenseView
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
+import br.com.aldemir.myaccounts.domain.usecase.darkmode.ReadDarkModeStateUseCase
+import br.com.aldemir.myaccounts.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.myaccounts.presentation.main.state.MainUiState
+import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
@@ -20,26 +24,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
-    private val getAllExpenseUseCase: GetAllExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
-    private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase
+    private val saveDarkModeStateUseCase: SaveDarkModeStateUseCase,
+    private val readDarkModeStateUseCase: ReadDarkModeStateUseCase
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(MainUiState())
     val uiState: State<MainUiState> = _uiState
 
-    private val _expenses = MutableStateFlow<List<Expense>>(emptyList())
-    var expenses: StateFlow<List<Expense>> = _expenses
+    private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
+    var expenses: StateFlow<List<ExpenseView>> = _expenses
 
     private val _monthExpenses = MutableStateFlow<List<MonthlyPayment>>(emptyList())
-    val monthExpenses: StateFlow<List<MonthlyPayment>> = _monthExpenses
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -57,7 +61,8 @@ class MainViewModel @Inject constructor(
     val percentage: StateFlow<Float> = _percentage.asStateFlow()
 
     fun setDarkMode(){
-        _uiState.value = _uiState.value.copy(darkMode = !_uiState.value.darkMode)
+        val isDarkMode = !_uiState.value.darkMode
+        saveDarkModeState(isDarkMode)
     }
 
     fun onOpenDialogClicked() {
@@ -72,27 +77,25 @@ class MainViewModel @Inject constructor(
         _showDialog.value = false
     }
 
-    private fun calculateValues() {
-        clearValues()
-        for (item in monthExpenses.value) {
-            _valueTotal.value += item.value
-            if (item.situation) {
-                _paidOut.value += item.value
-            } else {
-                _pending.value += item.value
+    fun readDarkModeState() {
+        try {
+            viewModelScope.launch {
+                val darkModeState = readDarkModeStateUseCase.invoke()
+                darkModeState
+                .collect {
+                    _uiState.value = _uiState.value.copy(darkMode = it)
+                }
             }
+        } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(darkMode = false)
         }
-        calculatePercentage()
     }
 
-    private fun clearValues() {
-        _valueTotal.value = 0.0
-        _paidOut.value = 0.0
-        _pending.value = 0.0
-    }
-
-    private fun calculatePercentage() {
-        _percentage.value = ((paidOut.value / valueTotal.value) * 100).toFloat()
+    private fun saveDarkModeState(isDarkMode: Boolean) {
+        viewModelScope.launch {
+            saveDarkModeStateUseCase(isDarkMode)
+            readDarkModeState()
+        }
     }
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
@@ -113,21 +116,15 @@ class MainViewModel @Inject constructor(
     }
 
     private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonth>) {
-        var expense: Expense
-        val expenses = ArrayList<Expense>()
-        val status = ArrayList<Boolean>()
-
-        for (item in expensesPerMonth) {
-            expense = Expense()
-            expense.id = item.id_expense
-            expense.name = item.name
-            expense.description = item.description
-            expense.due_date = item.due_date
-            expense.status = item.situation
-
-            status.add(item.situation)
+        val expenses = ArrayList<ExpenseView>()
+        expensesPerMonth.forEach { expensePerMonth ->
+            val expense = expensePerMonth.toExpenseView(
+                checkIfExpired(
+                    DateUtils.getDay(),
+                    expensePerMonth.due_date
+                )
+            )
             expenses.add(expense)
-
         }
         _expenses.value = expenses.toList()
     }
@@ -137,7 +134,7 @@ class MainViewModel @Inject constructor(
         contentString.set(R.string.delete_expense_message_toast)
     }
 
-    fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
+    private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
         return currentDay > dueDay
     }
 
@@ -151,5 +148,28 @@ class MainViewModel @Inject constructor(
         return if (status) R.string.expense_paid_out
         else if (expired) R.string.expense_expired
         else R.string.expense_pending
+    }
+
+    private fun calculateValues() {
+        clearValues()
+        for (item in _monthExpenses.value) {
+            _valueTotal.value += item.value
+            if (item.situation) {
+                _paidOut.value += item.value
+            } else {
+                _pending.value += item.value
+            }
+        }
+        calculatePercentage()
+    }
+
+    private fun clearValues() {
+        _valueTotal.value = 0.0
+        _paidOut.value = 0.0
+        _pending.value = 0.0
+    }
+
+    private fun calculatePercentage() {
+        _percentage.value = ((paidOut.value / valueTotal.value) * 100).toFloat()
     }
 }

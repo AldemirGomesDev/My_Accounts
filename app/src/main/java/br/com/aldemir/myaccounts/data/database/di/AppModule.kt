@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import br.com.aldemir.myaccounts.MyApplication
 import br.com.aldemir.myaccounts.data.database.ConfigDataBase
 import dagger.Module
 import dagger.Provides
@@ -22,6 +23,9 @@ object AppModule {
             database.execSQL("ALTER TABLE Expense ADD COLUMN due_date INTEGER")
         }
     }
+
+    @Provides
+    fun provideContext() = MyApplication.appContext
 
     @Singleton
     @Provides

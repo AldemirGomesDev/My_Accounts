@@ -30,6 +30,8 @@
     <string name="dialog_delete_title">Excluir</string>
     <string name="dialog_delete_message">Deseja excluir esta despesa?</string>
 
+    <string name="expense_dark_mode">Dark mode</string>
+    <string name="expense_welcome">Bem vindo!</string>
     <string name="expense_due_date">Vencimento: </string>
     <string name="expense_pending">Pendente</string>
     <string name="expense_paid_out">Pago</string>
@@ -37,6 +39,7 @@
     <string name="expense_expired">Atrasado</string>
     <string name="expense_status">Status:</string>
     <string name="expense_month_and_year">%1$s - %2$s</string>
+    <string name="expense_update_button">Atualizar</string>
 
     <string name="to_do_logo">To-Do Logo</string>
     <string name="total_month">Total no mês</string>
