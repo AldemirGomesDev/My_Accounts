@@ -176,7 +176,7 @@ fun HistoricScreenList(
                     }
                 ) { account ->
                     HistoricItem(
-                        expense = account.toView(viewModel.checkIfExpired(DateUtils.getDay(), account.due_date)),
+                        expense = account.toView(viewModel.checkIfExpired(account.due_date, account.month, account.year)),
                         viewModel = viewModel,
                         navigateToHistoricScreen = navigateToHistoricScreen
                     )
@@ -198,6 +198,7 @@ fun HistoricItem(
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val statusColor = viewModel.getStatusColor(expense.situation, expense.expired)
+    val dueDate = String.format("%02d", expense.due_date)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -242,7 +243,7 @@ fun HistoricItem(
             )
             Row {
                 TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
-                TextBodyTwoItem(text = expense.due_date.toString())
+                TextBodyTwoItem(text = dueDate)
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(viewModel.getStatusText(expense.situation, expense.expired)),

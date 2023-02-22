@@ -16,16 +16,17 @@ import br.com.aldemir.myaccounts.domain.usecase.GetAllMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
+import br.com.aldemir.myaccounts.util.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HistoricViewModel @Inject constructor (
+class HistoricViewModel @Inject constructor(
     private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
     val isLoading: MutableState<Boolean> = mutableStateOf(false)
 
@@ -66,8 +67,8 @@ class HistoricViewModel @Inject constructor (
         _yearsList.value = myYears
     }
 
-    fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
-        return currentDay > dueDay
+    fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
+        return (year == DateUtils.getYear() && month == DateUtils.getMonth() && DateUtils.getDay() > dueDay)
     }
 
     fun getStatusColor(status: Boolean, expired: Boolean): Color {
