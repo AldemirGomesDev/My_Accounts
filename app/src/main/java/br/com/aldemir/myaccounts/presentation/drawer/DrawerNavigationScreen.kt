@@ -4,20 +4,17 @@ package br.com.aldemir.myaccounts.presentation.drawer
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.TopBar
-import br.com.aldemir.myaccounts.presentation.main.MainViewModel
+import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -28,7 +25,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigationScreen(
-    viewModel: MainViewModel
+    viewModel: HomeViewModel
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 

@@ -11,7 +11,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.addexpense.AddAccountScreen
+import br.com.aldemir.myaccounts.presentation.expense.addexpense.AddExpenseScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import com.google.accompanist.navigation.animation.composable
 
@@ -43,7 +43,7 @@ fun NavGraphBuilder.addAccountComposable(
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
         },
     ) {
-        AddAccountScreen(
+        AddExpenseScreen(
             navigateToHomeScreen = {
                 navHostController.navigate(
                     Route.Home.route

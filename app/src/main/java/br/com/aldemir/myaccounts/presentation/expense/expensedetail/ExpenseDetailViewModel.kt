@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expensedetail
+package br.com.aldemir.myaccounts.presentation.expense.expensedetail
 
 import android.content.Context
 import android.widget.Toast

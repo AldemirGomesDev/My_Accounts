@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expensechange
+package br.com.aldemir.myaccounts.presentation.expense.expensechange
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

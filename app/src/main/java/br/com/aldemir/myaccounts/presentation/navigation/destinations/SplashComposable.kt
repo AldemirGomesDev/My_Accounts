@@ -6,7 +6,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.SplashScreen
+import br.com.aldemir.myaccounts.presentation.splash.SplashScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import com.google.accompanist.navigation.animation.composable
 

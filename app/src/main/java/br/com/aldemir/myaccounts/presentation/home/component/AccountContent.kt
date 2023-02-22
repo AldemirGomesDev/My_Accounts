@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.main.component
+package br.com.aldemir.myaccounts.presentation.home.component
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
@@ -22,7 +22,7 @@ import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
 import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
 import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
 import br.com.aldemir.myaccounts.presentation.component.TextTitleItem
-import br.com.aldemir.myaccounts.presentation.main.MainViewModel
+import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.*
 
@@ -48,7 +48,7 @@ fun RedBackground(degrees: Float) {
 @Composable
 fun TaskItem(
     expense: ExpenseView,
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     onDelete: (expense: Expense) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {

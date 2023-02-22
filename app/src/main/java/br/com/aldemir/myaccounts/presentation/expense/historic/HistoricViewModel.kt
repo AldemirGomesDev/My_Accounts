@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.historic
+package br.com.aldemir.myaccounts.presentation.expense.historic
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.historic
+package br.com.aldemir.myaccounts.presentation.expense.historic
 
 import android.annotation.SuppressLint
 import android.content.Context

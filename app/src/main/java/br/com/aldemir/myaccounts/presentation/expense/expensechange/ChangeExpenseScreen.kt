@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.expensechange
+package br.com.aldemir.myaccounts.presentation.expense.expensechange
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions

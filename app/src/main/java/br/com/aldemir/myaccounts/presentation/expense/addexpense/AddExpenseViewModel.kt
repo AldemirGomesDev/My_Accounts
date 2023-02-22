@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.addexpense
+package br.com.aldemir.myaccounts.presentation.expense.addexpense
 
 import android.util.Log
 import androidx.compose.runtime.MutableState

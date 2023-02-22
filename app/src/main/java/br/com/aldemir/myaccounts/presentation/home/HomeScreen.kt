@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.main
+package br.com.aldemir.myaccounts.presentation.home
 
 import android.app.Activity
 import android.content.Context
@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,14 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.mapper.toView
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
-import br.com.aldemir.myaccounts.presentation.main.component.RedBackground
-import br.com.aldemir.myaccounts.presentation.main.component.TaskItem
+import br.com.aldemir.myaccounts.presentation.home.component.TaskItem
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +45,7 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
     navigateToAddScreen: () -> Unit,
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -114,7 +110,7 @@ fun HomeScreen(
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreenList(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
     onDelete: (expense: Expense) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
@@ -154,7 +150,7 @@ fun HomeScreenList(
 
 @Composable
 private fun HomeCard(
-    viewModel: MainViewModel,
+    viewModel: HomeViewModel,
 ) {
 
     LaunchedEffect(true) {
@@ -327,7 +323,7 @@ fun ListFab(
     }
 }
 
-private fun deleteExpense(viewModel: MainViewModel, expense: Expense) {
+private fun deleteExpense(viewModel: HomeViewModel, expense: Expense) {
     CoroutineScope(Dispatchers.Default).launch {
         viewModel.delete(expense)
         delay(300)
@@ -339,6 +335,6 @@ private fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-private fun getAllExpenseMonth(viewModel: MainViewModel) {
+private fun getAllExpenseMonth(viewModel: HomeViewModel) {
     viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
 }

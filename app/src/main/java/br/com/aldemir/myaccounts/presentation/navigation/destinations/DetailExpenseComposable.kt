@@ -10,7 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import br.com.aldemir.myaccounts.presentation.expensedetail.ExpenseDetailScreen
+import br.com.aldemir.myaccounts.presentation.expense.expensedetail.ExpenseDetailScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.util.Const
 import br.com.aldemir.myaccounts.util.emptyString

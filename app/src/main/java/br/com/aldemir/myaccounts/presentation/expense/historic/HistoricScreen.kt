@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.historic
+package br.com.aldemir.myaccounts.presentation.expense.historic
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas

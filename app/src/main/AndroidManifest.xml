@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:name=".MyApplication"
         android:theme="@style/Theme.MyAccounts">
-        <activity android:name=".presentation.main.MainActivity"
+        <activity android:name=".presentation.shared.view.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">

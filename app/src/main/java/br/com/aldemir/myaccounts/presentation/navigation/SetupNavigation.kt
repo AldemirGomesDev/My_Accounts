@@ -5,7 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.main.MainViewModel
+import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.destinations.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -16,7 +16,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 fun SetupNavigation(
     navHostController: NavHostController,
     startDestination: String,
-    viewModel: MainViewModel
+    viewModel: HomeViewModel
 )
 {
     AnimatedNavHost(

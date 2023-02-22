@@ -9,7 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
-import br.com.aldemir.myaccounts.presentation.historic.HistoricScreen
+import br.com.aldemir.myaccounts.presentation.expense.historic.HistoricScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 
 @ExperimentalFoundationApi

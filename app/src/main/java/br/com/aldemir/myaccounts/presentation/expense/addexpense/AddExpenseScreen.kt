@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.addexpense
+package br.com.aldemir.myaccounts.presentation.expense.addexpense
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -31,7 +31,7 @@ import java.util.*
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun AddAccountScreen(
+fun AddExpenseScreen(
     viewModel: AddExpenseViewModel = hiltViewModel(),
     navigateToHomeScreen: () -> Unit,
 ) {

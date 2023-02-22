@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation
+package br.com.aldemir.myaccounts.presentation.splash
 
 
 import androidx.compose.animation.core.animateDpAsState

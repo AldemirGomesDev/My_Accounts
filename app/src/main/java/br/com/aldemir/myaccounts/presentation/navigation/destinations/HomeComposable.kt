@@ -6,8 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.main.HomeScreen
-import br.com.aldemir.myaccounts.presentation.main.MainViewModel
+import br.com.aldemir.myaccounts.presentation.home.HomeScreen
+import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import com.google.accompanist.navigation.animation.composable
 
@@ -17,7 +17,7 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalAnimationApi
 fun NavGraphBuilder.homeComposable(
     navHostController: NavHostController,
-    viewModel: MainViewModel
+    viewModel: HomeViewModel
 ) {
     composable(
         route = Route.Home.route,

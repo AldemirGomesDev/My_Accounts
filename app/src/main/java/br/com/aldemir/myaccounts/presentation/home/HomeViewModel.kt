@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.main
+package br.com.aldemir.myaccounts.presentation.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +14,7 @@ import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.SaveDarkModeStateUseCase
-import br.com.aldemir.myaccounts.presentation.main.state.MainUiState
+import br.com.aldemir.myaccounts.presentation.home.state.MainUiState
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
@@ -24,12 +24,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,

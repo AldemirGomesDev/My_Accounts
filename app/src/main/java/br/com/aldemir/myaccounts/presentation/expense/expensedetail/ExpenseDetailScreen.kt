@@ -1,8 +1,5 @@
-package br.com.aldemir.myaccounts.presentation.expensedetail
+package br.com.aldemir.myaccounts.presentation.expense.expensedetail
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,7 +19,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,7 +27,6 @@ import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.presentation.component.*
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.emptyString
-import br.com.aldemir.myaccounts.util.swapList
 import br.com.aldemir.myaccounts.util.toCurrency
 
 
