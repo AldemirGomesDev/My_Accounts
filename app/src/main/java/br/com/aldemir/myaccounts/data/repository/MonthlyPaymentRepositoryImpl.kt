@@ -3,6 +3,7 @@ package br.com.aldemir.myaccounts.data.repository
 import br.com.aldemir.myaccounts.data.database.MonthlyPaymentDao
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 import javax.inject.Inject
 
 class MonthlyPaymentRepositoryImpl @Inject constructor(
@@ -20,7 +21,7 @@ class MonthlyPaymentRepositoryImpl @Inject constructor(
         return monthlyPaymentDao.delete(monthlyPayment)
     }
 
-    override suspend fun getAllByIdExpense(id: Int): List<MonthlyPayment> {
+    override suspend fun getAllByIdExpense(id: Int): List<MonthlyPaymentDomain> {
         return monthlyPaymentDao.getById(id)
     }
 

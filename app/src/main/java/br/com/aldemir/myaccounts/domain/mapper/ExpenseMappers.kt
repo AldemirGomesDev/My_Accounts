@@ -2,8 +2,11 @@ package br.com.aldemir.myaccounts.domain.mapper
 
 import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpensePerMonthView
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
+import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
 
 fun Expense.toView(expired: Boolean) = ExpenseView(
     id = id,
@@ -34,6 +37,26 @@ fun ExpensePerMonth.toExpenseView(expired: Boolean) = ExpenseView(
     due_date = due_date,
     status = situation,
     expired = expired
+)
+
+fun MonthlyPaymentDomain.toView(expired: Boolean) = MonthlyPaymentView(
+    id = id,
+    id_expense = id_expense,
+    year = year,
+    month = month,
+    value = value,
+    due_date = due_date,
+    situation = situation,
+    expired = expired
+)
+
+fun MonthlyPaymentView.toDatabase() = MonthlyPayment(
+    id = id,
+    id_expense = id_expense,
+    year = year,
+    month = month,
+    value = value,
+    situation = situation,
 )
 
 fun ExpenseView.toDatabase() = Expense(

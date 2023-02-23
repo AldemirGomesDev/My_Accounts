@@ -1,10 +1,9 @@
 package br.com.aldemir.myaccounts.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import br.com.aldemir.myaccounts.domain.model.Expense
 import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 
 @Dao
 interface MonthlyPaymentDao {
@@ -21,8 +20,9 @@ interface MonthlyPaymentDao {
     @Delete
     suspend fun delete(monthlyPayment: MonthlyPayment): Int
 
-    @Query("SELECT * FROM monthly_payment WHERE id_expense = :id")
-    suspend fun getById(id: Int): List<MonthlyPayment>
+    @Query("SELECT M.id, M.id_expense, M.year, M.month, M.value, E.due_date, M.situation " +
+            "FROM monthly_payment as M INNER JOIN Expense as E on M.id_expense = E.id WHERE M.id_expense = :id")
+    suspend fun getById(id: Int): List<MonthlyPaymentDomain>
 
     @Query("SELECT * FROM monthly_payment WHERE id = :id")
     suspend fun getByIdMonthlyPayment(id: Int): MonthlyPayment

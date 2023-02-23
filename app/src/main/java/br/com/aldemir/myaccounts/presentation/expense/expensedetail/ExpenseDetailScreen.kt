@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.presentation.component.*
+import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.toCurrency
@@ -50,7 +50,7 @@ fun ExpenseDetailScreen(
     }
 
     var monthlyPaymentToUpdate by remember {
-        mutableStateOf(MonthlyPayment())
+        mutableStateOf(MonthlyPaymentView())
     }
 
     id?.let {
@@ -105,7 +105,7 @@ fun ExpenseDetailScreen(
 }
 
 private fun updateMonthlyPayment(
-    monthlyPayment: MonthlyPayment,
+    monthlyPayment: MonthlyPaymentView,
     viewModel: ExpenseDetailViewModel
 ) {
     viewModel.updateMonthlyPayment(monthlyPayment)
@@ -114,8 +114,8 @@ private fun updateMonthlyPayment(
 @Composable
 private fun ExpenseDetailList(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
-    monthlyPayments: List<MonthlyPayment>,
-    onClickUpdate: (Int, MonthlyPayment) -> Unit,
+    monthlyPayments: List<MonthlyPaymentView>,
+    onClickUpdate: (Int, MonthlyPaymentView) -> Unit,
     viewModel: ExpenseDetailViewModel
 ) {
     val state = rememberLazyListState()
@@ -138,12 +138,14 @@ private fun ExpenseDetailList(
 @Composable
 private fun ExpenseDetailContent(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
-    monthlyPayment: MonthlyPayment,
-    onClickUpdate: (Int, MonthlyPayment) -> Unit,
+    monthlyPayment: MonthlyPaymentView,
+    onClickUpdate: (Int, MonthlyPaymentView) -> Unit,
     viewModel: ExpenseDetailViewModel,
     index: Int,
 ) {
     val context = LocalContext.current
+
+    val statusColor = viewModel.getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
 
     val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f)
 
@@ -191,7 +193,7 @@ private fun ExpenseDetailContent(
                 TextBodyTwoItem(
                     modifier = Modifier.padding(start = SMALL_PADDING),
                     text = viewModel.checkPaidOut(monthlyPayment.situation),
-                    color = if (monthlyPayment.situation) LowPriorityColor else MediumPriorityColor,
+                    color = statusColor,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 OutlinedButton(
