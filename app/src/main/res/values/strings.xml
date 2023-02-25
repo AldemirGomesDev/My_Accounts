@@ -34,6 +34,7 @@
     <string name="expense_dark_mode">Dark mode</string>
     <string name="expense_welcome">Bem vindo!</string>
     <string name="expense_due_date">Vencimento: </string>
+    <string name="expense_due_date_day">Dia do vencimento </string>
     <string name="expense_pending">Pendente</string>
     <string name="expense_paid_out">Pago</string>
     <string name="expense_to_pay">À pagar</string>
@@ -41,6 +42,7 @@
     <string name="expense_status">Status:</string>
     <string name="expense_month_and_year">%1$s - %2$s</string>
     <string name="expense_update_button">Atualizar</string>
+    <string name="how_many_times_repeat">Quantas vezes repete-se?</string>
 
     <string name="to_do_logo">To-Do Logo</string>
     <string name="total_month">Total no mês</string>

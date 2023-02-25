@@ -8,6 +8,9 @@ object Const {
     const val EXPENSE_CHANGE_SCREEN = "expenseChange"
     const val HISTORIC_SCREEN = "historic"
     const val SPLASH_SCREEN_DELAY = 1000L
+
+    const val RECIPE_SCREEN = "addRecipe"
+
     const val LIST_ARGUMENT_KEY = "action"
     const val EXPENSE_ID = "expenseId"
     const val EXPENSE_NAME = "expenseName"

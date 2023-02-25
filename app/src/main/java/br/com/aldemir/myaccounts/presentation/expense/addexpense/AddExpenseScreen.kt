@@ -178,7 +178,7 @@ private fun AddAccountContent(
         color = MaterialTheme.colors.background
     )
     MyExposedDropdownMenu(
-        label = "Dia do vencimento:",
+        label = stringResource(id = R.string.expense_due_date_day),
         listItems = dueDateOptions.toList(),
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
@@ -214,7 +214,7 @@ private fun AddAccountContent(
     )
     if (viewModel.isAccountRepeat.value) {
         MyExposedDropdownMenu(
-            label = "Quantas vezes repete-se?",
+            label = stringResource(id = R.string.how_many_times_repeat),
             listItems = repeatOptions.toList(),
             selected = viewModel.amountThatRepeatsSelected.value.toString(),
             onItemSelected = { item ->

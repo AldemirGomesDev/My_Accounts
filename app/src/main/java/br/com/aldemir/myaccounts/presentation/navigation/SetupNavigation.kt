@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.destinations.*
+import br.com.aldemir.myaccounts.presentation.navigation.destinations.recipe.addRecipeComposable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
 @ExperimentalFoundationApi
@@ -37,5 +38,7 @@ fun SetupNavigation(
         changeExpenseComposable(navHostController)
 
         historicComposable(navHostController)
+
+        addRecipeComposable(navHostController)
     }
 }
