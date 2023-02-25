@@ -1,6 +1,6 @@
 package br.com.aldemir.myaccounts.domain.usecase.darkmode
 
-import br.com.aldemir.myaccounts.data.repository.DataStoreRepository
+import br.com.aldemir.myaccounts.data.repository.darktheme.DataStoreRepository
 import javax.inject.Inject
 
 class SaveDarkModeStateUseCaseImpl @Inject constructor(

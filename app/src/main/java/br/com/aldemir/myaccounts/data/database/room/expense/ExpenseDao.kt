@@ -1,8 +1,8 @@
-package br.com.aldemir.myaccounts.data.database
+package br.com.aldemir.myaccounts.data.database.room.expense
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.data.model.Expense
 
 @Dao
 interface ExpenseDao {

@@ -1,7 +1,6 @@
-package br.com.aldemir.myaccounts.data.repository
+package br.com.aldemir.myaccounts.data.repository.expense
 
-import androidx.lifecycle.LiveData
-import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.data.model.Expense
 
 interface ExpenseRepository {
     suspend fun insertExpense(expense: Expense): Long

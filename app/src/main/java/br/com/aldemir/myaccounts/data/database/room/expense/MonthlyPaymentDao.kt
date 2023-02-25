@@ -1,8 +1,8 @@
-package br.com.aldemir.myaccounts.data.database
+package br.com.aldemir.myaccounts.data.database.room.expense
 
 import androidx.room.*
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.data.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 
 @Dao

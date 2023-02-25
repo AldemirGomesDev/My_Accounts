@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.data.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
 import br.com.aldemir.myaccounts.presentation.home.component.TaskItem

@@ -1,7 +1,8 @@
-package br.com.aldemir.myaccounts.data.repository
+package br.com.aldemir.myaccounts.data.repository.expense
 
-import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.data.database.ExpenseDao
+import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.database.room.expense.ExpenseDao
+import br.com.aldemir.myaccounts.data.repository.expense.ExpenseRepository
 import javax.inject.Inject
 
 class ExpenseRepositoryImpl @Inject constructor(

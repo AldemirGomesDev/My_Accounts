@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.mapper.toExpenseView
-import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.data.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.*
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.SaveDarkModeStateUseCase

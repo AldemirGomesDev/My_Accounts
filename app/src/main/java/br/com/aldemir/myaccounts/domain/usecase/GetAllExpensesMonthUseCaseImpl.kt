@@ -1,7 +1,7 @@
 package br.com.aldemir.myaccounts.domain.usecase
 
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.repository.expense.MonthlyPaymentRepository
+import br.com.aldemir.myaccounts.data.model.MonthlyPayment
 import javax.inject.Inject
 
 class GetAllExpensesMonthUseCaseImpl @Inject constructor(

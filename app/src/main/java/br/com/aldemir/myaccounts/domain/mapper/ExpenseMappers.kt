@@ -1,8 +1,8 @@
 package br.com.aldemir.myaccounts.domain.mapper
 
-import br.com.aldemir.myaccounts.domain.model.Expense
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.data.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpensePerMonthView
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView

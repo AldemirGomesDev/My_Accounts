@@ -7,11 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.MyApplication
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
 import br.com.aldemir.myaccounts.domain.mapper.toView
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.usecase.GetAllByIdExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
@@ -76,15 +74,16 @@ class ExpenseDetailViewModel @Inject constructor(
         return (year == DateUtils.getYear() && month == DateUtils.getMonth() && DateUtils.getDay() > dueDay)
     }
 
-    fun checkPaidOut(situation: Boolean): String {
-        return if (situation) MyApplication.appContext.getString(R.string.expense_paid_out)
-        else MyApplication.appContext.getString(R.string.expense_pending)
-    }
-
     fun getStatusColor(status: Boolean, expired: Boolean): Color {
         return if (status) LowPriorityColor
         else if (expired) HighPriorityColor
         else MediumPriorityColor
+    }
+
+    fun getStatusText(status: Boolean, expired: Boolean): Int {
+        return if (status) R.string.expense_paid_out
+        else if (expired) R.string.expense_expired
+        else R.string.expense_pending
     }
 
     fun showToast(context: Context, message: String) {

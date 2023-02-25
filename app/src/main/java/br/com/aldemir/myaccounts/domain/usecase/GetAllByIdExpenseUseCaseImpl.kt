@@ -1,6 +1,6 @@
 package br.com.aldemir.myaccounts.domain.usecase
 
-import br.com.aldemir.myaccounts.data.repository.MonthlyPaymentRepository
+import br.com.aldemir.myaccounts.data.repository.expense.MonthlyPaymentRepository
 import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 import javax.inject.Inject
 

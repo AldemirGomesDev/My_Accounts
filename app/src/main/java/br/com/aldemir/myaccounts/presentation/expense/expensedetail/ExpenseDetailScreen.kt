@@ -146,6 +146,7 @@ private fun ExpenseDetailContent(
     val context = LocalContext.current
 
     val statusColor = viewModel.getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
+    val resourceId = viewModel.getStatusText(monthlyPayment.situation, monthlyPayment.expired)
 
     val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f)
 
@@ -192,7 +193,7 @@ private fun ExpenseDetailContent(
                 )
                 TextBodyTwoItem(
                     modifier = Modifier.padding(start = SMALL_PADDING),
-                    text = viewModel.checkPaidOut(monthlyPayment.situation),
+                    text = stringResource(id = resourceId),
                     color = statusColor,
                 )
                 Spacer(modifier = Modifier.weight(1f))

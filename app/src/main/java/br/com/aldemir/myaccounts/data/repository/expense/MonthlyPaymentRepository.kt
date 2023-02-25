@@ -1,7 +1,7 @@
-package br.com.aldemir.myaccounts.data.repository
+package br.com.aldemir.myaccounts.data.repository.expense
 
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.domain.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.data.model.MonthlyPayment
 import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 
 interface MonthlyPaymentRepository {
