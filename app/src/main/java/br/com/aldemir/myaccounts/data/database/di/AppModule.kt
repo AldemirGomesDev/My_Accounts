@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import br.com.aldemir.myaccounts.data.database.ConfigDataBase
+import br.com.aldemir.myaccounts.MyApplication
+import br.com.aldemir.myaccounts.data.database.room.ConfigDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,23 @@ object AppModule {
         }
     }
 
+    private val MIGRATION_2_3 = object : Migration(2,3){
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `recipe` (" +
+                    "`id` INTEGER, " +
+                    "`name` TEXT, " +
+                    "`description` TEXT, " +
+                    "`created_at` INTEGER, " +
+                    "`due_date` INTEGER, " +
+                    "`status` INTEGER, " +
+                    "PRIMARY KEY(`id`))")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `recipe_monthly` (`id` INTEGER, PRIMARY KEY(`id`))")
+        }
+    }
+
+    @Provides
+    fun provideContext() = MyApplication.appContext
+
     @Singleton
     @Provides
     fun provideConfigDataBase(
@@ -31,7 +49,8 @@ object AppModule {
         app,
         ConfigDataBase::class.java,
         "AccountDataBase"
-    ).addMigrations(MIGRATION_1_2).build()
+    ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+        .build()
 
     @Singleton
     @Provides
@@ -41,4 +60,11 @@ object AppModule {
     @Provides
     fun provideMonthlyPaymentDao(db: ConfigDataBase) = db.monthlyPaymentDao()
 
+    @Singleton
+    @Provides
+    fun provideRecipeDao(db: ConfigDataBase) = db.recipeDao()
+
+    @Singleton
+    @Provides
+    fun provideRecipeMonthlyDao(db: ConfigDataBase) = db.recipeMonthlyDao()
 }

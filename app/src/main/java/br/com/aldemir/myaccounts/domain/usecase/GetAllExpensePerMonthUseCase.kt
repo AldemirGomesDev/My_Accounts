@@ -1,6 +1,6 @@
 package br.com.aldemir.myaccounts.domain.usecase
 
-import br.com.aldemir.myaccounts.domain.model.ExpensePerMonth
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
 
 
 interface GetAllExpensePerMonthUseCase {

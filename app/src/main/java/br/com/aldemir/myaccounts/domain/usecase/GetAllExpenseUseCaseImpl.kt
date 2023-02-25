@@ -1,7 +1,7 @@
 package br.com.aldemir.myaccounts.domain.usecase
 
-import br.com.aldemir.myaccounts.data.repository.ExpenseRepository
-import br.com.aldemir.myaccounts.domain.model.Expense
+import br.com.aldemir.myaccounts.data.repository.expense.ExpenseRepository
+import br.com.aldemir.myaccounts.data.model.Expense
 import javax.inject.Inject
 
 class GetAllExpenseUseCaseImpl @Inject constructor(
