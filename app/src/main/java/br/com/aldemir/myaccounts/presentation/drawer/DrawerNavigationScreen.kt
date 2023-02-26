@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.TopBar
-import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigationScreen(
-    viewModel: HomeViewModel
+    viewModel: ListExpenseViewModel
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 

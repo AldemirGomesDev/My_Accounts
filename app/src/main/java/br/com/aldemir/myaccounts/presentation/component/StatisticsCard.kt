@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.presentation.home.LinearProgressIndicatorSample
 import br.com.aldemir.myaccounts.presentation.shared.model.CardState
 import br.com.aldemir.myaccounts.presentation.shared.model.CardType
 import br.com.aldemir.myaccounts.presentation.theme.GreenDark

@@ -1,37 +1,28 @@
-package br.com.aldemir.myaccounts.presentation.home
+package br.com.aldemir.myaccounts.presentation.expense.listexpense
 
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
+import br.com.aldemir.myaccounts.presentation.component.FabAdd
 import br.com.aldemir.myaccounts.presentation.component.StatisticsCard
-import br.com.aldemir.myaccounts.presentation.home.component.TaskItem
 import br.com.aldemir.myaccounts.presentation.shared.model.CardState
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
@@ -44,10 +35,10 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun HomeScreen(
+fun ListExpenseScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
     navigateToAddScreen: () -> Unit,
-    viewModel: HomeViewModel,
+    viewModel: ListExpenseViewModel,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -103,7 +94,7 @@ fun HomeScreen(
             }
         },
         floatingActionButton = {
-            ListFab(onFabClicked = navigateToAddScreen)
+            FabAdd(onFabClicked = navigateToAddScreen)
         }
     )
 }
@@ -112,7 +103,7 @@ fun HomeScreen(
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreenList(
-    viewModel: HomeViewModel,
+    viewModel: ListExpenseViewModel,
     onDelete: (expense: Expense) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
@@ -135,7 +126,7 @@ fun HomeScreenList(
                     account.id
                 }
             ) { account ->
-                TaskItem(
+                ListExpenseItem(
                     expense = account,
                     viewModel = viewModel,
                     onDelete = onDelete,
@@ -152,7 +143,7 @@ fun HomeScreenList(
 
 @Composable
 private fun HomeCard(
-    viewModel: HomeViewModel,
+    viewModel: ListExpenseViewModel,
 ) {
 
     LaunchedEffect(true) {
@@ -174,47 +165,7 @@ private fun HomeCard(
     StatisticsCard(cardState = cardState)
 }
 
-@Composable
-fun LinearProgressIndicatorSample(
-    value: Float,
-    modifier: Modifier
-) {
-    val animatedProgress = animateFloatAsState(
-        targetValue = value,
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-    ).value
-
-    Box(modifier = modifier) {
-        LinearProgressIndicator(
-            modifier = Modifier.fillMaxSize(),
-            progress = animatedProgress,
-            color = LowPriorityColor,
-            backgroundColor = MediumPriorityColor
-        )
-    }
-}
-
-@Composable
-fun ListFab(
-    onFabClicked: () -> Unit
-) {
-    FloatingActionButton(
-        onClick = {
-            onFabClicked()
-        },
-        backgroundColor = MaterialTheme.colors.fabBackgroundColor
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(
-                id = R.string.add_account
-            ),
-            tint = Color.White
-        )
-    }
-}
-
-private fun deleteExpense(viewModel: HomeViewModel, expense: Expense) {
+private fun deleteExpense(viewModel: ListExpenseViewModel, expense: Expense) {
     CoroutineScope(Dispatchers.Default).launch {
         viewModel.delete(expense)
         delay(300)
@@ -226,6 +177,6 @@ private fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-private fun getAllExpenseMonth(viewModel: HomeViewModel) {
+private fun getAllExpenseMonth(viewModel: ListExpenseViewModel) {
     viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
 }

@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.TextTitleLarge
-import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.theme.*
 
 @Composable
 fun DrawerHeader(
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: ListExpenseViewModel = hiltViewModel(),
 ) {
     var switchState = viewModel.uiState.value.darkMode
 

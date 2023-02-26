@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.home
+package br.com.aldemir.myaccounts.presentation.expense.listexpense
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +16,7 @@ import br.com.aldemir.myaccounts.domain.usecase.darkmode.SaveDarkModeStateUseCas
 import br.com.aldemir.myaccounts.domain.usecase.expense.delete.DeleteExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensePerMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensesMonthUseCase
-import br.com.aldemir.myaccounts.presentation.home.state.MainUiState
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.state.MainUiState
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class ListExpenseViewModel @Inject constructor(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,

@@ -6,8 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.home.HomeScreen
-import br.com.aldemir.myaccounts.presentation.home.HomeViewModel
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseScreen
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import com.google.accompanist.navigation.animation.composable
 
@@ -17,7 +17,7 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalAnimationApi
 fun NavGraphBuilder.homeComposable(
     navHostController: NavHostController,
-    viewModel: HomeViewModel
+    viewModel: ListExpenseViewModel
 ) {
     composable(
         route = Route.Home.route,
@@ -34,7 +34,7 @@ fun NavGraphBuilder.homeComposable(
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
         },
     ) {
-        HomeScreen(
+        ListExpenseScreen(
             navigateToTaskScreen = { expenseId, expenseName ->
                 navHostController.navigate(
                     Route.ExpenseDetail.createRoute(expenseId, expenseName)
