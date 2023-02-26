@@ -2,10 +2,7 @@ package br.com.aldemir.myaccounts.presentation.recipe.list
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -25,6 +22,8 @@ import br.com.aldemir.myaccounts.presentation.theme.taskItemBackgroundColor
 import br.com.aldemir.myaccounts.util.DateUtils
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.component.StatisticsCard
+import br.com.aldemir.myaccounts.presentation.theme.LARGE_PADDING
+import br.com.aldemir.myaccounts.presentation.theme.LARGE_PADDING_16
 
 @ExperimentalMaterialApi
 @Composable
@@ -57,7 +56,9 @@ fun ListRecipeScreen(
                     .padding(padding)
                     .background(MaterialTheme.colors.taskItemBackgroundColor),
             ) {
-                StatisticsCard(cardState)
+                Box(modifier = Modifier.padding(horizontal = LARGE_PADDING_16)) {
+                    StatisticsCard(cardState)
+                }
                 recipes?.let {
                     if (it.isNotEmpty()) {
                         LazyColumn(
@@ -84,7 +85,7 @@ fun ListRecipeScreen(
                             }
                         }
                     } else EmptyContent(text = stringResource(id = R.string.recipe_text))
-                }?:run {
+                } ?: run {
                     EmptyContent()
                 }
             }

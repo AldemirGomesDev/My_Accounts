@@ -4,6 +4,7 @@ object Const {
     const val HOME_SCREEN = "home"
     const val SPLASH_SCREEN = "splash"
     const val EXPENSE_SCREEN = "expense"
+    const val EXPENSE_LIST_SCREEN = "expenseList"
     const val EXPENSE_ADD_SCREEN = "expenseAdd"
     const val EXPENSE_CHANGE_SCREEN = "expenseChange"
     const val HISTORIC_SCREEN = "historic"

@@ -20,6 +20,7 @@
     <string name="add_revenue">Receita</string>
     <string name="historic">Histórico</string>
     <string name="home">Home</string>
+    <string name="expense_list">Minhas despesas</string>
     <string name="add_expense_text_checkbox">Este valor já foi pago esse mês?</string>
     <string name="add_expense_text_checkbox_repeat">Esta conta repete-se?</string>
     <string name="delete_expense_message_toast">Despesa com o código: %1$d excluída com sucesso</string>

@@ -44,15 +44,11 @@ fun ListExpenseScreen(
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
 
-    val activity = (LocalContext.current as? Activity)
-
     val context = LocalContext.current
 
     var expenseToSave by remember {
         mutableStateOf(Expense())
     }
-
-    BackHandler { activity?.finish() }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -113,7 +109,7 @@ fun HomeScreenList(
     }
 
     val expenses by viewModel.expenses.collectAsState()
-    
+
     if (expenses.isEmpty()) {
         EmptyContent()
     } else {
@@ -162,7 +158,9 @@ private fun HomeCard(
         percentage = percentage
     )
 
-    StatisticsCard(cardState = cardState)
+    Box(modifier = Modifier.padding(horizontal = LARGE_PADDING_16)) {
+        StatisticsCard(cardState = cardState)
+    }
 }
 
 private fun deleteExpense(viewModel: ListExpenseViewModel, expense: Expense) {

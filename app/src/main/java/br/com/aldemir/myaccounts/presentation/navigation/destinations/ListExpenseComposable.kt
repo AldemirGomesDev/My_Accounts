@@ -6,8 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.home.HomeScreen
-import br.com.aldemir.myaccounts.presentation.home.state.ButtonType
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseScreen
+import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import com.google.accompanist.navigation.animation.composable
 
@@ -15,13 +15,14 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
-fun NavGraphBuilder.homeComposable(
+fun NavGraphBuilder.listExpenseComposable(
     navHostController: NavHostController,
+    viewModel: ListExpenseViewModel
 ) {
     composable(
-        route = Route.Home.route,
+        route = Route.ExpenseList.route,
         enterTransition = {
-            slideInVertically(initialOffsetY = { 1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(500))
         },
         exitTransition = {
             slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(500))
@@ -33,21 +34,18 @@ fun NavGraphBuilder.homeComposable(
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
         },
     ) {
-        HomeScreen(
-            navigateToNextScreen = { type ->
-                when(type) {
-                    ButtonType.ButtonRecipe -> {
-                        navHostController.navigate(
-                            Route.ListRecipe.route
-                        )
-                    }
-                    ButtonType.ButtonExpense -> {
-                        navHostController.navigate(
-                            Route.ExpenseList.route
-                        )
-                    }
-                }
+        ListExpenseScreen(
+            navigateToTaskScreen = { expenseId, expenseName ->
+                navHostController.navigate(
+                    Route.ExpenseDetail.createRoute(expenseId, expenseName)
+                )
             },
+            navigateToAddScreen = {
+                navHostController.navigate(
+                    Route.ExpenseAdd.route
+                )
+            },
+            viewModel = viewModel
         )
     }
 }

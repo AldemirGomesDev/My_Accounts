@@ -19,6 +19,11 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
         route = Route.ExpenseAdd.route, imageIcon =
         Icons.Filled.Add
     )
+    object ListExpense : DrawerScreens(
+        titleResourceId = R.string.expense_list,
+        route = Route.ExpenseList.route,
+        imageIcon = Icons.Filled.List
+    )
     object Historic : DrawerScreens(
         titleResourceId = R.string.historic,
         route = Route.Historic.route,
@@ -39,6 +44,7 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
 val screens = listOf(
     DrawerScreens.Home,
     DrawerScreens.Statistic,
+    DrawerScreens.ListExpense,
     DrawerScreens.Historic,
     DrawerScreens.AddRecipe,
     DrawerScreens.ListRecipe

@@ -27,16 +27,18 @@ fun StatisticsCard(
     val textChecked: String = when (cardState.cardType) {
         CardType.EXPENSE -> stringResource(id = R.string.expense_paid_out)
         CardType.RECIPE -> stringResource(id = R.string.recipe_checked)
+        CardType.HOME -> stringResource(id = R.string.add_revenue)
     }
     val textPending: String = when (cardState.cardType) {
         CardType.EXPENSE ->stringResource(id = R.string.expense_to_pay)
         CardType.RECIPE -> stringResource(id = R.string.recipe_pending)
+        CardType.HOME -> stringResource(id = R.string.add_expense)
     }
 
     Card(
         shape = Shapes.large,
         backgroundColor = GreenDark,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(vertical = 16.dp)
     ) {
         Column(
             modifier = Modifier

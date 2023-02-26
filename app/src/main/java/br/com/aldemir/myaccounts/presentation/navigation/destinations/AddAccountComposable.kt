@@ -46,7 +46,7 @@ fun NavGraphBuilder.addAccountComposable(
         AddExpenseScreen(
             navigateToHomeScreen = {
                 navHostController.navigate(
-                    Route.Home.route
+                    Route.ExpenseList.route
                 )
             }
         )

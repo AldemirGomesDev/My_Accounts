@@ -28,7 +28,9 @@ fun SetupNavigation(
     ) {
         splashComposable(navHostController)
 
-        homeComposable(
+        homeComposable(navHostController)
+
+        listExpenseComposable(
             navHostController = navHostController,
             viewModel = viewModel
         )

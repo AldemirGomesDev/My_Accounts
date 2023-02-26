@@ -40,7 +40,7 @@ fun NavGraphBuilder.addRecipeComposable(
         AddRecipeScreen(
             navigateToHomeScreen = {
                 navHostController.navigate(
-                    Route.Home.route
+                    Route.ExpenseList.route
                 )
             }
         )

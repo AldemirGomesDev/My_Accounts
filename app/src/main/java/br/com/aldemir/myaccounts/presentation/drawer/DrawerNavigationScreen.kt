@@ -57,6 +57,12 @@ fun DrawerNavigationScreen(
                         onClick = { navController.navigateUp() }
                     )
                 }
+                Route.ExpenseList.route -> {
+                    TopBar(titleResId = R.string.expense_list,
+                        imageIcon = Icons.Default.ArrowBack,
+                        onClick = { navController.navigateUp() }
+                    )
+                }
                 Route.ExpenseDetail.route -> {
                     TopBar(titleResId = R.string.expense_detail_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
