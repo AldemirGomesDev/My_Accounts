@@ -17,7 +17,7 @@ data class RecipeMonthly(
     @ColumnInfo(name = "id")
     var id: Int = 0,
     @ColumnInfo(name = "id_recipe")
-    var id_expense: Int = 0,
+    var id_recipe: Int = 0,
     @ColumnInfo(name = "year")
     var year: String = "",
     @ColumnInfo(name = "month")

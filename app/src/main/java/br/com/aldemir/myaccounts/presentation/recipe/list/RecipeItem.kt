@@ -27,7 +27,7 @@ fun RecipeItem(
     recipeView: RecipeView,
     viewModel: ListRecipeViewModel,
     onDelete: (recipe: Recipe) -> Unit,
-    navigateToTaskScreen: (recipeId: Int, nameRecipe: String) -> Unit
+    navigateToDetailScreen: (recipeId: Int, nameRecipe: String) -> Unit
 ) {
 
     val statusColor = viewModel.getStatusColor(recipeView.status, recipeView.expired)
@@ -39,7 +39,7 @@ fun RecipeItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(recipeView.id, recipeView.name)
+            navigateToDetailScreen(recipeView.id, recipeView.name)
         }
     ) {
         Column(

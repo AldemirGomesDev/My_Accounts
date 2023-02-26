@@ -11,6 +11,10 @@ object Const {
 
     const val RECIPE_SCREEN = "addRecipe"
     const val RECIPE_LIST_SCREEN = "listRecipe"
+    const val RECIPE_DETAIL_SCREEN = "detailRecipe"
+
+    const val RECIPE_ID = "recipeId"
+    const val RECIPE_NAME = "recipeName"
 
     const val LIST_ARGUMENT_KEY = "action"
     const val EXPENSE_ID = "expenseId"

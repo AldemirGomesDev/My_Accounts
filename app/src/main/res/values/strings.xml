@@ -8,6 +8,7 @@
     <string name="expense_change_screen_title">Editar despesa</string>
     <string name="historic_screen_title">Histórico</string>
     <string name="list_recipe_screen_title">Receitas</string>
+    <string name="detail_recipe_screen_title">Detalhes</string>
 
     <string name="invalid_name">O nome deve conter no mínimo 4 caracteres</string>
     <string name="invalid_value">O valor é obrigatório</string>

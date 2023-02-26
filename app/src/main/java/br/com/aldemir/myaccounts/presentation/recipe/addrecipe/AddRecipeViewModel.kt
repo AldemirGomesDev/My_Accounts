@@ -52,14 +52,14 @@ class AddRecipeViewModel @Inject constructor(
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val idExpense = addRecipeUseCase(recipe)
-        id.value = idExpense.toInt()
+        val recipeId = addRecipeUseCase(recipe)
+        id.value = recipeId.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
             val recipeMonthly = RecipeMonthly(
-                id_expense = idExpense.toInt(),
+                id_recipe = recipeId.toInt(),
                 year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),

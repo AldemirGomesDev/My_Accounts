@@ -30,7 +30,8 @@ import br.com.aldemir.myaccounts.presentation.component.StatisticsCard
 @Composable
 fun ListRecipeScreen(
     viewModel: ListRecipeViewModel = hiltViewModel(),
-    navigateToHomeScreen: () -> Unit
+    navigateToHomeScreen: () -> Unit,
+    navigateToDetailScreen: (recipeId: Int, recipeName: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val state = rememberLazyListState()
@@ -72,7 +73,9 @@ fun ListRecipeScreen(
                                     recipeView = recipeView,
                                     viewModel = viewModel,
                                     onDelete = {},
-                                    navigateToTaskScreen = { recipeId, nameRecipe ->  }
+                                    navigateToDetailScreen = { recipeId, nameRecipe ->
+                                        navigateToDetailScreen(recipeId, nameRecipe)
+                                    }
                                 )
                                 Divider(
                                     modifier = Modifier.height(0.5.dp),
