@@ -10,6 +10,7 @@ object Const {
     const val SPLASH_SCREEN_DELAY = 1000L
 
     const val RECIPE_SCREEN = "addRecipe"
+    const val RECIPE_LIST_SCREEN = "listRecipe"
 
     const val LIST_ARGUMENT_KEY = "action"
     const val EXPENSE_ID = "expenseId"

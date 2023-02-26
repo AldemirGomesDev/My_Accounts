@@ -8,6 +8,7 @@ import br.com.aldemir.myaccounts.util.Const.HOME_SCREEN
 import br.com.aldemir.myaccounts.util.Const.SPLASH_SCREEN
 import br.com.aldemir.myaccounts.util.Const.EXPENSE_SCREEN
 import br.com.aldemir.myaccounts.util.Const.HISTORIC_SCREEN
+import br.com.aldemir.myaccounts.util.Const.RECIPE_LIST_SCREEN
 import br.com.aldemir.myaccounts.util.Const.RECIPE_SCREEN
 
 sealed class Route(val route: String) {
@@ -22,4 +23,5 @@ sealed class Route(val route: String) {
         fun createRoute(idMonthlyPayment: Int, expenseName: String) = "$EXPENSE_CHANGE_SCREEN/$idMonthlyPayment/$expenseName"
     }
     object AddRecipe: Route(RECIPE_SCREEN)
+    object ListRecipe: Route(RECIPE_LIST_SCREEN)
 }

@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.data.model.Recipe
 import br.com.aldemir.myaccounts.data.model.RecipeMonthly
-import br.com.aldemir.myaccounts.domain.usecase.recipe.AddRecipeMonthlyUseCase
-import br.com.aldemir.myaccounts.domain.usecase.recipe.AddRecipeUseCase
+import br.com.aldemir.myaccounts.domain.usecase.recipe.add.AddRecipeMonthlyUseCase
+import br.com.aldemir.myaccounts.domain.usecase.recipe.add.AddRecipeUseCase
 import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.DateUtils
 import br.com.aldemir.myaccounts.util.emptyString

@@ -30,7 +30,9 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.Expense
 import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
+import br.com.aldemir.myaccounts.presentation.component.StatisticsCard
 import br.com.aldemir.myaccounts.presentation.home.component.TaskItem
+import br.com.aldemir.myaccounts.presentation.shared.model.CardState
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -162,125 +164,14 @@ private fun HomeCard(
     val pending by viewModel.pending.collectAsState()
     val percentage by viewModel.percentage.collectAsState()
 
-    Card(
-        shape = Shapes.large,
-        backgroundColor = GreenDark,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(145.dp)
-                .padding(16.dp),
-        ) {
-            ConstraintLayout(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                val (totalLabel, totalValue, paidOutLabel, paidOutValue,
-                    payableLabel, payableValue, progressValue, iconPaidOut, iconPayable) = createRefs()
-                Text(
-                    modifier = Modifier
-                        .constrainAs(totalLabel) {
-                            top.linkTo(parent.top)
-                        }
-                        .padding(bottom = 20.dp),
-                    text = stringResource(id = R.string.total_month),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(totalValue) {
-                            end.linkTo(parent.end)
-                        }
-                        .padding(bottom = 16.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = valueTotal.toCurrency(),
-                    color = Color.White
-                )
-                Image(
-                    modifier = Modifier.constrainAs(iconPaidOut) {
-                        top.linkTo(paidOutLabel.top)
-                        bottom.linkTo(paidOutValue.bottom)
-                        start.linkTo(parent.start)
-                    },
-                    painter = painterResource(id = R.drawable.ic_check_circle),
-                    contentDescription = emptyString()
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(paidOutLabel) {
-                            top.linkTo(totalLabel.bottom)
-                            start.linkTo(iconPaidOut.end)
-                        }
-                        .padding(start = 4.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = stringResource(id = R.string.expense_paid_out),
-                    color = Color.White
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(paidOutValue) {
-                            top.linkTo(paidOutLabel.bottom)
-                            start.linkTo(iconPaidOut.end)
-                        }
-                        .padding(start = 4.dp),
-                    fontWeight = FontWeight.Normal,
-                    text = paidOut.toCurrency(),
-                    color = Color.White
-                )
-                Image(
-                    modifier = Modifier
-                        .constrainAs(iconPayable) {
-                            top.linkTo(payableLabel.top)
-                            bottom.linkTo(payableValue.bottom)
-                            start.linkTo(paidOutValue.end)
-                        }
-                        .padding(start = 24.dp),
-                    painter = painterResource(id = R.drawable.ic_report_problem),
-                    contentDescription = emptyString()
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(payableLabel) {
-                            top.linkTo(totalLabel.bottom)
-                            start.linkTo(iconPayable.end)
-                        }
-                        .padding(start = 4.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = stringResource(id = R.string.expense_to_pay),
-                    color = Color.White
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(payableValue) {
-                            top.linkTo(paidOutLabel.bottom)
-                            start.linkTo(iconPayable.end)
-                        }
-                        .padding(start = 4.dp),
-                    fontWeight = FontWeight.Normal,
-                    text = pending.toCurrency(),
-                    color = Color.White
-                )
-                LinearProgressIndicatorSample(
-                    value = if (!percentage.isNaN()) {
-                        percentage.toDecimal()
-                    } else {
-                        emptyFloat()
-                    },
-                    modifier = Modifier
-                        .constrainAs(progressValue) {
-                            top.linkTo(payableValue.bottom)
-                        }
-                        .fillMaxWidth()
-                        .height(30.dp)
-                        .padding(top = 12.dp)
-                        .clip(shape = Shapes.large)
-                )
-            }
-        }
+    val cardState = CardState(
+        valueTotal = valueTotal,
+        paidOut = paidOut,
+        pending = pending,
+        percentage = percentage
+    )
 
-    }
+    StatisticsCard(cardState = cardState)
 }
 
 @Composable

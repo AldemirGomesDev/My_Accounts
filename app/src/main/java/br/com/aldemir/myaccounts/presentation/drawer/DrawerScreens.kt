@@ -29,11 +29,17 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
         route = Route.AddRecipe.route,
         imageIcon = Icons.Filled.Add
     )
+    object ListRecipe : DrawerScreens(
+        titleResourceId = R.string.list_recipe_screen_title,
+        route = Route.ListRecipe.route,
+        imageIcon = Icons.Filled.List
+    )
 }
 
 val screens = listOf(
     DrawerScreens.Home,
     DrawerScreens.Statistic,
     DrawerScreens.Historic,
-    DrawerScreens.AddRecipe
+    DrawerScreens.AddRecipe,
+    DrawerScreens.ListRecipe
 )

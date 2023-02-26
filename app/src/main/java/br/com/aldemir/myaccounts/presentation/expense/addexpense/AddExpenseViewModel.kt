@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.data.model.Expense
 import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.domain.usecase.AddExpenseUseCase
-import br.com.aldemir.myaccounts.domain.usecase.AddMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.add.AddExpenseUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.add.AddMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.util.Const.TAG
 import br.com.aldemir.myaccounts.util.DateUtils
 import br.com.aldemir.myaccounts.util.emptyString

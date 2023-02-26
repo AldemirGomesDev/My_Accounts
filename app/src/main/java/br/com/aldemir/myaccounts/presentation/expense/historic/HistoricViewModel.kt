@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
 import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensePerMonthUseCase
-import br.com.aldemir.myaccounts.domain.usecase.GetAllExpensesMonthUseCase
-import br.com.aldemir.myaccounts.domain.usecase.GetAllMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensePerMonthUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensesMonthUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensemonthly.GetAllMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor

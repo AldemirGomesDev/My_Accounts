@@ -82,6 +82,13 @@ fun DrawerNavigationScreen(
                         onClick = { navController.navigateUp() }
                     )
                 }
+                Route.ListRecipe.route -> {
+                    TopBar(
+                        titleResId = R.string.list_recipe_screen_title,
+                        imageIcon = Icons.Filled.ArrowBack,
+                        onClick = { navController.navigateUp() }
+                    )
+                }
             }
         },
         drawerGesturesEnabled = true,

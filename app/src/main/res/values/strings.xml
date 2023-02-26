@@ -7,6 +7,7 @@
     <string name="expense_detail_screen_title">Detalhes da despesa</string>
     <string name="expense_change_screen_title">Editar despesa</string>
     <string name="historic_screen_title">Histórico</string>
+    <string name="list_recipe_screen_title">Receitas</string>
 
     <string name="invalid_name">O nome deve conter no mínimo 4 caracteres</string>
     <string name="invalid_value">O valor é obrigatório</string>
@@ -25,7 +26,7 @@
 
     <string name="delete_icon">Delete Icon</string>
     <string name="sad_face_icon">Sad Face Icon</string>
-    <string name="empty_content">Nenhuma despesa no mês.</string>
+    <string name="empty_content">Nenhuma %1$s no mês.</string>
     <string name="button_yes">Sim</string>
     <string name="button_no">Não</string>
     <string name="dialog_delete_title">Excluir</string>
@@ -44,6 +45,9 @@
     <string name="expense_update_button">Atualizar</string>
     <string name="how_many_times_repeat">Quantas vezes repete-se?</string>
 
+    <string name="recipe_checked">Recebido</string>
+    <string name="recipe_pending">À receber</string>
+
     <string name="to_do_logo">To-Do Logo</string>
     <string name="total_month">Total no mês</string>
 
@@ -56,6 +60,8 @@
     <string name="month_text">Mês</string>
     <string name="year_text">Ano</string>
     <string name="search_button">Buscar</string>
+    <string name="expense_text">despesa</string>
+    <string name="recipe_text">receita</string>
 
     <string-array name="months">
         <item>JANEIRO</item>

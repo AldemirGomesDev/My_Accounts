@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.domain.usecase.GetByIdMonthlyPaymentUseCase
-import br.com.aldemir.myaccounts.domain.usecase.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensemonthly.GetByIdMonthlyPaymentUseCase
+import br.com.aldemir.myaccounts.domain.usecase.expense.update.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
 import br.com.aldemir.myaccounts.util.pointString
