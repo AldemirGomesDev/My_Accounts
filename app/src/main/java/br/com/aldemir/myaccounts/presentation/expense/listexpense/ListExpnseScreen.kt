@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ListExpenseScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
+    navigateToHomeScreen: () -> Unit,
     navigateToAddScreen: () -> Unit,
     viewModel: ListExpenseViewModel,
 ) {
@@ -48,6 +49,10 @@ fun ListExpenseScreen(
 
     var expenseToSave by remember {
         mutableStateOf(Expense())
+    }
+
+    BackHandler {
+        navigateToHomeScreen()
     }
 
     Scaffold(

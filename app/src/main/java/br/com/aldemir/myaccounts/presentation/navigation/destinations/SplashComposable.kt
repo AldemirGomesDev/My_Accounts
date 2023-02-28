@@ -1,13 +1,12 @@
 package br.com.aldemir.myaccounts.presentation.navigation.destinations
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import br.com.aldemir.myaccounts.presentation.splash.SplashScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalAnimationApi
@@ -17,10 +16,10 @@ fun NavGraphBuilder.splashComposable(
     composable(
         route = Route.Splash.route,
         enterTransition = {
-            slideInVertically(initialOffsetY = { 1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         exitTransition = {
-            slideOutVertically(targetOffsetY = { -1000 }, animationSpec = tween(500))
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
     ) {
         SplashScreen(

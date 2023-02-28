@@ -29,4 +29,5 @@ object Const {
     const val IndicatorSize = 12
     const val BounceAnimationDurationMillis = 300
     const val FadeAnimationDurationMillis = 600
+    const val NavigationAnimationDurationMillis = 500
 }

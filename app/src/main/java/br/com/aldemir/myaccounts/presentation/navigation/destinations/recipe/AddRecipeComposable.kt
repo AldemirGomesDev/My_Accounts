@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.recipe.addrecipe.AddRecipeScreen
+import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalMaterialApi
@@ -21,26 +22,26 @@ fun NavGraphBuilder.addRecipeComposable(
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { 1000 },
-                animationSpec = tween(500)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
             slideOutHorizontally(
                 targetOffsetX = { -1000 },
-                animationSpec = tween(500)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
     ) {
         AddRecipeScreen(
-            navigateToHomeScreen = {
+            navigateToListRecipeScreen = {
                 navHostController.navigate(
-                    Route.ExpenseList.route
+                    Route.ListRecipe.route
                 )
             }
         )

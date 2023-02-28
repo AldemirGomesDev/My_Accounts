@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.presentation.recipe.list
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -70,7 +69,6 @@ class ListRecipeViewModel @Inject constructor(
             recipeViews.add(expense)
         }
         _recipes.value = recipeViews.toList()
-        Log.w(TAG, "getAllRecipe: $recipeViews")
     }
 
     private fun calculateValues() {

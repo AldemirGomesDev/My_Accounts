@@ -52,6 +52,11 @@
 
     <string name="to_do_logo">To-Do Logo</string>
     <string name="total_month">Total no mês</string>
+    <string name="resume_monthly">RESUMO MENSAL</string>
+    <string name="home_balance">Saldo:</string>
+
+    <string name="chart_expense">DESPESAS DOS ÚLTIMOS 6 MESES</string>
+    <string name="chart_recipe">RECEITAS DOS ÚLTIMOS 6 MESES</string>
 
 
     <string name="form_add_name">Nome</string>
@@ -64,6 +69,9 @@
     <string name="search_button">Buscar</string>
     <string name="expense_text">despesa</string>
     <string name="recipe_text">receita</string>
+
+    <string name="button_expense">Despesas</string>
+    <string name="button_recipe">Receitas</string>
 
     <string-array name="months">
         <item>JANEIRO</item>

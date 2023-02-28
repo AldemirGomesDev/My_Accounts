@@ -1,6 +1,10 @@
 package br.com.aldemir.myaccounts.util
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 object DateUtils {
@@ -18,6 +22,31 @@ object DateUtils {
 
     fun getDate(): Date {
         return Calendar.getInstance().time
+    }
+
+    fun getSixMonthsPrevious(): MutableList<String> {
+        val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
+        val months = arrayListOf<String>()
+
+        for (item in -6 until 0) {
+            val cal = Calendar.getInstance()
+            cal.add(Calendar.MONTH, item)
+            cal.set(Calendar.DAY_OF_MONTH, 1)
+            val month = sdf.format(cal.time).uppercase()
+            months.add(month)
+        }
+        return months
+    }
+
+    fun getYearsFromSixMonthsPrevious(): MutableList<String> {
+        val years = arrayListOf<String>()
+
+        for (item in -6 until 0) {
+           val cal = Calendar.getInstance()
+            cal.add(Calendar.MONTH, item)
+            years.add(cal.get(Calendar.YEAR).toString())
+        }
+        return years
     }
 
     fun getMonths(amountOfTimes: Int): MutableList<String> {
@@ -52,5 +81,15 @@ object DateUtils {
         var cal: Calendar = Calendar.getInstance()
         cal = Calendar.getInstance()
         return cal.get(Calendar.DAY_OF_MONTH)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLastSixMonths(): List<LocalDate> {
+        val currentDate = LocalDate.now()
+        val lastSixMonths = mutableListOf<LocalDate>()
+        for (i in 1..6) {
+            lastSixMonths.add(currentDate.minusMonths(i.toLong()))
+        }
+        return lastSixMonths
     }
 }

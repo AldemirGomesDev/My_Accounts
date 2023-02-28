@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import br.com.aldemir.myaccounts.presentation.expense.historic.HistoricScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -23,20 +24,20 @@ fun NavGraphBuilder.historicComposable(
        enterTransition = {
            slideInHorizontally(
                initialOffsetX = { 1000 },
-               animationSpec = tween(500)
+               animationSpec = tween(NavigationAnimationDurationMillis)
            )
        },
        exitTransition = {
            slideOutHorizontally(
                targetOffsetX = { -1000 },
-               animationSpec = tween(500)
+               animationSpec = tween(NavigationAnimationDurationMillis)
            )
        },
        popEnterTransition = {
-           slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+           slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
        },
        popExitTransition = {
-           slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
+           slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
        },
    ) {
        HistoricScreen(

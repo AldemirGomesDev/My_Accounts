@@ -33,7 +33,7 @@ import java.util.*
 @Composable
 fun AddRecipeScreen(
     viewModel: AddRecipeViewModel = hiltViewModel(),
-    navigateToHomeScreen: () -> Unit,
+    navigateToListRecipeScreen: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -45,11 +45,11 @@ fun AddRecipeScreen(
     val description: String by viewModel.description
 
     BackHandler {
-        navigateToHomeScreen()
+        navigateToListRecipeScreen()
     }
 
     LaunchedEffect(key1 = id) {
-        if (id > 0) navigateToHomeScreen()
+        if (id > 0) navigateToListRecipeScreen()
     }
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(10) }

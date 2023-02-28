@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import br.com.aldemir.myaccounts.presentation.expense.expensedetail.ExpenseDetailScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.util.Const
+import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.myaccounts.util.emptyString
 import com.google.accompanist.navigation.animation.composable
 
@@ -27,20 +28,20 @@ fun NavGraphBuilder.detailExpenseComposable(
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { 1000 },
-                animationSpec = tween(500)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
             slideOutHorizontally(
                 targetOffsetX = { -1000 },
-                animationSpec = tween(500)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         arguments = listOf(
             navArgument(Const.EXPENSE_ID) {

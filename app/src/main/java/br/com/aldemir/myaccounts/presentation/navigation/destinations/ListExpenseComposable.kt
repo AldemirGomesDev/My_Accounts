@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseScreen
 import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
 import com.google.accompanist.navigation.animation.composable
 
 
@@ -22,16 +23,16 @@ fun NavGraphBuilder.listExpenseComposable(
     composable(
         route = Route.ExpenseList.route,
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(500))
+            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(500))
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(500))
+            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
     ) {
         ListExpenseScreen(
@@ -43,6 +44,11 @@ fun NavGraphBuilder.listExpenseComposable(
             navigateToAddScreen = {
                 navHostController.navigate(
                     Route.ExpenseAdd.route
+                )
+            },
+            navigateToHomeScreen = {
+                navHostController.navigate(
+                    Route.Home.route
                 )
             },
             viewModel = viewModel

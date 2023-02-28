@@ -21,6 +21,7 @@ import br.com.aldemir.myaccounts.presentation.theme.dividerColor
 import br.com.aldemir.myaccounts.presentation.theme.taskItemBackgroundColor
 import br.com.aldemir.myaccounts.util.DateUtils
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.presentation.component.FabAdd
 import br.com.aldemir.myaccounts.presentation.component.StatisticsCard
 import br.com.aldemir.myaccounts.presentation.theme.LARGE_PADDING
 import br.com.aldemir.myaccounts.presentation.theme.LARGE_PADDING_16
@@ -30,6 +31,7 @@ import br.com.aldemir.myaccounts.presentation.theme.LARGE_PADDING_16
 fun ListRecipeScreen(
     viewModel: ListRecipeViewModel = hiltViewModel(),
     navigateToHomeScreen: () -> Unit,
+    navigateToAddRecipeScreen: () -> Unit,
     navigateToDetailScreen: (recipeId: Int, recipeName: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -89,6 +91,9 @@ fun ListRecipeScreen(
                     EmptyContent()
                 }
             }
+        },
+        floatingActionButton = {
+            FabAdd(onFabClicked = navigateToAddRecipeScreen)
         }
     )
 }

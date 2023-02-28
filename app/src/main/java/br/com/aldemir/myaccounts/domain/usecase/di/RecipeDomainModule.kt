@@ -11,6 +11,8 @@ import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllBy
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCaseImpl
+import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCase
+import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
@@ -44,4 +46,7 @@ interface RecipeDomainModule {
 
     @Binds
     fun bindUpdateRecipeMonthlyUseCase(useCase: UpdateRecipeMonthlyUseCaseImpl) : UpdateRecipeMonthlyUseCase
+
+    @Binds
+    fun bindGetAllRecipeMonthUseCase(useCase: GetAllRecipeMonthUseCaseImpl) : GetAllRecipeMonthUseCase
 }
