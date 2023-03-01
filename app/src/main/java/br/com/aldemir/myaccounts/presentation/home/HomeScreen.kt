@@ -80,10 +80,6 @@ fun HomeScreen(
                     labelDrawer = labelDrawer,
                     title = stringResource(id = R.string.chart_expense)
                 )
-                ButtonsHomeGrid(
-                    navigateToNextScreen = navigateToNextScreen,
-                    buttons = buttons
-                )
             }
         }
     )
@@ -169,7 +165,7 @@ fun ButtonsHomeGrid(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
-                            Text(text = button.name)
+                            Text(text = button.name, color = White)
                         }
                     }
                 }

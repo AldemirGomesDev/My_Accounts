@@ -73,32 +73,39 @@ class HomeViewModel @Inject constructor(
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
             val recipes = getAllRecipeMonthUseCase(month, years[index])
-            Log.w("getSixMonthsPrevious", "getAllRecipesSixMonthsPrevious: $recipes")
             setMonthValuesRecipe(recipes)
         }
         setValuesRecipeToChart()
     }
 
     private fun setMonthValuesExpense(expenses: List<MonthlyPayment>) {
+        var valueExpense = 0.0
+        var monthExpense = emptyString()
         expenses.forEach { expense ->
-            _monthValuesExpense.add(
-                MonthValue(
-                    month = expense.month,
-                    value = expense.value
-                )
-            )
+            valueExpense += expense.value
+            monthExpense = expense.month
         }
+        _monthValuesExpense.add(
+            MonthValue(
+                month = monthExpense,
+                value = valueExpense
+            )
+        )
     }
 
     private fun setMonthValuesRecipe(recipes: List<RecipeMonthly>) {
+        var valueRecipe = 0.0
+        var monthRecipe = emptyString()
         recipes.forEach { recipe ->
-            _monthValuesRecipe.add(
-                MonthValue(
-                    month = recipe.month,
-                    value = recipe.value
-                )
-            )
+            valueRecipe += recipe.value
+            monthRecipe = recipe.month
         }
+        _monthValuesRecipe.add(
+            MonthValue(
+                month = monthRecipe,
+                value = valueRecipe
+            )
+        )
     }
 
     private fun setValuesExpenseToChart() {

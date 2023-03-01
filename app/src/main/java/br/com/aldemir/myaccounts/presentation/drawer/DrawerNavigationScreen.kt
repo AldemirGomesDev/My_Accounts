@@ -8,15 +8,23 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
+import br.com.aldemir.myaccounts.presentation.bottomappbar.bottomNavItems
 import br.com.aldemir.myaccounts.presentation.component.TopBar
 import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
+import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
+import br.com.aldemir.myaccounts.presentation.theme.White
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
 
@@ -110,6 +118,11 @@ fun DrawerNavigationScreen(
                         onClick = { navController.navigateUp() }
                     )
                 }
+            }
+        },
+        bottomBar = {
+            if (currentRoute(navController) != Route.Splash.route){
+                BottomBar(navController = navController)
             }
         },
         drawerGesturesEnabled = true,
