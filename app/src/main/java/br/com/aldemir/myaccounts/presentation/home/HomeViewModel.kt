@@ -59,6 +59,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getAllExpenseSixMonthsPrevious() = viewModelScope.launch {
+        _monthValuesExpense = mutableListOf()
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
@@ -69,6 +70,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getAllRecipesSixMonthsPrevious() = viewModelScope.launch {
+        _monthValuesRecipe = mutableListOf()
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->

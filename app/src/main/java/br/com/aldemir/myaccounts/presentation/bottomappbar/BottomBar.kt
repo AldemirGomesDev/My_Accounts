@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.presentation.theme.White
+import br.com.aldemir.myaccounts.presentation.theme.primaryDark
 
 @Composable
 fun BottomBar(
@@ -17,7 +18,7 @@ fun BottomBar(
 
     BottomNavigation(
         elevation = 5.dp,
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = primaryDark,
         contentColor = White
     ) {
         bottomNavItems.forEach { item ->

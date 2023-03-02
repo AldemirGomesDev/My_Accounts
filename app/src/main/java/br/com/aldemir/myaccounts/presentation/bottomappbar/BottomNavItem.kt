@@ -1,9 +1,9 @@
 package br.com.aldemir.myaccounts.presentation.bottomappbar
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.List
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.navigation.Route
@@ -18,16 +18,16 @@ val bottomNavItems = listOf(
     BottomNavItem(
         resourceNameId = R.string.home,
         route = Route.Home.route,
-        icon = Icons.Rounded.Home,
+        icon = Icons.Outlined.Home,
     ),
     BottomNavItem(
         resourceNameId = R.string.list_expense_screen_title,
         route = Route.ExpenseList.route,
-        icon = Icons.Rounded.AddCircle,
+        icon = Icons.Outlined.List,
     ),
     BottomNavItem(
         resourceNameId = R.string.list_recipe_screen_title,
         route = Route.ListRecipe.route,
-        icon = Icons.Rounded.List,
+        icon = Icons.Outlined.List,
     ),
 )
