@@ -35,7 +35,7 @@
     <string name="dialog_delete_title">Excluir</string>
     <string name="dialog_delete_message">Deseja excluir esta despesa?</string>
 
-    <string name="expense_dark_mode">Dark mode</string>
+    <string name="expense_dark_mode">Modo escuro</string>
     <string name="expense_welcome">Bem vindo!</string>
     <string name="expense_due_date">Vencimento: </string>
     <string name="expense_due_date_day">Dia do vencimento </string>

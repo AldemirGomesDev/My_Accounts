@@ -83,6 +83,18 @@ fun DetailRecipeScreen(
                     },
                     viewModel = viewModel
                 )
+                DisplayAlertDialog(
+                    title = "Aviso",
+                    message = "Deseja confirmar o recebimento?",
+                    openDialog = showDialogState,
+                    closeDialog = {
+                        viewModel.onDialogDismiss()
+                    },
+                    onYesClicked = {
+                        viewModel.updateRecipeMonthly(monthlyPaymentToUpdate)
+                        viewModel.onDialogConfirm()
+                    }
+                )
             }
         }
     )

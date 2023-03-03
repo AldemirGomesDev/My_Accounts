@@ -67,7 +67,7 @@ fun ExpenseDetailScreen(
             Column(modifier = Modifier.padding(padding)) {
                 TextTitleLarge(
                     text = expenseName,
-                    color = Purple700,
+                    color = MaterialTheme.colors.taskItemTextColor,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = LARGE_PADDING, vertical = MEDIUM_PADDING)

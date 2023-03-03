@@ -112,6 +112,17 @@ class HomeViewModel @Inject constructor(
 
     private fun setValuesExpenseToChart() {
         val bars = arrayListOf<BarChartData.Bar>()
+        val maxBar = 6
+        val rest = maxBar - _monthValuesExpense.size
+        for (i in 0 until rest){
+            bars.add(
+                BarChartData.Bar(
+                    label = emptyString(),
+                    value = 0F,
+                    color = MediumPriorityColor,
+                ),
+            )
+        }
         _monthValuesExpense.forEach {
             bars.add(
                 BarChartData.Bar(
@@ -126,6 +137,17 @@ class HomeViewModel @Inject constructor(
 
     private fun setValuesRecipeToChart() {
         val bars = arrayListOf<BarChartData.Bar>()
+        val maxBar = 6
+        val rest = maxBar - _monthValuesRecipe.size
+        for (i in 0 until rest){
+            bars.add(
+                BarChartData.Bar(
+                    label = emptyString(),
+                    value = 0F,
+                    color = MediumPriorityColor,
+                ),
+            )
+        }
         _monthValuesRecipe.forEach {
             bars.add(
                 BarChartData.Bar(

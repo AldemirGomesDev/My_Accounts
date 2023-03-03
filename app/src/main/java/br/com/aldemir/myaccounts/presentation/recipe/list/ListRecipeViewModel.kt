@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.domain.mapper.toDatabase
 import br.com.aldemir.myaccounts.domain.mapper.toRecipeView
 import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
+import br.com.aldemir.myaccounts.domain.usecase.recipe.delete.DeleteRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe.GetAllRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCase
@@ -32,7 +34,8 @@ private const val TAG = "listRecipeViewModel"
 class ListRecipeViewModel @Inject constructor(
     private val getAllRecipeUseCase: GetAllRecipeUseCase,
     private val getAllRecipePerMonthUseCase: GetAllRecipePerMonthUseCase,
-    private val getAllRecipeMonthlyUseCase: GetAllRecipeMonthlyUseCase
+    private val getAllRecipeMonthlyUseCase: GetAllRecipeMonthlyUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase
 ) : ViewModel() {
 
     private val _recipeMonthlys = MutableStateFlow<List<RecipeMonthly>>(emptyList())
@@ -43,8 +46,18 @@ class ListRecipeViewModel @Inject constructor(
     private var _cardState = MutableStateFlow(CardState())
     val cardState: StateFlow<CardState> = _cardState.asStateFlow()
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
     fun getAllRecipe() = viewModelScope.launch {
         val recipes = getAllRecipeUseCase()
+    }
+
+    fun delete(expense: RecipeView) = viewModelScope.launch {
+        val expenseId = deleteRecipeUseCase(expense.toDatabase())
+        if (expenseId > 0) {
+            getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
+        }
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
@@ -115,5 +128,17 @@ class ListRecipeViewModel @Inject constructor(
         return if (status) R.string.expense_paid_out
         else if (expired) R.string.expense_expired
         else R.string.expense_pending
+    }
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
     }
 }
