@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.presentation.navigation.destinations.recipe
 
-
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -12,31 +11,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.presentation.recipe.detail.DetailRecipeScreen
+import br.com.aldemir.myaccounts.presentation.recipe.changerecipe.ChangeRecipeScreen
 import br.com.aldemir.myaccounts.util.Const
 import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import br.com.aldemir.myaccounts.util.emptyString
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
-fun NavGraphBuilder.detailRecipeComposable(
+fun NavGraphBuilder.changeRecipeComposable(
     navHostController: NavHostController
 ) {
     composable(
-        route = Route.DetailRecipe.route,
+        route = Route.ChangeRecipe.route,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { 1000 },
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )
+            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { -1000 },
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )
+            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
         popEnterTransition = {
             slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
@@ -53,20 +45,13 @@ fun NavGraphBuilder.detailRecipeComposable(
             }
         )
     ) { backStackEntry ->
-        val recipeId = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
-        val recipeName = backStackEntry.arguments?.getString(Const.RECIPE_NAME)
-        DetailRecipeScreen(
-            recipeId = recipeId ?: 0,
-            recipeName = recipeName ?: emptyString(),
-            navigateToChangeScreen = { idRecipe ->
-                navHostController.navigate(
-                    Route.ChangeRecipe.createRoute(
-                        idRecipe,
-                        recipeName ?: emptyString()
-                    )
-                )
+        val idMonthlyRecipe = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
+        val expenseName = backStackEntry.arguments?.getString(Const.RECIPE_NAME)
+        ChangeRecipeScreen(
+            idMonthlyRecipe = idMonthlyRecipe ?: 0,
+            navigateToDetailScreen = {
+                navHostController.navigateUp()
             },
-            navigateToBackScreen = { navHostController.navigateUp() }
         )
     }
 }

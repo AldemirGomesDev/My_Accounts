@@ -13,6 +13,7 @@ object Const {
     const val RECIPE_SCREEN = "addRecipe"
     const val RECIPE_LIST_SCREEN = "listRecipe"
     const val RECIPE_DETAIL_SCREEN = "detailRecipe"
+    const val RECIPE_CHANGE_SCREEN = "changeRecipe"
 
     const val RECIPE_ID = "recipeId"
     const val RECIPE_NAME = "recipeName"

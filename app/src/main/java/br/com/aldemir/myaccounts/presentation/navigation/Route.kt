@@ -9,6 +9,7 @@ import br.com.aldemir.myaccounts.util.Const.HOME_SCREEN
 import br.com.aldemir.myaccounts.util.Const.SPLASH_SCREEN
 import br.com.aldemir.myaccounts.util.Const.EXPENSE_SCREEN
 import br.com.aldemir.myaccounts.util.Const.HISTORIC_SCREEN
+import br.com.aldemir.myaccounts.util.Const.RECIPE_CHANGE_SCREEN
 import br.com.aldemir.myaccounts.util.Const.RECIPE_DETAIL_SCREEN
 import br.com.aldemir.myaccounts.util.Const.RECIPE_ID
 import br.com.aldemir.myaccounts.util.Const.RECIPE_LIST_SCREEN
@@ -31,5 +32,8 @@ sealed class Route(val route: String) {
     object ListRecipe: Route(RECIPE_LIST_SCREEN)
     object DetailRecipe: Route("$RECIPE_DETAIL_SCREEN/{$RECIPE_ID}/{$RECIPE_NAME}") {
         fun createRoute(recipeId: Int, recipeName: String) = "$RECIPE_DETAIL_SCREEN/$recipeId/$recipeName"
+    }
+    object ChangeRecipe: Route("$RECIPE_CHANGE_SCREEN/{$RECIPE_ID}/{$RECIPE_NAME}") {
+        fun createRoute(idMonthlyRecipe: Int, recipeName: String) = "$RECIPE_CHANGE_SCREEN/$idMonthlyRecipe/$recipeName"
     }
 }

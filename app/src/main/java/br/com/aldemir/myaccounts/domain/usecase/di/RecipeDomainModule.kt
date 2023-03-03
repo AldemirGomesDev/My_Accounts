@@ -9,10 +9,7 @@ import br.com.aldemir.myaccounts.domain.usecase.recipe.delete.DeleteRecipeUseCas
 import br.com.aldemir.myaccounts.domain.usecase.recipe.delete.DeleteRecipeUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe.GetAllRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe.GetAllRecipeUseCaseImpl
-import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCase
-import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCaseImpl
-import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCase
-import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCaseImpl
+import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.*
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCase
@@ -51,6 +48,9 @@ interface RecipeDomainModule {
 
     @Binds
     fun bindGetAllRecipeMonthUseCase(useCase: GetAllRecipeMonthUseCaseImpl) : GetAllRecipeMonthUseCase
+
+    @Binds
+    fun bindGetByIdRecipeMonthlyUseCase(useCase: GetByIdRecipeMonthlyUseCaseImpl) : GetByIdRecipeMonthlyUseCase
 
     @Binds
     fun bindDeleteRecipeUseCase(useCase: DeleteRecipeUseCaseImpl) : DeleteRecipeUseCase

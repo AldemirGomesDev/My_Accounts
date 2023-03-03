@@ -118,6 +118,13 @@ fun DrawerNavigationScreen(
                         onClick = { navController.navigateUp() }
                     )
                 }
+                Route.ChangeRecipe.route -> {
+                    TopBar(
+                        titleResId = R.string.change_recipe_screen_title,
+                        imageIcon = Icons.Filled.ArrowBack,
+                        onClick = { navController.navigateUp() }
+                    )
+                }
             }
         },
         bottomBar = {
