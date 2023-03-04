@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/historic"
         android:name="br.com.aldemir.myaccounts.presentation.expense.historic.HistoricFragment"
-        android:label="@string/historic_screen_title"
+        android:label="@string/expense_historic_screen_title"
         tools:layout="@layout/historic_fragment" />
 
 </navigation>

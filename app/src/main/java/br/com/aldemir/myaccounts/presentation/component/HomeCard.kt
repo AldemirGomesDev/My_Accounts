@@ -39,7 +39,7 @@ fun HomeCard(
                 Text(
                     modifier = Modifier
                         .padding(bottom = MEDIUM_PADDING),
-                    text = stringResource(id = R.string.resume_monthly),
+                    text = stringResource(id = R.string.account_resume_monthly),
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -62,7 +62,7 @@ fun HomeCard(
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             fontWeight = FontWeight.Bold,
-                            text = stringResource(id = R.string.add_revenue),
+                            text = stringResource(id = R.string.recipe_card_title),
                             color = Color.White
                         )
                         Text(

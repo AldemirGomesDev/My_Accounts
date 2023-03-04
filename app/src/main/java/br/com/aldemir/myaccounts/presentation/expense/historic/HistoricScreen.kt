@@ -88,7 +88,7 @@ private fun HistoricContent(
                     }
             ) {
                 MyExposedDropdownMenu(
-                    label = stringResource(id = R.string.month_text),
+                    label = stringResource(id = R.string.historic_month_text),
                     listItems = monthOptions.toList(),
                     selected = monthOptionSelected,
                     onItemSelected = { item ->
@@ -99,7 +99,7 @@ private fun HistoricContent(
                         .padding(end = 16.dp)
                 )
                 MyExposedDropdownMenu(
-                    label = stringResource(id = R.string.year_text),
+                    label = stringResource(id = R.string.historic_year_text),
                     listItems = myYears?.toList() ?: listOf(),
                     selected = yearOptionSelected,
                     onItemSelected = { item ->
@@ -136,7 +136,7 @@ private fun HistoricContent(
             ) {
                 Text(
                     color = Color.White,
-                    text = stringResource(id = R.string.search_button),
+                    text = stringResource(id = R.string.button_search),
                     fontSize = FONT_SIZE_16,
                 )
             }
@@ -242,7 +242,7 @@ fun HistoricItem(
                 color = MaterialTheme.colors.background
             )
             Row {
-                TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
                 TextBodyTwoItem(text = dueDate)
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),

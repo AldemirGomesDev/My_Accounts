@@ -88,8 +88,8 @@ fun ExpenseDetailScreen(
                     viewModel = viewModel
                 )
                 DisplayAlertDialog(
-                    title = "Aviso",
-                    message = "Deseja confirmar o pagamento?",
+                    title = stringResource(id = R.string.dialog_confirm_alert_title),
+                    message = stringResource(id = R.string.dialog_confirm_alert_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
@@ -168,7 +168,7 @@ private fun ExpenseDetailContent(
                             if (monthlyPayment.situation)
                                 viewModel.showToast(
                                     context,
-                                    context.getString(R.string.no_update_message_toast)
+                                    context.getString(R.string.expense_no_update_message_toast)
                                 )
                             else navigateToChangeScreen(monthlyPayment.id)
                         },
@@ -182,7 +182,7 @@ private fun ExpenseDetailContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                TextSubTitleItem(text = stringResource(id = R.string.label_value))
+                TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
                 TextBodyTwoItem(
                     text = monthlyPayment.value.toCurrency(),
                     modifier = Modifier.padding(start = SMALL_PADDING)

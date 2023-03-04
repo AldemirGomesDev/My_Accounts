@@ -86,14 +86,14 @@ fun RecipeItem(
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                            TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
                                 text = dueDate
                             )
                             TextSubTitleItem(
                                 modifier = Modifier.padding(start = LARGEST_PADDING),
-                                text = stringResource(id = R.string.expense_status)
+                                text = stringResource(id = R.string.account_list_item_status)
                             )
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),

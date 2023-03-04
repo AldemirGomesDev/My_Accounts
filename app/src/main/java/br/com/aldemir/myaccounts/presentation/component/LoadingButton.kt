@@ -7,8 +7,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -78,7 +76,7 @@ private fun LoadingButtonPreview() {
     ) {
         Text(
             color = Color.White,
-            text = stringResource(id = R.string.add_account),
+            text = stringResource(id = R.string.button_add_text),
             fontSize = FONT_SIZE_16,
         )
     }

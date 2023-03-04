@@ -1,6 +1,5 @@
 package br.com.aldemir.myaccounts.presentation.expense.listexpense
 
-import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -85,7 +84,7 @@ fun ListExpenseScreen(
                         showToast(
                             context,
                             context.getString(
-                                R.string.delete_expense_message_toast,
+                                R.string.expense_delete_message_toast,
                                 expenseToSave.id
                             )
                         )

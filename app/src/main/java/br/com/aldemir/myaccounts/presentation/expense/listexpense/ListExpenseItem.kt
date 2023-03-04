@@ -22,7 +22,6 @@ import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
 import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
 import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
 import br.com.aldemir.myaccounts.presentation.component.TextTitleItem
-import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.theme.*
 
@@ -109,14 +108,14 @@ fun ListExpenseItem(
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TextSubTitleItem(text = stringResource(id = R.string.expense_due_date))
+                            TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
                                 text = dueDate
                             )
                             TextSubTitleItem(
                                 modifier = Modifier.padding(start = LARGEST_PADDING),
-                                text = stringResource(id = R.string.expense_status)
+                                text = stringResource(id = R.string.account_list_item_status)
                             )
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),

@@ -10,12 +10,12 @@ import br.com.aldemir.myaccounts.presentation.navigation.Route
 
 sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imageIcon: ImageVector) {
     object Home : DrawerScreens(
-        titleResourceId = R.string.home,
+        titleResourceId = R.string.home_title,
         route = Route.Home.route,
         imageIcon = Icons.Filled.Home
     )
     object Statistic : DrawerScreens(
-        titleResourceId = R.string.add_account_screen_title,
+        titleResourceId = R.string.expense_add_screen_title,
         route = Route.ExpenseAdd.route, imageIcon =
         Icons.Filled.Add
     )
@@ -25,17 +25,17 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
         imageIcon = Icons.Filled.List
     )
     object Historic : DrawerScreens(
-        titleResourceId = R.string.historic,
+        titleResourceId = R.string.historic_screen_title,
         route = Route.Historic.route,
         imageIcon = Icons.Filled.List
     )
     object AddRecipe : DrawerScreens(
-        titleResourceId = R.string.add_revenue_screen_title,
+        titleResourceId = R.string.recipe_add_screen_title,
         route = Route.AddRecipe.route,
         imageIcon = Icons.Filled.Add
     )
     object ListRecipe : DrawerScreens(
-        titleResourceId = R.string.list_recipe_screen_title,
+        titleResourceId = R.string.recipe_list_screen_title,
         route = Route.ListRecipe.route,
         imageIcon = Icons.Filled.List
     )

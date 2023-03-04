@@ -137,7 +137,7 @@ private fun ChangeRecipeContent(
             },
         )
         if (value.isEmpty()) Text(
-            text = stringResource(id = R.string.invalid_value),
+            text = stringResource(id = R.string.form_invalid_value),
             color = MaterialTheme.colors.error,
             fontSize = FONT_SIZE_12
         )
@@ -160,7 +160,7 @@ private fun ChangeRecipeContent(
         ) {
             Text(
                 color = Color.White,
-                text = stringResource(id = R.string.expense_update_button),
+                text = stringResource(id = R.string.button_update),
                 fontSize = FONT_SIZE_16,
             )
         }

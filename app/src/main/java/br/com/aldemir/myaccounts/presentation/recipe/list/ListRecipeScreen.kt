@@ -118,7 +118,7 @@ fun ListRecipeScreen(
                         showToast(
                             context,
                             context.getString(
-                                R.string.delete_expense_message_toast,
+                                R.string.expense_delete_message_toast,
                                 recipeToSave.id
                             )
                         )

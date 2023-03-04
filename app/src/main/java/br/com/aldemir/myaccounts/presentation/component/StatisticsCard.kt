@@ -27,7 +27,7 @@ fun StatisticsCard(
     val textChecked: String = when (cardState.cardType) {
         CardType.EXPENSE -> stringResource(id = R.string.expense_paid_out)
         CardType.RECIPE -> stringResource(id = R.string.recipe_checked)
-        CardType.HOME -> stringResource(id = R.string.add_revenue)
+        CardType.HOME -> stringResource(id = R.string.recipe_card_title)
     }
     val textPending: String = when (cardState.cardType) {
         CardType.EXPENSE ->stringResource(id = R.string.expense_to_pay)
@@ -57,7 +57,7 @@ fun StatisticsCard(
                             top.linkTo(parent.top)
                         }
                         .padding(bottom = 20.dp),
-                    text = stringResource(id = R.string.total_month),
+                    text = stringResource(id = R.string.home_total_month),
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )

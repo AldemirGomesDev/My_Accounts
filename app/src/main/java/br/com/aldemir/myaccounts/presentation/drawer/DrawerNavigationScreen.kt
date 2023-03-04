@@ -8,23 +8,16 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
-import br.com.aldemir.myaccounts.presentation.bottomappbar.bottomNavItems
 import br.com.aldemir.myaccounts.presentation.component.TopBar
 import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
-import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
-import br.com.aldemir.myaccounts.presentation.theme.White
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
 
@@ -60,7 +53,7 @@ fun DrawerNavigationScreen(
                     )
                 }
                 Route.ExpenseAdd.route -> {
-                    TopBar(titleResId = R.string.add_account_screen_title,
+                    TopBar(titleResId = R.string.expense_add_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = { navController.navigateUp() }
                     )
@@ -88,21 +81,21 @@ fun DrawerNavigationScreen(
                     )
                 }
                 Route.Historic.route -> {
-                    TopBar(titleResId = R.string.historic,
+                    TopBar(titleResId = R.string.historic_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = { navController.navigateUp() }
                     )
                 }
                 Route.AddRecipe.route -> {
                     TopBar(
-                        titleResId = R.string.add_revenue_screen_title,
+                        titleResId = R.string.recipe_add_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = { navController.navigateUp() }
                     )
                 }
                 Route.ListRecipe.route -> {
                     TopBar(
-                        titleResId = R.string.list_recipe_screen_title,
+                        titleResId = R.string.recipe_list_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = {
                             navController.navigate(
@@ -113,14 +106,14 @@ fun DrawerNavigationScreen(
                 }
                 Route.DetailRecipe.route -> {
                     TopBar(
-                        titleResId = R.string.detail_recipe_screen_title,
+                        titleResId = R.string.recipe_detail_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = { navController.navigateUp() }
                     )
                 }
                 Route.ChangeRecipe.route -> {
                     TopBar(
-                        titleResId = R.string.change_recipe_screen_title,
+                        titleResId = R.string.recipe_change_screen_title,
                         imageIcon = Icons.Filled.ArrowBack,
                         onClick = { navController.navigateUp() }
                     )

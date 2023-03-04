@@ -80,6 +80,6 @@ class HistoricViewModel @Inject constructor(
     fun getStatusText(status: Boolean, expired: Boolean): Int {
         return if (status) R.string.expense_paid_out
         else if (expired) R.string.expense_expired
-        else R.string.expense_pending
+        else R.string.account_pending
     }
 }

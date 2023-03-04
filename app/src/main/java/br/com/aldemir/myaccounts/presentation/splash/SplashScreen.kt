@@ -74,7 +74,7 @@ fun Splash(
                 .offset(y = offsetState)
                 .alpha(alpha = alphaState),
             painter = painterResource(id = getLogo()),
-            contentDescription = stringResource(id = R.string.to_do_logo)
+            contentDescription = stringResource(id = R.string.account_logo)
         )
     }
 }

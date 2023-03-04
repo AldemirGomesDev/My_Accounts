@@ -48,10 +48,10 @@ fun DrawerHeader(
                     modifier = Modifier
                         .size(LOGO_HEIGHT_MEDIUM),
                     painter = painterResource(id = R.drawable.icon_despesa),
-                    contentDescription = stringResource(id = R.string.to_do_logo)
+                    contentDescription = stringResource(id = R.string.account_logo)
                 )
                 TextTitleLarge(
-                    text = stringResource(id = R.string.expense_welcome),
+                    text = stringResource(id = R.string.drawer_welcome),
                     modifier = Modifier.padding(start = LARGE_PADDING)
                 )
             }
@@ -65,7 +65,7 @@ fun DrawerHeader(
 
             ) {
                 Text(
-                    text = stringResource(id = R.string.expense_dark_mode),
+                    text = stringResource(id = R.string.drawer_dark_mode),
                     color = White,
                     style = Typography.h6,
                     modifier = Modifier.weight(1f)

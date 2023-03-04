@@ -132,7 +132,7 @@ class ListExpenseViewModel @Inject constructor(
 
     fun getMessageToast(message: String) {
         val contentString = ObservableInt()
-        contentString.set(R.string.delete_expense_message_toast)
+        contentString.set(R.string.expense_delete_message_toast)
     }
 
     private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
@@ -148,7 +148,7 @@ class ListExpenseViewModel @Inject constructor(
     fun getStatusText(status: Boolean, expired: Boolean): Int {
         return if (status) R.string.expense_paid_out
         else if (expired) R.string.expense_expired
-        else R.string.expense_pending
+        else R.string.account_pending
     }
 
     private fun calculateValues() {

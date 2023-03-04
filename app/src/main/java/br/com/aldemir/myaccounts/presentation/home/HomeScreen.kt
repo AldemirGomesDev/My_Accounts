@@ -1,7 +1,6 @@
 package br.com.aldemir.myaccounts.presentation.home
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -73,12 +72,12 @@ fun HomeScreen(
                 MyBarChart(
                     barChartData = barChartDataRecipe,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.chart_recipe)
+                    title = stringResource(id = R.string.recipe_chart_title)
                 )
                 MyBarChart(
                     barChartData = barChartDataExpense,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.chart_expense)
+                    title = stringResource(id = R.string.expense_chart_title)
                 )
             }
         }

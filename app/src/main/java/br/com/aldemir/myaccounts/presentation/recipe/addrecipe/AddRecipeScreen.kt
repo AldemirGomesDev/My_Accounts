@@ -178,7 +178,7 @@ private fun AddAccountContent(
         color = MaterialTheme.colors.background
     )
     MyExposedDropdownMenu(
-        label = stringResource(id = R.string.expense_due_date_day),
+        label = stringResource(id = R.string.form_due_date_day),
         listItems = dueDateOptions.toList(),
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
@@ -192,7 +192,7 @@ private fun AddAccountContent(
         color = MaterialTheme.colors.background
     )
     CheckboxWithText(
-        text = stringResource(id = R.string.add_expense_text_checkbox),
+        text = stringResource(id = R.string.form_text_checkbox),
         isChecked = viewModel.isCheckedPaid.value,
         onCheckedChange = { viewModel.isCheckedPaid.value = it }
     )
@@ -201,7 +201,7 @@ private fun AddAccountContent(
         color = MaterialTheme.colors.background
     )
     CheckboxWithText(
-        text = stringResource(id = R.string.add_expense_text_checkbox_repeat),
+        text = stringResource(id = R.string.form_text_checkbox_repeat),
         isChecked = viewModel.isAccountRepeat.value,
         onCheckedChange = {
             viewModel.isAccountRepeat.value = it
@@ -214,7 +214,7 @@ private fun AddAccountContent(
     )
     if (viewModel.isAccountRepeat.value) {
         MyExposedDropdownMenu(
-            label = stringResource(id = R.string.how_many_times_repeat),
+            label = stringResource(id = R.string.form_how_many_times_repeat),
             listItems = repeatOptions.toList(),
             selected = viewModel.amountThatRepeatsSelected.value.toString(),
             onItemSelected = { item ->
@@ -243,7 +243,7 @@ private fun AddAccountContent(
     ) {
         Text(
             color = Color.White,
-            text = stringResource(id = R.string.add_account),
+            text = stringResource(id = R.string.button_add_text),
             fontSize = FONT_SIZE_16,
         )
     }

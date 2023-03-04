@@ -24,7 +24,7 @@ fun FabAdd(
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = stringResource(
-                id = R.string.add_account
+                id = R.string.button_add_text
             ),
             tint = Color.White
         )

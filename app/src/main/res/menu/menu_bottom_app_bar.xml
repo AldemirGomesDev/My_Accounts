@@ -4,7 +4,7 @@
     <item
         android:id="@+id/mainFragment"
         android:icon="@drawable/ic_home"
-        android:title="@string/home"
+        android:title="@string/home_title"
         app:showAsAction="ifRoom"
         />
 
@@ -14,6 +14,6 @@
         android:icon="@drawable/ic_add_circle"/>
     <item
         android:id="@+id/historic"
-        android:title="@string/historic"
+        android:title="@string/historic_screen_title"
         android:icon="@drawable/ic_historic"/>
 </menu>

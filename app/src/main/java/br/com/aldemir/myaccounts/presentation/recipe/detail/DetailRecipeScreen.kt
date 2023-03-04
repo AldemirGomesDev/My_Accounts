@@ -84,8 +84,8 @@ fun DetailRecipeScreen(
                     viewModel = viewModel
                 )
                 DisplayAlertDialog(
-                    title = "Aviso",
-                    message = "Deseja confirmar o recebimento?",
+                    title = stringResource(id = R.string.dialog_confirm_alert_title),
+                    message = stringResource(id = R.string.dialog_confirm_recipe_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
@@ -157,7 +157,7 @@ private fun DetailRecipeItem(
                             if (recipeMonthlyView.status)
                                 viewModel.showToast(
                                     context,
-                                    context.getString(R.string.no_update_message_toast)
+                                    context.getString(R.string.expense_no_update_message_toast)
                                 )
                             else navigateToChangeScreen(recipeMonthlyView.id)
                         },
@@ -171,7 +171,7 @@ private fun DetailRecipeItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                TextSubTitleItem(text = stringResource(id = R.string.label_value))
+                TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
                 TextBodyTwoItem(
                     text = recipeMonthlyView.value.toCurrency(),
                     modifier = Modifier.padding(start = SMALL_PADDING)
