@@ -5,8 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.data.model.Recipe
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.recipe.add.AddRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.add.AddRecipeUseCase
 import br.com.aldemir.myaccounts.util.Const.TAG
@@ -46,31 +46,31 @@ class AddRecipeViewModel @Inject constructor(
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
     fun saveAccount() = viewModelScope.launch {
-        val recipe = Recipe(
+        val recipeDTO = RecipeDTO(
             name = name.value,
             description = description.value,
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val recipeId = addRecipeUseCase(recipe)
+        val recipeId = addRecipeUseCase(recipeDTO)
         id.value = recipeId.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
-            val recipeMonthly = RecipeMonthly(
+            val recipeMonthlyDTO = RecipeMonthlyDTO(
                 id_recipe = recipeId.toInt(),
                 year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),
                 status = if (index == 0) isCheckedPaid.value else false
             )
-            insertMonthlyPayment(recipeMonthly)
+            insertMonthlyPayment(recipeMonthlyDTO)
         }
     }
 
-    private fun insertMonthlyPayment(recipeMonthly: RecipeMonthly) = viewModelScope.launch {
-        val idMonthlyPayment = addRecipeMonthlyUseCase(recipeMonthly)
+    private fun insertMonthlyPayment(recipeMonthlyDTO: RecipeMonthlyDTO) = viewModelScope.launch {
+        val idMonthlyPayment = addRecipeMonthlyUseCase(recipeMonthlyDTO)
     }
 
     private fun shouldEnabledRegisterButton() {

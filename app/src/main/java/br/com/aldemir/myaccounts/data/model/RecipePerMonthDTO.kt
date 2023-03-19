@@ -1,6 +1,6 @@
-package br.com.aldemir.myaccounts.domain.model
+package br.com.aldemir.myaccounts.data.model
 
-data class RecipePerMonth(
+data class RecipePerMonthDTO(
     var id: Int = 0,
     var id_recipe: Int = 0,
     var name: String = "",

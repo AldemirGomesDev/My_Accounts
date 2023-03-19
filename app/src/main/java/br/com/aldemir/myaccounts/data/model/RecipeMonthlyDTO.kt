@@ -6,13 +6,13 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipe_monthly", foreignKeys = [ForeignKey(
-    entity = Recipe::class,
+    entity = RecipeDTO::class,
     parentColumns = arrayOf("id"),
     childColumns = arrayOf("id_recipe"),
     onDelete = ForeignKey.CASCADE
 )]
 )
-data class RecipeMonthly(
+data class RecipeMonthlyDTO(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = 0,

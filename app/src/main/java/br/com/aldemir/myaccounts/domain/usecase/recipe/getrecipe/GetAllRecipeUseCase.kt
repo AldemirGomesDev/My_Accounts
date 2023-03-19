@@ -1,7 +1,7 @@
 package br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe
 
-import br.com.aldemir.myaccounts.data.model.Recipe
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
 
 interface GetAllRecipeUseCase {
-    suspend operator fun invoke(): List<Recipe>
+    suspend operator fun invoke(): List<RecipeDTO>
 }

@@ -9,10 +9,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
 import br.com.aldemir.myaccounts.domain.mapper.toRecipeView
-import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
+import br.com.aldemir.myaccounts.data.model.RecipePerMonthDTO
 import br.com.aldemir.myaccounts.domain.usecase.recipe.delete.DeleteRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe.GetAllRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCase
@@ -39,7 +39,7 @@ class ListRecipeViewModel @Inject constructor(
     private val deleteRecipeUseCase: DeleteRecipeUseCase
 ) : ViewModel() {
 
-    private val _recipeMonthlys = MutableStateFlow<List<RecipeMonthly>>(emptyList())
+    private val _recipeMonthlysDTO = MutableStateFlow<List<RecipeMonthlyDTO>>(emptyList())
 
     private val _recipes = MutableLiveData<List<RecipeView>>(emptyList())
     var recipes: LiveData<List<RecipeView>> = _recipes
@@ -65,7 +65,7 @@ class ListRecipeViewModel @Inject constructor(
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
-        _recipeMonthlys.value = getAllRecipeMonthlyUseCase(month, year)
+        _recipeMonthlysDTO.value = getAllRecipeMonthlyUseCase(month, year)
         calculateValues()
     }
 
@@ -74,7 +74,7 @@ class ListRecipeViewModel @Inject constructor(
         convertToRecipeView(expensePerMonth)
     }
 
-    private fun convertToRecipeView(expensesPerMonth: List<RecipePerMonth>) {
+    private fun convertToRecipeView(expensesPerMonth: List<RecipePerMonthDTO>) {
         val recipeViews = ArrayList<RecipeView>()
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toRecipeView(
@@ -94,7 +94,7 @@ class ListRecipeViewModel @Inject constructor(
         var paidOut = 0.0
         var pending = 0.0
         var cardState = CardState()
-        for (item in _recipeMonthlys.value) {
+        for (item in _recipeMonthlysDTO.value) {
             cardState = CardState()
             valueTotal += item.value
             if (item.status) {

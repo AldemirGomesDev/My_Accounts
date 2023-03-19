@@ -1,10 +1,10 @@
 package br.com.aldemir.myaccounts.data.repository.recipe
 
-import br.com.aldemir.myaccounts.data.model.Recipe
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
 
 interface RecipeRepository {
-    suspend fun insert(recipe: Recipe): Long
-    fun update(recipe: Recipe): Int
-    suspend fun delete(recipe: Recipe): Int
-    suspend fun getAll(): List<Recipe>
+    suspend fun insert(recipeDTO: RecipeDTO): Long
+    fun update(recipeDTO: RecipeDTO): Int
+    suspend fun delete(recipeDTO: RecipeDTO): Int
+    suspend fun getAll(): List<RecipeDTO>
 }

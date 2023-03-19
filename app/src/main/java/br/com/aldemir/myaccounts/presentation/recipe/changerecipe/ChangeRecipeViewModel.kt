@@ -4,13 +4,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
-import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
-import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCase
+import br.com.aldemir.myaccounts.data.model.RecipePerMonthDTO
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetByIdRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.myaccounts.presentation.shared.model.RecipeMonthlyView
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
 import br.com.aldemir.myaccounts.util.pointString
@@ -30,14 +28,14 @@ class ChangeRecipeViewModel @Inject constructor(
 
     val value: MutableState<String> = mutableStateOf(emptyString())
 
-    private val _monthlyRecipe = MutableStateFlow(RecipeMonthly())
-    var monthlyRecipe: StateFlow<RecipeMonthly> = _monthlyRecipe
+    private val _monthlyRecipe = MutableStateFlow(RecipeMonthlyDTO())
+    var monthlyRecipe: StateFlow<RecipeMonthlyDTO> = _monthlyRecipe
 
     private val _idMonthlyRecipe = MutableStateFlow(0)
     val idMonthlyRecipe = _idMonthlyRecipe.asStateFlow()
 
-    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonth())
-    var recipeMonthlyView: StateFlow<RecipePerMonth> = _recipeMonthlyView
+    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonthDTO())
+    var recipeMonthlyView: StateFlow<RecipePerMonthDTO> = _recipeMonthlyView
 
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
         val monthlyRecipe = getByIdRecipeMonthlyUseCase(id)

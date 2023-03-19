@@ -1,16 +1,14 @@
 package br.com.aldemir.myaccounts.domain.mapper
 
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.model.Recipe
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.model.RecipeMonthlyDomain
-import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
-import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
+import br.com.aldemir.myaccounts.data.model.RecipePerMonthDTO
 import br.com.aldemir.myaccounts.presentation.shared.model.RecipeMonthlyView
 import br.com.aldemir.myaccounts.presentation.shared.model.RecipeView
 
 
-fun RecipePerMonth.toRecipeView(expired: Boolean) = RecipeView(
+fun RecipePerMonthDTO.toRecipeView(expired: Boolean) = RecipeView(
     id = id_recipe,
     name = name,
     description = description,
@@ -19,7 +17,7 @@ fun RecipePerMonth.toRecipeView(expired: Boolean) = RecipeView(
     expired = expired
 )
 
-fun RecipeView.toDatabase() = Recipe(
+fun RecipeView.toDatabase() = RecipeDTO(
     id = id,
     name = name,
     description = description,
@@ -40,7 +38,7 @@ fun RecipeMonthlyDomain.toView(expired: Boolean) = RecipeMonthlyView(
     expired = expired
 )
 
-fun RecipeMonthlyView.toDatabase() = RecipeMonthly(
+fun RecipeMonthlyView.toDatabase() = RecipeMonthlyDTO(
     id = id,
     id_recipe = id_recipe,
     year = year,
@@ -49,7 +47,7 @@ fun RecipeMonthlyView.toDatabase() = RecipeMonthly(
     status = status,
 )
 
-fun RecipePerMonth.toDatabase() = RecipeMonthly(
+fun RecipePerMonthDTO.toDatabase() = RecipeMonthlyDTO(
     id = id,
     id_recipe = id_recipe,
     year = year,

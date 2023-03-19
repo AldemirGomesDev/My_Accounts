@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.presentation.component.LoadingButton
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
@@ -38,20 +38,20 @@ fun ChangeExpenseScreen(
 
     val mIdMonthlyPayment: Int by viewModel.idMonthlyPayment.collectAsState()
 
-    val mMonthlyPayments = remember { mutableStateOf(MonthlyPayment()) }
+    val mExpenseMonthlyPayments = remember { mutableStateOf(ExpenseMonthlyDTO()) }
 
-    val monthlyPayments by viewModel.monthlyPayment.collectAsState()
+    val monthlyPayments by viewModel.expenseMonthlyDTO.collectAsState()
 
-    mMonthlyPayments.value = monthlyPayments
+    mExpenseMonthlyPayments.value = monthlyPayments
 
     val title = context.getString(
         R.string.expense_month_and_year,
-        mMonthlyPayments.value.year,
-        mMonthlyPayments.value.month
+        mExpenseMonthlyPayments.value.year,
+        mExpenseMonthlyPayments.value.month
     )
 
     viewModel.value.value =
-        viewModel.getValueWithTwoDecimal(mMonthlyPayments.value.value.toString())
+        viewModel.getValueWithTwoDecimal(mExpenseMonthlyPayments.value.value.toString())
 
     LaunchedEffect(key1 = mIdMonthlyPayment) {
         if (mIdMonthlyPayment > 0) navigateToDetailScreen()

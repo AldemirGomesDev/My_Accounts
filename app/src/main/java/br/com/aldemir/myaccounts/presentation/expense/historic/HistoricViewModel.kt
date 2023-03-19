@@ -8,8 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonthDTO
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensePerMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensesMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensemonthly.GetAllMonthlyPaymentUseCase
@@ -30,21 +30,21 @@ class HistoricViewModel @Inject constructor(
 
     val isLoading: MutableState<Boolean> = mutableStateOf(false)
 
-    private val _monthlyPayment = MutableLiveData<List<MonthlyPayment>>()
-    var monthlyPayment: LiveData<List<MonthlyPayment>> = _monthlyPayment
+    private val _Expense_monthlyDTO = MutableLiveData<List<ExpenseMonthlyDTO>>()
+    var expenseMonthlyDTO: LiveData<List<ExpenseMonthlyDTO>> = _Expense_monthlyDTO
 
-    private val _monthExpenses = MutableLiveData<List<MonthlyPayment>>()
-    val monthExpenses: LiveData<List<MonthlyPayment>> = _monthExpenses
+    private val _monthExpenses = MutableLiveData<List<ExpenseMonthlyDTO>>()
+    val monthExpenses: LiveData<List<ExpenseMonthlyDTO>> = _monthExpenses
 
-    private val _expensePerMonth = MutableLiveData<List<ExpensePerMonth>>()
-    val expensePerMonth: LiveData<List<ExpensePerMonth>> = _expensePerMonth
+    private val _expensePerMonthDTO = MutableLiveData<List<ExpensePerMonthDTO>>()
+    val expensePerMonthDTO: LiveData<List<ExpensePerMonthDTO>> = _expensePerMonthDTO
 
     private val _yearsList = MutableLiveData<List<String>>()
     val yearsList: LiveData<List<String>> = _yearsList
 
     fun getAllMonthlyPayment() = viewModelScope.launch {
         val result = getAllMonthlyPaymentUseCase()
-        _monthlyPayment.value = result
+        _Expense_monthlyDTO.value = result
         getDistinctYears(monthList = result)
     }
 
@@ -56,11 +56,11 @@ class HistoricViewModel @Inject constructor(
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
         isLoading.value = true
         val result = getAllExpensePerMonthUseCase(month, year)
-        _expensePerMonth.value = result
+        _expensePerMonthDTO.value = result
         isLoading.value = false
     }
 
-    private fun getDistinctYears(monthList: List<MonthlyPayment>) {
+    private fun getDistinctYears(monthList: List<ExpenseMonthlyDTO>) {
         val myYears = mutableListOf<String>()
         val yearUnique = monthList.distinctBy { it.year }
         yearUnique.forEach { myYears.add(it.year) }

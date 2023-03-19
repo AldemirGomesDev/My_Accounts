@@ -3,13 +3,13 @@ package br.com.aldemir.myaccounts.data.model
 import androidx.room.*
 
 @Entity(tableName = "monthly_payment", foreignKeys = [ForeignKey(
-    entity = Expense::class,
+    entity = ExpenseDTO::class,
     parentColumns = arrayOf("id"),
     childColumns = arrayOf("id_expense"),
     onDelete = ForeignKey.CASCADE
 )]
 )
-data class MonthlyPayment(
+data class ExpenseMonthlyDTO(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = 0,

@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensemonthly.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.update.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.util.emptyString
@@ -26,19 +26,19 @@ class ChangeExpenseViewModel @Inject constructor(
 
     val value: MutableState<String> = mutableStateOf(emptyString())
 
-    private val _monthlyPayment = MutableStateFlow(MonthlyPayment())
-    var monthlyPayment: StateFlow<MonthlyPayment> = _monthlyPayment
+    private val _Expense_monthlyDTO = MutableStateFlow(ExpenseMonthlyDTO())
+    var expenseMonthlyDTO: StateFlow<ExpenseMonthlyDTO> = _Expense_monthlyDTO
 
     private val _idMonthlyPayment = MutableStateFlow(0)
     val idMonthlyPayment = _idMonthlyPayment.asStateFlow()
 
     fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
-        _monthlyPayment.value = getByIdMonthlyPaymentUseCase(id)!!
+        _Expense_monthlyDTO.value = getByIdMonthlyPaymentUseCase(id)!!
     }
 
     fun updateMonthlyPayment() = viewModelScope.launch {
-        _monthlyPayment.value.value = value.value.fromCurrency()
-        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_monthlyPayment.value)!!
+        _Expense_monthlyDTO.value.value = value.value.fromCurrency()
+        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_Expense_monthlyDTO.value)!!
     }
 
     fun getValueWithTwoDecimal(value: String): String {

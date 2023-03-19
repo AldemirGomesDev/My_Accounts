@@ -6,8 +6,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "recipe", indices = [Index(value = ["name"], unique = true) ])
-data class Recipe(
+@Entity(tableName = "expense", indices = [Index(value = ["name"], unique = true) ])
+data class ExpenseDTO(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = 0,

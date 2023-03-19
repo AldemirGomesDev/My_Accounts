@@ -1,16 +1,16 @@
 package br.com.aldemir.myaccounts.data.repository.recipe
 
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.model.RecipeMonthlyDomain
-import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
+import br.com.aldemir.myaccounts.data.model.RecipePerMonthDTO
 
 interface RecipeMonthlyRepository {
-    suspend fun insert(recipeMonthly: RecipeMonthly): Long
-    suspend fun update(recipeMonthly: RecipeMonthly): Int
-    suspend fun delete(recipeMonthly: RecipeMonthly): Int
+    suspend fun insert(recipeMonthlyDTO: RecipeMonthlyDTO): Long
+    suspend fun update(recipeMonthlyDTO: RecipeMonthlyDTO): Int
+    suspend fun delete(recipeMonthlyDTO: RecipeMonthlyDTO): Int
     suspend fun getAllByIdRecipe(id: Int): List<RecipeMonthlyDomain>
-    suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonth
-    suspend fun getAll(): List<RecipeMonthly>
-    suspend fun getAllRecipeMonth(month: String, year: String): List<RecipeMonthly>
-    suspend fun getAllRecipePerMonth(month: String, year: String): List<RecipePerMonth>
+    suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonthDTO
+    suspend fun getAll(): List<RecipeMonthlyDTO>
+    suspend fun getAllRecipeMonth(month: String, year: String): List<RecipeMonthlyDTO>
+    suspend fun getAllRecipePerMonth(month: String, year: String): List<RecipePerMonthDTO>
 }

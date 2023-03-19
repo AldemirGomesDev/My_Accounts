@@ -7,19 +7,19 @@ import br.com.aldemir.myaccounts.data.database.room.expense.ExpenseDao
 import br.com.aldemir.myaccounts.data.database.room.expense.MonthlyPaymentDao
 import br.com.aldemir.myaccounts.data.database.room.recipe.RecipeDao
 import br.com.aldemir.myaccounts.data.database.room.recipe.RecipeMonthlyDao
-import br.com.aldemir.myaccounts.data.model.Expense
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.model.Recipe
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.util.DateTypeConverter
 
 
 @Database(
     entities = [
-        Expense::class,
-        MonthlyPayment::class,
-        Recipe::class,
-        RecipeMonthly::class], version = 1
+        ExpenseDTO::class,
+        ExpenseMonthlyDTO::class,
+        RecipeDTO::class,
+        RecipeMonthlyDTO::class], version = 1
 )
 @TypeConverters(DateTypeConverter::class)
 abstract class ConfigDataBase : RoomDatabase() {

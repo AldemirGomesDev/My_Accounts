@@ -1,14 +1,14 @@
 package br.com.aldemir.myaccounts.domain.mapper
 
-import br.com.aldemir.myaccounts.data.model.Expense
-import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonthDTO
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpensePerMonthView
 import br.com.aldemir.myaccounts.presentation.shared.model.ExpenseView
 import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
 
-fun Expense.toView(expired: Boolean) = ExpenseView(
+fun ExpenseDTO.toView(expired: Boolean) = ExpenseView(
     id = id,
     name = name,
     description = description,
@@ -18,7 +18,7 @@ fun Expense.toView(expired: Boolean) = ExpenseView(
     expired = expired
 )
 
-fun ExpensePerMonth.toView(expired: Boolean) = ExpensePerMonthView(
+fun ExpensePerMonthDTO.toView(expired: Boolean) = ExpensePerMonthView(
     id_expense = id_expense,
     name = name,
     description = description,
@@ -30,7 +30,7 @@ fun ExpensePerMonth.toView(expired: Boolean) = ExpensePerMonthView(
     expired = expired
 )
 
-fun ExpensePerMonth.toExpenseView(expired: Boolean) = ExpenseView(
+fun ExpensePerMonthDTO.toExpenseView(expired: Boolean) = ExpenseView(
     id = id_expense,
     name = name,
     description = description,
@@ -50,7 +50,7 @@ fun MonthlyPaymentDomain.toView(expired: Boolean) = MonthlyPaymentView(
     expired = expired
 )
 
-fun MonthlyPaymentView.toDatabase() = MonthlyPayment(
+fun MonthlyPaymentView.toDatabase() = ExpenseMonthlyDTO(
     id = id,
     id_expense = id_expense,
     year = year,
@@ -59,7 +59,7 @@ fun MonthlyPaymentView.toDatabase() = MonthlyPayment(
     situation = situation,
 )
 
-fun ExpenseView.toDatabase() = Expense(
+fun ExpenseView.toDatabase() = ExpenseDTO(
     id = id,
     name = name,
     description = description,

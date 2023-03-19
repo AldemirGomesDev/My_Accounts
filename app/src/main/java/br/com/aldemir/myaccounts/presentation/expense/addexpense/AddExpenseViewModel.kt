@@ -5,8 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.data.model.Expense
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.expense.add.AddExpenseUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.add.AddMonthlyPaymentUseCase
 import br.com.aldemir.myaccounts.util.Const.TAG
@@ -46,31 +46,31 @@ class AddExpenseViewModel @Inject constructor(
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
     fun saveAccount() = viewModelScope.launch {
-        val expense = Expense(
+        val expenseDTO = ExpenseDTO(
             name = name.value,
             description = description.value,
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val idExpense = addExpenseUseCase(expense)
+        val idExpense = addExpenseUseCase(expenseDTO)
         id.value = idExpense.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
-            val monthlyPayment = MonthlyPayment(
+            val expenseMonthlyDTO = ExpenseMonthlyDTO(
                 id_expense = idExpense.toInt(),
                 year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),
                 situation = if (index == 0) isCheckedPaid.value else false
             )
-            insertMonthlyPayment(monthlyPayment)
+            insertMonthlyPayment(expenseMonthlyDTO)
         }
     }
 
-    private fun insertMonthlyPayment(monthlyPayment: MonthlyPayment) = viewModelScope.launch {
-        val idMonthlyPayment = addMonthlyPaymentUseCase(monthlyPayment)
+    private fun insertMonthlyPayment(expenseMonthlyDTO: ExpenseMonthlyDTO) = viewModelScope.launch {
+        val idMonthlyPayment = addMonthlyPaymentUseCase(expenseMonthlyDTO)
     }
 
     private fun shouldEnabledRegisterButton() {

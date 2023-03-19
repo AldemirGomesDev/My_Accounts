@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
-import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
 import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
 import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
 import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
@@ -48,7 +48,7 @@ fun RedBackground(degrees: Float) {
 fun ListExpenseItem(
     expense: ExpenseView,
     viewModel: ListExpenseViewModel,
-    onDelete: (expense: Expense) -> Unit,
+    onDelete: (expenseDTO: ExpenseDTO) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
 

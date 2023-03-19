@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
 import br.com.aldemir.myaccounts.presentation.component.DisplayAlertDialog
 import br.com.aldemir.myaccounts.presentation.component.EmptyContent
 import br.com.aldemir.myaccounts.presentation.component.FabAdd
@@ -46,8 +46,8 @@ fun ListExpenseScreen(
 
     val context = LocalContext.current
 
-    var expenseToSave by remember {
-        mutableStateOf(Expense())
+    var expenseDTOToSave by remember {
+        mutableStateOf(ExpenseDTO())
     }
 
     BackHandler {
@@ -67,7 +67,7 @@ fun ListExpenseScreen(
                 HomeScreenList(
                     navigateToTaskScreen = navigateToTaskScreen,
                     onDelete = { expense ->
-                        expenseToSave = expense
+                        expenseDTOToSave = expense
                         viewModel.onOpenDialogClicked()
                     },
                     viewModel = viewModel
@@ -80,12 +80,12 @@ fun ListExpenseScreen(
                         viewModel.onDialogDismiss()
                     },
                     onYesClicked = {
-                        deleteExpense(viewModel, expenseToSave)
+                        deleteExpense(viewModel, expenseDTOToSave)
                         showToast(
                             context,
                             context.getString(
                                 R.string.expense_delete_message_toast,
-                                expenseToSave.id
+                                expenseDTOToSave.id
                             )
                         )
                         viewModel.onDialogConfirm()
@@ -104,7 +104,7 @@ fun ListExpenseScreen(
 @Composable
 fun HomeScreenList(
     viewModel: ListExpenseViewModel,
-    onDelete: (expense: Expense) -> Unit,
+    onDelete: (expenseDTO: ExpenseDTO) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
     val state = rememberLazyListState()
@@ -167,9 +167,9 @@ private fun HomeCard(
     }
 }
 
-private fun deleteExpense(viewModel: ListExpenseViewModel, expense: Expense) {
+private fun deleteExpense(viewModel: ListExpenseViewModel, expenseDTO: ExpenseDTO) {
     CoroutineScope(Dispatchers.Default).launch {
-        viewModel.delete(expense)
+        viewModel.delete(expenseDTO)
         delay(300)
         getAllExpenseMonth(viewModel)
     }

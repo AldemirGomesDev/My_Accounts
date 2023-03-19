@@ -1,14 +1,13 @@
 package br.com.aldemir.myaccounts.presentation.home
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
-import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
+import br.com.aldemir.myaccounts.data.model.RecipeMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.expense.getexpensepermonth.GetAllExpensesMonthUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCase
 import br.com.aldemir.myaccounts.presentation.home.model.HomeCardData
@@ -26,7 +25,6 @@ import kotlinx.coroutines.launch
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -80,7 +78,7 @@ class HomeViewModel @Inject constructor(
         setValuesRecipeToChart()
     }
 
-    private fun setMonthValuesExpense(expenses: List<MonthlyPayment>) {
+    private fun setMonthValuesExpense(expenses: List<ExpenseMonthlyDTO>) {
         var valueExpense = 0.0
         var monthExpense = emptyString()
         expenses.forEach { expense ->
@@ -95,7 +93,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun setMonthValuesRecipe(recipes: List<RecipeMonthly>) {
+    private fun setMonthValuesRecipe(recipes: List<RecipeMonthlyDTO>) {
         var valueRecipe = 0.0
         var monthRecipe = emptyString()
         recipes.forEach { recipe ->
@@ -161,7 +159,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun calculateValues(recipes: List<RecipeMonthly>, expenses: List<MonthlyPayment>) {
+    private fun calculateValues(recipes: List<RecipeMonthlyDTO>, expenses: List<ExpenseMonthlyDTO>) {
         _homeCardData.value = HomeCardData()
         var valueRecipe = 0.0
         var valueExpense = 0.0

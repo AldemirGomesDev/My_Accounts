@@ -1,7 +1,7 @@
 package br.com.aldemir.myaccounts.domain.usecase.expense.getexpense
 
-import br.com.aldemir.myaccounts.data.model.Expense
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
 
 interface GetAllExpenseUseCase {
-    suspend operator fun invoke(): List<Expense>
+    suspend operator fun invoke(): List<ExpenseDTO>
 }

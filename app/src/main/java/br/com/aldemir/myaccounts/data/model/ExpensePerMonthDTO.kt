@@ -1,7 +1,7 @@
 package br.com.aldemir.myaccounts.data.model
 
 
-data class ExpensePerMonth(
+data class ExpensePerMonthDTO(
     var id_expense: Int = 0,
     var name: String = "",
     var description: String = "",

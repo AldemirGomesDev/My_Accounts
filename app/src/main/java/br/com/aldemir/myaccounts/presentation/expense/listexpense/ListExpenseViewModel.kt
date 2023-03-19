@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.domain.mapper.toExpenseView
-import br.com.aldemir.myaccounts.data.model.Expense
-import br.com.aldemir.myaccounts.data.model.ExpensePerMonth
-import br.com.aldemir.myaccounts.data.model.MonthlyPayment
+import br.com.aldemir.myaccounts.data.model.ExpenseDTO
+import br.com.aldemir.myaccounts.data.model.ExpensePerMonthDTO
+import br.com.aldemir.myaccounts.data.model.ExpenseMonthlyDTO
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.myaccounts.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.myaccounts.domain.usecase.expense.delete.DeleteExpenseUseCase
@@ -44,7 +44,7 @@ class ListExpenseViewModel @Inject constructor(
     private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
     var expenses: StateFlow<List<ExpenseView>> = _expenses
 
-    private val _monthExpenses = MutableStateFlow<List<MonthlyPayment>>(emptyList())
+    private val _monthExpenses = MutableStateFlow<List<ExpenseMonthlyDTO>>(emptyList())
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -104,8 +104,8 @@ class ListExpenseViewModel @Inject constructor(
         calculateValues()
     }
 
-    fun delete(expense: Expense) = viewModelScope.launch {
-        val expenseId = deleteExpenseUseCase(expense)
+    fun delete(expenseDTO: ExpenseDTO) = viewModelScope.launch {
+        val expenseId = deleteExpenseUseCase(expenseDTO)
         if (expenseId > 0) {
             getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
         }
@@ -116,7 +116,7 @@ class ListExpenseViewModel @Inject constructor(
         convertToExpenses(expensePerMonth)
     }
 
-    private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonth>) {
+    private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonthDTO>) {
         val expenses = ArrayList<ExpenseView>()
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toExpenseView(

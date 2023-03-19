@@ -4,15 +4,13 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.data.model.Recipe
+import br.com.aldemir.myaccounts.data.model.RecipeDTO
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
 import br.com.aldemir.myaccounts.presentation.component.*
 import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemState
@@ -26,7 +24,7 @@ fun RecipeItem(
     listItems: Array<DropdownItemState>,
     recipeView: RecipeView,
     viewModel: ListRecipeViewModel,
-    onDelete: (recipe: Recipe) -> Unit,
+    onDelete: (recipeDTO: RecipeDTO) -> Unit,
     navigateToDetailScreen: (recipeId: Int) -> Unit,
 ) {
 
