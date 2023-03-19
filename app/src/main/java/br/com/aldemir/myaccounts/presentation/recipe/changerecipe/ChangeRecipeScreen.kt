@@ -11,12 +11,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.RecipePerMonthDTO
+import br.com.aldemir.myaccounts.presentation.component.CheckboxWithText
+import br.com.aldemir.myaccounts.presentation.component.InputTextOutlinedTextField
 import br.com.aldemir.myaccounts.presentation.component.LoadingButton
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
@@ -36,6 +40,8 @@ fun ChangeRecipeScreen(
     }
 
     val initValue: String by viewModel.value
+    val name: String by viewModel.name
+    val description: String by viewModel.description
 
     val mIdMonthlyRecipe: Int by viewModel.idMonthlyRecipe.collectAsState()
 
@@ -45,7 +51,7 @@ fun ChangeRecipeScreen(
 
     mMonthlyRecipes.value = monthlyRecipes
 
-    val title = context.getString(
+    val yearAndMonth = context.getString(
         R.string.expense_month_and_year,
         mMonthlyRecipes.value.year,
         mMonthlyRecipes.value.month
@@ -53,6 +59,11 @@ fun ChangeRecipeScreen(
 
     viewModel.value.value =
         viewModel.getValueWithTwoDecimal(mMonthlyRecipes.value.value.toString())
+
+    viewModel.recipeId.value = mMonthlyRecipes.value.id_recipe
+    viewModel.name.value = mMonthlyRecipes.value.name
+    viewModel.description.value = mMonthlyRecipes.value.description
+    viewModel.isCheckedPaid.value = mMonthlyRecipes.value.status
 
     LaunchedEffect(key1 = mIdMonthlyRecipe) {
         if (mIdMonthlyRecipe > 0) navigateToDetailScreen()
@@ -62,15 +73,24 @@ fun ChangeRecipeScreen(
         scaffoldState = scaffoldState,
         content = { padding ->
             ChangeRecipeContent(
-                title = title,
+                yearAndMonth = yearAndMonth,
+                title = name,
+                onTitleChange = {
+                    viewModel.name.value = it
+                },
                 value = initValue,
-                paddingValues = padding,
                 onValueChange = {
                     viewModel.value.value = it
                 },
+                description = description,
+                onDescriptionChange = {
+                    viewModel.description.value = it
+                },
                 onClickUpdate = {
                     viewModel.updateMonthlyRecipe()
-                }
+                },
+                paddingValues = padding,
+                viewModel = viewModel
             )
         },
     )
@@ -79,11 +99,16 @@ fun ChangeRecipeScreen(
 
 @Composable
 private fun ChangeRecipeContent(
+    yearAndMonth: String,
     title: String,
+    onTitleChange: (String) -> Unit,
     value: String,
-    paddingValues: PaddingValues,
     onValueChange: (String) -> Unit,
-    onClickUpdate: () -> Unit
+    description: String,
+    onDescriptionChange: (String) -> Unit,
+    onClickUpdate: () -> Unit,
+    paddingValues: PaddingValues,
+    viewModel: ChangeRecipeViewModel
 ) {
 
     var loading by remember {
@@ -94,7 +119,7 @@ private fun ChangeRecipeContent(
         mutableStateOf(false)
     }
 
-    enabled = (value.isNotEmpty() && !loading)
+    enabled = (viewModel.isEnabledRegisterButton.value && !loading)
 
     Column(
         modifier = Modifier
@@ -103,7 +128,7 @@ private fun ChangeRecipeContent(
     ) {
 
         Text(
-            text = title,
+            text = yearAndMonth,
             color = Purple700,
             fontWeight = FontWeight.Bold,
         )
@@ -113,38 +138,80 @@ private fun ChangeRecipeContent(
             color = MaterialTheme.colors.background
         )
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = value,
-            onValueChange = { onValueChange(it) },
-            label = { Text(text = stringResource(R.string.form_add_value)) },
-            textStyle = MaterialTheme.typography.body1,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            visualTransformation = MaskCurrencyVisualTransformation(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-                textColor = MaterialTheme.colors.addAccountBorderColor,
-                disabledTextColor = MaterialTheme.colors.addAccountBorderColor
-            ),
-            isError = value.isEmpty(),
-            trailingIcon = {
-                if (value.isEmpty()) Icon(
-                    imageVector = Icons.Filled.Info,
-                    contentDescription = emptyString()
-                )
+        InputTextOutlinedTextField(
+            value = title,
+            onValueChange = {
+                onTitleChange(it)
+                viewModel.validateName()
             },
+            label = stringResource(R.string.form_add_name),
+            isError = viewModel.isNameValid.value
         )
-        if (value.isEmpty()) Text(
-            text = stringResource(id = R.string.form_invalid_value),
+        Text(
+            text = viewModel.nameError.value,
             color = MaterialTheme.colors.error,
             fontSize = FONT_SIZE_12
         )
         Divider(
-            modifier = Modifier.height(LARGEST_PADDING),
+            modifier = Modifier.height(MEDIUM_PADDING),
+            color = MaterialTheme.colors.background
+        )
+
+        InputTextOutlinedTextField(
+            value = value,
+            onValueChange = {
+                onValueChange(it)
+                viewModel.validateValue()
+            },
+            label = stringResource(R.string.form_add_value),
+            isError = viewModel.isValueValid.value,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next,
+            ),
+            visualTransformation = MaskCurrencyVisualTransformation()
+        )
+        Text(
+            text = viewModel.valueError.value,
+            color = MaterialTheme.colors.error,
+            fontSize = FONT_SIZE_12
+        )
+        Divider(
+            modifier = Modifier.height(MEDIUM_PADDING),
+            color = MaterialTheme.colors.background
+        )
+
+        InputTextOutlinedTextField(
+            value = description,
+            onValueChange = {
+                onDescriptionChange(it)
+                viewModel.validateDescription()
+            },
+            label = stringResource(R.string.form_add_description),
+            isError = viewModel.isDescriptionValid.value,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Sentences
+            )
+        )
+        Text(
+            text = viewModel.descriptionError.value,
+            color = MaterialTheme.colors.error,
+            fontSize = FONT_SIZE_12
+        )
+        Divider(
+            modifier = Modifier.height(SMALL_PADDING),
+            color = MaterialTheme.colors.background
+        )
+
+        CheckboxWithText(
+            text = stringResource(id = R.string.form_text_checkbox),
+            isChecked = viewModel.isCheckedPaid.value,
+            onCheckedChange = { viewModel.isCheckedPaid.value = it }
+        )
+        Divider(
+            modifier = Modifier.height(SMALL_PADDING),
             color = MaterialTheme.colors.background
         )
 
@@ -173,10 +240,15 @@ private fun ChangeRecipeContent(
 @Composable
 private fun ChangeRecipeContentPreview() {
     ChangeRecipeContent(
-        "12 - Dezembro",
-        "",
-        paddingValues = PaddingValues(),
+        yearAndMonth = emptyString(),
+        title = "12 - Dezembro",
+        onTitleChange = {},
+        value = "90",
         onValueChange = {},
-        onClickUpdate = {}
+        description = "",
+        onDescriptionChange = {},
+        paddingValues = PaddingValues(),
+        onClickUpdate = {},
+        viewModel = hiltViewModel(),
     )
 }

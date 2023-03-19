@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import br.com.aldemir.myaccounts.MyApplication
-import br.com.aldemir.myaccounts.data.database.room.ConfigDataBase
+import br.com.aldemir.myaccounts.data.database.room.shared.ConfigDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

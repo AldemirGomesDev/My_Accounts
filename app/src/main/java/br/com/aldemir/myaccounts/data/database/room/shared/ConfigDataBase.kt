@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.data.database.room
+package br.com.aldemir.myaccounts.data.database.room.shared
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

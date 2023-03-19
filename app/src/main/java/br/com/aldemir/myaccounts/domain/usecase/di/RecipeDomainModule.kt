@@ -16,6 +16,8 @@ import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllR
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCaseImpl
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCaseImpl
+import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeNameAndDescriptionUseCase
+import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeNameAndDescriptionUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,6 +47,9 @@ interface RecipeDomainModule {
 
     @Binds
     fun bindUpdateRecipeMonthlyUseCase(useCase: UpdateRecipeMonthlyUseCaseImpl) : UpdateRecipeMonthlyUseCase
+
+    @Binds
+    fun bindUpdateRecipeNameDescriptionUseCase(useCase: UpdateRecipeNameAndDescriptionUseCaseImpl) : UpdateRecipeNameAndDescriptionUseCase
 
     @Binds
     fun bindGetAllRecipeMonthUseCase(useCase: GetAllRecipeMonthUseCaseImpl) : GetAllRecipeMonthUseCase

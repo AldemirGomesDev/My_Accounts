@@ -38,7 +38,7 @@ fun RecipeMonthlyDomain.toView(expired: Boolean) = RecipeMonthlyView(
     expired = expired
 )
 
-fun RecipeMonthlyView.toDatabase() = RecipeMonthlyDTO(
+fun RecipeMonthlyView.viewToDatabase() = RecipeMonthlyDTO(
     id = id,
     id_recipe = id_recipe,
     year = year,

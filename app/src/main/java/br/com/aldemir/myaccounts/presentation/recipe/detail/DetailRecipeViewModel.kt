@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.domain.mapper.toDatabase
+import br.com.aldemir.myaccounts.domain.mapper.viewToDatabase
 import br.com.aldemir.myaccounts.domain.mapper.toView
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
@@ -66,7 +66,7 @@ class DetailRecipeViewModel @Inject constructor(
 
     fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
         _id.postValue(0)
-        val id = updateRecipeMonthlyUseCase(recipeMonthlyView.toDatabase())
+        val id = updateRecipeMonthlyUseCase(recipeMonthlyView.viewToDatabase())
         _id.postValue(id)
     }
 

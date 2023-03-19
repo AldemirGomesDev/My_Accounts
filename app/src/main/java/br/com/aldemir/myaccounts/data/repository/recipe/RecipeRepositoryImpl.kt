@@ -2,6 +2,7 @@ package br.com.aldemir.myaccounts.data.repository.recipe
 
 import br.com.aldemir.myaccounts.data.database.room.recipe.RecipeDao
 import br.com.aldemir.myaccounts.data.model.RecipeDTO
+import br.com.aldemir.myaccounts.data.model.RecipeUpdateDTO
 import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(
@@ -13,6 +14,10 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override fun update(recipeDTO: RecipeDTO): Int {
         return recipeDao.update(recipeDTO)
+    }
+
+    override suspend fun updateNameDescription(recipeDTO: RecipeUpdateDTO): Int {
+        return recipeDao.updateNameDescription(recipeDTO)
     }
 
     override suspend fun delete(recipeDTO: RecipeDTO): Int {

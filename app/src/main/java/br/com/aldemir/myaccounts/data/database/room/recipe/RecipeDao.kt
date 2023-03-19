@@ -3,6 +3,7 @@ package br.com.aldemir.myaccounts.data.database.room.recipe
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.aldemir.myaccounts.data.model.RecipeDTO
+import br.com.aldemir.myaccounts.data.model.RecipeUpdateDTO
 
 @Dao
 interface RecipeDao {
@@ -15,6 +16,9 @@ interface RecipeDao {
 
     @Update
     fun update(recipeDTO: RecipeDTO): Int
+
+    @Update(entity = RecipeDTO::class)
+    suspend fun updateNameDescription(recipeDTO: RecipeUpdateDTO): Int
 
     @Delete
     suspend fun delete(recipeDTO: RecipeDTO): Int
