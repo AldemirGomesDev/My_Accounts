@@ -1,5 +1,8 @@
 package br.com.aldemir.myaccounts.presentation.recipe.list
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,9 +17,7 @@ import br.com.aldemir.myaccounts.domain.usecase.recipe.delete.DeleteRecipeUseCas
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipe.GetAllRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipepermonth.GetAllRecipePerMonthUseCase
-import br.com.aldemir.myaccounts.presentation.shared.model.CardState
-import br.com.aldemir.myaccounts.presentation.shared.model.CardType
-import br.com.aldemir.myaccounts.presentation.shared.model.RecipeView
+import br.com.aldemir.myaccounts.presentation.shared.model.*
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
@@ -48,6 +49,9 @@ class ListRecipeViewModel @Inject constructor(
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    private val _menuItemsState = MutableStateFlow<Array<DropdownItemState>>(arrayOf())
+    val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     fun getAllRecipe() = viewModelScope.launch {
         val recipes = getAllRecipeUseCase()
@@ -128,6 +132,21 @@ class ListRecipeViewModel @Inject constructor(
         return if (status) R.string.expense_paid_out
         else if (expired) R.string.expense_expired
         else R.string.account_pending
+    }
+
+    fun getItemsMenu(){
+        _menuItemsState.value = arrayOf(
+            DropdownItemState(
+                type = DropdownItemType.UPDATE,
+                titleRes = R.string.recipe_detail_screen_title,
+                icon = Icons.Default.Edit
+            ),
+            DropdownItemState(
+                type = DropdownItemType.DELETE,
+                titleRes = R.string.dialog_delete_title,
+                icon = Icons.Default.Delete
+            ),
+        )
     }
 
     fun onOpenDialogClicked() {

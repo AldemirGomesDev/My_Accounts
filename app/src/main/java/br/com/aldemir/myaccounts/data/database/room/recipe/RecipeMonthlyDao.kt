@@ -19,17 +19,18 @@ interface RecipeMonthlyDao {
     @Delete
     suspend fun delete(recipeMonthly: RecipeMonthly): Int
 
-    @Query("SELECT M.id, M.id_recipe, M.year, M.month, M.value, E.due_date, M.status " +
+    @Query("SELECT M.id, M.id_recipe, E.name, M.year, M.month, M.value, E.due_date, M.status " +
             "FROM recipe_monthly as M INNER JOIN recipe as E on M.id_recipe = E.id WHERE M.id_recipe = :id")
     suspend fun getById(id: Int): List<RecipeMonthlyDomain>
 
-    @Query("SELECT * FROM recipe_monthly WHERE id = :id")
-    suspend fun getByIdRecipeMonthly(id: Int): RecipeMonthly
+    @Query("SELECT M.id, M.id_recipe, E.name, E.description, E.due_date, M.year, M.month, M.value, M.status " +
+            "FROM recipe as E INNER JOIN recipe_monthly as M on E.id = M.id_recipe WHERE M.id = :id")
+    suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonth
 
     @Query("SELECT * FROM recipe_monthly WHERE month = :month AND year = :year")
     suspend fun getAllRecipeMonthly(month: String, year: String): List<RecipeMonthly>
 
-    @Query("SELECT M.id_recipe, E.name, E.description, E.due_date, M.year, M.month, M.value, M.status " +
+    @Query("SELECT E.id, M.id_recipe, E.name, E.description, E.due_date, M.year, M.month, M.value, M.status " +
             "FROM recipe as E INNER JOIN recipe_monthly as M on E.id = M.id_recipe WHERE M.month = :month AND M.year = :year")
     suspend fun getAllRecipePerMonth(month: String, year: String): List<RecipePerMonth>
 

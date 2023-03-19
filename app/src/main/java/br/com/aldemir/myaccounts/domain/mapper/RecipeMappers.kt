@@ -31,6 +31,7 @@ fun RecipeView.toDatabase() = Recipe(
 fun RecipeMonthlyDomain.toView(expired: Boolean) = RecipeMonthlyView(
     id = id,
     id_recipe = id_recipe,
+    name = name,
     year = year,
     month = month,
     value = value,
@@ -40,6 +41,15 @@ fun RecipeMonthlyDomain.toView(expired: Boolean) = RecipeMonthlyView(
 )
 
 fun RecipeMonthlyView.toDatabase() = RecipeMonthly(
+    id = id,
+    id_recipe = id_recipe,
+    year = year,
+    month = month,
+    value = value,
+    status = status,
+)
+
+fun RecipePerMonth.toDatabase() = RecipeMonthly(
     id = id,
     id_recipe = id_recipe,
     year = year,

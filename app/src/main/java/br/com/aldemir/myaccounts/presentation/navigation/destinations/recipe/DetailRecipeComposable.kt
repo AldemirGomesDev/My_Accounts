@@ -48,22 +48,14 @@ fun NavGraphBuilder.detailRecipeComposable(
             navArgument(Const.RECIPE_ID) {
                 type = NavType.IntType
             },
-            navArgument(Const.RECIPE_NAME) {
-                type = NavType.StringType
-            }
         )
     ) { backStackEntry ->
         val recipeId = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
-        val recipeName = backStackEntry.arguments?.getString(Const.RECIPE_NAME)
         DetailRecipeScreen(
             recipeId = recipeId ?: 0,
-            recipeName = recipeName ?: emptyString(),
             navigateToChangeScreen = { idRecipe ->
                 navHostController.navigate(
-                    Route.ChangeRecipe.createRoute(
-                        idRecipe,
-                        recipeName ?: emptyString()
-                    )
+                    Route.ChangeRecipe.createRoute(idRecipe)
                 )
             },
             navigateToBackScreen = { navHostController.navigateUp() }

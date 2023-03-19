@@ -9,7 +9,7 @@ interface RecipeMonthlyRepository {
     suspend fun update(recipeMonthly: RecipeMonthly): Int
     suspend fun delete(recipeMonthly: RecipeMonthly): Int
     suspend fun getAllByIdRecipe(id: Int): List<RecipeMonthlyDomain>
-    suspend fun getByIdRecipeMonthly(id: Int): RecipeMonthly
+    suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonth
     suspend fun getAll(): List<RecipeMonthly>
     suspend fun getAllRecipeMonth(month: String, year: String): List<RecipeMonthly>
     suspend fun getAllRecipePerMonth(month: String, year: String): List<RecipePerMonth>

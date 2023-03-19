@@ -5,8 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.domain.mapper.toDatabase
+import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
+import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetByIdRecipeMonthlyUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.myaccounts.presentation.shared.model.RecipeMonthlyView
 import br.com.aldemir.myaccounts.util.emptyString
 import br.com.aldemir.myaccounts.util.fromCurrency
 import br.com.aldemir.myaccounts.util.pointString
@@ -21,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangeRecipeViewModel @Inject constructor(
     private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase,
-    private val getByIdRecipeMonthlyUseCase: GetByIdRecipeMonthlyUseCase
+    private val getByIdRecipeMonthlyUseCase: GetByIdRecipeMonthlyUseCase,
 ) : ViewModel() {
 
     val value: MutableState<String> = mutableStateOf(emptyString())
@@ -32,13 +36,17 @@ class ChangeRecipeViewModel @Inject constructor(
     private val _idMonthlyRecipe = MutableStateFlow(0)
     val idMonthlyRecipe = _idMonthlyRecipe.asStateFlow()
 
+    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonth())
+    var recipeMonthlyView: StateFlow<RecipePerMonth> = _recipeMonthlyView
+
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
-        _monthlyRecipe.value = getByIdRecipeMonthlyUseCase(id)
+        val monthlyRecipe = getByIdRecipeMonthlyUseCase(id)
+        _recipeMonthlyView.value = monthlyRecipe
     }
 
     fun updateMonthlyRecipe() = viewModelScope.launch {
-        _monthlyRecipe.value.value = value.value.fromCurrency()
-        _idMonthlyRecipe.value = updateRecipeMonthlyUseCase(_monthlyRecipe.value)!!
+        _recipeMonthlyView.value.value = value.value.fromCurrency()
+        _idMonthlyRecipe.value = updateRecipeMonthlyUseCase(_recipeMonthlyView.value.toDatabase())
     }
 
     fun getValueWithTwoDecimal(value: String): String {

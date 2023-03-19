@@ -30,10 +30,10 @@ sealed class Route(val route: String) {
     }
     object AddRecipe: Route(RECIPE_SCREEN)
     object ListRecipe: Route(RECIPE_LIST_SCREEN)
-    object DetailRecipe: Route("$RECIPE_DETAIL_SCREEN/{$RECIPE_ID}/{$RECIPE_NAME}") {
-        fun createRoute(recipeId: Int, recipeName: String) = "$RECIPE_DETAIL_SCREEN/$recipeId/$recipeName"
+    object DetailRecipe: Route("$RECIPE_DETAIL_SCREEN/{$RECIPE_ID}") {
+        fun createRoute(recipeId: Int) = "$RECIPE_DETAIL_SCREEN/$recipeId"
     }
-    object ChangeRecipe: Route("$RECIPE_CHANGE_SCREEN/{$RECIPE_ID}/{$RECIPE_NAME}") {
-        fun createRoute(idMonthlyRecipe: Int, recipeName: String) = "$RECIPE_CHANGE_SCREEN/$idMonthlyRecipe/$recipeName"
+    object ChangeRecipe: Route("$RECIPE_CHANGE_SCREEN/{$RECIPE_ID}") {
+        fun createRoute(idMonthlyRecipe: Int) = "$RECIPE_CHANGE_SCREEN/$idMonthlyRecipe"
     }
 }

@@ -40,13 +40,9 @@ fun NavGraphBuilder.changeRecipeComposable(
             navArgument(Const.RECIPE_ID) {
                 type = NavType.IntType
             },
-            navArgument(Const.RECIPE_NAME) {
-                type = NavType.StringType
-            }
         )
     ) { backStackEntry ->
         val idMonthlyRecipe = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
-        val expenseName = backStackEntry.arguments?.getString(Const.RECIPE_NAME)
         ChangeRecipeScreen(
             idMonthlyRecipe = idMonthlyRecipe ?: 0,
             navigateToDetailScreen = {

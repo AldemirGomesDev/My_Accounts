@@ -17,6 +17,7 @@ import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.MediumPriorityColor
 import br.com.aldemir.myaccounts.util.DateUtils
+import br.com.aldemir.myaccounts.util.emptyString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +35,9 @@ class DetailRecipeViewModel @Inject constructor(
 
     private val _id = MutableLiveData<Int>()
     val id: LiveData<Int> = _id
+
+    private val _name = MutableLiveData(emptyString())
+    val name: LiveData<String> = _name
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -56,6 +60,7 @@ class DetailRecipeViewModel @Inject constructor(
         monthlyPaymentDomain.forEach { item ->
             monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
         }
+        _name.value = monthlyPaymentViewList[0].name
         _recipeMonthlyView.value = monthlyPaymentViewList
     }
 

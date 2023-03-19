@@ -33,7 +33,6 @@ fun DetailRecipeScreen(
     navigateToBackScreen: () -> Unit,
     viewModel: DetailRecipeViewModel = hiltViewModel(),
     recipeId: Int = -1,
-    recipeName: String = emptyString()
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -55,6 +54,8 @@ fun DetailRecipeScreen(
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
 
+    val name by viewModel.name.observeAsState()
+
     Scaffold(
         scaffoldState = scaffoldState,
         content = { paddingValues ->
@@ -62,7 +63,7 @@ fun DetailRecipeScreen(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 TextTitleLarge(
-                    text = recipeName,
+                    text = name?: emptyString(),
                     color = Purple700,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

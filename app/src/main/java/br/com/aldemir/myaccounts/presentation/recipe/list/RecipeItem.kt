@@ -14,20 +14,20 @@ import androidx.compose.ui.res.stringResource
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.Recipe
 import br.com.aldemir.myaccounts.domain.mapper.toDatabase
-import br.com.aldemir.myaccounts.presentation.component.TextBodyTwoItem
-import br.com.aldemir.myaccounts.presentation.component.TextDescriptionItem
-import br.com.aldemir.myaccounts.presentation.component.TextSubTitleItem
-import br.com.aldemir.myaccounts.presentation.component.TextTitleItem
+import br.com.aldemir.myaccounts.presentation.component.*
+import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemState
+import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemType
 import br.com.aldemir.myaccounts.presentation.shared.model.RecipeView
 import br.com.aldemir.myaccounts.presentation.theme.*
 
 @ExperimentalMaterialApi
 @Composable
 fun RecipeItem(
+    listItems: Array<DropdownItemState>,
     recipeView: RecipeView,
     viewModel: ListRecipeViewModel,
     onDelete: (recipe: Recipe) -> Unit,
-    navigateToDetailScreen: (recipeId: Int, nameRecipe: String) -> Unit
+    navigateToDetailScreen: (recipeId: Int) -> Unit,
 ) {
 
     val statusColor = viewModel.getStatusColor(recipeView.status, recipeView.expired)
@@ -39,7 +39,7 @@ fun RecipeItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToDetailScreen(recipeView.id, recipeView.name)
+            navigateToDetailScreen(recipeView.id)
         }
     ) {
         Column(
@@ -111,13 +111,15 @@ fun RecipeItem(
                     .weight(1f)
                     .fillMaxSize()
                 ) {
-                    IconButton(onClick = { onDelete(recipeView.toDatabase()) }) {
-                        Icon(
-                            imageVector = Icons.Filled.Delete,
-                            tint = MaterialTheme.colors.taskItemTextColor,
-                            contentDescription = null
-                        )
-                    }
+                    MyDropdownMenuItem(
+                        onItemClicked = { type ->
+                            when(type) {
+                                DropdownItemType.DELETE -> { onDelete(recipeView.toDatabase()) }
+                                DropdownItemType.UPDATE -> { navigateToDetailScreen(recipeView.id) }
+                            }
+                        },
+                        listItems = listItems
+                    )
                 }
             }
         }

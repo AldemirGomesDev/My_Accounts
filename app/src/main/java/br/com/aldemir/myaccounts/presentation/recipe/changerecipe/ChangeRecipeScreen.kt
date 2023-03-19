@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.data.model.RecipeMonthly
+import br.com.aldemir.myaccounts.domain.mapper.toDatabase
+import br.com.aldemir.myaccounts.domain.model.RecipePerMonth
 import br.com.aldemir.myaccounts.presentation.component.LoadingButton
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.*
@@ -31,15 +33,17 @@ fun ChangeRecipeScreen(
 
     val context = LocalContext.current
 
-    viewModel.getAllByIdMonthlyRecipe(idMonthlyRecipe)
+    LaunchedEffect(key1 = true) {
+        viewModel.getAllByIdMonthlyRecipe(idMonthlyRecipe)
+    }
 
     val initValue: String by viewModel.value
 
     val mIdMonthlyRecipe: Int by viewModel.idMonthlyRecipe.collectAsState()
 
-    val mMonthlyRecipes = remember { mutableStateOf(RecipeMonthly()) }
+    val mMonthlyRecipes = remember { mutableStateOf(RecipePerMonth()) }
 
-    val monthlyRecipes by viewModel.monthlyRecipe.collectAsState()
+    val monthlyRecipes by viewModel.recipeMonthlyView.collectAsState()
 
     mMonthlyRecipes.value = monthlyRecipes
 

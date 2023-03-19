@@ -25,7 +25,7 @@ class RecipeMonthlyRepositoryImpl @Inject constructor(
         return recipeMonthlyDao.getById(id)
     }
 
-    override suspend fun getByIdRecipeMonthly(id: Int): RecipeMonthly {
+    override suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonth {
         return recipeMonthlyDao.getByIdRecipeMonthly(id)
     }
 

@@ -39,9 +39,9 @@ fun NavGraphBuilder.listRecipeComposable(
         },
     ) {
         ListRecipeScreen(
-            navigateToDetailScreen = { recipeId, recipeName ->
+            navigateToDetailScreen = { recipeId ->
                 navHostController.navigate(
-                    Route.DetailRecipe.createRoute(recipeId, recipeName)
+                    Route.DetailRecipe.createRoute(recipeId)
                 )
             },
             navigateToHomeScreen = {
@@ -53,7 +53,7 @@ fun NavGraphBuilder.listRecipeComposable(
                 navHostController.navigate(
                     Route.AddRecipe.route
                 )
-            }
+            },
         )
     }
 }

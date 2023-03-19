@@ -37,7 +37,7 @@ fun ListRecipeScreen(
     viewModel: ListRecipeViewModel = hiltViewModel(),
     navigateToHomeScreen: () -> Unit,
     navigateToAddRecipeScreen: () -> Unit,
-    navigateToDetailScreen: (recipeId: Int, recipeName: String) -> Unit
+    navigateToDetailScreen: (recipeId: Int) -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
     val state = rememberLazyListState()
@@ -55,12 +55,14 @@ fun ListRecipeScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.getItemsMenu()
         viewModel.getAllRecipePerMonth(DateUtils.getMonth(), DateUtils.getYear())
         viewModel.getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
     }
 
     val recipes by viewModel.recipes.observeAsState()
     val cardState by viewModel.cardState.collectAsState()
+    val menuItems by viewModel.menuItemsState.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -86,15 +88,16 @@ fun ListRecipeScreen(
                                 }
                             ) { recipeView ->
                                 RecipeItem(
+                                    listItems = menuItems,
                                     recipeView = recipeView,
                                     viewModel = viewModel,
                                     onDelete = {
                                         recipeToSave = recipeView
                                         viewModel.onOpenDialogClicked()
                                     },
-                                    navigateToDetailScreen = { recipeId, nameRecipe ->
-                                        navigateToDetailScreen(recipeId, nameRecipe)
-                                    }
+                                    navigateToDetailScreen = { recipeId ->
+                                        navigateToDetailScreen(recipeId)
+                                    },
                                 )
                                 Divider(
                                     modifier = Modifier.height(0.5.dp),
