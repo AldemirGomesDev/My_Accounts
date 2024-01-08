@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "254552528896",
+    "project_id": "my-accounts-354f7",
+    "storage_bucket": "my-accounts-354f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254552528896:android:c048c4b13baddcd165a0e5",
+        "android_client_info": {
+          "package_name": "br.com.aldemir.myaccounts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhiZ41YIdajb-qKQvQ9DTQOegIouNvelc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
