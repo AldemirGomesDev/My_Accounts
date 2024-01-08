@@ -114,6 +114,7 @@ fun RecipeItem(
                             when(type) {
                                 DropdownItemType.DELETE -> { onDelete(recipeView.toDatabase()) }
                                 DropdownItemType.UPDATE -> { navigateToDetailScreen(recipeView.id) }
+                                else -> {}
                             }
                         },
                         listItems = listItems

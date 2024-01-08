@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -85,6 +86,9 @@ private fun ChangeExpenseContent(
     onClickUpdate: () -> Unit
 ) {
 
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
+
     var loading by remember {
         mutableStateOf(false)
     }
@@ -120,7 +124,7 @@ private fun ChangeExpenseContent(
             textStyle = MaterialTheme.typography.body1,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            visualTransformation = MaskCurrencyVisualTransformation(),
+            visualTransformation = MaskCurrencyVisualTransformation(currencySymbol),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
                 unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,

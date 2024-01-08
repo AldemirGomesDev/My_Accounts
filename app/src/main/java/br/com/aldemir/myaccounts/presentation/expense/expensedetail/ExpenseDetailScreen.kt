@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,7 @@ import br.com.aldemir.myaccounts.presentation.component.*
 import br.com.aldemir.myaccounts.presentation.shared.model.MonthlyPaymentView
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.emptyString
+import br.com.aldemir.myaccounts.util.getCurrencySymbol
 import br.com.aldemir.myaccounts.util.toCurrency
 
 
@@ -145,6 +147,9 @@ private fun ExpenseDetailContent(
 ) {
     val context = LocalContext.current
 
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
+
     val statusColor = viewModel.getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
     val resourceId = viewModel.getStatusText(monthlyPayment.situation, monthlyPayment.expired)
 
@@ -184,7 +189,7 @@ private fun ExpenseDetailContent(
             ) {
                 TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
                 TextBodyTwoItem(
-                    text = monthlyPayment.value.toCurrency(),
+                    text = monthlyPayment.value.toCurrency(currencySymbol),
                     modifier = Modifier.padding(start = SMALL_PADDING)
                 )
                 TextBodyTwoItem(

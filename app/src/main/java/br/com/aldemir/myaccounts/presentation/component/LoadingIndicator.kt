@@ -29,7 +29,7 @@ fun rememberLoadingIndicatorState(
     val state = remember {
         LoadingIndicatorStateImpl()
     }
-    LaunchedEffect(key1 = animating) { // key1 should to be 'animating'
+    LaunchedEffect(key1 = animating) {
         if (animating) {
             state.start(animationType, this)
         }

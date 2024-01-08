@@ -122,15 +122,19 @@ class HomeViewModel @Inject constructor(
             )
         }
         _monthValuesExpense.forEach {
-            bars.add(
-                BarChartData.Bar(
-                    label = it.month.substring(0, 3),
-                    value = it.value.toFloat(),
-                    color = MediumPriorityColor,
-                ),
-            )
+            if (it.month.isNotEmpty()) {
+                bars.add(
+                    BarChartData.Bar(
+                        label = it.month.substring(0, 3),
+                        value = it.value.toFloat(),
+                        color = MediumPriorityColor,
+                    ),
+                )
+            }
         }
-        _barChartDataExpense.value = BarChartData(bars = bars.toList())
+        if (bars.isNotEmpty()) {
+            _barChartDataExpense.value = BarChartData(bars = bars.toList())
+        }
     }
 
     private fun setValuesRecipeToChart() {
@@ -147,15 +151,19 @@ class HomeViewModel @Inject constructor(
             )
         }
         _monthValuesRecipe.forEach {
-            bars.add(
-                BarChartData.Bar(
-                    label = it.month.substring(0, 3),
-                    value = it.value.toFloat(),
-                    color = LowPriorityColor,
-                ),
-            )
+            if (it.month.isNotEmpty()) {
+                bars.add(
+                    BarChartData.Bar(
+                        label = it.month.substring(0, 3),
+                        value = it.value.toFloat(),
+                        color = LowPriorityColor,
+                    ),
+                )
+            }
         }
-        _barChartDataRecipe.value = BarChartData(bars = bars.toList())
+        if (bars.isNotEmpty()) {
+            _barChartDataRecipe.value = BarChartData(bars = bars.toList())
+        }
     }
 
 

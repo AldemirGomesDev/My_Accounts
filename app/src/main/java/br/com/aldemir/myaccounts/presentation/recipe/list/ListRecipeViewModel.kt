@@ -134,17 +134,17 @@ class ListRecipeViewModel @Inject constructor(
         else R.string.account_pending
     }
 
-    fun getItemsMenu(){
+    fun getItemsMenu() {
         _menuItemsState.value = arrayOf(
             DropdownItemState(
                 type = DropdownItemType.UPDATE,
                 titleRes = R.string.recipe_detail_screen_title,
-                icon = Icons.Default.Edit
+                icon = Icons.Default.Edit,
             ),
             DropdownItemState(
                 type = DropdownItemType.DELETE,
                 titleRes = R.string.dialog_delete_title,
-                icon = Icons.Default.Delete
+                icon = Icons.Default.Delete,
             ),
         )
     }

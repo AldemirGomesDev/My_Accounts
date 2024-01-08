@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -110,6 +111,8 @@ private fun ChangeRecipeContent(
     paddingValues: PaddingValues,
     viewModel: ChangeRecipeViewModel
 ) {
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
     var loading by remember {
         mutableStateOf(false)
@@ -169,7 +172,7 @@ private fun ChangeRecipeContent(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Next,
             ),
-            visualTransformation = MaskCurrencyVisualTransformation()
+            visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
         )
         Text(
             text = viewModel.valueError.value,

@@ -2,6 +2,12 @@ package br.com.aldemir.myaccounts.presentation.recipe.detail
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +18,8 @@ import br.com.aldemir.myaccounts.domain.mapper.viewToDatabase
 import br.com.aldemir.myaccounts.domain.mapper.toView
 import br.com.aldemir.myaccounts.domain.usecase.recipe.getrecipemonthly.GetAllByIdRecipeUseCase
 import br.com.aldemir.myaccounts.domain.usecase.recipe.update.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemState
+import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemType
 import br.com.aldemir.myaccounts.presentation.shared.model.RecipeMonthlyView
 import br.com.aldemir.myaccounts.presentation.theme.HighPriorityColor
 import br.com.aldemir.myaccounts.presentation.theme.LowPriorityColor
@@ -32,6 +40,9 @@ class DetailRecipeViewModel @Inject constructor(
 ): ViewModel() {
     private val _recipeMonthlyView = MutableStateFlow<List<RecipeMonthlyView>>(emptyList())
     var recipeMonthlyView: StateFlow<List<RecipeMonthlyView>> = _recipeMonthlyView
+
+    private val _menuItemsState = MutableStateFlow<Array<DropdownItemState>>(arrayOf())
+    val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     private val _id = MutableLiveData<Int>()
     val id: LiveData<Int> = _id
@@ -88,5 +99,15 @@ class DetailRecipeViewModel @Inject constructor(
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun getItemsMenu(){
+        _menuItemsState.value = arrayOf(
+            DropdownItemState(
+                type = DropdownItemType.PAY,
+                titleRes = R.string.button_text_pay,
+                icon = Icons.Default.Check,
+            ),
+        )
     }
 }

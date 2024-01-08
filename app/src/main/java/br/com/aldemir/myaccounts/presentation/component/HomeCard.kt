@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.home.model.HomeCardData
@@ -22,6 +23,8 @@ import br.com.aldemir.myaccounts.util.*
 fun HomeCard(
     homeCardData: HomeCardData,
 ) {
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
     Card(
         shape = Shapes.large,
         backgroundColor = GreenDark,
@@ -69,7 +72,7 @@ fun HomeCard(
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             fontWeight = FontWeight.Normal,
-                            text = homeCardData.valueRecipe.toCurrency(),
+                            text = homeCardData.valueRecipe.toCurrency(currencySymbol),
                             color = LowPriorityColor
                         )
                     }
@@ -97,7 +100,7 @@ fun HomeCard(
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             fontWeight = FontWeight.Normal,
-                            text = homeCardData.valueExpense.toCurrency(),
+                            text = homeCardData.valueExpense.toCurrency(currencySymbol),
                             color = MediumPriorityColor
                         )
                     }
@@ -120,7 +123,7 @@ fun HomeCard(
                     modifier = Modifier
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Bold,
-                    text = homeCardData.valueBalance.toCurrency(),
+                    text = homeCardData.valueBalance.toCurrency(currencySymbol),
                     color = if (homeCardData.valueBalance >= 0) LowPriorityColor else MediumPriorityColor
                 )
             }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
@@ -26,6 +27,7 @@ import br.com.aldemir.myaccounts.presentation.component.LoadingButton
 import br.com.aldemir.myaccounts.presentation.component.MyExposedDropdownMenu
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.MaskCurrencyVisualTransformation
+import br.com.aldemir.myaccounts.util.getCurrencySymbol
 import java.util.*
 
 @ExperimentalAnimationApi
@@ -100,6 +102,8 @@ private fun AddAccountContent(
     onDescriptionChange: (String) -> Unit,
     onClickSave: () -> Unit
 ) {
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
     val isLoading = remember { mutableStateOf(false) }
 
@@ -143,7 +147,7 @@ private fun AddAccountContent(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Next,
         ),
-        visualTransformation = MaskCurrencyVisualTransformation()
+        visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
     )
     Text(
         text = viewModel.valueError.value,

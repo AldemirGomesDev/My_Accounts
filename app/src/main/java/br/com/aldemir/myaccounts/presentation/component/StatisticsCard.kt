@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.myaccounts.R
@@ -34,6 +35,9 @@ fun StatisticsCard(
         CardType.RECIPE -> stringResource(id = R.string.recipe_pending)
         CardType.HOME -> stringResource(id = R.string.add_expense)
     }
+
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
     Card(
         shape = Shapes.large,
@@ -68,7 +72,7 @@ fun StatisticsCard(
                         }
                         .padding(bottom = 16.dp),
                     fontWeight = FontWeight.Bold,
-                    text = cardState.valueTotal.toCurrency(),
+                    text = cardState.valueTotal.toCurrency(currencySymbol),
                     color = Color.White
                 )
                 Image(
@@ -99,7 +103,7 @@ fun StatisticsCard(
                         }
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Normal,
-                    text = cardState.paidOut.toCurrency(),
+                    text = cardState.paidOut.toCurrency(currencySymbol),
                     color = Color.White
                 )
                 Image(
@@ -132,7 +136,7 @@ fun StatisticsCard(
                         }
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Normal,
-                    text = cardState.pending.toCurrency(),
+                    text = cardState.pending.toCurrency(currencySymbol),
                     color = Color.White
                 )
                 LinearProgressIndicatorSample(

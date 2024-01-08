@@ -17,14 +17,18 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.aldemir.myaccounts.R
+import br.com.aldemir.myaccounts.domain.mapper.toDatabase
 import br.com.aldemir.myaccounts.presentation.component.*
+import br.com.aldemir.myaccounts.presentation.shared.model.DropdownItemType
 import br.com.aldemir.myaccounts.presentation.shared.model.RecipeMonthlyView
 import br.com.aldemir.myaccounts.presentation.theme.*
 import br.com.aldemir.myaccounts.util.emptyString
+import br.com.aldemir.myaccounts.util.getCurrencySymbol
 import br.com.aldemir.myaccounts.util.toCurrency
 
 @Composable
@@ -133,12 +137,22 @@ private fun DetailRecipeItem(
     viewModel: DetailRecipeViewModel,
     index: Int,
 ) {
+    LaunchedEffect(key1 = true){
+        viewModel.getItemsMenu()
+    }
     val context = LocalContext.current
+
+    val currentLocal = Locale.current
+    val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
     val statusColor = viewModel.getStatusColor(recipeMonthlyView.status, recipeMonthlyView.expired)
     val resourceId = viewModel.getStatusText(recipeMonthlyView.status, recipeMonthlyView.expired)
 
-    val buttonAlpha by animateFloatAsState(targetValue = if (recipeMonthlyView.status) 0f else 1f)
+    val disabledItem by remember {
+        mutableStateOf(!recipeMonthlyView.status)
+    }
+
+    val menuItems by viewModel.menuItemsState.collectAsState()
 
     Surface(
         modifier = Modifier
@@ -174,7 +188,7 @@ private fun DetailRecipeItem(
             ) {
                 TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
                 TextBodyTwoItem(
-                    text = recipeMonthlyView.value.toCurrency(),
+                    text = recipeMonthlyView.value.toCurrency(currencySymbol),
                     modifier = Modifier.padding(start = SMALL_PADDING)
                 )
                 TextBodyTwoItem(
@@ -187,15 +201,18 @@ private fun DetailRecipeItem(
                     color = statusColor,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                OutlinedButton(
-                    enabled = !recipeMonthlyView.status,
-                    modifier = Modifier.alpha(buttonAlpha),
-                    onClick = {
-                        onClickUpdate(index, recipeMonthlyView)
-                    }
-                ) {
-                    TextMyButton(text = stringResource(id = R.string.button_text_pay))
-                }
+
+                MyDropdownMenuItem(
+                    onItemClicked = { type ->
+                        when(type) {
+                            DropdownItemType.PAY -> { onClickUpdate(index, recipeMonthlyView) }
+                            DropdownItemType.DELETE -> { }
+                            else -> {}
+                        }
+                    },
+                    listItems = menuItems,
+                    disabledItem = disabledItem
+                )
             }
             Divider(
                 modifier = Modifier.height(0.5.dp),

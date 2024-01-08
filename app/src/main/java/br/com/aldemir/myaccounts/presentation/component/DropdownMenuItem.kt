@@ -19,9 +19,9 @@ import br.com.aldemir.myaccounts.presentation.theme.*
 @Composable
 fun MyDropdownMenuItem(
     onItemClicked: (type: DropdownItemType) -> Unit,
-    listItems: Array<DropdownItemState>
+    listItems: Array<DropdownItemState>,
+    disabledItem: Boolean = true,
 ) {
-    val disabledItem = 0
     val contextForToast = LocalContext.current.applicationContext
 
     var expanded by remember {
@@ -52,7 +52,7 @@ fun MyDropdownMenuItem(
                         onItemClicked(itemValue.type)
                         expanded = false
                     },
-                    enabled = (itemIndex >= disabledItem)
+                    enabled = disabledItem
                 ) {
                     Icon(
                         modifier = Modifier.padding(end = MEDIUM_PADDING),
