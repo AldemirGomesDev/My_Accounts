@@ -1,20 +1,19 @@
 package br.com.aldemir.myaccounts.presentation.navigation
 
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_ADD_SCREEN
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_CHANGE_SCREEN
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_ID
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_LIST_SCREEN
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_NAME
-import br.com.aldemir.myaccounts.util.Const.HOME_SCREEN
-import br.com.aldemir.myaccounts.util.Const.SPLASH_SCREEN
-import br.com.aldemir.myaccounts.util.Const.EXPENSE_SCREEN
-import br.com.aldemir.myaccounts.util.Const.HISTORIC_SCREEN
-import br.com.aldemir.myaccounts.util.Const.RECIPE_CHANGE_SCREEN
-import br.com.aldemir.myaccounts.util.Const.RECIPE_DETAIL_SCREEN
-import br.com.aldemir.myaccounts.util.Const.RECIPE_ID
-import br.com.aldemir.myaccounts.util.Const.RECIPE_LIST_SCREEN
-import br.com.aldemir.myaccounts.util.Const.RECIPE_NAME
-import br.com.aldemir.myaccounts.util.Const.RECIPE_SCREEN
+import br.com.aldemir.common.util.Const.EXPENSE_ADD_SCREEN
+import br.com.aldemir.common.util.Const.EXPENSE_CHANGE_SCREEN
+import br.com.aldemir.common.util.Const.EXPENSE_ID
+import br.com.aldemir.common.util.Const.EXPENSE_LIST_SCREEN
+import br.com.aldemir.common.util.Const.EXPENSE_NAME
+import br.com.aldemir.common.util.Const.HOME_SCREEN
+import br.com.aldemir.common.util.Const.SPLASH_SCREEN
+import br.com.aldemir.common.util.Const.EXPENSE_SCREEN
+import br.com.aldemir.common.util.Const.HISTORIC_SCREEN
+import br.com.aldemir.common.util.Const.RECIPE_CHANGE_SCREEN
+import br.com.aldemir.common.util.Const.RECIPE_DETAIL_SCREEN
+import br.com.aldemir.common.util.Const.RECIPE_ID
+import br.com.aldemir.common.util.Const.RECIPE_LIST_SCREEN
+import br.com.aldemir.common.util.Const.RECIPE_SCREEN
 
 sealed class Route(val route: String) {
     object Splash: Route(SPLASH_SCREEN)

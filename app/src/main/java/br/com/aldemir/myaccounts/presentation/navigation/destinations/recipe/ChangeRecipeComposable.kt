@@ -9,12 +9,12 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.presentation.recipe.changerecipe.ChangeRecipeScreen
-import br.com.aldemir.myaccounts.util.Const
-import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import com.google.accompanist.navigation.animation.composable
+import br.com.aldemir.recipe.presentation.changerecipe.ChangeRecipeScreen
+import br.com.aldemir.common.util.Const
+import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi

@@ -3,22 +3,20 @@ package br.com.aldemir.myaccounts.presentation.shared.view
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
-import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
-import br.com.aldemir.myaccounts.presentation.theme.MyAccountsTheme
-import dagger.hilt.android.AndroidEntryPoint
+import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
+import br.com.aldemir.common.theme.MyAccountsTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: ListExpenseViewModel by viewModels()
+    private val viewModel: ListExpenseViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

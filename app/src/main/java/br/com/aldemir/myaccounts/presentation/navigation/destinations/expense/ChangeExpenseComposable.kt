@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.navigation.destinations
+package br.com.aldemir.myaccounts.presentation.navigation.destinations.expense
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -9,13 +9,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import br.com.aldemir.myaccounts.presentation.expense.expensechange.ChangeExpenseScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.util.Const
-import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import br.com.aldemir.myaccounts.util.emptyString
-import com.google.accompanist.navigation.animation.composable
+import br.com.aldemir.common.util.Const
+import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.common.util.emptyString
+import br.com.aldemir.expense.presentation.expensechange.ChangeExpenseScreen
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi

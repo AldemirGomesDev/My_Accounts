@@ -27,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.presentation.theme.LOGO_HEIGHT
-import br.com.aldemir.myaccounts.presentation.theme.splashScreenBackground
-import br.com.aldemir.myaccounts.util.Const.SPLASH_SCREEN_DELAY
+import br.com.aldemir.common.theme.LOGO_HEIGHT
+import br.com.aldemir.common.theme.splashScreenBackground
+import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import kotlinx.coroutines.delay
 
 @Composable

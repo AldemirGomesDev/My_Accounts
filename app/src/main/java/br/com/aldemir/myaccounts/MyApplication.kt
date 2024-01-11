@@ -1,18 +1,34 @@
 package br.com.aldemir.myaccounts
 
 import android.app.Application
-import android.content.Context
-import dagger.hilt.android.HiltAndroidApp
+import br.com.aldemir.data.repository.di.dataModule
+import br.com.aldemir.expense.di.expenseModule
+import br.com.aldemir.home.domain.di.domainModule
+import br.com.aldemir.home.presentation.di.presentationHomeModule
+import br.com.aldemir.data.database.di.appModule
+import br.com.aldemir.recipe.di.recipeModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.module.Module
 
-@HiltAndroidApp
+
 class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appContext = applicationContext
-    }
 
-    companion object {
-        lateinit var appContext: Context
+        startKoin {
+            androidContext(this@MyApplication)
+            modules(
+                arrayListOf<Module>().apply {
+                    add(appModule)
+                    add(dataModule)
+                    add(domainModule)
+                    add(presentationHomeModule)
+                    add(expenseModule)
+                    add(recipeModule)
+                }
+            )
+        }
     }
 }

@@ -1,20 +1,16 @@
 package br.com.aldemir.myaccounts.presentation.navigation.destinations
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.expense.addexpense.AddExpenseScreen
+import androidx.navigation.compose.composable
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import com.google.accompanist.navigation.animation.composable
+import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.expense.presentation.addexpense.AddExpenseScreen
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi

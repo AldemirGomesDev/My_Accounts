@@ -4,10 +4,10 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import br.com.aldemir.myaccounts.presentation.splash.SplashScreen
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import com.google.accompanist.navigation.animation.composable
+import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.splashComposable(

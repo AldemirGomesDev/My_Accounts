@@ -6,12 +6,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import br.com.aldemir.myaccounts.presentation.home.HomeScreen
-import br.com.aldemir.myaccounts.presentation.home.state.ButtonType
+import androidx.navigation.compose.composable
+import br.com.aldemir.home.presentation.view.HomeScreen
+import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.util.Const.NavigationAnimationDurationMillis
-import com.google.accompanist.navigation.animation.composable
-
+import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi

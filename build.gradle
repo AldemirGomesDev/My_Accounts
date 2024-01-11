@@ -1,11 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = "1.8.0"
+        kotlin_version = "1.8.10"
         compose_version = '1.4.3'
-        lifecycle_version = '2.6.0-alpha01'
+        lifecycle_version = '2.7.0'
         hilt_version = '1.0.0'
-        paging_version = '1.0.0-alpha17'
+        paging_version = '3.3.0-alpha02'
     }
     repositories {
         google()
@@ -14,12 +14,14 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.4.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
         classpath 'com.google.gms:google-services:4.4.0'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+plugins {
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
 }
 
 allprojects {

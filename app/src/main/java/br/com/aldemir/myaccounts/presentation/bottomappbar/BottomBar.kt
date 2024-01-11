@@ -7,8 +7,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import br.com.aldemir.myaccounts.presentation.theme.White
-import br.com.aldemir.myaccounts.presentation.theme.primaryDark
+import br.com.aldemir.common.theme.White
+import br.com.aldemir.common.theme.primaryDark
 
 @Composable
 fun BottomBar(

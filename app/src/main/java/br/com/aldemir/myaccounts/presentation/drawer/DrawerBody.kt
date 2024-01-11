@@ -8,9 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import br.com.aldemir.myaccounts.presentation.theme.DarkGray
-import br.com.aldemir.myaccounts.presentation.theme.primaryDarkVariant
-import br.com.aldemir.myaccounts.presentation.theme.taskItemBackgroundColor
+import br.com.aldemir.common.theme.taskItemBackgroundColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

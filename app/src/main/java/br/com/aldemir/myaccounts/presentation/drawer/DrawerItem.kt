@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import br.com.aldemir.myaccounts.presentation.theme.*
+import br.com.aldemir.common.theme.FONT_SIZE_18
+import br.com.aldemir.common.theme.LARGE_PADDING_16
+import br.com.aldemir.common.theme.MEDIUM_PADDING
+import br.com.aldemir.common.theme.taskItemTextColor
 
 @Composable
 fun DrawerItem(

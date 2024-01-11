@@ -12,13 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
-import br.com.aldemir.myaccounts.presentation.component.TopBar
-import br.com.aldemir.myaccounts.presentation.expense.listexpense.ListExpenseViewModel
+import br.com.aldemir.common.component.TopBar
+import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
 import br.com.aldemir.myaccounts.presentation.navigation.Route
 import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
@@ -32,7 +32,7 @@ fun DrawerNavigationScreen(
 
     val scaffoldState = rememberScaffoldState(drawerState)
 
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
 
     val scope = rememberCoroutineScope()
 
