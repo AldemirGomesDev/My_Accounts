@@ -1,14 +1,14 @@
 package br.com.aldemir.data.repository.di
 
-import br.com.aldemir.data.repository.darktheme.DataStoreRepository
+import br.com.aldemir.domain.repository.DataStoreRepository
 import br.com.aldemir.data.repository.darktheme.DataStoreRepositoryImpl
-import br.com.aldemir.data.repository.expense.ExpenseRepository
+import br.com.aldemir.domain.repository.ExpenseRepository
 import br.com.aldemir.data.repository.expense.ExpenseRepositoryImpl
-import br.com.aldemir.data.repository.expense.MonthlyPaymentRepository
+import br.com.aldemir.domain.repository.MonthlyPaymentRepository
 import br.com.aldemir.data.repository.expense.MonthlyPaymentRepositoryImpl
-import br.com.aldemir.data.repository.recipe.RecipeMonthlyRepository
+import br.com.aldemir.domain.repository.RecipeMonthlyRepository
 import br.com.aldemir.data.repository.recipe.RecipeMonthlyRepositoryImpl
-import br.com.aldemir.data.repository.recipe.RecipeRepository
+import br.com.aldemir.domain.repository.RecipeRepository
 import br.com.aldemir.data.repository.recipe.RecipeRepositoryImpl
 import org.koin.dsl.module
 

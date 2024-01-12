@@ -3,7 +3,7 @@ package br.com.aldemir.data.database.room.expense
 import androidx.room.*
 import br.com.aldemir.data.database.model.ExpensePerMonthDTO
 import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
-import br.com.aldemir.data.database.model.MonthlyPaymentDomain
+import br.com.aldemir.data.database.model.MonthlyPaymentDTO
 
 @Dao
 interface MonthlyPaymentDao {
@@ -22,7 +22,7 @@ interface MonthlyPaymentDao {
 
     @Query("SELECT M.id, M.id_expense, M.year, M.month, M.value, E.due_date, M.situation " +
             "FROM monthly_payment as M INNER JOIN Expense as E on M.id_expense = E.id WHERE M.id_expense = :id")
-    suspend fun getById(id: Int): List<MonthlyPaymentDomain>
+    suspend fun getById(id: Int): List<MonthlyPaymentDTO>
 
     @Query("SELECT * FROM monthly_payment WHERE id = :id")
     suspend fun getByIdMonthlyPayment(id: Int): ExpenseMonthlyDTO

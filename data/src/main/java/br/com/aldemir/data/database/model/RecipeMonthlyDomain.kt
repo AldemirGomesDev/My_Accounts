@@ -1,5 +1,6 @@
 package br.com.aldemir.data.database.model
 
+@Deprecated("remove not used")
 data class RecipeMonthlyDomain(
     var id: Int = 0,
     var id_recipe: Int = 0,

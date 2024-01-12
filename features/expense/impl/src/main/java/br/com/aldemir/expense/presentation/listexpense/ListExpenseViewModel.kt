@@ -6,18 +6,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.darkmode.ReadDarkModeStateUseCase
-import br.com.aldemir.publ.domain.darkmode.SaveDarkModeStateUseCase
-import br.com.aldemir.publ.domain.expense.DeleteExpenseUseCase
-import br.com.aldemir.publ.domain.expense.GetAllExpensePerMonthUseCase
-import br.com.aldemir.publ.domain.expense.GetAllExpensesMonthUseCase
+import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
+import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.data.database.model.ExpenseDTO
-import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
+import br.com.aldemir.domain.model.ExpensePerMonthDomain
+import br.com.aldemir.domain.usecase.expense.DeleteExpenseUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
+import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toExpenseView
 import br.com.aldemir.expense.model.ExpenseView
 import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
@@ -27,11 +28,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ListExpenseViewModel constructor(
-    private val deleteExpenseUseCase: br.com.aldemir.publ.domain.expense.DeleteExpenseUseCase,
-    private val getAllExpensesMonthUseCase: br.com.aldemir.publ.domain.expense.GetAllExpensesMonthUseCase,
-    private val getAllExpensePerMonthUseCase: br.com.aldemir.publ.domain.expense.GetAllExpensePerMonthUseCase,
-    private val saveDarkModeStateUseCase: br.com.aldemir.publ.domain.darkmode.SaveDarkModeStateUseCase,
-    private val readDarkModeStateUseCase: br.com.aldemir.publ.domain.darkmode.ReadDarkModeStateUseCase
+    private val deleteExpenseUseCase: DeleteExpenseUseCase,
+    private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
+    private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
+    private val saveDarkModeStateUseCase: SaveDarkModeStateUseCase,
+    private val readDarkModeStateUseCase: ReadDarkModeStateUseCase
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(MainUiState())
@@ -40,7 +41,7 @@ class ListExpenseViewModel constructor(
     private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
     var expenses: StateFlow<List<ExpenseView>> = _expenses
 
-    private val _monthExpenses = MutableStateFlow<List<ExpenseMonthlyDTO>>(emptyList())
+    private val _monthExpenses = MutableStateFlow<List<ExpenseMonthlyDomain>>(emptyList())
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -100,8 +101,8 @@ class ListExpenseViewModel constructor(
         calculateValues()
     }
 
-    fun delete(expenseDTO: ExpenseDTO) = viewModelScope.launch {
-        val expenseId = deleteExpenseUseCase(expenseDTO)
+    fun delete(expenseView: ExpenseView) = viewModelScope.launch {
+        val expenseId = deleteExpenseUseCase(expenseView.toDomain())
         if (expenseId > 0) {
             getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
         }
@@ -112,7 +113,7 @@ class ListExpenseViewModel constructor(
         convertToExpenses(expensePerMonth)
     }
 
-    private fun convertToExpenses(expensesPerMonth: List<br.com.aldemir.data.database.model.ExpensePerMonthDTO>) {
+    private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonthDomain>) {
         val expenses = ArrayList<ExpenseView>()
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toExpenseView(

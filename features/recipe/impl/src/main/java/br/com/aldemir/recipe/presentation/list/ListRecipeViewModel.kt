@@ -8,10 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.recipe.DeleteRecipeUseCase
-import br.com.aldemir.publ.domain.recipe.GetAllRecipeMonthlyUseCase
-import br.com.aldemir.publ.domain.recipe.GetAllRecipePerMonthUseCase
-import br.com.aldemir.publ.domain.recipe.GetAllRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.DeleteRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllRecipePerMonthUseCase
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.model.DropdownItemState
@@ -21,8 +20,9 @@ import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.data.database.model.RecipeMonthlyDTO
-import br.com.aldemir.recipe.mapper.toDatabase
+import br.com.aldemir.domain.model.RecipeMonthlyDomain
+import br.com.aldemir.domain.model.RecipePerMonthDomain
+import br.com.aldemir.recipe.mapper.toDomain
 import br.com.aldemir.recipe.mapper.toRecipeView
 import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,13 +33,12 @@ import kotlinx.coroutines.launch
 private const val TAG = "listRecipeViewModel"
 
 class ListRecipeViewModel constructor(
-    private val getAllRecipeUseCase: GetAllRecipeUseCase,
     private val getAllRecipePerMonthUseCase: GetAllRecipePerMonthUseCase,
     private val getAllRecipeMonthlyUseCase: GetAllRecipeMonthlyUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase
 ) : ViewModel() {
 
-    private val _recipeMonthlysDTO = MutableStateFlow<List<RecipeMonthlyDTO>>(emptyList())
+    private val _recipeMonthlyDomain = MutableStateFlow<List<RecipeMonthlyDomain>>(emptyList())
 
     private val _recipes = MutableLiveData<List<RecipeView>>(emptyList())
     var recipes: LiveData<List<RecipeView>> = _recipes
@@ -53,19 +52,15 @@ class ListRecipeViewModel constructor(
     private val _menuItemsState = MutableStateFlow<Array<DropdownItemState>>(arrayOf())
     val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
-    fun getAllRecipe() = viewModelScope.launch {
-        val recipes = getAllRecipeUseCase()
-    }
-
     fun delete(expense: RecipeView) = viewModelScope.launch {
-        val expenseId = deleteRecipeUseCase(expense.toDatabase())
+        val expenseId = deleteRecipeUseCase(expense.toDomain())
         if (expenseId > 0) {
             getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
         }
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
-        _recipeMonthlysDTO.value = getAllRecipeMonthlyUseCase(month, year)
+        _recipeMonthlyDomain.value = getAllRecipeMonthlyUseCase(month, year)
         calculateValues()
     }
 
@@ -74,7 +69,7 @@ class ListRecipeViewModel constructor(
         convertToRecipeView(expensePerMonth)
     }
 
-    private fun convertToRecipeView(expensesPerMonth: List<br.com.aldemir.data.database.model.RecipePerMonthDTO>) {
+    private fun convertToRecipeView(expensesPerMonth: List<RecipePerMonthDomain>) {
         val recipeViews = ArrayList<RecipeView>()
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toRecipeView(
@@ -94,7 +89,7 @@ class ListRecipeViewModel constructor(
         var paidOut = 0.0
         var pending = 0.0
         var cardState = CardState()
-        for (item in _recipeMonthlysDTO.value) {
+        for (item in _recipeMonthlyDomain.value) {
             cardState = CardState()
             valueTotal += item.value
             if (item.status) {

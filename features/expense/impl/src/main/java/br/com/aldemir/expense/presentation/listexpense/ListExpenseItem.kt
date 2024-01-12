@@ -29,8 +29,6 @@ import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
-import br.com.aldemir.data.database.model.ExpenseDTO
-import br.com.aldemir.expense.mapper.toDatabase
 import br.com.aldemir.expense.model.ExpenseView
 
 @Composable
@@ -56,7 +54,7 @@ fun RedBackground(degrees: Float) {
 fun ListExpenseItem(
     expense: ExpenseView,
     viewModel: ListExpenseViewModel,
-    onDelete: (expenseDTO: ExpenseDTO) -> Unit,
+    onDelete: (expenseView: ExpenseView) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
 
@@ -141,7 +139,7 @@ fun ListExpenseItem(
                     .weight(1f)
                     .fillMaxSize()
                 ) {
-                    IconButton(onClick = { onDelete(expense.toDatabase()) }) {
+                    IconButton(onClick = { onDelete(expense) }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             tint = MaterialTheme.colors.taskItemTextColor,

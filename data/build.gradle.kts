@@ -16,6 +16,7 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":domain"))
 
     //room
     val roomVersion = "2.4.3"

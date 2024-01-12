@@ -21,3 +21,4 @@ include ':common'
 include ':features:recipe:impl'
 include ':features:expense:impl'
 
+include ':domain'

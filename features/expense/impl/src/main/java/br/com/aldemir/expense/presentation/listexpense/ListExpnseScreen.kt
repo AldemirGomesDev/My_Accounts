@@ -27,6 +27,7 @@ import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.data.database.model.ExpenseDTO
+import br.com.aldemir.expense.model.ExpenseView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,7 +50,7 @@ fun ListExpenseScreen(
     val context = LocalContext.current
 
     var expenseDTOToSave by remember {
-        mutableStateOf(br.com.aldemir.data.database.model.ExpenseDTO())
+        mutableStateOf(ExpenseView())
     }
 
     BackHandler {
@@ -106,7 +107,7 @@ fun ListExpenseScreen(
 @Composable
 fun HomeScreenList(
     viewModel: ListExpenseViewModel,
-    onDelete: (expenseDTO: ExpenseDTO) -> Unit,
+    onDelete: (expenseView: ExpenseView) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
     val state = rememberLazyListState()
@@ -169,9 +170,9 @@ private fun HomeCard(
     }
 }
 
-private fun deleteExpense(viewModel: ListExpenseViewModel, expenseDTO: br.com.aldemir.data.database.model.ExpenseDTO) {
+private fun deleteExpense(viewModel: ListExpenseViewModel, expenseView: ExpenseView) {
     CoroutineScope(Dispatchers.Default).launch {
-        viewModel.delete(expenseDTO)
+        viewModel.delete(expenseView)
         delay(300)
         getAllExpenseMonth(viewModel)
     }

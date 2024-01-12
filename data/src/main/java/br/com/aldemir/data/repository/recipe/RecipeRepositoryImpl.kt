@@ -1,25 +1,32 @@
 package br.com.aldemir.data.repository.recipe
 
+import br.com.aldemir.data.database.room.recipe.RecipeDao
+import br.com.aldemir.data.mapper.toDomain
+import br.com.aldemir.data.mapper.toDto
+import br.com.aldemir.domain.model.RecipeDomain
+import br.com.aldemir.domain.model.RecipeUpdateDomain
+import br.com.aldemir.domain.repository.RecipeRepository
+
 class RecipeRepositoryImpl constructor(
-    private val recipeDao: br.com.aldemir.data.database.room.recipe.RecipeDao
+    private val recipeDao: RecipeDao
 ): RecipeRepository {
-    override suspend fun insert(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Long {
-        return recipeDao.insert(recipeDTO)
+    override suspend fun insert(recipe: RecipeDomain): Long {
+        return recipeDao.insert(recipe.toDto())
     }
 
-    override fun update(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Int {
-        return recipeDao.update(recipeDTO)
+    override fun update(recipe: RecipeDomain): Int {
+        return recipeDao.update(recipe.toDto())
     }
 
-    override suspend fun updateNameDescription(recipeDTO: br.com.aldemir.data.database.model.RecipeUpdateDTO): Int {
-        return recipeDao.updateNameDescription(recipeDTO)
+    override suspend fun updateNameDescription(recipeUpdate: RecipeUpdateDomain): Int {
+        return recipeDao.updateNameDescription(recipeUpdate.toDto())
     }
 
-    override suspend fun delete(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Int {
-        return recipeDao.delete(recipeDTO)
+    override suspend fun delete(recipe: RecipeDomain): Int {
+        return recipeDao.delete(recipe.toDto())
     }
 
-    override suspend fun getAll(): List<br.com.aldemir.data.database.model.RecipeDTO> {
-        return recipeDao.getAll()
+    override suspend fun getAll(): List<RecipeDomain> {
+        return recipeDao.getAll().toDomain()
     }
 }

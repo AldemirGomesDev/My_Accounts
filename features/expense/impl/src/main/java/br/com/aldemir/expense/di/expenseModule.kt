@@ -33,7 +33,6 @@ val expenseModule = module {
     viewModel {
         HistoricViewModel(
             getAllMonthlyPaymentUseCase = get(),
-            getAllExpensesMonthUseCase = get(),
             getAllExpensePerMonthUseCase = get(),
         )
     }

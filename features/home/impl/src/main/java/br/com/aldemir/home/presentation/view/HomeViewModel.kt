@@ -11,8 +11,10 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
-import br.com.aldemir.publ.domain.expense.GetAllExpensesMonthUseCase
-import br.com.aldemir.home.domain.usecase.recipe.getrecipepermonth.GetAllRecipeMonthUseCase
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
+import br.com.aldemir.domain.model.RecipeMonthlyDomain
+import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.MonthValue
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +26,7 @@ import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 
 class HomeViewModel constructor(
     private val getAllRecipeMonthUseCase: GetAllRecipeMonthUseCase,
-    private val getAllExpensesMonthUseCase: br.com.aldemir.publ.domain.expense.GetAllExpensesMonthUseCase,
+    private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
 ) : ViewModel() {
 
     private val bar = BarChartData.Bar(
@@ -73,7 +75,7 @@ class HomeViewModel constructor(
         setValuesRecipeToChart()
     }
 
-    private fun setMonthValuesExpense(expenses: List<br.com.aldemir.data.database.model.ExpenseMonthlyDTO>) {
+    private fun setMonthValuesExpense(expenses: List<ExpenseMonthlyDomain>) {
         var valueExpense = 0.0
         var monthExpense = emptyString()
         expenses.forEach { expense ->
@@ -88,7 +90,7 @@ class HomeViewModel constructor(
         )
     }
 
-    private fun setMonthValuesRecipe(recipes: List<br.com.aldemir.data.database.model.RecipeMonthlyDTO>) {
+    private fun setMonthValuesRecipe(recipes: List<RecipeMonthlyDomain>) {
         var valueRecipe = 0.0
         var monthRecipe = emptyString()
         recipes.forEach { recipe ->
@@ -162,7 +164,7 @@ class HomeViewModel constructor(
     }
 
 
-    private fun calculateValues(recipes: List<br.com.aldemir.data.database.model.RecipeMonthlyDTO>, expenses: List<br.com.aldemir.data.database.model.ExpenseMonthlyDTO>) {
+    private fun calculateValues(recipes: List<RecipeMonthlyDomain>, expenses: List<ExpenseMonthlyDomain>) {
         _homeCardData.value = HomeCardData()
         var valueRecipe = 0.0
         var valueExpense = 0.0

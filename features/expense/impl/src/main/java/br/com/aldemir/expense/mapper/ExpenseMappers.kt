@@ -3,7 +3,11 @@ package br.com.aldemir.expense.mapper
 import br.com.aldemir.data.database.model.ExpenseDTO
 import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
 import br.com.aldemir.data.database.model.ExpensePerMonthDTO
-import br.com.aldemir.data.database.model.MonthlyPaymentDomain
+import br.com.aldemir.data.database.model.MonthlyPaymentDTO
+import br.com.aldemir.domain.model.ExpenseDomain
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
+import br.com.aldemir.domain.model.ExpensePerMonthDomain
+import br.com.aldemir.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.expense.model.ExpensePerMonthView
 import br.com.aldemir.expense.model.ExpenseView
 import br.com.aldemir.expense.model.MonthlyPaymentView
@@ -19,7 +23,7 @@ fun MonthlyPaymentDomain.toView(expired: Boolean) = MonthlyPaymentView(
     expired = expired
 )
 
-fun MonthlyPaymentView.toDatabase() = ExpenseMonthlyDTO(
+fun MonthlyPaymentView.toDomain() = ExpenseMonthlyDomain(
     id = id,
     id_expense = id_expense,
     year = year,
@@ -28,7 +32,7 @@ fun MonthlyPaymentView.toDatabase() = ExpenseMonthlyDTO(
     situation = situation,
 )
 
-fun ExpensePerMonthDTO.toView(expired: Boolean) = ExpensePerMonthView(
+fun ExpensePerMonthDomain.toView(expired: Boolean) = ExpensePerMonthView(
     id_expense = id_expense,
     name = name,
     description = description,
@@ -40,7 +44,7 @@ fun ExpensePerMonthDTO.toView(expired: Boolean) = ExpensePerMonthView(
     expired = expired
 )
 
-fun ExpensePerMonthDTO.toExpenseView(expired: Boolean) = ExpenseView(
+fun ExpensePerMonthDomain.toExpenseView(expired: Boolean) = ExpenseView(
     id = id_expense,
     name = name,
     description = description,
@@ -49,7 +53,7 @@ fun ExpensePerMonthDTO.toExpenseView(expired: Boolean) = ExpenseView(
     expired = expired
 )
 
-fun ExpenseView.toDatabase() = ExpenseDTO(
+fun ExpenseView.toDomain() = ExpenseDomain(
     id = id,
     name = name,
     description = description,

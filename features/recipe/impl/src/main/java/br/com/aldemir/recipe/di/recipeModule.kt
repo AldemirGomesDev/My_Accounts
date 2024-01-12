@@ -32,7 +32,6 @@ val recipeModule = module {
 
     viewModel {
         ListRecipeViewModel(
-            getAllRecipeUseCase = get(),
             getAllRecipePerMonthUseCase = get(),
             getAllRecipeMonthlyUseCase = get(),
             deleteRecipeUseCase = get(),

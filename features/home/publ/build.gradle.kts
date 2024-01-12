@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation(project(":data"))
+    implementation(project(":domain"))
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")

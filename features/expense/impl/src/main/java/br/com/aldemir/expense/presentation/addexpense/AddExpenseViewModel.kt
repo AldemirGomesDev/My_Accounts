@@ -5,18 +5,20 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.expense.AddExpenseUseCase
-import br.com.aldemir.publ.domain.expense.AddMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
+import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
 import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
 import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
+import br.com.aldemir.domain.model.ExpenseDomain
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import kotlinx.coroutines.launch
 
 class AddExpenseViewModel constructor(
-    private val addExpenseUseCase: br.com.aldemir.publ.domain.expense.AddExpenseUseCase,
-    private val addMonthlyPaymentUseCase: br.com.aldemir.publ.domain.expense.AddMonthlyPaymentUseCase
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
     ) : ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
@@ -42,31 +44,31 @@ class AddExpenseViewModel constructor(
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
     fun saveAccount() = viewModelScope.launch {
-        val expenseDTO = br.com.aldemir.data.database.model.ExpenseDTO(
+        val expenseDomain = ExpenseDomain(
             name = name.value,
             description = description.value,
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val idExpense = addExpenseUseCase(expenseDTO)
+        val idExpense = addExpenseUseCase(expenseDomain)
         id.value = idExpense.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
-            val expenseMonthlyDTO = ExpenseMonthlyDTO(
+            val expenseMonthlyDomain = ExpenseMonthlyDomain(
                 id_expense = idExpense.toInt(),
                 year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),
                 situation = if (index == 0) isCheckedPaid.value else false
             )
-            insertMonthlyPayment(expenseMonthlyDTO)
+            insertMonthlyPayment(expenseMonthlyDomain)
         }
     }
 
-    private fun insertMonthlyPayment(expenseMonthlyDTO: ExpenseMonthlyDTO) = viewModelScope.launch {
-        val idMonthlyPayment = addMonthlyPaymentUseCase(expenseMonthlyDTO)
+    private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) = viewModelScope.launch {
+        val idMonthlyPayment = addMonthlyPaymentUseCase(expenseMonthlyDomain)
     }
 
     private fun shouldEnabledRegisterButton() {

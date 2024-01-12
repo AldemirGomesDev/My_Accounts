@@ -2,7 +2,6 @@ package br.com.aldemir.data.database.room.recipe
 
 import androidx.room.*
 import br.com.aldemir.data.database.model.RecipeMonthlyDTO
-import br.com.aldemir.data.database.model.RecipeMonthlyDomain
 import br.com.aldemir.data.database.model.RecipePerMonthDTO
 
 @Dao
@@ -19,9 +18,9 @@ interface RecipeMonthlyDao {
     @Delete
     suspend fun delete(recipeMonthlyDTO: RecipeMonthlyDTO): Int
 
-    @Query("SELECT M.id, M.id_recipe, E.name, M.year, M.month, M.value, E.due_date, M.status " +
+    @Query("SELECT M.id, M.id_recipe, E.name, M.year, M.month, M.value, E.description, E.due_date, M.status " +
             "FROM recipe_monthly as M INNER JOIN recipe as E on M.id_recipe = E.id WHERE M.id_recipe = :id")
-    suspend fun getById(id: Int): List<RecipeMonthlyDomain>
+    suspend fun getById(id: Int): List<RecipePerMonthDTO>
 
     @Query("SELECT M.id, M.id_recipe, E.name, E.description, E.due_date, M.year, M.month, M.value, M.status " +
             "FROM recipe as E INNER JOIN recipe_monthly as M on E.id = M.id_recipe WHERE M.id = :id")

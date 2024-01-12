@@ -29,6 +29,7 @@ import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.data.database.model.RecipePerMonthDTO
+import br.com.aldemir.domain.model.RecipePerMonthDomain
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -51,7 +52,7 @@ fun ChangeRecipeScreen(
 
     val mIdMonthlyRecipe: Int by viewModel.idMonthlyRecipe.collectAsState()
 
-    val mMonthlyRecipes = remember { mutableStateOf(RecipePerMonthDTO()) }
+    val mMonthlyRecipes = remember { mutableStateOf(RecipePerMonthDomain()) }
 
     val monthlyRecipes by viewModel.recipeMonthlyView.collectAsState()
 

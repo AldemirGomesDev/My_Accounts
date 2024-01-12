@@ -4,15 +4,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.recipe.GetByIdRecipeMonthlyUseCase
-import br.com.aldemir.publ.domain.recipe.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.publ.domain.recipe.UpdateRecipeNameAndDescriptionUseCase
+import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
 import br.com.aldemir.common.util.pointString
 import br.com.aldemir.common.util.zeroString
-import br.com.aldemir.data.database.model.RecipePerMonthDTO
-import br.com.aldemir.data.database.model.RecipeUpdateDTO
+import br.com.aldemir.domain.model.RecipePerMonthDomain
+import br.com.aldemir.domain.model.RecipeUpdateDomain
 import br.com.aldemir.recipe.mapper.toDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,8 +46,8 @@ class ChangeRecipeViewModel constructor(
     private val _idMonthlyRecipe = MutableStateFlow(0)
     val idMonthlyRecipe = _idMonthlyRecipe.asStateFlow()
 
-    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonthDTO())
-    var recipeMonthlyView: StateFlow<RecipePerMonthDTO> = _recipeMonthlyView
+    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonthDomain())
+    var recipeMonthlyView: StateFlow<RecipePerMonthDomain> = _recipeMonthlyView
 
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
         val monthlyRecipe = getByIdRecipeMonthlyUseCase(id)
@@ -62,12 +62,12 @@ class ChangeRecipeViewModel constructor(
     }
 
     private fun updateRecipeNameAndDescription() = viewModelScope.launch {
-        val recipeUpdateDTO = RecipeUpdateDTO(
+        val recipeUpdateDomain = RecipeUpdateDomain(
             id = recipeId.value,
             name = name.value,
             description = description.value
         )
-        updateRecipeNameAndDescriptionUseCase(recipeUpdateDTO)
+        updateRecipeNameAndDescriptionUseCase(recipeUpdateDomain)
     }
 
     fun getValueWithTwoDecimal(value: String): String {

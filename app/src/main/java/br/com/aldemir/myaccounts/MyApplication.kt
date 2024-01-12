@@ -3,7 +3,7 @@ package br.com.aldemir.myaccounts
 import android.app.Application
 import br.com.aldemir.data.repository.di.dataModule
 import br.com.aldemir.expense.di.expenseModule
-import br.com.aldemir.home.domain.di.domainModule
+import br.com.aldemir.domain.di.domainModule
 import br.com.aldemir.home.presentation.di.presentationHomeModule
 import br.com.aldemir.data.database.di.appModule
 import br.com.aldemir.recipe.di.recipeModule

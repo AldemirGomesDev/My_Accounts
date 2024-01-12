@@ -28,6 +28,7 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingButton
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -47,9 +48,9 @@ fun ChangeExpenseScreen(
 
     val mIdMonthlyPayment: Int by viewModel.idMonthlyPayment.collectAsState()
 
-    val mExpenseMonthlyPayments = remember { mutableStateOf(br.com.aldemir.data.database.model.ExpenseMonthlyDTO()) }
+    val mExpenseMonthlyPayments = remember { mutableStateOf(ExpenseMonthlyDomain()) }
 
-    val monthlyPayments by viewModel.expenseMonthlyDTO.collectAsState()
+    val monthlyPayments by viewModel.expenseMonthlyDomain.collectAsState()
 
     mExpenseMonthlyPayments.value = monthlyPayments
 

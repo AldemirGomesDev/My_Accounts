@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":common"))
+    implementation(project(":domain"))
     implementation(project(":features:home:publ"))
 
     val koin_version = "3.2.0"

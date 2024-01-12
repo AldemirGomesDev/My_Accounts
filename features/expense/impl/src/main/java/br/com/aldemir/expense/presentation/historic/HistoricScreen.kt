@@ -171,7 +171,7 @@ fun HistoricScreenList(
         viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
     }
 
-    val expenses by viewModel.expensePerMonthDTO.observeAsState()
+    val expenses by viewModel.expensePerMonthDomain.observeAsState()
 
     if (expenses.isNullOrEmpty()) {
         EmptyContent(

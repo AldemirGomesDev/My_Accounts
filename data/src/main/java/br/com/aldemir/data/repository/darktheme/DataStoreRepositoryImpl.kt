@@ -1,6 +1,7 @@
 package br.com.aldemir.data.repository.darktheme
 
 import br.com.aldemir.data.database.preference.DataStorePreference
+import br.com.aldemir.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 
 class DataStoreRepositoryImpl constructor(

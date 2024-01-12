@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.recipe.GetAllByIdRecipeUseCase
-import br.com.aldemir.publ.domain.recipe.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
@@ -20,7 +20,7 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.recipe.mapper.toView
-import br.com.aldemir.recipe.mapper.viewToDatabase
+import br.com.aldemir.recipe.mapper.viewToDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,8 +28,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailRecipeViewModel constructor(
-    private val getAllByIdRecipeUseCase: br.com.aldemir.publ.domain.recipe.GetAllByIdRecipeUseCase,
-    private val updateRecipeMonthlyUseCase: br.com.aldemir.publ.domain.recipe.UpdateRecipeMonthlyUseCase
+    private val getAllByIdRecipeUseCase: GetAllByIdRecipeUseCase,
+    private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase
 ): ViewModel() {
     private val _recipeMonthlyView = MutableStateFlow<List<RecipeMonthlyView>>(emptyList())
     var recipeMonthlyView: StateFlow<List<RecipeMonthlyView>> = _recipeMonthlyView
@@ -70,7 +70,7 @@ class DetailRecipeViewModel constructor(
 
     fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
         _id.postValue(0)
-        val id = updateRecipeMonthlyUseCase(recipeMonthlyView.viewToDatabase())
+        val id = updateRecipeMonthlyUseCase(recipeMonthlyView.viewToDomain())
         _id.postValue(id)
     }
 

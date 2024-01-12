@@ -4,38 +4,38 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.expense.GetByIdMonthlyPaymentUseCase
-import br.com.aldemir.publ.domain.expense.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.GetByIdMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
 import br.com.aldemir.common.util.pointString
 import br.com.aldemir.common.util.zeroString
-import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
+import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ChangeExpenseViewModel constructor(
-    private val updateMonthlyPaymentUseCase: br.com.aldemir.publ.domain.expense.UpdateMonthlyPaymentUseCase,
-    private val getByIdMonthlyPaymentUseCase: br.com.aldemir.publ.domain.expense.GetByIdMonthlyPaymentUseCase
+    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {
 
     val value: MutableState<String> = mutableStateOf(emptyString())
 
-    private val _Expense_monthlyDTO = MutableStateFlow(ExpenseMonthlyDTO())
-    var expenseMonthlyDTO: StateFlow<ExpenseMonthlyDTO> = _Expense_monthlyDTO
+    private val _expenseMonthlyDomain = MutableStateFlow(ExpenseMonthlyDomain())
+    var expenseMonthlyDomain: StateFlow<ExpenseMonthlyDomain> = _expenseMonthlyDomain
 
     private val _idMonthlyPayment = MutableStateFlow(0)
     val idMonthlyPayment = _idMonthlyPayment.asStateFlow()
 
     fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
-        _Expense_monthlyDTO.value = getByIdMonthlyPaymentUseCase(id)!!
+        _expenseMonthlyDomain.value = getByIdMonthlyPaymentUseCase(id)
     }
 
     fun updateMonthlyPayment() = viewModelScope.launch {
-        _Expense_monthlyDTO.value.value = value.value.fromCurrency()
-        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_Expense_monthlyDTO.value)!!
+        _expenseMonthlyDomain.value.value = value.value.fromCurrency()
+        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_expenseMonthlyDomain.value)!!
     }
 
     fun getValueWithTwoDecimal(value: String): String {

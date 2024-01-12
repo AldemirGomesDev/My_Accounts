@@ -24,7 +24,8 @@ import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
-import br.com.aldemir.recipe.mapper.toDatabase
+import br.com.aldemir.domain.model.RecipeDomain
+import br.com.aldemir.recipe.mapper.toDomain
 import br.com.aldemir.recipe.model.RecipeView
 
 @ExperimentalMaterialApi
@@ -33,7 +34,7 @@ fun RecipeItem(
     listItems: Array<DropdownItemState>,
     recipeView: RecipeView,
     viewModel: ListRecipeViewModel,
-    onDelete: (recipeDTO: br.com.aldemir.data.database.model.RecipeDTO) -> Unit,
+    onDelete: (recipeView: RecipeView) -> Unit,
     navigateToDetailScreen: (recipeId: Int) -> Unit,
 ) {
 
@@ -121,7 +122,7 @@ fun RecipeItem(
                     MyDropdownMenuItem(
                         onItemClicked = { type ->
                             when(type) {
-                                DropdownItemType.DELETE -> { onDelete(recipeView.toDatabase()) }
+                                DropdownItemType.DELETE -> { onDelete(recipeView) }
                                 DropdownItemType.UPDATE -> { navigateToDetailScreen(recipeView.id) }
                                 else -> {}
                             }

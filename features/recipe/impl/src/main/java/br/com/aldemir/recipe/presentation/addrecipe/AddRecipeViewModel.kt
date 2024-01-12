@@ -5,17 +5,19 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.recipe.AddRecipeMonthlyUseCase
-import br.com.aldemir.publ.domain.recipe.AddRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
+import br.com.aldemir.domain.model.RecipeDomain
+import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import kotlinx.coroutines.launch
 
 class AddRecipeViewModel constructor(
-    private val addRecipeUseCase: br.com.aldemir.publ.domain.recipe.AddRecipeUseCase,
-    private val addRecipeMonthlyUseCase: br.com.aldemir.publ.domain.recipe.AddRecipeMonthlyUseCase
+    private val addRecipeUseCase: AddRecipeUseCase,
+    private val addRecipeMonthlyUseCase: AddRecipeMonthlyUseCase
 ) : ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
@@ -41,31 +43,31 @@ class AddRecipeViewModel constructor(
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
     fun saveAccount() = viewModelScope.launch {
-        val recipeDTO = br.com.aldemir.data.database.model.RecipeDTO(
+        val recipeDomain = RecipeDomain(
             name = name.value,
             description = description.value,
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val recipeId = addRecipeUseCase(recipeDTO)
+        val recipeId = addRecipeUseCase(recipeDomain)
         id.value = recipeId.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
         for ((index, month) in months.withIndex()){
-            val recipeMonthlyDTO = br.com.aldemir.data.database.model.RecipeMonthlyDTO(
+            val recipeMonthlyDomain = RecipeMonthlyDomain(
                 id_recipe = recipeId.toInt(),
                 year = years[index],
                 month = month,
                 value = value.value.fromCurrency(),
                 status = if (index == 0) isCheckedPaid.value else false
             )
-            insertMonthlyPayment(recipeMonthlyDTO)
+            insertMonthlyPayment(recipeMonthlyDomain)
         }
     }
 
-    private fun insertMonthlyPayment(recipeMonthlyDTO: br.com.aldemir.data.database.model.RecipeMonthlyDTO) = viewModelScope.launch {
-        val idMonthlyPayment = addRecipeMonthlyUseCase(recipeMonthlyDTO)
+    private fun insertMonthlyPayment(recipeMonthlyDomain: RecipeMonthlyDomain) = viewModelScope.launch {
+        val idMonthlyPayment = addRecipeMonthlyUseCase(recipeMonthlyDomain)
     }
 
     private fun shouldEnabledRegisterButton() {

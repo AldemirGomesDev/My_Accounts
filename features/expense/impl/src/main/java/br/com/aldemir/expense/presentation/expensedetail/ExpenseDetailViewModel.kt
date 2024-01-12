@@ -7,14 +7,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.publ.domain.expense.GetAllByIdExpenseUseCase
-import br.com.aldemir.publ.domain.expense.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllByIdExpenseUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.expense.mapper.toDatabase
+import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.MonthlyPaymentView
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +24,8 @@ import kotlinx.coroutines.launch
 
 
 class ExpenseDetailViewModel constructor(
-    private val updateMonthlyPaymentUseCase: br.com.aldemir.publ.domain.expense.UpdateMonthlyPaymentUseCase,
-    private val getAllByIdExpenseUseCase: br.com.aldemir.publ.domain.expense.GetAllByIdExpenseUseCase
+    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
     ) : ViewModel()  {
 
     companion object {
@@ -64,7 +64,7 @@ class ExpenseDetailViewModel constructor(
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPaymentView) = viewModelScope.launch {
         _id.postValue(0)
-        val id = updateMonthlyPaymentUseCase(monthlyPayment.toDatabase())
+        val id = updateMonthlyPaymentUseCase(monthlyPayment.toDomain())
         _id.postValue(id)
     }
 
