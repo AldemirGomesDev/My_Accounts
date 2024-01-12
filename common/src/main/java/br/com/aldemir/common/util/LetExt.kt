@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.util.extensions
+package br.com.aldemir.common.util
 
 inline fun <T1, T2, R> safeLet(
     p1: T1?,

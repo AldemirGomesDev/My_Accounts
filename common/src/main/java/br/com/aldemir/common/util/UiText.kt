@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.util
+package br.com.aldemir.common.util
 
 import android.content.Context
 import androidx.annotation.StringRes
