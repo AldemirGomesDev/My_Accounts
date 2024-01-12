@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.navigation
+package br.com.aldemir.navigation
 
 import br.com.aldemir.common.util.Const.EXPENSE_ADD_SCREEN
 import br.com.aldemir.common.util.Const.EXPENSE_CHANGE_SCREEN

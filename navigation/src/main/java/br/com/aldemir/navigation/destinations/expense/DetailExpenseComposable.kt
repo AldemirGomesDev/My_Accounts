@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.navigation.destinations.expense
+package br.com.aldemir.navigation.destinations.expense
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -12,7 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.com.aldemir.expense.presentation.expensedetail.ExpenseDetailScreen
-import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.navigation.Route
 import br.com.aldemir.common.util.Const
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.common.util.emptyString

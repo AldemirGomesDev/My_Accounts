@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/features/home/publ" />
             <option value="$PROJECT_DIR$/features/recipe" />
             <option value="$PROJECT_DIR$/features/recipe/impl" />
+            <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
       </GradleProjectSettings>

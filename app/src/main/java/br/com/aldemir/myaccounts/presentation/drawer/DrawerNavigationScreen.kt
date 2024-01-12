@@ -17,8 +17,8 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
 import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
-import br.com.aldemir.myaccounts.presentation.navigation.Route
-import br.com.aldemir.myaccounts.presentation.navigation.SetupNavigation
+import br.com.aldemir.navigation.Route
+import br.com.aldemir.navigation.SetupNavigation
 import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi

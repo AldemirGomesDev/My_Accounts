@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.navigation.destinations
+package br.com.aldemir.navigation.destinations.shared
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
-import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalFoundationApi

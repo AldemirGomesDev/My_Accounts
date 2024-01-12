@@ -5,7 +5,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import br.com.aldemir.myaccounts.R
-import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.navigation.Route
 
 data class BottomNavItem(
     val resourceNameId: Int,

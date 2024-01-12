@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.splash
+package br.com.aldemir.common.presentation.splash
 
 
 import androidx.compose.animation.core.animateDpAsState
@@ -26,10 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.myaccounts.R
+import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.LOGO_HEIGHT
 import br.com.aldemir.common.theme.splashScreenBackground
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
+import br.com.aldemir.common.util.emptyString
 import kotlinx.coroutines.delay
 
 @Composable
@@ -41,13 +42,13 @@ fun SplashScreen(
         targetValue = if (startAnimation) 0.dp else 100.dp,
         animationSpec = tween(
             durationMillis = 1000
-        )
+        ), label = emptyString()
     )
     val alphaState by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
             durationMillis = 1000
-        )
+        ), label = emptyString()
     )
     LaunchedEffect(key1 = true) {
         startAnimation = true

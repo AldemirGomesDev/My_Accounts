@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.navigation.destinations
+package br.com.aldemir.navigation.destinations.recipe
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -8,20 +8,20 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import br.com.aldemir.myaccounts.presentation.navigation.Route
+import br.com.aldemir.navigation.Route
+import br.com.aldemir.recipe.presentation.list.ListRecipeScreen
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
-import br.com.aldemir.expense.presentation.addexpense.AddExpenseScreen
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addAccountComposable(
+fun NavGraphBuilder.listRecipeComposable(
     navHostController: NavHostController
 ) {
-      composable(
-        route = Route.ExpenseAdd.route,
+    composable(
+        route = Route.ListRecipe.route,
         enterTransition = {
             slideInHorizontally(
-                initialOffsetX = { -1000 },
+                initialOffsetX = { 1000 },
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
@@ -38,12 +38,22 @@ fun NavGraphBuilder.addAccountComposable(
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
     ) {
-        AddExpenseScreen(
+        ListRecipeScreen(
+            navigateToDetailScreen = { recipeId ->
+                navHostController.navigate(
+                    Route.DetailRecipe.createRoute(recipeId)
+                )
+            },
             navigateToHomeScreen = {
                 navHostController.navigate(
-                    Route.ExpenseList.route
+                    Route.Home.route
                 )
-            }
+            },
+            navigateToAddRecipeScreen = {
+                navHostController.navigate(
+                    Route.AddRecipe.route
+                )
+            },
         )
     }
 }

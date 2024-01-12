@@ -46,13 +46,14 @@ import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCaseImpl
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipePerMonthUseCaseImpl
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCaseImpl
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCaseImpl
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val domainModule = module {
-
-    factory<GetAllExpenseUseCase> { GetAllExpenseUseCaseImpl(expenseRepository = get()) }
-    factory<DeleteExpenseUseCase> { DeleteExpenseUseCaseImpl(expenseRepository = get()) }
-    factory<AddExpenseUseCase> { AddExpenseUseCaseImpl(expenseRepository = get()) }
+    factoryOf(::AddExpenseUseCaseImpl) { bind<AddExpenseUseCase>() }
+    factoryOf(::GetAllExpenseUseCaseImpl) { bind<GetAllExpenseUseCase>() }
+    factoryOf(::DeleteExpenseUseCaseImpl) { bind<DeleteExpenseUseCase>() }
     factory<AddMonthlyPaymentUseCase> { AddMonthlyPaymentUseCaseImpl(monthlyPaymentRepository = get()) }
     factory<GetAllByIdExpenseUseCase> { GetAllByIdExpenseUseCaseImpl(monthlyPaymentRepository = get()) }
     factory<GetByIdMonthlyPaymentUseCase> { GetByIdMonthlyPaymentUseCaseImpl(monthlyPaymentRepository = get()) }
