@@ -111,6 +111,7 @@ private fun ChangeExpenseContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
             .padding(16.dp)
     ) {
 

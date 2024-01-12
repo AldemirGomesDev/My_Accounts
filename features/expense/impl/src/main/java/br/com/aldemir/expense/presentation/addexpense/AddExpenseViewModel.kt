@@ -68,7 +68,7 @@ class AddExpenseViewModel constructor(
     }
 
     private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) = viewModelScope.launch {
-        val idMonthlyPayment = addMonthlyPaymentUseCase(expenseMonthlyDomain)
+        addMonthlyPaymentUseCase(expenseMonthlyDomain)
     }
 
     private fun shouldEnabledRegisterButton() {

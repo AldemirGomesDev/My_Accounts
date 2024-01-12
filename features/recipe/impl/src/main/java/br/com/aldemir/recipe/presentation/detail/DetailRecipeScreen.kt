@@ -1,5 +1,6 @@
 package br.com.aldemir.recipe.presentation.detail
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -54,6 +55,10 @@ fun DetailRecipeScreen(
         viewModel.getAllByIdRecipeMonthly(recipeId)
     }
 
+    BackHandler {
+        navigateToBackScreen()
+    }
+
     var monthlyPaymentToUpdate by remember {
         mutableStateOf(RecipeMonthlyView())
     }
@@ -90,7 +95,7 @@ fun DetailRecipeScreen(
                 DetailRecipeList(
                     navigateToChangeScreen = navigateToChangeScreen,
                     recipesMonthly = recipeMonthlyViews,
-                    onClickUpdate = { index, recipeMonthlyView ->
+                    onClickUpdate = { _, recipeMonthlyView ->
                         monthlyPaymentToUpdate = recipeMonthlyView.copy(status = true)
                         viewModel.onOpenDialogClicked()
                     },

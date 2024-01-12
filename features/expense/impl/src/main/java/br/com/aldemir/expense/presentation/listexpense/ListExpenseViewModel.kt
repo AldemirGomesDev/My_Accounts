@@ -127,11 +127,6 @@ class ListExpenseViewModel constructor(
         _expenses.value = expenses.toList()
     }
 
-    fun getMessageToast(message: String) {
-        val contentString = ObservableInt()
-        contentString.set(R.string.expense_delete_message_toast)
-    }
-
     private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
         return currentDay > dueDay
     }

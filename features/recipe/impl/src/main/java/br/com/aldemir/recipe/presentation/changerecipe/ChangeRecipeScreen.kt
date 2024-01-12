@@ -133,6 +133,7 @@ private fun ChangeRecipeContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
             .padding(16.dp)
     ) {
 

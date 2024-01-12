@@ -35,7 +35,7 @@ class ChangeExpenseViewModel constructor(
 
     fun updateMonthlyPayment() = viewModelScope.launch {
         _expenseMonthlyDomain.value.value = value.value.fromCurrency()
-        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_expenseMonthlyDomain.value)!!
+        _idMonthlyPayment.value = updateMonthlyPaymentUseCase(_expenseMonthlyDomain.value)
     }
 
     fun getValueWithTwoDecimal(value: String): String {

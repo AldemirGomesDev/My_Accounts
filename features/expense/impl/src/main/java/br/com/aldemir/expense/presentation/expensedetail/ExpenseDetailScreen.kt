@@ -1,5 +1,6 @@
 package br.com.aldemir.expense.presentation.expensedetail
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -62,6 +63,10 @@ fun ExpenseDetailScreen(
         viewModel.getAllByIdExpense(expenseId)
     }
 
+    BackHandler {
+        navigateToBackScreen()
+    }
+
     var monthlyPaymentToUpdate by remember {
         mutableStateOf(MonthlyPaymentView())
     }
@@ -94,7 +99,7 @@ fun ExpenseDetailScreen(
                 ExpenseDetailList(
                     navigateToChangeScreen = navigateToChangeScreen,
                     monthlyPayments = monthlyPayments,
-                    onClickUpdate = { index, monthlyPayment ->
+                    onClickUpdate = { _, monthlyPayment ->
                         monthlyPaymentToUpdate = monthlyPayment.copy(situation = true)
                         viewModel.onOpenDialogClicked()
                     },
