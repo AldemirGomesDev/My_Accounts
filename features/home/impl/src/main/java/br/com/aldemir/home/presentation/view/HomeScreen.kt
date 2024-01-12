@@ -3,6 +3,7 @@ package br.com.aldemir.home.presentation.view
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -71,12 +72,16 @@ fun HomeScreen(
                 MyBarChart(
                     barChartData = barChartDataRecipe,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.recipe_chart_title)
+                    title = stringResource(id = R.string.recipe_chart_title),
+                    buttonType = ButtonType.ButtonRecipe,
+                    navigateToNextScreen = navigateToNextScreen
                 )
                 MyBarChart(
                     barChartData = barChartDataExpense,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.expense_chart_title)
+                    title = stringResource(id = R.string.expense_chart_title),
+                    buttonType = ButtonType.ButtonExpense,
+                    navigateToNextScreen = navigateToNextScreen
                 )
             }
         }
@@ -87,13 +92,18 @@ fun HomeScreen(
 private fun MyBarChart(
     barChartData: BarChartData,
     labelDrawer: ILabelDrawer,
-    title: String
+    title: String,
+    buttonType: ButtonType,
+    navigateToNextScreen: (ButtonType) -> Unit,
 ) {
 
     Card(
         shape = Shapes.large,
         backgroundColor = GreenDark,
         modifier = Modifier.padding(vertical = 16.dp)
+            .clickable {
+                navigateToNextScreen(buttonType)
+            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
