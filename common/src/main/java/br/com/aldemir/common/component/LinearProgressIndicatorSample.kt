@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
+import br.com.aldemir.common.util.emptyString
 
 @Composable
 fun LinearProgressIndicatorSample(
@@ -17,7 +18,7 @@ fun LinearProgressIndicatorSample(
 ) {
     val animatedProgress = animateFloatAsState(
         targetValue = value,
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = emptyString()
     ).value
 
     Box(modifier = modifier) {

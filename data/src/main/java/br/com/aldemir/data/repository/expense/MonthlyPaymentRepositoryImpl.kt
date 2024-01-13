@@ -1,7 +1,6 @@
 package br.com.aldemir.data.repository.expense
 
 import br.com.aldemir.data.database.room.expense.MonthlyPaymentDao
-import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
 import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toDto
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain

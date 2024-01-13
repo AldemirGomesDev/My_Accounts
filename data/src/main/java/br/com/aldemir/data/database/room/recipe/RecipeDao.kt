@@ -9,26 +9,26 @@ import br.com.aldemir.data.database.model.RecipeUpdateDTO
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Long
+    suspend fun insert(recipeDTO: RecipeDTO): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(recipeDTOS: List<br.com.aldemir.data.database.model.RecipeDTO>): List<Long>
+    fun insertAll(recipeDTOS: List<RecipeDTO>): List<Long>
 
     @Update
-    fun update(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Int
+    fun update(recipeDTO: RecipeDTO): Int
 
-    @Update(entity = br.com.aldemir.data.database.model.RecipeDTO::class)
-    suspend fun updateNameDescription(recipeDTO: br.com.aldemir.data.database.model.RecipeUpdateDTO): Int
+    @Update(entity = RecipeDTO::class)
+    suspend fun updateNameDescription(recipeDTO: RecipeUpdateDTO): Int
 
     @Delete
-    suspend fun delete(recipeDTO: br.com.aldemir.data.database.model.RecipeDTO): Int
+    suspend fun delete(recipeDTO: RecipeDTO): Int
 
     @Query("SELECT * FROM recipe WHERE id = :id")
-    fun getById(id: Int): br.com.aldemir.data.database.model.RecipeDTO
+    fun getById(id: Int): RecipeDTO
 
     @Query("SELECT * FROM recipe")
-    suspend fun getAll(): List<br.com.aldemir.data.database.model.RecipeDTO>
+    suspend fun getAll(): List<RecipeDTO>
 
     @Query("SELECT * FROM recipe WHERE name = :name")
-    fun getByName(name: String): LiveData<List<br.com.aldemir.data.database.model.RecipeDTO>>
+    fun getByName(name: String): LiveData<List<RecipeDTO>>
 }

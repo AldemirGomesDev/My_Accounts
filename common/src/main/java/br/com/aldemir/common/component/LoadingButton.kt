@@ -24,6 +24,7 @@ import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.R
 import br.com.aldemir.common.util.AnimationType
+import br.com.aldemir.common.util.emptyString
 
 
 @Composable
@@ -37,8 +38,8 @@ fun LoadingButton(
     indicatorSpacing: Dp = MarginSingle,
     content: @Composable () -> Unit,
 ) {
-    val contentAlpha by animateFloatAsState(targetValue = if (loading) 0f else 1f)
-    val loadingAlpha by animateFloatAsState(targetValue = if (loading) 1f else 0f)
+    val contentAlpha by animateFloatAsState(targetValue = if (loading) 0f else 1f, label = emptyString())
+    val loadingAlpha by animateFloatAsState(targetValue = if (loading) 1f else 0f, label = emptyString())
     Button(
         onClick = onClick,
         modifier = modifier,
