@@ -5,14 +5,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
 import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
+import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import kotlinx.coroutines.launch
 
 class AddRecipeViewModel constructor(
@@ -49,7 +49,14 @@ class AddRecipeViewModel constructor(
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val recipeId = addRecipeUseCase(recipeDomain)
+        addRecipeUseCase(this, recipeDomain).apply {
+            onSuccess { recipeId ->
+                handleMonthlyPayment(recipeId)
+            }
+        }
+    }
+
+    private fun handleMonthlyPayment(recipeId: Long) {
         id.value = recipeId.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
@@ -67,7 +74,7 @@ class AddRecipeViewModel constructor(
     }
 
     private fun insertMonthlyPayment(recipeMonthlyDomain: RecipeMonthlyDomain) = viewModelScope.launch {
-        addRecipeMonthlyUseCase(recipeMonthlyDomain)
+        addRecipeMonthlyUseCase(this, recipeMonthlyDomain)
     }
 
     private fun shouldEnabledRegisterButton() {

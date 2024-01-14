@@ -7,13 +7,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.expense.GetAllByIdExpenseUseCase
-import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
+import br.com.aldemir.domain.usecase.expense.GetAllByIdExpenseUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
 import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.MonthlyPaymentView
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class ExpenseDetailViewModel constructor(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
-    ) : ViewModel()  {
+) : ViewModel() {
 
     companion object {
         const val TAG = "ExpenseDetailFragment"
@@ -55,17 +55,29 @@ class ExpenseDetailViewModel constructor(
 
     fun getAllByIdExpense(id: Int) = viewModelScope.launch {
         val monthlyPaymentViewList: MutableList<MonthlyPaymentView> = mutableListOf()
-        val monthlyPaymentDomain = getAllByIdExpenseUseCase(id)
-        monthlyPaymentDomain.forEach { item ->
-            monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
+        getAllByIdExpenseUseCase(this, id).apply {
+            onSuccess { monthlyPaymentDomain ->
+                monthlyPaymentDomain.forEach { item ->
+                    monthlyPaymentViewList.add(
+                        item.toView(
+                            checkIfExpired(
+                                item.due_date,
+                                item.month,
+                                item.year
+                            )
+                        )
+                    )
+                }
+                _monthlyPayment.value = monthlyPaymentViewList
+            }
         }
-        _monthlyPayment.value = monthlyPaymentViewList
     }
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPaymentView) = viewModelScope.launch {
         _id.postValue(0)
-        val id = updateMonthlyPaymentUseCase(monthlyPayment.toDomain())
-        _id.postValue(id)
+        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()).apply {
+            onSuccess { id -> _id.postValue(id) }
+        }
     }
 
     private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {

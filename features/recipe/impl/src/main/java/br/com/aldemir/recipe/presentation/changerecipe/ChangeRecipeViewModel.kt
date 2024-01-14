@@ -4,15 +4,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
 import br.com.aldemir.common.util.pointString
 import br.com.aldemir.common.util.zeroString
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.model.RecipeUpdateDomain
+import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
 import br.com.aldemir.recipe.mapper.toDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,14 +50,21 @@ class ChangeRecipeViewModel constructor(
     var recipeMonthlyView: StateFlow<RecipePerMonthDomain> = _recipeMonthlyView
 
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
-        val monthlyRecipe = getByIdRecipeMonthlyUseCase(id)
-        _recipeMonthlyView.value = monthlyRecipe
+        getByIdRecipeMonthlyUseCase(this, id).apply {
+            onSuccess { monthlyRecipe ->
+                _recipeMonthlyView.value = monthlyRecipe
+            }
+        }
     }
 
     fun updateMonthlyRecipe() = viewModelScope.launch {
         _recipeMonthlyView.value.value = value.value.fromCurrency()
         _recipeMonthlyView.value.status = isCheckedPaid.value
-        _idMonthlyRecipe.value = updateRecipeMonthlyUseCase(_recipeMonthlyView.value.toDatabase())
+        updateRecipeMonthlyUseCase(this, _recipeMonthlyView.value.toDatabase()).apply {
+            onSuccess {
+                _idMonthlyRecipe.value = it
+            }
+        }
         updateRecipeNameAndDescription()
     }
 
@@ -67,7 +74,7 @@ class ChangeRecipeViewModel constructor(
             name = name.value,
             description = description.value
         )
-        updateRecipeNameAndDescriptionUseCase(recipeUpdateDomain)
+        updateRecipeNameAndDescriptionUseCase(this, recipeUpdateDomain)
     }
 
     fun getValueWithTwoDecimal(value: String): String {

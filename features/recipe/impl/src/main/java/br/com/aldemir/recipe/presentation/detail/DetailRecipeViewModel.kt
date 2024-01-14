@@ -9,8 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
@@ -19,6 +17,9 @@ import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
+import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.recipe.mapper.toDatabase
 import br.com.aldemir.recipe.mapper.toView
 import br.com.aldemir.recipe.mapper.viewToDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
@@ -60,18 +61,24 @@ class DetailRecipeViewModel constructor(
 
     fun getAllByIdRecipeMonthly(id: Int) = viewModelScope.launch {
         val monthlyPaymentViewList: MutableList<RecipeMonthlyView> = mutableListOf()
-        val monthlyPaymentDomain = getAllByIdRecipeUseCase(id)
-        monthlyPaymentDomain.forEach { item ->
-            monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
+        getAllByIdRecipeUseCase(this, id).apply {
+            onSuccess { monthlyPaymentDomain ->
+                monthlyPaymentDomain.forEach { item ->
+                    monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
+                }
+                _name.value = monthlyPaymentViewList[0].name
+                _recipeMonthlyView.value = monthlyPaymentViewList
+            }
         }
-        _name.value = monthlyPaymentViewList[0].name
-        _recipeMonthlyView.value = monthlyPaymentViewList
     }
 
     fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
         _id.postValue(0)
-        val id = updateRecipeMonthlyUseCase(recipeMonthlyView.viewToDomain())
-        _id.postValue(id)
+        updateRecipeMonthlyUseCase(this, recipeMonthlyView.viewToDomain()).apply {
+            onSuccess {id ->
+                _id.postValue(id)
+            }
+        }
     }
 
     private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {

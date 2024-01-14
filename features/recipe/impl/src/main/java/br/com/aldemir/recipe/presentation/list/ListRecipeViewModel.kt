@@ -8,9 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.recipe.DeleteRecipeUseCase
-import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.GetAllRecipePerMonthUseCase
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.model.DropdownItemState
@@ -22,6 +19,9 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
+import br.com.aldemir.domain.usecase.recipe.DeleteRecipeUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.GetAllRecipePerMonthUseCase
 import br.com.aldemir.recipe.mapper.toDomain
 import br.com.aldemir.recipe.mapper.toRecipeView
 import br.com.aldemir.recipe.model.RecipeView
@@ -53,20 +53,30 @@ class ListRecipeViewModel constructor(
     val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     fun delete(expense: RecipeView) = viewModelScope.launch {
-        val expenseId = deleteRecipeUseCase(expense.toDomain())
-        if (expenseId > 0) {
-            getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
+        deleteRecipeUseCase(this, expense.toDomain()).apply {
+            onSuccess { expenseId ->
+                if (expenseId > 0) {
+                    getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
+                }
+            }
         }
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
-        _recipeMonthlyDomain.value = getAllRecipeMonthlyUseCase(month, year)
+        getAllRecipeMonthlyUseCase(this, GetAllRecipeMonthlyUseCase.Params(month, year)).apply {
+            onSuccess {
+                _recipeMonthlyDomain.value = it
+            }
+        }
         calculateValues()
     }
 
     fun getAllRecipePerMonth(month: String, year: String) = viewModelScope.launch {
-        val expensePerMonth = getAllRecipePerMonthUseCase(month, year)
-        convertToRecipeView(expensePerMonth)
+        getAllRecipePerMonthUseCase(this, GetAllRecipePerMonthUseCase.Params(month, year)).apply {
+            onSuccess { listExpensePerMonth ->
+                convertToRecipeView(listExpensePerMonth)
+            }
+        }
     }
 
     private fun convertToRecipeView(expensesPerMonth: List<RecipePerMonthDomain>) {
@@ -97,13 +107,14 @@ class ListRecipeViewModel constructor(
             } else {
                 pending += item.value
             }
-            cardState = cardState.copy(valueTotal = valueTotal, paidOut = paidOut, pending = pending)
+            cardState =
+                cardState.copy(valueTotal = valueTotal, paidOut = paidOut, pending = pending)
         }
         calculatePercentage(paidOut, valueTotal, cardState)
     }
 
     private fun clearValues() {
-       _cardState.value = CardState()
+        _cardState.value = CardState()
     }
 
     private fun calculatePercentage(paidOut: Double, valueTotal: Double, cardState: CardState) {

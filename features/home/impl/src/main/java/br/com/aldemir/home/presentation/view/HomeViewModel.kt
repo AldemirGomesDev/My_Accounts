@@ -14,6 +14,7 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.MonthValue
@@ -48,8 +49,23 @@ class HomeViewModel constructor(
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
 
     fun getAllRecipeAndExpense() = viewModelScope.launch {
-        val recipes = getAllRecipeMonthUseCase(DateUtils.getMonth(), DateUtils.getYear())
-        val expenses = getAllExpensesMonthUseCase(DateUtils.getMonth(), DateUtils.getYear())
+        var expenses: List<ExpenseMonthlyDomain> = listOf()
+        var recipes: List<RecipeMonthlyDomain> = listOf()
+        val month = DateUtils.getMonth()
+        val year = DateUtils.getYear()
+        getAllRecipeMonthUseCase(
+            this,
+            GetAllRecipeMonthUseCase.Params(month, year)
+        ).apply {
+            onSuccess {
+                recipes = it
+            }
+        }
+        getAllExpensesMonthUseCase(this, Params(month, year)).apply {
+            onSuccess {
+                expenses = it
+            }
+        }
         calculateValues(recipes, expenses)
     }
 
@@ -58,8 +74,13 @@ class HomeViewModel constructor(
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
-            val expenses = getAllExpensesMonthUseCase(month, years[index])
-            setMonthValuesExpense(expenses)
+            val params = Params(month, years[index])
+            getAllExpensesMonthUseCase(this, params).apply {
+                onSuccess {
+                    setMonthValuesExpense(it)
+                }
+            }
+
         }
         setValuesExpenseToChart()
     }
@@ -69,8 +90,14 @@ class HomeViewModel constructor(
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
-            val recipes = getAllRecipeMonthUseCase(month, years[index])
-            setMonthValuesRecipe(recipes)
+            getAllRecipeMonthUseCase(
+                this,
+                GetAllRecipeMonthUseCase.Params(month, years[index])
+            ).apply {
+                onSuccess {
+                    setMonthValuesRecipe(it)
+                }
+            }
         }
         setValuesRecipeToChart()
     }
@@ -109,7 +136,7 @@ class HomeViewModel constructor(
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesExpense.size
-        for (i in 0 until rest){
+        for (i in 0 until rest) {
             bars.add(
                 BarChartData.Bar(
                     label = emptyString(),
@@ -138,7 +165,7 @@ class HomeViewModel constructor(
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesRecipe.size
-        for (i in 0 until rest){
+        for (i in 0 until rest) {
             bars.add(
                 BarChartData.Bar(
                     label = emptyString(),
@@ -164,7 +191,10 @@ class HomeViewModel constructor(
     }
 
 
-    private fun calculateValues(recipes: List<RecipeMonthlyDomain>, expenses: List<ExpenseMonthlyDomain>) {
+    private fun calculateValues(
+        recipes: List<RecipeMonthlyDomain>,
+        expenses: List<ExpenseMonthlyDomain>
+    ) {
         _homeCardData.value = HomeCardData()
         var valueRecipe = 0.0
         var valueExpense = 0.0

@@ -1,6 +1,13 @@
 package br.com.aldemir.domain.usecase.darkmode
 
+import br.com.aldemir.domain.base.BaseUseCase
+import br.com.aldemir.domain.repository.DataStoreRepository
 
-interface SaveDarkModeStateUseCase {
-    suspend operator fun invoke(isDarkMode: Boolean)
+class SaveDarkModeStateUseCase constructor(
+    private val dataStoreRepository: DataStoreRepository
+) : BaseUseCase<Boolean, Unit> {
+
+    override suspend fun execute(params: Boolean) {
+        dataStoreRepository.saveDarkModeState(params)
+    }
 }

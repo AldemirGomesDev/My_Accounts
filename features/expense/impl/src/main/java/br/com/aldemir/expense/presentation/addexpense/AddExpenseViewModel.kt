@@ -5,15 +5,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
-import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
-import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
 import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
+import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
+import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
 import kotlinx.coroutines.launch
 
 class AddExpenseViewModel constructor(
@@ -50,7 +49,15 @@ class AddExpenseViewModel constructor(
             created_at = DateUtils.getDate(),
             due_date = dueDateSelected.value
         )
-        val idExpense = addExpenseUseCase(expenseDomain)
+        addExpenseUseCase(this, expenseDomain).apply {
+            onSuccess {
+                handleMonthlyPayment(it)
+            }
+        }
+
+    }
+
+    private fun handleMonthlyPayment(idExpense: Long) {
         id.value = idExpense.toInt()
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
@@ -68,7 +75,7 @@ class AddExpenseViewModel constructor(
     }
 
     private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) = viewModelScope.launch {
-        addMonthlyPaymentUseCase(expenseMonthlyDomain)
+        addMonthlyPaymentUseCase(this, expenseMonthlyDomain)
     }
 
     private fun shouldEnabledRegisterButton() {

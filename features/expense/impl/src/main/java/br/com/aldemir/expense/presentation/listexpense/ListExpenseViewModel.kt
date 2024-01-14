@@ -3,11 +3,8 @@ package br.com.aldemir.expense.presentation.listexpense
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
-import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
@@ -15,9 +12,12 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
+import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
+import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.expense.DeleteExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toExpenseView
 import br.com.aldemir.expense.model.ExpenseView
@@ -58,7 +58,7 @@ class ListExpenseViewModel constructor(
     private var _percentage = MutableStateFlow(0F)
     val percentage: StateFlow<Float> = _percentage.asStateFlow()
 
-    fun setDarkMode(){
+    fun setDarkMode() {
         val isDarkMode = !_uiState.value.darkMode
         saveDarkModeState(isDarkMode)
     }
@@ -78,11 +78,17 @@ class ListExpenseViewModel constructor(
     fun readDarkModeState() {
         try {
             viewModelScope.launch {
-                val darkModeState = readDarkModeStateUseCase.invoke()
-                darkModeState
-                .collect {
-                    _uiState.value = _uiState.value.copy(darkMode = it)
+                readDarkModeStateUseCase(this, Unit).apply {
+                    onSuccess {
+                        it.collect { isDark ->
+                            _uiState.value = _uiState.value.copy(darkMode = isDark)
+                        }
+                    }
+                    onFailure {
+                        _uiState.value = _uiState.value.copy(darkMode = false)
+                    }
                 }
+
             }
         } catch (e: Exception) {
             _uiState.value = _uiState.value.copy(darkMode = false)
@@ -91,26 +97,41 @@ class ListExpenseViewModel constructor(
 
     private fun saveDarkModeState(isDarkMode: Boolean) {
         viewModelScope.launch {
-            saveDarkModeStateUseCase(isDarkMode)
+            saveDarkModeStateUseCase(this, isDarkMode)
             readDarkModeState()
         }
     }
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
-        _monthExpenses.value = getAllExpensesMonthUseCase(month, year)
+        val params = Params(month, year)
+        getAllExpensesMonthUseCase(this, params).apply {
+            onSuccess {
+                _monthExpenses.value = it
+            }
+        }
         calculateValues()
     }
 
     fun delete(expenseView: ExpenseView) = viewModelScope.launch {
-        val expenseId = deleteExpenseUseCase(expenseView.toDomain())
-        if (expenseId > 0) {
-            getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+        deleteExpenseUseCase(this, expenseView.toDomain()).apply {
+            onSuccess { expenseId ->
+                if (expenseId > 0) {
+                    getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+                }
+            }
         }
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
-        val expensePerMonth = getAllExpensePerMonthUseCase(month, year)
-        convertToExpenses(expensePerMonth)
+        getAllExpensePerMonthUseCase(
+            this, GetAllExpensePerMonthUseCase.Params(
+                month, year
+            )
+        ).apply {
+            onSuccess { listExpensePerMonth ->
+                convertToExpenses(listExpensePerMonth)
+            }
+        }
     }
 
     private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonthDomain>) {

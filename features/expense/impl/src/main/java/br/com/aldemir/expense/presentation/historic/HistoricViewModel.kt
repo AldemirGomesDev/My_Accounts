@@ -7,8 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
-import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
@@ -16,6 +14,8 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
+import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
+import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
 import kotlinx.coroutines.launch
 
 class HistoricViewModel constructor(
@@ -32,15 +32,25 @@ class HistoricViewModel constructor(
     val yearsList: LiveData<List<String>> = _yearsList
 
     fun getAllMonthlyPayment() = viewModelScope.launch {
-        val result = getAllMonthlyPaymentUseCase()
-        getDistinctYears(monthList = result)
+        getAllMonthlyPaymentUseCase(this, Unit).apply {
+            onSuccess { getDistinctYears(monthList = it) }
+        }
     }
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
         isLoading.value = true
-        val result = getAllExpensePerMonthUseCase(month, year)
-        _expensePerMonthDomain.value = result
-        isLoading.value = false
+
+        getAllExpensePerMonthUseCase(
+            this, GetAllExpensePerMonthUseCase.Params(
+                month, year
+            )
+        ).apply {
+            onSuccess { listExpensePerMonth ->
+                _expensePerMonthDomain.value = listExpensePerMonth
+                isLoading.value = false
+            }
+            onFailure { isLoading.value = false }
+        }
     }
 
     private fun getDistinctYears(monthList: List<ExpenseMonthlyDomain>) {
