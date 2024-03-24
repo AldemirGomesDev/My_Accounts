@@ -32,8 +32,9 @@ android {
 dependencies {
 
     //Compose
-    val composeVersion = "1.5.4"
-    val lifecycleVersion = "2.7.0-rc02"
+    val composeVersion = "1.6.4"
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.4")
+    val lifecycleVersion = "2.7.0"
     implementation ("androidx.compose.ui:ui:$composeVersion")
     implementation ("androidx.compose.material:material:$composeVersion")
     implementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")

@@ -61,7 +61,8 @@ abstract class ConfigDatabase : RoomDatabase() {
                 context,
                 ConfigDatabase::class.java,
                 "AccountDataBase"
-            ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            ).fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
     }
 

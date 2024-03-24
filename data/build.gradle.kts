@@ -11,6 +11,10 @@ android {
     defaultConfig {
         minSdk = 24
         multiDexEnabled = true
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     compileOptions {
