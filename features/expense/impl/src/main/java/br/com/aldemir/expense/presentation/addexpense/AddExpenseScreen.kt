@@ -1,7 +1,9 @@
 package br.com.aldemir.expense.presentation.addexpense
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,23 +20,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.theme.FONT_SIZE_12
-import br.com.aldemir.common.theme.FONT_SIZE_16
-import br.com.aldemir.common.theme.LARGEST_PADDING
-import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
-import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.CheckboxWithText
+import br.com.aldemir.common.component.CustomSnackBar
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.MyExposedDropdownMenu
-import br.com.aldemir.common.theme.*
+import br.com.aldemir.common.component.SnackBarState
+import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
 import org.koin.androidx.compose.koinViewModel
-import java.util.*
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -47,7 +45,6 @@ fun AddExpenseScreen(
 
     val focusManager = LocalFocusManager.current
 
-    val id: Int by viewModel.id
     val name: String by viewModel.name
     val value: String by viewModel.value
     val description: String by viewModel.description
@@ -56,21 +53,55 @@ fun AddExpenseScreen(
         navigateToHomeScreen()
     }
 
-    LaunchedEffect(key1 = id) {
-        if (id > 0) navigateToHomeScreen()
-    }
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(10) }
 
+    val messageError = stringResource(id = R.string.expense_save_error)
+    val messageSuccess = stringResource(id = R.string.expense_save_success)
+
+    var snackBarState by remember { mutableStateOf(SnackBarState.NONE) }
+
+    LaunchedEffect(key1 = viewModel.uiEffect) {
+
+        viewModel.uiEffect.collect {
+            when (it) {
+                is AddExpensesUiEffect.ShowError -> {
+                    snackBarState = it.snackBarState
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = messageError,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is AddExpensesUiEffect.ShowSuccess -> {
+                    snackBarState = it.snackBarState
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = messageSuccess,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
+        snackbarHost = {
+            SnackbarHost(it) { data ->
+                CustomSnackBar(
+                    snackBarState = snackBarState,
+                    message = data.message,
+                )
+            }
+        },
+        backgroundColor = MyAccountsTheme.colors.background,
         content = { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp)
+                    .padding(MyAccountsTheme.dimensions.padding16)
                     .verticalScroll(state)
+                    .background(MyAccountsTheme.colors.background)
             ) {
                 AddAccountContent(
                     viewModel = viewModel,
@@ -90,6 +121,7 @@ fun AddExpenseScreen(
                         viewModel.saveAccount()
                         focusManager.clearFocus()
                     },
+                    navigateToHomeScreen = navigateToHomeScreen
                 )
             }
         },
@@ -106,8 +138,10 @@ private fun AddAccountContent(
     onValueChange: (String) -> Unit,
     description: String,
     onDescriptionChange: (String) -> Unit,
-    onClickSave: () -> Unit
+    onClickSave: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
 ) {
+
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
@@ -118,10 +152,22 @@ private fun AddAccountContent(
     }
     val repeatOptions = stringArrayResource(id = R.array.numbers)
     val dueDateOptions = stringArrayResource(id = R.array.days)
+    val messageSaveError = stringResource(id = R.string.expense_save_error)
 
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
     enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
+
+    LaunchedEffect(key1 = viewModel.uiEffect) {
+        viewModel.uiEffect.collect {
+            when (it) {
+                is AddExpensesUiEffect.ShowError -> {
+                    isLoading.value = false
+                }
+                is AddExpensesUiEffect.ShowSuccess -> isLoading.value = false
+            }
+        }
+    }
 
     InputTextOutlinedTextField(
         value = title,
@@ -134,12 +180,12 @@ private fun AddAccountContent(
     )
     Text(
         text = viewModel.nameError.value,
-        color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        color = MyAccountsTheme.colors.error,
+        fontSize = FontSize.scale12
     )
     Divider(
-        modifier = Modifier.height(MEDIUM_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing8),
+        color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
         value = value,
@@ -157,12 +203,12 @@ private fun AddAccountContent(
     )
     Text(
         text = viewModel.valueError.value,
-        color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        color = MyAccountsTheme.colors.error,
+        fontSize = FontSize.scale12
     )
     Divider(
-        modifier = Modifier.height(MEDIUM_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing8),
+        color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
         value = description,
@@ -180,12 +226,12 @@ private fun AddAccountContent(
     )
     Text(
         text = viewModel.descriptionError.value,
-        color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        color = MyAccountsTheme.colors.error,
+        fontSize = FontSize.scale12
     )
     Divider(
-        modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
+        color = MyAccountsTheme.colors.background
     )
     MyExposedDropdownMenu(
         label = stringResource(id = R.string.form_due_date_day),
@@ -198,8 +244,8 @@ private fun AddAccountContent(
         modifier = Modifier.fillMaxWidth()
     )
     Divider(
-        modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
+        color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox),
@@ -207,8 +253,8 @@ private fun AddAccountContent(
         onCheckedChange = { viewModel.isCheckedPaid.value = it }
     )
     Divider(
-        modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
+        color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox_repeat),
@@ -219,8 +265,8 @@ private fun AddAccountContent(
         }
     )
     Divider(
-        modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
+        color = MyAccountsTheme.colors.background
     )
     if (viewModel.isAccountRepeat.value) {
         MyExposedDropdownMenu(
@@ -233,8 +279,8 @@ private fun AddAccountContent(
             modifier = Modifier.fillMaxWidth()
         )
         Divider(
-            modifier = Modifier.height(LARGEST_PADDING),
-            color = MaterialTheme.colors.background
+            modifier = Modifier.height(MyAccountsTheme.dimensions.sizing24),
+            color = MyAccountsTheme.colors.background
         )
     }
     LoadingButton(
@@ -244,7 +290,7 @@ private fun AddAccountContent(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(52.dp),
+            .height(MyAccountsTheme.dimensions.sizing52),
         loading = isLoading.value,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
@@ -254,7 +300,26 @@ private fun AddAccountContent(
         Text(
             color = Color.White,
             text = stringResource(id = R.string.button_add_text),
-            fontSize = FONT_SIZE_16,
+            fontSize = FontSize.scale16,
+        )
+    }
+    Spacer(modifier = Modifier.height(MyAccountsTheme.dimensions.sizing8))
+    LoadingButton(
+        onClick = {
+            navigateToHomeScreen()
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(MyAccountsTheme.dimensions.sizing52),
+        enabled = true,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Purple200,
+        ),
+    ) {
+        Text(
+            color = Color.White,
+            text = stringResource(id = R.string.button_back_text),
+            fontSize = FontSize.scale16,
         )
     }
 }

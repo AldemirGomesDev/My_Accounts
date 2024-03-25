@@ -2,6 +2,7 @@ package br.com.aldemir.expense.presentation.addexpense
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,14 +14,19 @@ import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-class AddExpenseViewModel constructor(
+class AddExpenseViewModel(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
-    ) : ViewModel() {
+) : ViewModel() {
 
-    val id: MutableState<Int> = mutableStateOf(0)
+    val id: MutableState<Int> = mutableIntStateOf(0)
+
+    private val _uiEffect = MutableSharedFlow<AddExpensesUiEffect>(replay = 0)
+    val uiEffect: SharedFlow<AddExpensesUiEffect> = _uiEffect
 
     val name: MutableState<String> = mutableStateOf(emptyString())
     val isNameValid: MutableState<Boolean> = mutableStateOf(false)
@@ -37,8 +43,8 @@ class AddExpenseViewModel constructor(
     val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
     val isAccountRepeat: MutableState<Boolean> = mutableStateOf(false)
 
-    val amountThatRepeatsSelected: MutableState<Int> = mutableStateOf(1)
-    val dueDateSelected: MutableState<Int> = mutableStateOf(1)
+    val amountThatRepeatsSelected: MutableState<Int> = mutableIntStateOf(1)
+    val dueDateSelected: MutableState<Int> = mutableIntStateOf(1)
 
     var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
 
@@ -53,6 +59,9 @@ class AddExpenseViewModel constructor(
             onSuccess {
                 handleMonthlyPayment(it)
             }
+            onFailure {
+                _uiEffect.emit(AddExpensesUiEffect.ShowError())
+            }
         }
 
     }
@@ -62,7 +71,7 @@ class AddExpenseViewModel constructor(
         val years = DateUtils.getYears(amountThatRepeatsSelected.value)
         val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
 
-        for ((index, month) in months.withIndex()){
+        for ((index, month) in months.withIndex()) {
             val expenseMonthlyDomain = ExpenseMonthlyDomain(
                 id_expense = idExpense.toInt(),
                 year = years[index],
@@ -74,9 +83,17 @@ class AddExpenseViewModel constructor(
         }
     }
 
-    private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) = viewModelScope.launch {
-        addMonthlyPaymentUseCase(this, expenseMonthlyDomain)
-    }
+    private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) =
+        viewModelScope.launch {
+            addMonthlyPaymentUseCase(this, expenseMonthlyDomain).apply {
+                onSuccess {
+                    _uiEffect.emit(AddExpensesUiEffect.ShowSuccess())
+                }
+                onFailure {
+                    _uiEffect.emit(AddExpensesUiEffect.ShowError())
+                }
+            }
+        }
 
     private fun shouldEnabledRegisterButton() {
         isEnabledRegisterButton.value = !validateLength(name.value, 3)
