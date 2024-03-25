@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.addAccountBorderColor
 import br.com.aldemir.common.theme.addAccountLabelColor
 
@@ -51,12 +52,17 @@ fun InputTextOutlinedTextField(
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-            focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-            unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-            textColor = MaterialTheme.colors.addAccountBorderColor,
-            disabledTextColor = MaterialTheme.colors.addAccountBorderColor
+            focusedBorderColor = MyAccountsTheme.colors.primary,
+            unfocusedBorderColor = MyAccountsTheme.colors.primary,
+            focusedLabelColor = MyAccountsTheme.colors.primary,
+            unfocusedLabelColor = MyAccountsTheme.colors.primary,
+            textColor = MyAccountsTheme.colors.primary,
+            disabledTextColor = MyAccountsTheme.colors.primary,
+            cursorColor = MyAccountsTheme.colors.primary,
+            errorBorderColor = MyAccountsTheme.colors.error,
+            errorLabelColor = MyAccountsTheme.colors.error,
+            errorTrailingIconColor = MyAccountsTheme.colors.error,
+            errorCursorColor = MyAccountsTheme.colors.error
         ),
         isError = isError,
         trailingIcon = {

@@ -8,7 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
-import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi
