@@ -1,6 +1,5 @@
 package br.com.aldemir.expense.presentation.addexpense
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -32,6 +31,8 @@ import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
+import br.com.aldemir.expense.presentation.addexpense.action.AddExpenseAction
+import br.com.aldemir.expense.presentation.addexpense.state.AddExpenseUiState
 import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalAnimationApi
@@ -45,9 +46,7 @@ fun AddExpenseScreen(
 
     val focusManager = LocalFocusManager.current
 
-    val name: String by viewModel.name
-    val value: String by viewModel.value
-    val description: String by viewModel.description
+    val uiState by viewModel.uiState.collectAsState()
 
     BackHandler {
         navigateToHomeScreen()
@@ -60,10 +59,12 @@ fun AddExpenseScreen(
     val messageSuccess = stringResource(id = R.string.expense_save_success)
 
     var snackBarState by remember { mutableStateOf(SnackBarState.NONE) }
+    var uiEffect by remember { mutableStateOf<AddExpensesUiEffect>(AddExpensesUiEffect.Idle) }
 
     LaunchedEffect(key1 = viewModel.uiEffect) {
 
         viewModel.uiEffect.collect {
+            uiEffect = it
             when (it) {
                 is AddExpensesUiEffect.ShowError -> {
                     snackBarState = it.snackBarState
@@ -78,7 +79,8 @@ fun AddExpenseScreen(
                         message = messageSuccess,
                         duration = SnackbarDuration.Short
                     )
-                }
+                    viewModel.onAction(AddExpenseAction.ClearForm)
+                } else -> {}
             }
         }
     }
@@ -104,24 +106,38 @@ fun AddExpenseScreen(
                     .background(MyAccountsTheme.colors.background)
             ) {
                 AddAccountContent(
-                    viewModel = viewModel,
-                    title = name,
+                    uiEffect = uiEffect,
+                    uiState = uiState,
+                    title = uiState.name,
                     onTitleChange = {
-                        viewModel.name.value = it
+                        viewModel.onAction(AddExpenseAction.NameChanged(it))
                     },
-                    value = value,
+                    value = uiState.value,
                     onValueChange = {
-                        viewModel.value.value = it
+                        viewModel.onAction(AddExpenseAction.ValueChanged(it))
                     },
-                    description = description,
+                    description = uiState.description,
                     onDescriptionChange = {
-                        viewModel.description.value = it
+                        viewModel.onAction(AddExpenseAction.DescriptionChanged(it))
                     },
                     onClickSave = {
-                        viewModel.saveAccount()
+                        viewModel.onAction(AddExpenseAction.Submit)
                         focusManager.clearFocus()
                     },
-                    navigateToHomeScreen = navigateToHomeScreen
+                    navigateToHomeScreen = navigateToHomeScreen,
+                    onCheckedChangeMonth = {
+                        viewModel.onAction(AddExpenseAction.CheckedPaidChanged(it))
+                    },
+                    onCheckedChangeRepeat = {
+                        viewModel.onAction(AddExpenseAction.AccountRepeatChanged(it))
+                        viewModel.clearRepeatAmount(it)
+                    },
+                    onItemSelectedMonth = {
+                        viewModel.onAction(AddExpenseAction.DueDateSelectedChanged(it))
+                    },
+                    onItemSelectedRepeat = {
+                        viewModel.onAction(AddExpenseAction.AmountThatRepeatsSelectedChanged(it))
+                    }
                 )
             }
         },
@@ -131,7 +147,8 @@ fun AddExpenseScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AddAccountContent(
-    viewModel: AddExpenseViewModel,
+    uiEffect: AddExpensesUiEffect,
+    uiState: AddExpenseUiState,
     title: String,
     onTitleChange: (String) -> Unit,
     value: String,
@@ -140,6 +157,10 @@ private fun AddAccountContent(
     onDescriptionChange: (String) -> Unit,
     onClickSave: () -> Unit,
     navigateToHomeScreen: () -> Unit,
+    onCheckedChangeMonth: (Boolean) -> Unit,
+    onCheckedChangeRepeat: (Boolean) -> Unit,
+    onItemSelectedMonth: (String) -> Unit,
+    onItemSelectedRepeat: (String) -> Unit
 ) {
 
     val currentLocal = Locale.current
@@ -152,34 +173,29 @@ private fun AddAccountContent(
     }
     val repeatOptions = stringArrayResource(id = R.array.numbers)
     val dueDateOptions = stringArrayResource(id = R.array.days)
-    val messageSaveError = stringResource(id = R.string.expense_save_error)
 
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
-    enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
+    enabled = (uiState.isEnabledRegisterButton && !isLoading.value)
 
-    LaunchedEffect(key1 = viewModel.uiEffect) {
-        viewModel.uiEffect.collect {
-            when (it) {
-                is AddExpensesUiEffect.ShowError -> {
-                    isLoading.value = false
-                }
-                is AddExpensesUiEffect.ShowSuccess -> isLoading.value = false
-            }
+    when (uiEffect) {
+        is AddExpensesUiEffect.ShowError -> {
+            isLoading.value = false
         }
+        is AddExpensesUiEffect.ShowSuccess -> isLoading.value = false
+        else -> {}
     }
 
     InputTextOutlinedTextField(
         value = title,
         onValueChange = {
             onTitleChange(it)
-            viewModel.validateName()
         },
         label = stringResource(R.string.form_add_name),
-        isError = viewModel.isNameValid.value
+        isError = uiState.isNameValid
     )
     Text(
-        text = viewModel.nameError.value,
+        text = uiState.nameError,
         color = MyAccountsTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -191,10 +207,9 @@ private fun AddAccountContent(
         value = value,
         onValueChange = {
             onValueChange(it)
-            viewModel.validateValue()
         },
         label = stringResource(R.string.form_add_value),
-        isError = viewModel.isValueValid.value,
+        isError = uiState.isValueValid,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Next,
@@ -202,7 +217,7 @@ private fun AddAccountContent(
         visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
     )
     Text(
-        text = viewModel.valueError.value,
+        text = uiState.valueError,
         color = MyAccountsTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -214,10 +229,9 @@ private fun AddAccountContent(
         value = description,
         onValueChange = {
             onDescriptionChange(it)
-            viewModel.validateDescription()
         },
         label = stringResource(R.string.form_add_description),
-        isError = viewModel.isDescriptionValid.value,
+        isError = uiState.isDescriptionValid,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Text,
@@ -225,7 +239,7 @@ private fun AddAccountContent(
         )
     )
     Text(
-        text = viewModel.descriptionError.value,
+        text = uiState.descriptionError,
         color = MyAccountsTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -239,7 +253,7 @@ private fun AddAccountContent(
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
             dueDateOptionSelected = item
-            viewModel.dueDateSelected.value = item.toInt()
+            onItemSelectedMonth(item)
         },
         modifier = Modifier.fillMaxWidth()
     )
@@ -249,8 +263,8 @@ private fun AddAccountContent(
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox),
-        isChecked = viewModel.isCheckedPaid.value,
-        onCheckedChange = { viewModel.isCheckedPaid.value = it }
+        isChecked = uiState.isCheckedPaid,
+        onCheckedChange = { onCheckedChangeMonth(it) }
     )
     Divider(
         modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
@@ -258,23 +272,20 @@ private fun AddAccountContent(
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox_repeat),
-        isChecked = viewModel.isAccountRepeat.value,
-        onCheckedChange = {
-            viewModel.isAccountRepeat.value = it
-            viewModel.clearRepeatAmount(it)
-        }
+        isChecked = uiState.isAccountRepeat,
+        onCheckedChange = { onCheckedChangeRepeat(it) }
     )
     Divider(
         modifier = Modifier.height(MyAccountsTheme.dimensions.sizing4),
         color = MyAccountsTheme.colors.background
     )
-    if (viewModel.isAccountRepeat.value) {
+    if (uiState.isAccountRepeat) {
         MyExposedDropdownMenu(
             label = stringResource(id = R.string.form_how_many_times_repeat),
             listItems = repeatOptions.toList(),
-            selected = viewModel.amountThatRepeatsSelected.value.toString(),
+            selected = uiState.amountThatRepeatsSelected.toString(),
             onItemSelected = { item ->
-                viewModel.amountThatRepeatsSelected.value = item.toInt()
+                onItemSelectedRepeat(item)
             },
             modifier = Modifier.fillMaxWidth()
         )

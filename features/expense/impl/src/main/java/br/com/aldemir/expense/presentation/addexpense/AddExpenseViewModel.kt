@@ -1,9 +1,6 @@
 package br.com.aldemir.expense.presentation.addexpense
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.util.Const.TAG
@@ -14,8 +11,12 @@ import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
+import br.com.aldemir.expense.presentation.addexpense.action.AddExpenseAction
+import br.com.aldemir.expense.presentation.addexpense.state.AddExpenseUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AddExpenseViewModel(
@@ -23,37 +24,90 @@ class AddExpenseViewModel(
     private val addMonthlyPaymentUseCase: AddMonthlyPaymentUseCase
 ) : ViewModel() {
 
-    val id: MutableState<Int> = mutableIntStateOf(0)
-
     private val _uiEffect = MutableSharedFlow<AddExpensesUiEffect>(replay = 0)
     val uiEffect: SharedFlow<AddExpensesUiEffect> = _uiEffect
 
-    val name: MutableState<String> = mutableStateOf(emptyString())
-    val isNameValid: MutableState<Boolean> = mutableStateOf(false)
-    val nameError: MutableState<String> = mutableStateOf(emptyString())
+    private val _uiState = MutableStateFlow(AddExpenseUiState())
+    val uiState = _uiState.asStateFlow()
 
-    val value: MutableState<String> = mutableStateOf(emptyString())
-    val isValueValid: MutableState<Boolean> = mutableStateOf(false)
-    val valueError: MutableState<String> = mutableStateOf(emptyString())
+    fun onAction(action: AddExpenseAction) {
+        when (action) {
+            AddExpenseAction.Submit -> saveAccount()
+            AddExpenseAction.ClearForm -> clearForm()
+            is AddExpenseAction.NameChanged -> handleNameChange(action.name)
+            is AddExpenseAction.ValueChanged -> handleValueChange(action.value)
+            is AddExpenseAction.DescriptionChanged -> handleDescriptionChange(action.description)
+            is AddExpenseAction.AccountRepeatChanged -> handleAccountRepeat(action.checked)
+            is AddExpenseAction.AmountThatRepeatsSelectedChanged -> handleAmountThatRepeatsSelected(action.amountThatRepeatsSelected)
+            is AddExpenseAction.CheckedPaidChanged -> handleCheckedPaid(action.checked)
+            is AddExpenseAction.DueDateSelectedChanged -> handleDueDateSelected(action.dueDate)
+        }
+    }
 
-    val description: MutableState<String> = mutableStateOf(emptyString())
-    val isDescriptionValid: MutableState<Boolean> = mutableStateOf(false)
-    val descriptionError: MutableState<String> = mutableStateOf(emptyString())
+    private fun clearForm() {
+        _uiState.value = _uiState.value.copy(
+            name = emptyString(),
+            value = emptyString(),
+            description = emptyString(),
+            isCheckedPaid = false,
+            isAccountRepeat = false,
+            dueDateSelected = 0,
+            amountThatRepeatsSelected = 0
+        )
+        shouldEnabledRegisterButton()
+    }
 
-    val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
-    val isAccountRepeat: MutableState<Boolean> = mutableStateOf(false)
+    private fun handleNameChange(name: String) {
+        _uiState.value = _uiState.value.copy(
+            name = name
+        )
+        validateName()
+    }
 
-    val amountThatRepeatsSelected: MutableState<Int> = mutableIntStateOf(1)
-    val dueDateSelected: MutableState<Int> = mutableIntStateOf(1)
+    private fun handleValueChange(value: String) {
+        _uiState.value = _uiState.value.copy(
+            value = value
+        )
+        validateValue()
+    }
 
-    var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(false)
+    private fun handleDescriptionChange(description: String) {
+        _uiState.value = _uiState.value.copy(
+            description = description
+        )
+        validateDescription()
+    }
 
-    fun saveAccount() = viewModelScope.launch {
+    private fun handleAccountRepeat(checked: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            isAccountRepeat = checked
+        )
+    }
+
+    private fun handleCheckedPaid(checked: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            isCheckedPaid = checked
+        )
+    }
+
+    private fun handleDueDateSelected(dueDate: String) {
+        _uiState.value = _uiState.value.copy(
+            dueDateSelected = dueDate.toInt()
+        )
+    }
+
+    private fun handleAmountThatRepeatsSelected(amountThatRepeatsSelected: String) {
+        _uiState.value = _uiState.value.copy(
+            amountThatRepeatsSelected = amountThatRepeatsSelected.toInt()
+        )
+    }
+
+    private fun saveAccount() = viewModelScope.launch {
         val expenseDomain = ExpenseDomain(
-            name = name.value,
-            description = description.value,
+            name = uiState.value.name,
+            description = uiState.value.description,
             created_at = DateUtils.getDate(),
-            due_date = dueDateSelected.value
+            due_date = uiState.value.dueDateSelected
         )
         addExpenseUseCase(this, expenseDomain).apply {
             onSuccess {
@@ -67,17 +121,16 @@ class AddExpenseViewModel(
     }
 
     private fun handleMonthlyPayment(idExpense: Long) {
-        id.value = idExpense.toInt()
-        val years = DateUtils.getYears(amountThatRepeatsSelected.value)
-        val months = DateUtils.getMonths(amountThatRepeatsSelected.value)
+        val years = DateUtils.getYears(uiState.value.amountThatRepeatsSelected)
+        val months = DateUtils.getMonths(uiState.value.amountThatRepeatsSelected)
 
         for ((index, month) in months.withIndex()) {
             val expenseMonthlyDomain = ExpenseMonthlyDomain(
                 id_expense = idExpense.toInt(),
                 year = years[index],
                 month = month,
-                value = value.value.fromCurrency(),
-                situation = if (index == 0) isCheckedPaid.value else false
+                value = uiState.value.value.fromCurrency(),
+                situation = if (index == 0) uiState.value.isCheckedPaid else false
             )
             insertMonthlyPayment(expenseMonthlyDomain)
         }
@@ -96,46 +149,62 @@ class AddExpenseViewModel(
         }
 
     private fun shouldEnabledRegisterButton() {
-        isEnabledRegisterButton.value = !validateLength(name.value, 3)
-                && value.value.isNotEmpty()
-                && !validateLength(description.value, 2)
+        uiState.value.isEnabledRegisterButton = !validateLength(uiState.value.name, 3)
+                && uiState.value.value.isNotEmpty()
+                && !validateLength(uiState.value.description, 2)
     }
 
     private fun validateLength(text: String, minLength: Int) = text.length < minLength
 
     fun clearRepeatAmount(isChecked: Boolean) {
-        if (!isChecked) amountThatRepeatsSelected.value = 1
+        val currentUiState = checkNotNull(uiState.value)
+        if (!isChecked) _uiState.value = currentUiState.copy(amountThatRepeatsSelected = 1)
     }
 
-    fun validateName() {
-        if (validateLength(name.value, 3)) {
-            isNameValid.value = true
-            nameError.value = "O nome deve conter no mínimo 3 dígitos"
+    private fun validateName() {
+        val currentUiState = checkNotNull(uiState.value)
+        if (validateLength(uiState.value.name, 3)) {
+            _uiState.value = currentUiState.copy(
+                isNameValid = true,
+                nameError = "O nome deve conter no mínimo 3 dígitos"
+            )
         } else {
-            isNameValid.value = false
-            nameError.value = emptyString()
+            _uiState.value = currentUiState.copy(
+                isNameValid = false,
+                nameError = emptyString()
+            )
         }
         shouldEnabledRegisterButton()
     }
 
-    fun validateValue() {
-        if (value.value.isEmpty()) {
-            isValueValid.value = true
-            valueError.value = "O valor é obrigatório"
+    private fun validateValue() {
+        val currentUiState = checkNotNull(uiState.value)
+        if (uiState.value.value.isEmpty()) {
+            _uiState.value = currentUiState.copy(
+                isValueValid = true,
+                valueError = "O valor é obrigatório"
+            )
         } else {
-            isValueValid.value = false
-            valueError.value = emptyString()
+            _uiState.value = currentUiState.copy(
+                isValueValid = false,
+                valueError = emptyString()
+            )
         }
         shouldEnabledRegisterButton()
     }
 
-    fun validateDescription() {
-        if (validateLength(description.value, 2)) {
-            isDescriptionValid.value = true
-            descriptionError.value = "a descrição deve conter no mínimo 2 dígitos"
+    private fun validateDescription() {
+        val currentUiState = checkNotNull(uiState.value)
+        if (validateLength(uiState.value.description, 2)) {
+            _uiState.value = currentUiState.copy(
+                isDescriptionValid = true,
+                descriptionError = "A descrição deve conter no mínimo 2 dígitos"
+            )
         } else {
-            isDescriptionValid.value = false
-            descriptionError.value = emptyString()
+            _uiState.value = currentUiState.copy(
+                isDescriptionValid = false,
+                descriptionError = emptyString()
+            )
         }
         shouldEnabledRegisterButton()
     }
