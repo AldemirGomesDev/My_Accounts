@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.taskItemBackgroundColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ fun DrawerBody(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.taskItemBackgroundColor)
+            .background(color = MyAccountsTheme.colors.background)
     ) {
         items(menuItems) { item ->
             DrawerItem(

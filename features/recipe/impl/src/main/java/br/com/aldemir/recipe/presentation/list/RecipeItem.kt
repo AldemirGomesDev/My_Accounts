@@ -24,6 +24,7 @@ import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.recipe.mapper.toDomain
 import br.com.aldemir.recipe.model.RecipeView
@@ -52,12 +53,12 @@ fun RecipeItem(
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background),
+                .background(MyAccountsTheme.colors.background)
+                .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING),
         ) {
             Row(
-                modifier = Modifier.background(MaterialTheme.colors.background),
+                modifier = Modifier.background(MyAccountsTheme.colors.background),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(modifier = Modifier
@@ -88,7 +89,7 @@ fun RecipeItem(
                         )
                         Divider(
                             modifier = Modifier.height(MEDIUM_PADDING),
-                            color = MaterialTheme.colors.background
+                            color = MyAccountsTheme.colors.background
                         )
                         Row(
                             horizontalArrangement = Arrangement.Start,
@@ -113,7 +114,7 @@ fun RecipeItem(
                 }
                 Divider(
                     modifier = Modifier.width(LARGEST_PADDING),
-                    color = MaterialTheme.colors.background
+                    color = MyAccountsTheme.colors.background
                 )
                 Box(modifier = Modifier
                     .weight(1f)

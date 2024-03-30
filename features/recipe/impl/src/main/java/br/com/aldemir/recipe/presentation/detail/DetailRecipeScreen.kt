@@ -34,6 +34,7 @@ import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.model.DropdownItemType
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
@@ -77,7 +78,8 @@ fun DetailRecipeScreen(
         scaffoldState = scaffoldState,
         content = { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.fillMaxSize().padding(paddingValues)
+                    .background(MyAccountsTheme.colors.background)
             ) {
                 TextTitleLarge(
                     text = name?: emptyString(),
@@ -90,7 +92,7 @@ fun DetailRecipeScreen(
                 )
                 Divider(
                     modifier = Modifier.height(MEDIUM_PADDING),
-                    color = MaterialTheme.colors.background
+                    color = MyAccountsTheme.colors.background
                 )
                 DetailRecipeList(
                     navigateToChangeScreen = navigateToChangeScreen,
@@ -170,7 +172,7 @@ private fun DetailRecipeItem(
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        color = MaterialTheme.colors.taskItemBackgroundColor,
+        color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
     ) {
@@ -178,7 +180,7 @@ private fun DetailRecipeItem(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.taskItemBackgroundColor)
+                .background(MyAccountsTheme.colors.background)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {

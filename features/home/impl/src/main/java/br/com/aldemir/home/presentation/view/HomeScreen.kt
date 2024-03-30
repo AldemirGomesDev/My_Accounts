@@ -65,8 +65,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(horizontal = LARGE_PADDING_16)
-                    .background(MaterialTheme.colors.taskItemBackgroundColor),
+                    .background(MyAccountsTheme.colors.background)
+                    .padding(horizontal = LARGE_PADDING_16),
             ) {
                 HomeCard(homeCardData = homeCardData)
                 MyBarChart(

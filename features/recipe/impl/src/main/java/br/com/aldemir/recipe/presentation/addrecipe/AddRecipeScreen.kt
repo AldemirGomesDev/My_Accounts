@@ -3,6 +3,7 @@ package br.com.aldemir.recipe.presentation.addrecipe
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -69,8 +70,9 @@ fun AddRecipeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp)
                     .verticalScroll(state)
+                    .background(MyAccountsTheme.colors.background)
+                    .padding(16.dp)
             ) {
                 AddAccountContent(
                     viewModel = viewModel,
@@ -139,7 +141,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
         value = value,
@@ -162,7 +164,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
         value = description,
@@ -185,7 +187,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     MyExposedDropdownMenu(
         label = stringResource(id = R.string.form_due_date_day),
@@ -199,7 +201,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox),
@@ -208,7 +210,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
         text = stringResource(id = R.string.form_text_checkbox_repeat),
@@ -220,7 +222,7 @@ private fun AddAccountContent(
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
-        color = MaterialTheme.colors.background
+        color = MyAccountsTheme.colors.background
     )
     if (viewModel.isAccountRepeat.value) {
         MyExposedDropdownMenu(
@@ -234,7 +236,7 @@ private fun AddAccountContent(
         )
         Divider(
             modifier = Modifier.height(LARGEST_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
     }
     LoadingButton(

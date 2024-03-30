@@ -37,6 +37,7 @@ import br.com.aldemir.common.theme.TASK_ITEM_ELEVATION
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.ExpensePerMonthView
@@ -57,8 +58,9 @@ fun HistoricScreen(
         content = { padding ->
             Column(
                 modifier = Modifier
-                    .padding(paddingValues = padding)
                     .fillMaxSize()
+                    .padding(paddingValues = padding)
+                    .background(MyAccountsTheme.colors.background)
             ) {
                 HistoricContent(viewModel, navigateToHistoricScreen)
             }
@@ -179,7 +181,7 @@ fun HistoricScreenList(
         )
     } else {
         Column(
-            modifier = modifier
+            modifier = modifier.background(MyAccountsTheme.colors.background)
         ) {
             LazyColumn(state = state, modifier = Modifier.fillMaxWidth()) {
                 items(
@@ -215,7 +217,7 @@ fun HistoricItem(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.taskItemBackgroundColor,
+        color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
@@ -226,7 +228,7 @@ fun HistoricItem(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background),
+                .background(MyAccountsTheme.colors.background),
         ) {
             Row {
                 TextTitleItem(text = expense.name, modifier = Modifier.weight(8f))
@@ -252,7 +254,7 @@ fun HistoricItem(
             )
             Divider(
                 modifier = Modifier.height(SMALL_PADDING),
-                color = MaterialTheme.colors.background
+                color = MyAccountsTheme.colors.background
             )
             Row {
                 TextSubTitleItem(text = stringResource(id = R.string.item_due_date))

@@ -29,6 +29,7 @@ import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.expense.model.ExpenseView
 
 @Composable
@@ -63,7 +64,7 @@ fun ListExpenseItem(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.taskItemBackgroundColor,
+        color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
@@ -74,10 +75,10 @@ fun ListExpenseItem(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background),
+                .background(MyAccountsTheme.colors.background),
         ) {
             Row(
-                modifier = Modifier.background(MaterialTheme.colors.background),
+                modifier = Modifier.background(MyAccountsTheme.colors.background),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(modifier = Modifier
@@ -108,7 +109,7 @@ fun ListExpenseItem(
                         )
                         Divider(
                             modifier = Modifier.height(MEDIUM_PADDING),
-                            color = MaterialTheme.colors.background
+                            color = MyAccountsTheme.colors.background
                         )
                         Row(
                             horizontalArrangement = Arrangement.Start,
@@ -133,7 +134,7 @@ fun ListExpenseItem(
                 }
                 Divider(
                     modifier = Modifier.width(LARGEST_PADDING),
-                    color = MaterialTheme.colors.background
+                    color = MyAccountsTheme.colors.background
                 )
                 Box(modifier = Modifier
                     .weight(1f)

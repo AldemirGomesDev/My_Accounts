@@ -29,6 +29,7 @@ import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
 import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.model.CardState
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.data.database.model.ExpenseDTO
 import br.com.aldemir.expense.model.ExpenseView
 import kotlinx.coroutines.CoroutineScope
@@ -68,7 +69,7 @@ fun ListExpenseScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .background(MaterialTheme.colors.taskItemBackgroundColor),
+                    .background(MyAccountsTheme.colors.background),
             ) {
                 HomeCard(viewModel = viewModel)
                 HomeScreenList(

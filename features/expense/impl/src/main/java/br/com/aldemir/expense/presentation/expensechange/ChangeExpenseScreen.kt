@@ -1,11 +1,11 @@
 package br.com.aldemir.expense.presentation.expensechange
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingButton
-import br.com.aldemir.common.component.TopBar
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import org.koin.androidx.compose.koinViewModel
 
@@ -117,7 +117,8 @@ private fun ChangeExpenseContent(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .background(MyAccountsTheme.colors.background)
             .padding(paddingValues)
             .padding(16.dp)
     ) {
@@ -130,7 +131,7 @@ private fun ChangeExpenseContent(
 
         Divider(
             modifier = Modifier.height(MEDIUM_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         OutlinedTextField(
@@ -165,7 +166,7 @@ private fun ChangeExpenseContent(
         )
         Divider(
             modifier = Modifier.height(LARGEST_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         LoadingButton(

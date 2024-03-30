@@ -40,6 +40,7 @@ import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.theme.taskItemTextColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.TopBar
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
@@ -85,7 +86,12 @@ fun ExpenseDetailScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
-            Column(modifier = Modifier.padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(MyAccountsTheme.colors.background)
+            ) {
                 TextTitleLarge(
                     text = expenseName,
                     color = MaterialTheme.colors.taskItemTextColor,
@@ -97,7 +103,7 @@ fun ExpenseDetailScreen(
                 )
                 Divider(
                     modifier = Modifier.height(MEDIUM_PADDING),
-                    color = MaterialTheme.colors.background
+                    color = MyAccountsTheme.colors.background
                 )
                 ExpenseDetailList(
                     navigateToChangeScreen = navigateToChangeScreen,
@@ -141,7 +147,9 @@ private fun ExpenseDetailList(
 ) {
     val state = rememberLazyListState()
 
-    LazyColumn(state = state) {
+    LazyColumn(
+        state = state,
+    ) {
         itemsIndexed(
             items = monthlyPayments,
         ) { index, monthlyPayment ->
@@ -172,12 +180,14 @@ private fun ExpenseDetailContent(
     val statusColor = viewModel.getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
     val resourceId = viewModel.getStatusText(monthlyPayment.situation, monthlyPayment.expired)
 
-    val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f)
+    val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f,
+        label = emptyString()
+    )
 
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        color = MaterialTheme.colors.taskItemBackgroundColor,
+        color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
     ) {
@@ -185,7 +195,7 @@ private fun ExpenseDetailContent(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.taskItemBackgroundColor)
+                .background(MyAccountsTheme.colors.background)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {
@@ -203,6 +213,7 @@ private fun ExpenseDetailContent(
                 text = "${monthlyPayment.year} - ${monthlyPayment.month}",
             )
             Row(
+                modifier = Modifier.background(MyAccountsTheme.colors.background),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {

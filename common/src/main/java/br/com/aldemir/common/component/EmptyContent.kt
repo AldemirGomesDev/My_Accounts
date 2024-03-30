@@ -19,18 +19,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MediumGray
+import br.com.aldemir.common.theme.MyAccountsTheme
 
 @Composable
 fun EmptyContent(
-    modifier: Modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background),
+    modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.expense_text)
 ) {
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize()
+            .background(MyAccountsTheme.colors.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

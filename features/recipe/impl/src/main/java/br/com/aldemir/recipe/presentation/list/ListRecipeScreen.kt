@@ -24,6 +24,7 @@ import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
 import br.com.aldemir.common.theme.LARGE_PADDING_16
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,7 +72,7 @@ fun ListRecipeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .background(MaterialTheme.colors.taskItemBackgroundColor),
+                    .background(MyAccountsTheme.colors.background),
             ) {
                 Box(modifier = Modifier.padding(horizontal = LARGE_PADDING_16)) {
                     StatisticsCard(cardState)

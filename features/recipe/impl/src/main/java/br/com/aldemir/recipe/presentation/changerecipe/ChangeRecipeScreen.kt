@@ -1,5 +1,6 @@
 package br.com.aldemir.recipe.presentation.changerecipe
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -28,6 +29,7 @@ import br.com.aldemir.common.R
 import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.data.database.model.RecipePerMonthDTO
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import org.koin.androidx.compose.koinViewModel
@@ -132,8 +134,9 @@ private fun ChangeRecipeContent(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(paddingValues)
+            .background(MyAccountsTheme.colors.background)
             .padding(16.dp)
     ) {
 
@@ -145,7 +148,7 @@ private fun ChangeRecipeContent(
 
         Divider(
             modifier = Modifier.height(MEDIUM_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         InputTextOutlinedTextField(
@@ -164,7 +167,7 @@ private fun ChangeRecipeContent(
         )
         Divider(
             modifier = Modifier.height(MEDIUM_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         InputTextOutlinedTextField(
@@ -188,7 +191,7 @@ private fun ChangeRecipeContent(
         )
         Divider(
             modifier = Modifier.height(MEDIUM_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         InputTextOutlinedTextField(
@@ -212,7 +215,7 @@ private fun ChangeRecipeContent(
         )
         Divider(
             modifier = Modifier.height(SMALL_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         CheckboxWithText(
@@ -222,7 +225,7 @@ private fun ChangeRecipeContent(
         )
         Divider(
             modifier = Modifier.height(SMALL_PADDING),
-            color = MaterialTheme.colors.background
+            color = MyAccountsTheme.colors.background
         )
 
         LoadingButton(
