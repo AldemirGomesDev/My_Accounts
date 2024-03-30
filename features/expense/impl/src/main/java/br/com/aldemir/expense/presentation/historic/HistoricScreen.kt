@@ -169,7 +169,7 @@ fun HistoricScreenList(
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val state = rememberLazyListState()
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
     }
 
