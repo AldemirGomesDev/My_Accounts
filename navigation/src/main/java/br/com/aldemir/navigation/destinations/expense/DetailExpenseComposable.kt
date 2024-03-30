@@ -1,5 +1,6 @@
 package br.com.aldemir.navigation.destinations.expense
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -24,25 +25,29 @@ fun NavGraphBuilder.detailExpenseComposable(
     navHostController: NavHostController
 ) {
     composable(
-        route = Route.ExpenseDetail.route,
+        route = Route.ExpenseGraphRoute.ExpenseDetail.route,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { 1000 },
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { -1000 },
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
         arguments = listOf(
             navArgument(Const.EXPENSE_ID) {
                 type = NavType.IntType
@@ -59,7 +64,7 @@ fun NavGraphBuilder.detailExpenseComposable(
             expenseName = expenseName ?: emptyString(),
             navigateToChangeScreen = { idMonthlyPayment ->
                 navHostController.navigate(
-                    Route.ExpenseChange.createRoute(
+                    Route.ExpenseGraphRoute.ExpenseChange.createRoute(
                         idMonthlyPayment,
                         expenseName ?: emptyString()
                     )

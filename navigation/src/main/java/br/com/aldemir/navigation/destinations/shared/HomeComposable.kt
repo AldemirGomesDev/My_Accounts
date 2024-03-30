@@ -7,6 +7,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import br.com.aldemir.common.util.Const
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.navigation.Route
@@ -21,29 +22,42 @@ fun NavGraphBuilder.homeComposable(
     composable(
         route = Route.Home.route,
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+            )
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+            )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+            )
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+            )
         },
     ) {
         HomeScreen(
             navigateToNextScreen = { type ->
-                when(type) {
+                when (type) {
                     ButtonType.ButtonRecipe -> {
                         navHostController.navigate(
                             Route.ListRecipe.route
                         )
                     }
+
                     ButtonType.ButtonExpense -> {
                         navHostController.navigate(
-                            Route.ExpenseList.route
+                            Route.ExpenseGraphRoute.route
                         )
                     }
                 }

@@ -23,7 +23,7 @@ fun TopBar(
     titleResId: Int,
     imageIcon: ImageVector,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     TopAppBar(
         title = {

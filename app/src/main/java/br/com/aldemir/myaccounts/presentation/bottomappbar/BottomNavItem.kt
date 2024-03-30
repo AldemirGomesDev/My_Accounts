@@ -1,8 +1,8 @@
 package br.com.aldemir.myaccounts.presentation.bottomappbar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.navigation.Route
@@ -21,12 +21,12 @@ val bottomNavItems = listOf(
     ),
     BottomNavItem(
         resourceNameId = R.string.expense_list_screen_title,
-        route = Route.ExpenseList.route,
-        icon = Icons.Outlined.List,
+        route = Route.ExpenseGraphRoute.route,
+        icon = Icons.AutoMirrored.Outlined.List,
     ),
     BottomNavItem(
         resourceNameId = R.string.recipe_list_screen_title,
         route = Route.ListRecipe.route,
-        icon = Icons.Outlined.List,
+        icon = Icons.AutoMirrored.Outlined.List,
     ),
 )

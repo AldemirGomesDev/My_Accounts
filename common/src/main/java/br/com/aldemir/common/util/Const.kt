@@ -1,6 +1,7 @@
 package br.com.aldemir.common.util
 
 object Const {
+    const val EXPENSE_GRAPH_ROUTE = "expenseGraph"
     const val HOME_SCREEN = "home"
     const val SPLASH_SCREEN = "splash"
     const val EXPENSE_SCREEN = "expense"

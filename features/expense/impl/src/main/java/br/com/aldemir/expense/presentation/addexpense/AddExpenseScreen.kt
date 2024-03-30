@@ -8,6 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.component.SnackBarState
+import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
@@ -40,7 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AddExpenseScreen(
     viewModel: AddExpenseViewModel = koinViewModel(),
-    navigateToHomeScreen: () -> Unit,
+    navigateToBack: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -49,7 +52,7 @@ fun AddExpenseScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     BackHandler {
-        navigateToHomeScreen()
+        navigateToBack()
     }
 
     val state = rememberScrollState()
@@ -124,7 +127,7 @@ fun AddExpenseScreen(
                         viewModel.onAction(AddExpenseAction.Submit)
                         focusManager.clearFocus()
                     },
-                    navigateToHomeScreen = navigateToHomeScreen,
+                    navigateToHomeScreen = navigateToBack,
                     onCheckedChangeMonth = {
                         viewModel.onAction(AddExpenseAction.CheckedPaidChanged(it))
                     },

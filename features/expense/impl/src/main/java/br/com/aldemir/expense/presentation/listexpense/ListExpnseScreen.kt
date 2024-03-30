@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +27,7 @@ import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
+import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.data.database.model.ExpenseDTO
 import br.com.aldemir.expense.model.ExpenseView
@@ -32,6 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -41,7 +45,7 @@ fun ListExpenseScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
     navigateToHomeScreen: () -> Unit,
     navigateToAddScreen: () -> Unit,
-    viewModel: ListExpenseViewModel,
+    viewModel: ListExpenseViewModel = koinViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
 

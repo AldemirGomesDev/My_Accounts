@@ -16,12 +16,12 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
     )
     object Statistic : DrawerScreens(
         titleResourceId = R.string.expense_add_screen_title,
-        route = Route.ExpenseAdd.route, imageIcon =
+        route = Route.ExpenseGraphRoute.ExpenseAdd.route, imageIcon =
         Icons.Filled.Add
     )
     object ListExpense : DrawerScreens(
         titleResourceId = R.string.expense_list,
-        route = Route.ExpenseList.route,
+        route = Route.ExpenseGraphRoute.ExpenseList.route,
         imageIcon = Icons.Filled.List
     )
     object Historic : DrawerScreens(

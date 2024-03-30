@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyAccountsTheme(viewModel.uiState.value.darkMode) {
-                DrawerNavigationScreen(viewModel)
+                DrawerNavigationScreen()
             }
         }
     }

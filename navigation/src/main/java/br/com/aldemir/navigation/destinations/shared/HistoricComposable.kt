@@ -43,7 +43,7 @@ fun NavGraphBuilder.historicComposable(
        HistoricScreen(
            navigateToHistoricScreen = { expenseId, expenseName ->
                navHostController.navigate(
-                   Route.ExpenseDetail.createRoute(expenseId, expenseName)
+                   Route.ExpenseGraphRoute.ExpenseDetail.createRoute(expenseId, expenseName)
                )
            }
        )

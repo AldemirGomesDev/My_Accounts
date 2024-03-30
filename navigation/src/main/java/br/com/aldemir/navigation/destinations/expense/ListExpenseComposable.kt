@@ -18,40 +18,46 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 @ExperimentalAnimationApi
 fun NavGraphBuilder.listExpenseComposable(
     navHostController: NavHostController,
-    viewModel: ListExpenseViewModel
 ) {
     composable(
-        route = Route.ExpenseList.route,
+        route = Route.ExpenseGraphRoute.ExpenseList.route,
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
     ) {
         ListExpenseScreen(
             navigateToTaskScreen = { expenseId, expenseName ->
                 navHostController.navigate(
-                    Route.ExpenseDetail.createRoute(expenseId, expenseName)
+                    Route.ExpenseGraphRoute.ExpenseDetail.createRoute(expenseId, expenseName)
                 )
             },
             navigateToAddScreen = {
                 navHostController.navigate(
-                    Route.ExpenseAdd.route
+                    Route.ExpenseGraphRoute.ExpenseAdd.route
                 )
             },
             navigateToHomeScreen = {
-                navHostController.navigate(
-                    Route.Home.route
-                )
+                navHostController.navigate(Route.Home.route)
             },
-            viewModel = viewModel
         )
     }
 }

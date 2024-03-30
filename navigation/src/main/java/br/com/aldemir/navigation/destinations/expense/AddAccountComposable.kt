@@ -1,5 +1,6 @@
 package br.com.aldemir.navigation.destinations.expense
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -18,31 +19,33 @@ fun NavGraphBuilder.addAccountComposable(
     navHostController: NavHostController
 ) {
       composable(
-        route = Route.ExpenseAdd.route,
+        route = Route.ExpenseGraphRoute.ExpenseAdd.route,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { -1000 },
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { -1000 },
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
-        },
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )        },
     ) {
         AddExpenseScreen(
-            navigateToHomeScreen = {
-                navHostController.navigate(
-                    Route.ExpenseList.route
-                )
+            navigateToBack = {
+                navHostController.navigateUp()
             }
         )
     }

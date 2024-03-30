@@ -1,5 +1,6 @@
 package br.com.aldemir.navigation.destinations.expense
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -24,18 +25,30 @@ fun NavGraphBuilder.changeExpenseComposable(
     navHostController: NavHostController
 ) {
     composable(
-        route = Route.ExpenseChange.route,
+        route = Route.ExpenseGraphRoute.ExpenseChange.route,
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         arguments = listOf(
             navArgument(Const.EXPENSE_ID) {
