@@ -18,13 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.home.presentation.model.HomeButtonType
 import br.com.aldemir.common.theme.*
+import br.com.aldemir.home.presentation.state.HomeUiState
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
@@ -48,15 +51,9 @@ fun HomeScreen(
 
     BackHandler { activity?.finish() }
 
-    val homeCardData by viewModel.homeCardData.collectAsState()
-    val barChartDataExpense by viewModel.barChartDataExpense.collectAsState()
-    val barChartDataRecipe by viewModel.barChartDataRecipe.collectAsState()
-    val labelDrawer = viewModel.labelDrawer
+    val uiModel by viewModel.uiModel.collectAsState()
 
-    val buttons = listOf(
-        HomeButtonType(name = stringResource(id = R.string.button_recipe), type = ButtonType.ButtonRecipe),
-        HomeButtonType(name = stringResource(id = R.string.button_expense), type = ButtonType.ButtonExpense),
-    )
+    val labelDrawer = viewModel.labelDrawer
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -68,19 +65,21 @@ fun HomeScreen(
                     .background(MyAccountsTheme.colors.background)
                     .padding(horizontal = LARGE_PADDING_16),
             ) {
-                HomeCard(homeCardData = homeCardData)
+                HomeCard(homeCardData = uiModel.homeCardData)
                 MyBarChart(
-                    barChartData = barChartDataRecipe,
+                    barChartData = uiModel.barChartDataExpense,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.recipe_chart_title),
-                    buttonType = ButtonType.ButtonRecipe,
+                    title = stringResource(id = R.string.expense_chart_title),
+                    textEmpty = stringResource(id = R.string.expense_chart_empty),
+                    buttonType = ButtonType.ButtonExpense,
                     navigateToNextScreen = navigateToNextScreen
                 )
                 MyBarChart(
-                    barChartData = barChartDataExpense,
+                    barChartData = uiModel.barChartDataRecipe,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.expense_chart_title),
-                    buttonType = ButtonType.ButtonExpense,
+                    title = stringResource(id = R.string.recipe_chart_title),
+                    textEmpty = stringResource(id = R.string.recipe_chart_empty),
+                    buttonType = ButtonType.ButtonRecipe,
                     navigateToNextScreen = navigateToNextScreen
                 )
             }
@@ -90,9 +89,10 @@ fun HomeScreen(
 
 @Composable
 private fun MyBarChart(
-    barChartData: BarChartData,
+    barChartData: BarChartData?,
     labelDrawer: ILabelDrawer,
     title: String,
+    textEmpty: String,
     buttonType: ButtonType,
     navigateToNextScreen: (ButtonType) -> Unit,
 ) {
@@ -100,7 +100,8 @@ private fun MyBarChart(
     Card(
         shape = Shapes.large,
         backgroundColor = GreenDark,
-        modifier = Modifier.padding(vertical = 16.dp)
+        modifier = Modifier
+            .padding(vertical = 16.dp)
             .clickable {
                 navigateToNextScreen(buttonType)
             }
@@ -121,20 +122,48 @@ private fun MyBarChart(
                     .fillMaxWidth()
                     .height(150.dp)
                     .padding(vertical = MEDIUM_PADDING)
-                    .background(GreenDark)
+                    .background(GreenDark),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ){
-                BarChart(
-                    modifier = Modifier.padding(horizontal = LARGEST_PADDING, vertical = MEDIUM_PADDING),
-                    barChartData = barChartData,
-                    labelDrawer = labelDrawer,
-                    xAxisDrawer = SimpleXAxisDrawer(
-                        axisLineColor = White
-                    ),
-                    yAxisDrawer = SimpleYAxisDrawer(
-                        axisLineColor = White,
-                        labelTextColor = White,
-                    ),
-                )
+                barChartData?.let {
+                    BarChart(
+                        modifier = Modifier.padding(
+                            horizontal = LARGEST_PADDING,
+                            vertical = MEDIUM_PADDING
+                        ),
+                        barChartData = barChartData,
+                        labelDrawer = labelDrawer,
+                        xAxisDrawer = SimpleXAxisDrawer(
+                            axisLineColor = White
+                        ),
+                        yAxisDrawer = SimpleYAxisDrawer(
+                            axisLineColor = White,
+                            labelTextColor = White,
+                        ),
+                    )
+                }?: run {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(60.dp).padding(top = MEDIUM_PADDING),
+                            painter = painterResource(id = R.drawable.ic_sad_face),
+                            contentDescription = stringResource(R.string.sad_face_icon),
+                            tint = MediumGray
+                        )
+                        Text(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = MEDIUM_PADDING)
+                                .padding(bottom = SMALL_PADDING),
+                            text = textEmpty,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            color = MediumGray
+                        )
+                    }
+                }
             }
         }
     }

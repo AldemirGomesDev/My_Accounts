@@ -23,6 +23,7 @@
     <string name="expense_to_pay">À pagar</string>
     <string name="expense_expired">Atrasado</string>
     <string name="expense_chart_title">DESPESAS DOS ÚLTIMOS 6 MESES</string>
+    <string name="expense_chart_empty">Nenhuma despesa nos últimos 6 meses</string>
     <string name="expense_text">despesa</string>
     <string name="expense_delete_message_toast">Despesa com o código: %1$d excluída com sucesso</string>
     <string name="expense_no_update_message_toast">Essa despesa já foi paga, por isso não poderá ser alterada</string>
@@ -61,6 +62,7 @@
     <string name="recipe_change_screen_title">Editar receita</string>
     <string name="recipe_card_title">Receita</string>
     <string name="recipe_chart_title">RECEITAS DOS ÚLTIMOS 6 MESES</string>
+    <string name="recipe_chart_empty">Nenhuma receita nos últimos 6 meses</string>
 
     <!-- Button -->
     <string name="button_search">Buscar</string>

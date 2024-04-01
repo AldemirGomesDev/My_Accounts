@@ -17,15 +17,16 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.home.presentation.model.HomeCardData
+import br.com.aldemir.home.presentation.model.HomeUiModel
 import br.com.aldemir.home.presentation.model.MonthValue
+import br.com.aldemir.home.presentation.state.HomeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 
-class HomeViewModel constructor(
+class HomeViewModel(
     private val getAllRecipeMonthUseCase: GetAllRecipeMonthUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
 ) : ViewModel() {
@@ -36,14 +37,17 @@ class HomeViewModel constructor(
         color = Color(0XFFFFC107),
     )
 
-    private var _homeCardData = MutableStateFlow(HomeCardData())
-    val homeCardData: StateFlow<HomeCardData> = _homeCardData.asStateFlow()
+    private val _uiModel = MutableStateFlow(HomeUiModel())
+    val uiModel: StateFlow<HomeUiModel> = _uiModel
 
-    private var _barChartDataExpense = MutableStateFlow(BarChartData(bars = listOf(bar)))
-    val barChartDataExpense: StateFlow<BarChartData> = _barChartDataExpense.asStateFlow()
-
-    private var _barChartDataRecipe = MutableStateFlow(BarChartData(bars = listOf(bar)))
-    val barChartDataRecipe: StateFlow<BarChartData> = _barChartDataRecipe.asStateFlow()
+//    private var _homeCardData = MutableStateFlow(HomeCardData())
+//    val homeCardData: StateFlow<HomeCardData> = _homeCardData.asStateFlow()
+//
+//    private var _barChartDataExpense = MutableStateFlow(BarChartData(bars = listOf(bar)))
+//    val barChartDataExpense: StateFlow<BarChartData> = _barChartDataExpense.asStateFlow()
+//
+//    private var _barChartDataRecipe = MutableStateFlow(BarChartData(bars = listOf(bar)))
+//    val barChartDataRecipe: StateFlow<BarChartData> = _barChartDataRecipe.asStateFlow()
 
     private var _monthValuesExpense = mutableListOf<MonthValue>()
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
@@ -132,7 +136,7 @@ class HomeViewModel constructor(
         )
     }
 
-    private fun setValuesExpenseToChart() {
+    private suspend fun setValuesExpenseToChart() {
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesExpense.size
@@ -157,11 +161,14 @@ class HomeViewModel constructor(
             }
         }
         if (bars.isNotEmpty()) {
-            _barChartDataExpense.value = BarChartData(bars = bars.toList())
+            val currentModel = checkNotNull(uiModel.value)
+            _uiModel.value = currentModel.copy(
+                barChartDataExpense = BarChartData(bars = bars.toList())
+            )
         }
     }
 
-    private fun setValuesRecipeToChart() {
+    private suspend fun setValuesRecipeToChart() {
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesRecipe.size
@@ -186,7 +193,10 @@ class HomeViewModel constructor(
             }
         }
         if (bars.isNotEmpty()) {
-            _barChartDataRecipe.value = BarChartData(bars = bars.toList())
+            val currentModel = checkNotNull(uiModel.value)
+            _uiModel.value = currentModel.copy(
+                barChartDataRecipe = BarChartData(bars = bars.toList())
+            )
         }
     }
 
@@ -195,7 +205,10 @@ class HomeViewModel constructor(
         recipes: List<RecipeMonthlyDomain>,
         expenses: List<ExpenseMonthlyDomain>
     ) {
-        _homeCardData.value = HomeCardData()
+        val currentModel = checkNotNull(uiModel.value)
+        _uiModel.value = currentModel.copy(
+            homeCardData = HomeCardData()
+        )
         var valueRecipe = 0.0
         var valueExpense = 0.0
         var valueBalance = 0.0
@@ -206,10 +219,12 @@ class HomeViewModel constructor(
             valueExpense += expense.value
         }
         valueBalance = (valueRecipe - valueExpense)
-        _homeCardData.value = HomeCardData(
-            valueRecipe = valueRecipe,
-            valueExpense = valueExpense,
-            valueBalance = valueBalance
+        _uiModel.value = currentModel.copy(
+            homeCardData = HomeCardData(
+                valueRecipe = valueRecipe,
+                valueExpense = valueExpense,
+                valueBalance = valueBalance
+            )
         )
     }
 
