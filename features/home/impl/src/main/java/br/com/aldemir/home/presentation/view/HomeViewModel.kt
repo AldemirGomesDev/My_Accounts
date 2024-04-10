@@ -19,7 +19,6 @@ import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.HomeUiModel
 import br.com.aldemir.home.presentation.model.MonthValue
-import br.com.aldemir.home.presentation.state.HomeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,23 +30,8 @@ class HomeViewModel(
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
 ) : ViewModel() {
 
-    private val bar = BarChartData.Bar(
-        label = emptyString(),
-        value = 0F,
-        color = Color(0XFFFFC107),
-    )
-
     private val _uiModel = MutableStateFlow(HomeUiModel())
     val uiModel: StateFlow<HomeUiModel> = _uiModel
-
-//    private var _homeCardData = MutableStateFlow(HomeCardData())
-//    val homeCardData: StateFlow<HomeCardData> = _homeCardData.asStateFlow()
-//
-//    private var _barChartDataExpense = MutableStateFlow(BarChartData(bars = listOf(bar)))
-//    val barChartDataExpense: StateFlow<BarChartData> = _barChartDataExpense.asStateFlow()
-//
-//    private var _barChartDataRecipe = MutableStateFlow(BarChartData(bars = listOf(bar)))
-//    val barChartDataRecipe: StateFlow<BarChartData> = _barChartDataRecipe.asStateFlow()
 
     private var _monthValuesExpense = mutableListOf<MonthValue>()
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
@@ -111,7 +95,7 @@ class HomeViewModel(
         var monthExpense = emptyString()
         expenses.forEach { expense ->
             valueExpense += expense.value
-            monthExpense = expense.month
+            monthExpense = expense.month.ifEmpty { emptyString() }
         }
         _monthValuesExpense.add(
             MonthValue(
@@ -136,7 +120,8 @@ class HomeViewModel(
         )
     }
 
-    private suspend fun setValuesExpenseToChart() {
+    private fun setValuesExpenseToChart() {
+        val months = DateUtils.getSixMonthsPrevious()
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesExpense.size
@@ -149,6 +134,7 @@ class HomeViewModel(
                 ),
             )
         }
+
         _monthValuesExpense.forEach {
             if (it.month.isNotEmpty()) {
                 bars.add(
@@ -160,6 +146,18 @@ class HomeViewModel(
                 )
             }
         }
+        val monthsDropLast = months.dropLast(bars.size)
+
+        monthsDropLast.forEachIndexed { index, s ->
+            bars.add(index,
+                BarChartData.Bar(
+                    label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                    value = 0f,
+                    color = MediumPriorityColor,
+                ),
+            )
+        }
+
         if (bars.isNotEmpty()) {
             val currentModel = checkNotNull(uiModel.value)
             _uiModel.value = currentModel.copy(
@@ -168,7 +166,8 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun setValuesRecipeToChart() {
+    private fun setValuesRecipeToChart() {
+        val months = DateUtils.getSixMonthsPrevious()
         val bars = arrayListOf<BarChartData.Bar>()
         val maxBar = 6
         val rest = maxBar - _monthValuesRecipe.size
@@ -192,6 +191,18 @@ class HomeViewModel(
                 )
             }
         }
+        val monthsDropLast = months.dropLast(bars.size)
+
+        monthsDropLast.forEachIndexed { index, s ->
+            bars.add(index,
+                BarChartData.Bar(
+                    label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                    value = 0f,
+                    color = MediumPriorityColor,
+                ),
+            )
+        }
+
         if (bars.isNotEmpty()) {
             val currentModel = checkNotNull(uiModel.value)
             _uiModel.value = currentModel.copy(
