@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ListExpenseViewModel constructor(
+class ListExpenseViewModel(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
@@ -35,8 +35,8 @@ class ListExpenseViewModel constructor(
     private val readDarkModeStateUseCase: ReadDarkModeStateUseCase
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(MainUiState())
-    val uiState: State<MainUiState> = _uiState
+    private val _uiState = MutableStateFlow(MainUiState())
+    val uiState: StateFlow<MainUiState> = _uiState
 
     private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
     var expenses: StateFlow<List<ExpenseView>> = _expenses
@@ -60,6 +60,7 @@ class ListExpenseViewModel constructor(
 
     fun setDarkMode() {
         val isDarkMode = !_uiState.value.darkMode
+        _uiState.value = _uiState.value.copy(darkMode = isDarkMode)
         saveDarkModeState(isDarkMode)
     }
 

@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -24,8 +26,15 @@ class MainActivity : ComponentActivity() {
         viewModel.readDarkModeState()
 
         setContent {
-            MyAccountsTheme(viewModel.uiState.value.darkMode) {
-                DrawerNavigationScreen()
+            val uiState by viewModel.uiState.collectAsState()
+
+            MyAccountsTheme(uiState.darkMode) {
+                DrawerNavigationScreen(
+                    switchState = uiState.darkMode,
+                    onDarkMode = {
+                        viewModel.setDarkMode()
+                    }
+                )
             }
         }
     }

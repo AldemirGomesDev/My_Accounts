@@ -9,6 +9,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -24,7 +25,10 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun DrawerNavigationScreen() {
+fun DrawerNavigationScreen(
+    switchState: Boolean,
+    onDarkMode: (Boolean) -> Unit
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     val scaffoldState = rememberScaffoldState(drawerState)
@@ -67,7 +71,10 @@ fun DrawerNavigationScreen() {
         },
         drawerGesturesEnabled = true,
         drawerContent = {
-            DrawerHeader()
+            DrawerHeader(
+                switchState = switchState,
+                onDarkMode = onDarkMode
+            )
             DrawerBody(
                 menuItems = screens,
                 scaffoldState,
@@ -198,4 +205,18 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             TopBarState(onClick = { navController.navigateUp() })
         }
     }
+}
+
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalMaterialApi::class
+)
+@Preview(showSystemUi = true)
+@Composable
+fun DrawerNavigationScreenPreview() {
+    DrawerNavigationScreen(
+        switchState = true,
+        onDarkMode = {}
+    )
 }

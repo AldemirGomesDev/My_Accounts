@@ -53,7 +53,7 @@ object MyAccountsTheme {
             warning = if (darkTheme) primaryLight else primaryDark,
             onWarning = if (darkTheme) primaryLight else primaryDark,
             background = if (darkTheme) Black2 else White,
-            onBackground = if (darkTheme) primaryLight else primaryDark,
+            onBackground = if (darkTheme) primaryDark else Green200,
             surface = if (darkTheme) primaryLight else primaryDark,
             onSurface = if (darkTheme) primaryLight else primaryDark,
             outline = if (darkTheme) primaryLight else primaryDark,
