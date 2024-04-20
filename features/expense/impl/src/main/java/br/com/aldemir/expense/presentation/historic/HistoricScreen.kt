@@ -28,15 +28,12 @@ import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
-import br.com.aldemir.common.theme.FONT_SIZE_16
 import br.com.aldemir.common.theme.LARGE_PADDING
-import br.com.aldemir.common.theme.PRIORITY_INDICATOR_SIZE
 import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.common.theme.TASK_ITEM_ELEVATION
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.expense.mapper.toView
@@ -152,7 +149,7 @@ private fun HistoricContent(
                 Text(
                     color = Color.White,
                     text = stringResource(id = R.string.button_search),
-                    fontSize = FONT_SIZE_16,
+                    fontSize = FontSize.scale16,
                 )
             }
         }
@@ -219,7 +216,7 @@ fun HistoricItem(
         modifier = Modifier.fillMaxWidth(),
         color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
-        elevation = TASK_ITEM_ELEVATION,
+        elevation = MyAccountsTheme.dimensions.sizing2,
         onClick = {
             navigateToHistoricScreen(expense.id_expense, expense.name)
         }
@@ -240,7 +237,7 @@ fun HistoricItem(
                 ) {
                     Canvas(
                         modifier = Modifier
-                            .size(PRIORITY_INDICATOR_SIZE)
+                            .size(MyAccountsTheme.dimensions.sizing16)
                     ) {
                         drawCircle(
                             color = statusColor

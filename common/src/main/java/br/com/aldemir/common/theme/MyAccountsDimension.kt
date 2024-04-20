@@ -9,6 +9,9 @@ class MyAccountsDimension {
     val sizing0: Dp
         @Composable
         get() = 0.dp
+    val sizing2: Dp
+        @Composable
+        get() = 2.dp
     val sizing4: Dp
         @Composable
         get() = 4.dp

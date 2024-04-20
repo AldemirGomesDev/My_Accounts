@@ -11,26 +11,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.theme.LARGE_PADDING_16
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
-import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.data.database.model.ExpenseDTO
 import br.com.aldemir.expense.model.ExpenseView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -170,7 +164,7 @@ private fun HomeCard(
         percentage = percentage
     )
 
-    Box(modifier = Modifier.padding(horizontal = LARGE_PADDING_16)) {
+    Box(modifier = Modifier.padding(horizontal = MyAccountsTheme.dimensions.padding16)) {
         StatisticsCard(cardState = cardState)
     }
 }

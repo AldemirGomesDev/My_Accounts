@@ -17,8 +17,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.theme.FONT_SIZE_12
-import br.com.aldemir.common.theme.FONT_SIZE_16
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
@@ -30,6 +28,7 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingButton
+import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import org.koin.androidx.compose.koinViewModel
@@ -162,7 +161,7 @@ private fun ChangeExpenseContent(
         if (value.isEmpty()) Text(
             text = stringResource(id = R.string.form_invalid_value),
             color = MaterialTheme.colors.error,
-            fontSize = FONT_SIZE_12
+            fontSize = FontSize.scale12
         )
         Divider(
             modifier = Modifier.height(LARGEST_PADDING),
@@ -184,7 +183,7 @@ private fun ChangeExpenseContent(
             Text(
                 color = Color.White,
                 text = stringResource(id = R.string.button_update),
-                fontSize = FONT_SIZE_16,
+                fontSize = FontSize.scale16,
             )
         }
     }

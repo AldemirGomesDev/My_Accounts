@@ -16,13 +16,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import br.com.aldemir.common.theme.FONT_SIZE_16
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
-import br.com.aldemir.common.theme.MarginSingle
 import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.AnimationType
 import br.com.aldemir.common.util.emptyString
 
@@ -35,7 +35,7 @@ fun LoadingButton(
     loading: Boolean = false,
     animationType: AnimationType = AnimationType.Bounce,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
-    indicatorSpacing: Dp = MarginSingle,
+    indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding8,
     content: @Composable () -> Unit,
 ) {
     val contentAlpha by animateFloatAsState(targetValue = if (loading) 0f else 1f, label = emptyString())
@@ -83,7 +83,7 @@ private fun LoadingButtonPreview() {
         Text(
             color = Color.White,
             text = stringResource(id = R.string.button_add_text),
-            fontSize = FONT_SIZE_16,
+            fontSize = FontSize.scale16,
         )
     }
 }

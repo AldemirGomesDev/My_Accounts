@@ -15,20 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.GreenMedium
-import br.com.aldemir.common.theme.LARGE_PADDING
-import br.com.aldemir.common.theme.LOGO_HEIGHT_MEDIUM
-import br.com.aldemir.common.theme.MEDIUM_PADDING
-import br.com.aldemir.common.theme.Typography
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.theme.drawerHeaderColor
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.Green200
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun DrawerHeader(

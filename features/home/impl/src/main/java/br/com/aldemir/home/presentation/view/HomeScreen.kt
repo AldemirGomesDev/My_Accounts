@@ -27,7 +27,6 @@ import br.com.aldemir.common.R
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.home.presentation.model.HomeButtonType
 import br.com.aldemir.common.theme.*
-import br.com.aldemir.home.presentation.state.HomeUiState
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
@@ -63,7 +62,7 @@ fun HomeScreen(
                     .fillMaxSize()
                     .padding(padding)
                     .background(MyAccountsTheme.colors.background)
-                    .padding(horizontal = LARGE_PADDING_16),
+                    .padding(horizontal = MyAccountsTheme.dimensions.padding16),
             ) {
                 HomeCard(homeCardData = uiModel.homeCardData)
                 MyBarChart(
@@ -190,7 +189,7 @@ fun ButtonsHomeGrid(
                         modifier = Modifier.fillMaxWidth(),
                         color = GreenDark,
                         shape = RectangleShape,
-                        elevation = TASK_ITEM_ELEVATION,
+                        elevation = MyAccountsTheme.dimensions.sizing2,
                         onClick = {
                             navigateToNextScreen(button.type)
                         }

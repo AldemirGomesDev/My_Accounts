@@ -23,9 +23,7 @@ import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.common.theme.TASK_ITEM_ELEVATION
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.MyDropdownMenuItem
@@ -174,7 +172,7 @@ private fun DetailRecipeItem(
             .fillMaxWidth(),
         color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
-        elevation = TASK_ITEM_ELEVATION,
+        elevation = MyAccountsTheme.dimensions.sizing2,
     ) {
         Column(
             modifier = Modifier

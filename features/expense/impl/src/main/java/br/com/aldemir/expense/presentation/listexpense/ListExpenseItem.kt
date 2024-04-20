@@ -19,10 +19,7 @@ import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
-import br.com.aldemir.common.theme.PRIORITY_INDICATOR_SIZE
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.common.theme.TASK_ITEM_ELEVATION
-import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.theme.taskItemTextColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.TextBodyTwoItem
@@ -66,7 +63,7 @@ fun ListExpenseItem(
         modifier = Modifier.fillMaxWidth(),
         color = MyAccountsTheme.colors.background,
         shape = RectangleShape,
-        elevation = TASK_ITEM_ELEVATION,
+        elevation = MyAccountsTheme.dimensions.sizing2,
         onClick = {
             navigateToTaskScreen(expense.id, expense.name)
         }
@@ -95,7 +92,7 @@ fun ListExpenseItem(
                             ) {
                                 Canvas(
                                     modifier = Modifier
-                                        .size(PRIORITY_INDICATOR_SIZE)
+                                        .size(MyAccountsTheme.dimensions.sizing16)
                                 ) {
 //                                    drawCircle(
 //                                        color = statusColor

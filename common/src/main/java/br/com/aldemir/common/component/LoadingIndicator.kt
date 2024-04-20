@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.state.LoadingIndicatorState
 import br.com.aldemir.common.state.LoadingIndicatorStateImpl
-import br.com.aldemir.common.theme.MarginHalf
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.AnimationType
 import br.com.aldemir.common.util.Const.IndicatorSize
 import br.com.aldemir.common.util.Const.NumIndicators
@@ -42,7 +42,7 @@ fun LoadingIndicator(
     animating: Boolean,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colors.primary,
-    indicatorSpacing: Dp = MarginHalf,
+    indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding16,
     animationType: AnimationType,
 ) {
     val state = rememberLoadingIndicatorState(animating, animationType)

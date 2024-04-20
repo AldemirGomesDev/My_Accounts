@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
-import br.com.aldemir.common.theme.LOGO_HEIGHT
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.splashScreenBackground
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import br.com.aldemir.common.util.emptyString
@@ -71,7 +71,7 @@ fun Splash(
     ) {
         Image(
             modifier = Modifier
-                .size(LOGO_HEIGHT)
+                .size(MyAccountsTheme.dimensions.sizing120)
                 .offset(y = offsetState)
                 .alpha(alpha = alphaState),
             painter = painterResource(id = getLogo()),

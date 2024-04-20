@@ -17,16 +17,12 @@ import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
-import br.com.aldemir.common.theme.PRIORITY_INDICATOR_SIZE
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.common.theme.TASK_ITEM_ELEVATION
 import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.domain.model.RecipeDomain
-import br.com.aldemir.recipe.mapper.toDomain
 import br.com.aldemir.recipe.model.RecipeView
 
 @ExperimentalMaterialApi
@@ -46,7 +42,7 @@ fun RecipeItem(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colors.taskItemBackgroundColor,
         shape = RectangleShape,
-        elevation = TASK_ITEM_ELEVATION,
+        elevation = MyAccountsTheme.dimensions.sizing2,
         onClick = {
             navigateToDetailScreen(recipeView.id)
         }
@@ -75,7 +71,7 @@ fun RecipeItem(
                             ) {
                                 Canvas(
                                     modifier = Modifier
-                                        .size(PRIORITY_INDICATOR_SIZE)
+                                        .size(MyAccountsTheme.dimensions.sizing16)
                                 ) {
 //                                    drawCircle(
 //                                        color = statusColor

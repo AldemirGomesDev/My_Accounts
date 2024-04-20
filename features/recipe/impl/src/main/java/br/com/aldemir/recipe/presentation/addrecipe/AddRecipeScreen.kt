@@ -20,8 +20,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.theme.FONT_SIZE_12
-import br.com.aldemir.common.theme.FONT_SIZE_16
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
@@ -137,7 +135,7 @@ private fun AddAccountContent(
     Text(
         text = viewModel.nameError.value,
         color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        fontSize = FontSize.scale12
     )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
@@ -160,7 +158,7 @@ private fun AddAccountContent(
     Text(
         text = viewModel.valueError.value,
         color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        fontSize = FontSize.scale12
     )
     Divider(
         modifier = Modifier.height(MEDIUM_PADDING),
@@ -183,7 +181,7 @@ private fun AddAccountContent(
     Text(
         text = viewModel.descriptionError.value,
         color = MaterialTheme.colors.error,
-        fontSize = FONT_SIZE_12
+        fontSize = FontSize.scale12
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
@@ -256,7 +254,7 @@ private fun AddAccountContent(
         Text(
             color = Color.White,
             text = stringResource(id = R.string.button_add_text),
-            fontSize = FONT_SIZE_16,
+            fontSize = FontSize.scale16,
         )
     }
 }

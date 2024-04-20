@@ -17,13 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.theme.taskItemBackgroundColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
-import br.com.aldemir.common.theme.LARGE_PADDING_16
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.CoroutineScope
@@ -74,7 +72,7 @@ fun ListRecipeScreen(
                     .padding(padding)
                     .background(MyAccountsTheme.colors.background),
             ) {
-                Box(modifier = Modifier.padding(horizontal = LARGE_PADDING_16)) {
+                Box(modifier = Modifier.padding(horizontal = MyAccountsTheme.dimensions.padding16)) {
                     StatisticsCard(cardState)
                 }
                 recipes?.let {
