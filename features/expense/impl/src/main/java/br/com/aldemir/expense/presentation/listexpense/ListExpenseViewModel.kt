@@ -31,12 +31,7 @@ class ListExpenseViewModel(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
-    private val saveDarkModeStateUseCase: SaveDarkModeStateUseCase,
-    private val readDarkModeStateUseCase: ReadDarkModeStateUseCase
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState> = _uiState
 
     private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
     var expenses: StateFlow<List<ExpenseView>> = _expenses
@@ -58,12 +53,6 @@ class ListExpenseViewModel(
     private var _percentage = MutableStateFlow(0F)
     val percentage: StateFlow<Float> = _percentage.asStateFlow()
 
-    fun setDarkMode() {
-        val isDarkMode = !_uiState.value.darkMode
-        _uiState.value = _uiState.value.copy(darkMode = isDarkMode)
-        saveDarkModeState(isDarkMode)
-    }
-
     fun onOpenDialogClicked() {
         _showDialog.value = true
     }
@@ -74,33 +63,6 @@ class ListExpenseViewModel(
 
     fun onDialogDismiss() {
         _showDialog.value = false
-    }
-
-    fun readDarkModeState() {
-        try {
-            viewModelScope.launch {
-                readDarkModeStateUseCase(this, Unit).apply {
-                    onSuccess {
-                        it.collect { isDark ->
-                            _uiState.value = _uiState.value.copy(darkMode = isDark)
-                        }
-                    }
-                    onFailure {
-                        _uiState.value = _uiState.value.copy(darkMode = false)
-                    }
-                }
-
-            }
-        } catch (e: Exception) {
-            _uiState.value = _uiState.value.copy(darkMode = false)
-        }
-    }
-
-    private fun saveDarkModeState(isDarkMode: Boolean) {
-        viewModelScope.launch {
-            saveDarkModeStateUseCase(this, isDarkMode)
-            readDarkModeState()
-        }
     }
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">common</string>
     <string name="main_screen_title">Minhas contas</string>
-    <string name="drawer_dark_mode">Modo escuro</string>
+    <string name="drawer_dark_mode_enabled">Modo escuro ligado</string>
+    <string name="drawer_dark_mode_disabled">Modo escuro desligado</string>
     <string name="drawer_welcome">Bem vindo!</string>
     <string name="account_pending">Pendente</string>
     <string name="account_list_item_status">Status:</string>
@@ -15,7 +16,6 @@
     <!-- Expense -->
     <string name="expense_detail_screen_title">Detalhes da despesa</string>
     <string name="expense_change_screen_title">Editar despesa</string>
-    <string name="expense_list">Minhas despesas</string>
     <string name="expense_add_screen_title">Adicionar despesa</string>
     <string name="expense_historic_screen_title">Histórico</string>
     <string name="expense_list_screen_title">Despesas</string>

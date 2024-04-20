@@ -164,7 +164,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Route.ExpenseGraphRoute.route -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_list,
+                titleResId = R.string.expense_list_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -180,7 +180,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Route.ExpenseGraphRoute.ExpenseList.route -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_list,
+                titleResId = R.string.expense_list_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )

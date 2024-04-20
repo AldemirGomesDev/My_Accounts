@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import br.com.aldemir.myaccounts.presentation.shared.action.MainAction
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi
@@ -18,12 +19,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: ListExpenseViewModel by viewModel()
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.readDarkModeState()
+        viewModel.onAction(MainAction.FetchData)
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
@@ -31,8 +32,8 @@ class MainActivity : ComponentActivity() {
             MyAccountsTheme(uiState.darkMode) {
                 DrawerNavigationScreen(
                     switchState = uiState.darkMode,
-                    onDarkMode = {
-                        viewModel.setDarkMode()
+                    onDarkMode = { isDarkMode ->
+                        viewModel.onAction(MainAction.UpdateDarkModeState(isDarkMode))
                     }
                 )
             }

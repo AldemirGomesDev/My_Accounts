@@ -38,11 +38,11 @@ internal fun DrawerHeader(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .height(120.dp)
+            .height(MyAccountsTheme.dimensions.sizing120)
             .fillMaxSize()
             .background(color = MaterialTheme.colors.drawerHeaderColor)
             .clip(
-                RoundedCornerShape(topEnd = 40.dp)
+                RoundedCornerShape(topEnd = MyAccountsTheme.dimensions.sizing48)
             ),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -50,36 +50,36 @@ internal fun DrawerHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(all = MEDIUM_PADDING)
+                    .padding(all = MyAccountsTheme.dimensions.padding8)
             ) {
                 Image(
                     modifier = Modifier
-                        .size(LOGO_HEIGHT_MEDIUM),
+                        .size(MyAccountsTheme.dimensions.sizing52),
                     painter = painterResource(id = R.drawable.icon_despesa),
                     contentDescription = stringResource(id = R.string.account_logo)
                 )
                 TextTitleLarge(
                     text = stringResource(id = R.string.drawer_welcome),
-                    modifier = Modifier.padding(start = LARGE_PADDING)
+                    modifier = Modifier.padding(start = MyAccountsTheme.dimensions.padding12)
                 )
             }
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp),
+                    .padding(start = MyAccountsTheme.dimensions.padding16),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
 
 
             ) {
                 Text(
-                    text = stringResource(id = R.string.drawer_dark_mode),
+                    text = getDarkModeText(switchState),
                     color = White,
-                    style = Typography.h6,
+                    style = MyAccountsTheme.typography.subTitleMedium,
                     modifier = Modifier.weight(1f)
                 )
 
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(MyAccountsTheme.dimensions.sizing8))
                 Switch(
                     checked = switchState,
                     onCheckedChange ={
@@ -96,6 +96,15 @@ internal fun DrawerHeader(
 
             }
         }
+    }
+}
+
+@Composable
+private fun getDarkModeText(isDarkMode: Boolean): String {
+    return if (isDarkMode) {
+        stringResource(id = R.string.drawer_dark_mode_enabled)
+    } else {
+        stringResource(id = R.string.drawer_dark_mode_disabled)
     }
 }
 

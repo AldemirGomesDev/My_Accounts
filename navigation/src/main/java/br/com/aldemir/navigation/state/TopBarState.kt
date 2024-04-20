@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import br.com.aldemir.common.R
 
 data class TopBarState(
-    @StringRes val titleResId: Int = R.string.expense_list,
+    @StringRes val titleResId: Int = R.string.expense_list_screen_title,
     val imageIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     val onClick: () -> Unit,
     val isHome: Boolean = false,

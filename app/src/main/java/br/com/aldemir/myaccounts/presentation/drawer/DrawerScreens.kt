@@ -20,7 +20,7 @@ sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imag
         Icons.Filled.Add
     )
     object ListExpense : DrawerScreens(
-        titleResourceId = R.string.expense_list,
+        titleResourceId = R.string.expense_list_screen_title,
         route = Route.ExpenseGraphRoute.ExpenseList.route,
         imageIcon = Icons.Filled.List
     )
