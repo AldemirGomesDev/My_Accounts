@@ -32,9 +32,9 @@ class MainViewModel(
         }
     }
 
-    private fun saveDarkModeState(isDarkMode: AppDarkMode) {
+    private fun saveDarkModeState(appDarkMode: AppDarkMode) {
         viewModelScope.launch {
-            saveDarkModeStateUseCase(this, isDarkMode.name)
+            saveDarkModeStateUseCase(this, appDarkMode.name)
             readDarkModeState()
         }
     }
