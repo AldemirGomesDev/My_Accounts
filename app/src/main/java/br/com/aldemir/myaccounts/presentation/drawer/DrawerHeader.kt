@@ -5,9 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,35 +12,40 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.aldemir.common.theme.GreenMedium
+import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.theme.drawerHeaderColor
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.common.component.TextTitleLarge
-import br.com.aldemir.common.theme.Green200
+import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.common.theme.MyAccountsTheme
 
 @Composable
 internal fun DrawerHeader(
-    switchState: Boolean,
-    onDarkMode: (Boolean) -> Unit
+    listItems: List<DarkModeDropDownState>,
+    onItemClicked: (state: DarkModeDropDownState) -> Unit,
+    darkModeStateSelected: DarkModeDropDownState,
 ) {
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .height(MyAccountsTheme.dimensions.sizing120)
-            .fillMaxSize()
+            .fillMaxWidth()
             .background(color = MaterialTheme.colors.drawerHeaderColor)
             .clip(
                 RoundedCornerShape(topEnd = MyAccountsTheme.dimensions.sizing48)
             ),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MyAccountsTheme.dimensions.padding16),
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(all = MyAccountsTheme.dimensions.padding8)
+                    .padding(bottom = MyAccountsTheme.dimensions.padding8)
             ) {
                 Image(
                     modifier = Modifier
@@ -56,48 +58,16 @@ internal fun DrawerHeader(
                     modifier = Modifier.padding(start = MyAccountsTheme.dimensions.padding12)
                 )
             }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = MyAccountsTheme.dimensions.padding16),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-
-
-            ) {
-                Text(
-                    text = getDarkModeText(switchState),
-                    color = White,
-                    style = MyAccountsTheme.typography.subTitleMedium,
-                    modifier = Modifier.weight(1f)
-                )
-
-                Spacer(Modifier.width(MyAccountsTheme.dimensions.sizing8))
-                Switch(
-                    checked = switchState,
-                    onCheckedChange ={
-                        onDarkMode(it)
-                    },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = GreenMedium,
-                        uncheckedThumbColor = Green200,
-                        checkedTrackColor = MaterialTheme.colors.secondary,
-                        uncheckedTrackColor = MaterialTheme.colors.secondary,
-                    )
-                )
-
-
-            }
+            Spacer(Modifier.height(MyAccountsTheme.dimensions.sizing12))
+            DarkModeDropDownMenu(
+                onItemClicked = {
+                    onItemClicked(it)
+                },
+                listItems = listItems,
+                darkModeStateSelected = darkModeStateSelected,
+                tintColor = White
+            )
         }
-    }
-}
-
-@Composable
-private fun getDarkModeText(isDarkMode: Boolean): String {
-    return if (isDarkMode) {
-        stringResource(id = R.string.drawer_dark_mode_enabled)
-    } else {
-        stringResource(id = R.string.drawer_dark_mode_disabled)
     }
 }
 
@@ -105,7 +75,8 @@ private fun getDarkModeText(isDarkMode: Boolean): String {
 @Composable
 fun DrawerHeaderPreview() {
     DrawerHeader(
-        switchState = false,
-        onDarkMode = {}
+        darkModeStateSelected = DarkModeDropDownState(),
+        onItemClicked = {},
+        listItems = listOf()
     )
 }

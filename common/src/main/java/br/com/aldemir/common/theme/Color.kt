@@ -29,7 +29,7 @@ val primaryLightVariant =Color(0xFFf2ffff)
 val lightSecondary = Color(0xFFefd8bf)
 val lightSecondaryVariant = Color(0xFFefd8bf)
 
-val Black2 = Color(0xFF000000)
+val Black = Color(0xFF000000)
 val White2= Color(0xFFFFFFFF)
 val RedErrorDark = Color(0xFFB00020)
 val RedErrorLight = Color(0xFFEF5350)
@@ -71,14 +71,6 @@ val Colors.fabBackgroundColor: Color
     @Composable
     get() = if (isLight) Purple200 else Purple700
 
-val Colors.topAppBarContentColor: Color
-    @Composable
-    get() = if (isLight) Color.White else LightGray
-
 val Colors.topAppBarBackGroundColor: Color
     @Composable
     get() = if (isLight) Purple200 else Color.Black
-
-val Colors.buttonTextColor: Color
-    @Composable
-    get() = if (isLight) LowPriorityColor else LowPriorityColor

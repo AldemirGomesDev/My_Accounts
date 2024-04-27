@@ -52,7 +52,7 @@ object MyAccountsTheme {
             onSuccess = if (darkTheme) primaryLight else primaryDark,
             warning = if (darkTheme) primaryLight else primaryDark,
             onWarning = if (darkTheme) primaryLight else primaryDark,
-            background = if (darkTheme) Black2 else White,
+            background = if (darkTheme) Black else White,
             onBackground = if (darkTheme) primaryDark else Green200,
             surface = if (darkTheme) primaryLight else primaryDark,
             onSurface = if (darkTheme) primaryLight else primaryDark,

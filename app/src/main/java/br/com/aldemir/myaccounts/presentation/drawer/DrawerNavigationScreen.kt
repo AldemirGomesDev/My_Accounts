@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
 import br.com.aldemir.common.component.TopBar
+import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.navigation.Route
 import br.com.aldemir.navigation.SetupNavigation
 import br.com.aldemir.navigation.state.TopBarState
@@ -26,8 +27,9 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigationScreen(
-    switchState: Boolean,
-    onDarkMode: (Boolean) -> Unit
+    listItems: List<DarkModeDropDownState>,
+    onItemClicked: (state: DarkModeDropDownState) -> Unit,
+    darkModeStateSelected: DarkModeDropDownState,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -72,8 +74,9 @@ fun DrawerNavigationScreen(
         drawerGesturesEnabled = true,
         drawerContent = {
             DrawerHeader(
-                switchState = switchState,
-                onDarkMode = onDarkMode
+                listItems = listItems,
+                onItemClicked = onItemClicked,
+                darkModeStateSelected = darkModeStateSelected,
             )
             DrawerBody(
                 menuItems = screens,
@@ -216,7 +219,8 @@ fun getTopBarState(navController: NavHostController): TopBarState {
 @Composable
 fun DrawerNavigationScreenPreview() {
     DrawerNavigationScreen(
-        switchState = true,
-        onDarkMode = {}
+        darkModeStateSelected = DarkModeDropDownState(),
+        onItemClicked = {},
+        listItems = listOf()
     )
 }

@@ -4,13 +4,13 @@ import br.com.aldemir.data.database.preference.DataStorePreference
 import br.com.aldemir.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 
-class DataStoreRepositoryImpl constructor(
+class DataStoreRepositoryImpl(
     private val dataStorePreference: DataStorePreference
 ) : DataStoreRepository {
-    override suspend fun saveDarkModeState(isDarkMode: Boolean) {
+    override suspend fun saveDarkModeState(isDarkMode: String) {
         dataStorePreference.saveDarkModeState(isDarkMode)
     }
 
-    override val readDarkModeState: Flow<Boolean>
+    override val readDarkModeState: Flow<String>
         get() = dataStorePreference.readDarkModeState
 }

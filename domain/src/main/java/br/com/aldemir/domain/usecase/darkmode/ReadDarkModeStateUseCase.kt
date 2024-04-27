@@ -5,11 +5,11 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 
-class ReadDarkModeStateUseCase constructor(
+class ReadDarkModeStateUseCase (
     private val dataStoreRepository: DataStoreRepository
-): BaseUseCase<Unit, Flow<Boolean>> {
+): BaseUseCase<Unit, Flow<String>> {
 
-    override suspend fun execute(params: Unit): Flow<Boolean> {
+    override suspend fun execute(params: Unit): Flow<String> {
         return dataStoreRepository.readDarkModeState
     }
 }

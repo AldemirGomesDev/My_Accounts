@@ -52,6 +52,10 @@ class MyAccountsDimension {
         @Composable
         get() = 120.dp
 
+    val sizing160: Dp
+        @Composable
+        get() = 160.dp
+
     val padding2: Dp
         @Composable
         get() = 2.dp
