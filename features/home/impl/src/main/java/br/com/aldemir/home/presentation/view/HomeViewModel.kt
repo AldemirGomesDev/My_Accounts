@@ -17,10 +17,11 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.home.presentation.model.HomeCardData
-import br.com.aldemir.home.presentation.model.HomeUiModel
 import br.com.aldemir.home.presentation.model.MonthValue
+import br.com.aldemir.home.presentation.state.HomeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
@@ -30,8 +31,8 @@ class HomeViewModel(
     private val getAllExpensesMonthUseCase: GetAllExpensesMonthUseCase,
 ) : ViewModel() {
 
-    private val _uiModel = MutableStateFlow(HomeUiModel())
-    val uiModel: StateFlow<HomeUiModel> = _uiModel
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    val uiState: StateFlow<HomeUiState> = _uiState
 
     private var _monthValuesExpense = mutableListOf<MonthValue>()
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
@@ -159,10 +160,17 @@ class HomeViewModel(
         }
 
         if (bars.isNotEmpty()) {
-            val currentModel = checkNotNull(uiModel.value)
-            _uiModel.value = currentModel.copy(
-                barChartDataExpense = BarChartData(bars = bars.toList())
-            )
+            _uiState.update {
+                HomeUiState.ShowHomeCards(
+                    it.uiModel.copy(barChartDataExpense = BarChartData(bars = bars.toList()))
+                )
+            }
+        } else {
+            _uiState.update {
+                HomeUiState.ShowHomeCards(
+                    it.uiModel.copy(barChartDataExpense = null)
+                )
+            }
         }
     }
 
@@ -176,7 +184,7 @@ class HomeViewModel(
                 BarChartData.Bar(
                     label = emptyString(),
                     value = 0F,
-                    color = MediumPriorityColor,
+                    color = LowPriorityColor,
                 ),
             )
         }
@@ -198,16 +206,23 @@ class HomeViewModel(
                 BarChartData.Bar(
                     label = s.ifEmpty { "MÊS" }.substring(0, 3),
                     value = 0f,
-                    color = MediumPriorityColor,
+                    color = LowPriorityColor,
                 ),
             )
         }
 
         if (bars.isNotEmpty()) {
-            val currentModel = checkNotNull(uiModel.value)
-            _uiModel.value = currentModel.copy(
-                barChartDataRecipe = BarChartData(bars = bars.toList())
-            )
+            _uiState.update {
+                HomeUiState.ShowHomeCards(
+                    it.uiModel.copy(barChartDataRecipe = BarChartData(bars = bars.toList()))
+                )
+            }
+        } else {
+            _uiState.update {
+                HomeUiState.ShowHomeCards(
+                    it.uiModel.copy(barChartDataRecipe = null)
+                )
+            }
         }
     }
 
@@ -216,10 +231,7 @@ class HomeViewModel(
         recipes: List<RecipeMonthlyDomain>,
         expenses: List<ExpenseMonthlyDomain>
     ) {
-        val currentModel = checkNotNull(uiModel.value)
-        _uiModel.value = currentModel.copy(
-            homeCardData = HomeCardData()
-        )
+        updateHomeCardData(HomeCardData())
         var valueRecipe = 0.0
         var valueExpense = 0.0
         var valueBalance = 0.0
@@ -230,11 +242,20 @@ class HomeViewModel(
             valueExpense += expense.value
         }
         valueBalance = (valueRecipe - valueExpense)
-        _uiModel.value = currentModel.copy(
+        updateHomeCardData(
             homeCardData = HomeCardData(
                 valueRecipe = valueRecipe,
                 valueExpense = valueExpense,
                 valueBalance = valueBalance
+            )
+        )
+    }
+
+    private fun updateHomeCardData(homeCardData: HomeCardData) {
+        val currentModel = checkNotNull(uiState.value.uiModel)
+        _uiState.value = HomeUiState.ShowHomeCards(
+            currentModel.copy(
+                homeCardData = homeCardData
             )
         )
     }

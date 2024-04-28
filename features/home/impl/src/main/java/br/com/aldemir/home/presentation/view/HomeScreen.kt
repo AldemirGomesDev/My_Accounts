@@ -24,9 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
+import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.home.presentation.model.HomeButtonType
 import br.com.aldemir.common.theme.*
+import br.com.aldemir.home.presentation.state.HomeUiState
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
@@ -50,7 +52,7 @@ fun HomeScreen(
 
     BackHandler { activity?.finish() }
 
-    val uiModel by viewModel.uiModel.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     val labelDrawer = viewModel.labelDrawer
 
@@ -64,9 +66,10 @@ fun HomeScreen(
                     .background(MyAccountsTheme.colors.background)
                     .padding(horizontal = MyAccountsTheme.dimensions.padding16),
             ) {
-                HomeCard(homeCardData = uiModel.homeCardData)
+                HomeCard(homeCardData = uiState.uiModel.homeCardData)
                 MyBarChart(
-                    barChartData = uiModel.barChartDataExpense,
+                    uiState = uiState,
+                    barChartData = uiState.uiModel.barChartDataExpense,
                     labelDrawer = labelDrawer,
                     title = stringResource(id = R.string.expense_chart_title),
                     textEmpty = stringResource(id = R.string.expense_chart_empty),
@@ -74,7 +77,8 @@ fun HomeScreen(
                     navigateToNextScreen = navigateToNextScreen
                 )
                 MyBarChart(
-                    barChartData = uiModel.barChartDataRecipe,
+                    uiState = uiState,
+                    barChartData = uiState.uiModel.barChartDataRecipe,
                     labelDrawer = labelDrawer,
                     title = stringResource(id = R.string.recipe_chart_title),
                     textEmpty = stringResource(id = R.string.recipe_chart_empty),
@@ -88,6 +92,7 @@ fun HomeScreen(
 
 @Composable
 private fun MyBarChart(
+    uiState: HomeUiState,
     barChartData: BarChartData?,
     labelDrawer: ILabelDrawer,
     title: String,
@@ -100,7 +105,7 @@ private fun MyBarChart(
         shape = Shapes.large,
         backgroundColor = GreenDark,
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = MyAccountsTheme.dimensions.padding16)
             .clickable {
                 navigateToNextScreen(buttonType)
             }
@@ -110,8 +115,8 @@ private fun MyBarChart(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = MEDIUM_PADDING)
-                    .padding(bottom = SMALL_PADDING),
+                    .padding(top = MyAccountsTheme.dimensions.padding8)
+                    .padding(bottom = MyAccountsTheme.dimensions.padding4),
                 text = title,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -120,47 +125,63 @@ private fun MyBarChart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
-                    .padding(vertical = MEDIUM_PADDING)
+                    .padding(vertical = MyAccountsTheme.dimensions.padding8)
                     .background(GreenDark),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ){
-                barChartData?.let {
-                    BarChart(
-                        modifier = Modifier.padding(
-                            horizontal = LARGEST_PADDING,
-                            vertical = MEDIUM_PADDING
-                        ),
-                        barChartData = barChartData,
-                        labelDrawer = labelDrawer,
-                        xAxisDrawer = SimpleXAxisDrawer(
-                            axisLineColor = White
-                        ),
-                        yAxisDrawer = SimpleYAxisDrawer(
-                            axisLineColor = White,
-                            labelTextColor = White,
-                        ),
-                    )
-                }?: run {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(60.dp).padding(top = MEDIUM_PADDING),
-                            painter = painterResource(id = R.drawable.ic_sad_face),
-                            contentDescription = stringResource(R.string.sad_face_icon),
-                            tint = MediumGray
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = MEDIUM_PADDING)
-                                .padding(bottom = SMALL_PADDING),
-                            text = textEmpty,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            color = MediumGray
-                        )
+                when(uiState) {
+                    HomeUiState.Loading -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            LoadingAnimation(
+                                circleColor = White,
+                                circleSize = MyAccountsTheme.dimensions.sizing16
+                            )
+                        }
+                    }
+                    is HomeUiState.ShowHomeCards -> {
+                        barChartData?.let {
+                            BarChart(
+                                modifier = Modifier.padding(
+                                    horizontal = MyAccountsTheme.dimensions.padding24,
+                                    vertical = MyAccountsTheme.dimensions.padding8
+                                ),
+                                barChartData = barChartData,
+                                labelDrawer = labelDrawer,
+                                xAxisDrawer = SimpleXAxisDrawer(
+                                    axisLineColor = White
+                                ),
+                                yAxisDrawer = SimpleYAxisDrawer(
+                                    axisLineColor = White,
+                                    labelTextColor = White,
+                                ),
+                            )
+                        } ?: run {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .padding(top = MyAccountsTheme.dimensions.padding8),
+                                    painter = painterResource(id = R.drawable.ic_sad_face),
+                                    contentDescription = stringResource(R.string.sad_face_icon),
+                                    tint = MediumGray
+                                )
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(top = MyAccountsTheme.dimensions.padding8)
+                                        .padding(bottom = MyAccountsTheme.dimensions.padding4),
+                                    text = textEmpty,
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MediumGray
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -183,7 +204,7 @@ fun ButtonsHomeGrid(
                     shape = Shapes.large,
                     backgroundColor = GreenDark,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(MyAccountsTheme.dimensions.padding8)
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -198,7 +219,7 @@ fun ButtonsHomeGrid(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .padding(16.dp),
+                                .padding(MyAccountsTheme.dimensions.padding16),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){

@@ -6,8 +6,8 @@ import me.bytebeats.views.charts.bar.BarChartData
 
 data class HomeUiModel(
     val homeCardData: HomeCardData = HomeCardData(),
-    val barChartDataExpense: BarChartData? = null,
-    val barChartDataRecipe: BarChartData? = null
+    val barChartDataExpense: BarChartData? = BarChartData(bars = listOf(getBar())),
+    val barChartDataRecipe: BarChartData? = BarChartData(bars = listOf(getBar())),
 )
 
 fun getBar() = BarChartData.Bar(
