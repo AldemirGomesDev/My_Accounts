@@ -140,7 +140,7 @@ fun HomeCard(
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun HomeCardPreview() {
     HomeCard(homeCardData = HomeCardData())

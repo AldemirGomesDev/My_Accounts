@@ -1,14 +1,16 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.R
-import br.com.aldemir.common.theme.taskItemTextColor
+import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
 @Composable
 fun DisplayAlertDialog(
@@ -20,12 +22,13 @@ fun DisplayAlertDialog(
 ) {
     if (openDialog) {
         AlertDialog(
+            backgroundColor = MyAccountsTheme.colors.background,
             title = {
                 Text(
                     text = title,
-                    fontSize = MaterialTheme.typography.h6.fontSize,
+                    fontSize = FontSize.scale20,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colors.taskItemTextColor,
+                    color = MyAccountsTheme.colors.primary,
                 )
             },
             text = {
@@ -33,7 +36,7 @@ fun DisplayAlertDialog(
                     text = message,
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colors.taskItemTextColor,
+                    color = MyAccountsTheme.colors.primary,
                 )
             },
             confirmButton = {
@@ -42,7 +45,9 @@ fun DisplayAlertDialog(
                         onYesClicked()
                         closeDialog()
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MyAccountsTheme.colors.primary
+                    ),
                 ) {
                     Text(text = stringResource(R.string.button_yes), color = White)
                 }
@@ -51,9 +56,15 @@ fun DisplayAlertDialog(
                 OutlinedButton(
                     onClick = {
                         closeDialog()
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MyAccountsTheme.colors.background
+                    ),
                 ) {
-                    Text(text = stringResource(R.string.button_no), color = Purple200)
+                    Text(
+                        text = stringResource(R.string.button_no),
+                        color = MyAccountsTheme.colors.primary
+                    )
                 }
             },
             onDismissRequest = { closeDialog() }
@@ -62,14 +73,25 @@ fun DisplayAlertDialog(
 
 }
 
-@Preview
+@Preview(
+    name = "Light mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Preview(
+    name = "Dark mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 @Composable
 private fun DisplayAlertDialogPreview() {
-    DisplayAlertDialog(
-        "Aviso",
-        "Deseja realmente excluir?",
-        true,
-        {},
-        {}
-    )
+    MyAccountsTheme {
+        Surface {
+            DisplayAlertDialog(
+                "Aviso",
+                "Deseja realmente excluir?",
+                true,
+                {},
+                {}
+            )
+        }
+    }
 }

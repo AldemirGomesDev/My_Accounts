@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MediumGray
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
 @Composable
 fun EmptyContent(
@@ -29,7 +32,8 @@ fun EmptyContent(
     val context = LocalContext.current
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .background(MyAccountsTheme.colors.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -50,7 +54,20 @@ fun EmptyContent(
 }
 
 @Composable
-@Preview
+@Preview(
+    name = "Dark mode",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Preview(
+    name = "Light mode",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+)
 private fun EmptyContentPreview() {
-    EmptyContent()
+    MyAccountsTheme {
+        Surface {
+            EmptyContent()
+        }
+    }
 }

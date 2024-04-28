@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -14,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.DarkGray
-import br.com.aldemir.common.theme.MEDIUM_PADDING
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.taskItemTextColor
 
 @Composable
@@ -41,6 +42,7 @@ fun MyDropdownMenuItem(
             )
         }
         DropdownMenu(
+            modifier = Modifier.background(MyAccountsTheme.colors.background),
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
@@ -55,14 +57,14 @@ fun MyDropdownMenuItem(
                     enabled = disabledItem
                 ) {
                     Icon(
-                        modifier = Modifier.padding(end = MEDIUM_PADDING),
+                        modifier = Modifier.padding(end = MyAccountsTheme.dimensions.padding8),
                         imageVector = itemValue.icon,
-                        tint = MaterialTheme.colors.taskItemTextColor,
+                        tint = MyAccountsTheme.colors.primary,
                         contentDescription = null
                     )
                     Text(
                         text = stringResource(id = itemValue.titleRes),
-                        color = MaterialTheme.colors.taskItemTextColor
+                        color = MyAccountsTheme.colors.primary
                     )
                 }
                 if (itemIndex < listItems.lastIndex)
