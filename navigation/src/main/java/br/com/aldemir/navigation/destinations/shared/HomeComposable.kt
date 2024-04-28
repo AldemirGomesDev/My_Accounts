@@ -7,7 +7,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import br.com.aldemir.common.util.Const
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.navigation.Route
@@ -24,25 +23,25 @@ fun NavGraphBuilder.homeComposable(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popExitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(Const.NavigationAnimationDurationMillis)
+                animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
     ) {

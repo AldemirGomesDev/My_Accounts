@@ -27,26 +27,16 @@ fun LoadingAnimation(
     initialAlpha: Float = 0.3f
 ) {
 
-    // 3 circles
     val circles = listOf(
-        remember {
-            Animatable(initialValue = initialAlpha)
-        },
-        remember {
-            Animatable(initialValue = initialAlpha)
-        },
-        remember {
-            Animatable(initialValue = initialAlpha)
-        }
+        remember { Animatable(initialValue = initialAlpha) },
+        remember { Animatable(initialValue = initialAlpha) },
+        remember { Animatable(initialValue = initialAlpha) }
     )
 
     circles.forEachIndexed { index, animatable ->
 
         LaunchedEffect(Unit) {
-
-            // Use coroutine delay to sync animations
             delay(timeMillis = (animationDelay / circles.size).toLong() * index)
-
             animatable.animateTo(
                 targetValue = 1f,
                 animationSpec = infiniteRepeatable(
@@ -59,20 +49,14 @@ fun LoadingAnimation(
         }
     }
 
-    // container for circles
     Row(
         modifier = Modifier
-        //.border(width = 2.dp, color = Color.Magenta)
     ) {
 
-        // adding each circle
         circles.forEachIndexed { index, animatable ->
-
-            // gap between the circles
             if (index != 0) {
                 Spacer(modifier = Modifier.width(width = 6.dp))
             }
-
             Box(
                 modifier = Modifier
                     .size(size = circleSize)
@@ -81,8 +65,7 @@ fun LoadingAnimation(
                         color = circleColor
                             .copy(alpha = animatable.value)
                     )
-            ) {
-            }
+            )
         }
     }
 }
