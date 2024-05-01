@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "br.com.aldemir.navigation"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -30,7 +30,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
 
     compileOptions {
