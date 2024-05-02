@@ -149,14 +149,16 @@ class HomeViewModel(
         }
         val monthsDropLast = months.dropLast(bars.size)
 
-        monthsDropLast.forEachIndexed { index, s ->
-            bars.add(index,
-                BarChartData.Bar(
-                    label = s.ifEmpty { "MÊS" }.substring(0, 3),
-                    value = 0f,
-                    color = MediumPriorityColor,
-                ),
-            )
+        if (monthsDropLast.size < 6) {
+            monthsDropLast.forEachIndexed { index, s ->
+                bars.add(index,
+                    BarChartData.Bar(
+                        label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                        value = 0f,
+                        color = MediumPriorityColor,
+                    ),
+                )
+            }
         }
 
         if (bars.isNotEmpty()) {
@@ -201,14 +203,16 @@ class HomeViewModel(
         }
         val monthsDropLast = months.dropLast(bars.size)
 
-        monthsDropLast.forEachIndexed { index, s ->
-            bars.add(index,
-                BarChartData.Bar(
-                    label = s.ifEmpty { "MÊS" }.substring(0, 3),
-                    value = 0f,
-                    color = LowPriorityColor,
-                ),
-            )
+        if (monthsDropLast.size < 6) {
+            monthsDropLast.forEachIndexed { index, s ->
+                bars.add(index,
+                    BarChartData.Bar(
+                        label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                        value = 0f,
+                        color = LowPriorityColor,
+                    ),
+                )
+            }
         }
 
         if (bars.isNotEmpty()) {
