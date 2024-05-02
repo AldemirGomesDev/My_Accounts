@@ -29,7 +29,7 @@ fun HomeCard(
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
     Card(
         shape = Shapes.large,
-        backgroundColor = GreenDark,
+        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
         modifier = Modifier.padding(vertical = MyAccountsTheme.dimensions.padding16)
     ) {
         Column(

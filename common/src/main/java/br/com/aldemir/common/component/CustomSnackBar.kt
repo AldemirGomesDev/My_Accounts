@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.theme.GreenDark
+import br.com.aldemir.common.theme.GreenLight
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.RedErrorDark
@@ -91,8 +91,8 @@ fun CustomSnackBarPreview2() {
 enum class SnackBarState(
     val imageVector: ImageVector,
     val backgroundColor: Color = White,
-    val contentColor: Color = GreenDark,
-    val tintIcon: Color = GreenDark,
+    val contentColor: Color = GreenLight,
+    val tintIcon: Color = GreenLight,
 ) {
 
     SUCCESS(
@@ -104,8 +104,8 @@ enum class SnackBarState(
     ALERT(
         imageVector = Icons.Default.Info,
         backgroundColor = White,
-        contentColor = GreenDark,
-        tintIcon = GreenDark,
+        contentColor = GreenLight,
+        tintIcon = GreenLight,
     ),
     ERROR(
         imageVector = Icons.Filled.Close,
@@ -117,6 +117,6 @@ enum class SnackBarState(
         imageVector = Icons.Default.Close,
         backgroundColor = White,
         contentColor = RedErrorLight,
-        tintIcon = GreenDark,
+        tintIcon = GreenLight,
     )
 }

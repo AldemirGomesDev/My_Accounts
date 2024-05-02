@@ -14,9 +14,9 @@ val LightGray = Color(0xFFD3D3D3)
 val MediumGray = Color(0xFF9C9C9C)
 val DarkGray = Color(0xFF141414)
 
-val GreenDark = Color(0xFF226551)
+val GreenDark = Color(0xFF133329)
 val GreenMedium = Color(0xFF3e9278)
-val GreenLight = Color(0xFF75b9a0)
+val GreenLight = Color(0xFF226551)
 val Green200 = Color(0xFFb9d9c1)
 
 val LowPriorityColor = Color(0xFF32CD32)
@@ -39,10 +39,6 @@ val primaryDarkVariant =Color(0xFF00001a)
 val darkSecondary = Color(0xFF402810)
 val darkSecondaryVariant = Color(0xFF200000)
 
-val Colors.splashScreenBackground: Color
-    @Composable
-    get() = if (isLight) Purple700 else Color.Black
-
 val Colors.taskItemTextColor: Color
     @Composable
     get() = if (isLight) Purple200 else Purple700
@@ -55,10 +51,6 @@ val Colors.dividerColor: Color
     @Composable
     get() = if (isLight) LightGray else MediumGray
 
-val Colors.drawerHeaderColor: Color
-    @Composable
-    get() = if (isLight) Purple200 else GreenDark
-
 val Colors.addAccountLabelColor: Color
     @Composable
     get() = if (isLight) Purple200 else Purple700
@@ -66,11 +58,3 @@ val Colors.addAccountLabelColor: Color
 val Colors.addAccountBorderColor: Color
     @Composable
     get() = if (isLight) Purple200 else Purple700
-
-val Colors.fabBackgroundColor: Color
-    @Composable
-    get() = if (isLight) Purple200 else Purple700
-
-val Colors.topAppBarBackGroundColor: Color
-    @Composable
-    get() = if (isLight) Purple200 else Color.Black

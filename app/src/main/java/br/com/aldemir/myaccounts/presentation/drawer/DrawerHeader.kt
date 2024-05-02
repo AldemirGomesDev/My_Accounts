@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.theme.White
-import br.com.aldemir.common.theme.drawerHeaderColor
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.DarkModeDropDownState
@@ -31,7 +29,7 @@ internal fun DrawerHeader(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colors.drawerHeaderColor)
+            .background(color = MyAccountsTheme.colors.backgroundGreen)
             .clip(
                 RoundedCornerShape(topEnd = MyAccountsTheme.dimensions.sizing48)
             ),

@@ -8,8 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +27,6 @@ import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.component.SnackBarState
-import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
@@ -307,9 +304,6 @@ private fun AddAccountContent(
             .height(MyAccountsTheme.dimensions.sizing52),
         loading = isLoading.value,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Purple200,
-        ),
     ) {
         Text(
             color = Color.White,
@@ -326,9 +320,6 @@ private fun AddAccountContent(
             .fillMaxWidth()
             .height(MyAccountsTheme.dimensions.sizing52),
         enabled = true,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Purple200,
-        ),
     ) {
         Text(
             color = Color.White,

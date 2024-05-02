@@ -103,7 +103,7 @@ private fun MyBarChart(
 
     Card(
         shape = Shapes.large,
-        backgroundColor = GreenDark,
+        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
         modifier = Modifier
             .padding(vertical = MyAccountsTheme.dimensions.padding16)
             .clickable {
@@ -126,7 +126,7 @@ private fun MyBarChart(
                     .fillMaxWidth()
                     .height(150.dp)
                     .padding(vertical = MyAccountsTheme.dimensions.padding8)
-                    .background(GreenDark),
+                    .background(MyAccountsTheme.colors.backgroundGreen),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ){
@@ -202,13 +202,13 @@ fun ButtonsHomeGrid(
             items(buttons) { button ->
                 Card(
                     shape = Shapes.large,
-                    backgroundColor = GreenDark,
+                    backgroundColor = MyAccountsTheme.colors.backgroundGreen,
                     modifier = Modifier
                         .padding(MyAccountsTheme.dimensions.padding8)
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = GreenDark,
+                        color = MyAccountsTheme.colors.backgroundGreen,
                         shape = RectangleShape,
                         elevation = MyAccountsTheme.dimensions.sizing2,
                         onClick = {

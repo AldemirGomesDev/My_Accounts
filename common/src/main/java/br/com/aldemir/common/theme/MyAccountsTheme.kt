@@ -57,6 +57,7 @@ object MyAccountsTheme {
             surface = if (darkTheme) primaryLight else primaryDark,
             onSurface = if (darkTheme) primaryLight else primaryDark,
             outline = if (darkTheme) primaryLight else primaryDark,
+            backgroundGreen = if (darkTheme) GreenDark else GreenLight
         )
 
         CompositionLocalProvider(

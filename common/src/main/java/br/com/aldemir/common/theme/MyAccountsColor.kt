@@ -19,6 +19,7 @@ data class MyAccountsColor(
     val surface: Color,
     val onSurface: Color,
     val outline: Color,
+    val backgroundGreen: Color,
 )
 
 internal val LocalColors = staticCompositionLocalOf { MyAccountsColor(
@@ -35,5 +36,6 @@ internal val LocalColors = staticCompositionLocalOf { MyAccountsColor(
     surface = Color.Unspecified,
     onSurface = Color.Unspecified,
     outline = Color.Unspecified,
+    backgroundGreen = Color.Unspecified
 ) }
 

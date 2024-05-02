@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.Typography
 import br.com.aldemir.common.theme.taskItemTextColor
 
@@ -14,7 +15,7 @@ import br.com.aldemir.common.theme.taskItemTextColor
 fun TextBodyTwoItem(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.taskItemTextColor,
+    color: Color = MyAccountsTheme.colors.primary,
 ) {
     Text(
         text = text,

@@ -247,9 +247,6 @@ private fun AddAccountContent(
             .height(52.dp),
         loading = isLoading.value,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Purple200,
-        ),
     ) {
         Text(
             color = Color.White,

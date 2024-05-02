@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.common.theme.splashScreenBackground
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import br.com.aldemir.common.util.emptyString
 import kotlinx.coroutines.delay
@@ -66,7 +64,7 @@ fun Splash(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.splashScreenBackground),
+            .background(MyAccountsTheme.colors.backgroundGreen),
         contentAlignment = Alignment.Center
     ) {
         Image(

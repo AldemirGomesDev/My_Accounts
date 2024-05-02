@@ -140,7 +140,7 @@ fun ListExpenseItem(
                     IconButton(onClick = { onDelete(expense) }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            tint = MaterialTheme.colors.taskItemTextColor,
+                            tint = MyAccountsTheme.colors.primary,
                             contentDescription = null
                         )
                     }

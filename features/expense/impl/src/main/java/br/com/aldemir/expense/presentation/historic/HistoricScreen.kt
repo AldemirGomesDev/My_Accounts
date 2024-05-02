@@ -144,7 +144,6 @@ private fun HistoricContent(
                     },
                 loading = viewModel.isLoading.value,
                 enabled = enabled,
-                colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
             ) {
                 Text(
                     color = Color.White,

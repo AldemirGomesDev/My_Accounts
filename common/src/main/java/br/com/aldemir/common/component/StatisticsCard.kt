@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
-import br.com.aldemir.common.theme.GreenDark
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.util.emptyFloat
 import br.com.aldemir.common.util.emptyString
@@ -24,6 +23,7 @@ import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.common.util.toDecimal
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.MyAccountsTheme
 
 @Composable
 fun StatisticsCard(
@@ -45,7 +45,7 @@ fun StatisticsCard(
 
     Card(
         shape = Shapes.large,
-        backgroundColor = GreenDark,
+        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
         Column(

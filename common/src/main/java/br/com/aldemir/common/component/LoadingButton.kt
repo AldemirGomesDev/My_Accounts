@@ -22,6 +22,7 @@ import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.Green200
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.AnimationType
 import br.com.aldemir.common.util.emptyString
@@ -34,7 +35,10 @@ fun LoadingButton(
     enabled: Boolean = false,
     loading: Boolean = false,
     animationType: AnimationType = AnimationType.Bounce,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
+        disabledBackgroundColor = Green200
+    ),
     indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding8,
     content: @Composable () -> Unit,
 ) {
