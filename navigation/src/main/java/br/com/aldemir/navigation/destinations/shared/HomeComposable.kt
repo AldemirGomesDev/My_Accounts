@@ -22,25 +22,13 @@ fun NavGraphBuilder.homeComposable(
         route = Route.Home.route,
         enterTransition = {
             slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         exitTransition = {
             slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )
-        },
-        popEnterTransition = {
-            slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },

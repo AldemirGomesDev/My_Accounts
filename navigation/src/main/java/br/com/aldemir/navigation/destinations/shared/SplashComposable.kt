@@ -16,10 +16,16 @@ fun NavGraphBuilder.splashComposable(
     composable(
         route = Route.Splash.route,
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(NavigationAnimationDurationMillis)
+            )
         },
     ) {
         SplashScreen(

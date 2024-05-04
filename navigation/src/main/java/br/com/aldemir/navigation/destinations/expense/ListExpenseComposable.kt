@@ -8,7 +8,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseScreen
-import br.com.aldemir.expense.presentation.listexpense.ListExpenseViewModel
 import br.com.aldemir.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
@@ -29,20 +28,22 @@ fun NavGraphBuilder.listExpenseComposable(
         },
         exitTransition = {
             slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
+                AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
         popEnterTransition = {
             slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
-            )        },
+            )
+        },
         popExitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(NavigationAnimationDurationMillis)
-            )        },
+            )
+        },
     ) {
         ListExpenseScreen(
             navigateToTaskScreen = { expenseId, expenseName ->
@@ -56,7 +57,7 @@ fun NavGraphBuilder.listExpenseComposable(
                 )
             },
             navigateToHomeScreen = {
-                navHostController.navigate(Route.Home.route)
+                navHostController.popBackStack()
             },
         )
     }

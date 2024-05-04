@@ -3,8 +3,6 @@ package br.com.aldemir.navigation.destinations.expense
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -32,16 +30,6 @@ fun NavGraphBuilder.addAccountComposable(
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(NavigationAnimationDurationMillis)
-            )        },
     ) {
         AddExpenseScreen(
             navigateToBack = {
