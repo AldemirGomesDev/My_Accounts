@@ -8,6 +8,6 @@ sealed class AddExpenseAction {
     data class AccountRepeatChanged(val checked: Boolean): AddExpenseAction()
     data class DueDateSelectedChanged(val dueDate: String): AddExpenseAction()
     data class AmountThatRepeatsSelectedChanged(val amountThatRepeatsSelected: String): AddExpenseAction()
-    object Submit: AddExpenseAction()
-    object ClearForm: AddExpenseAction()
+    data object Submit: AddExpenseAction()
+    data object ClearForm: AddExpenseAction()
 }

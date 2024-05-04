@@ -1,7 +1,7 @@
 package br.com.aldemir.home.presentation.effect
 
 sealed class HomeUiEffect {
-    object ShowExpenseBarEmpty: HomeUiEffect()
-    object ShowRecipeBarEmpty: HomeUiEffect()
-    object Idle: HomeUiEffect()
+    data object ShowExpenseBarEmpty: HomeUiEffect()
+    data object ShowRecipeBarEmpty: HomeUiEffect()
+    data object Idle: HomeUiEffect()
 }

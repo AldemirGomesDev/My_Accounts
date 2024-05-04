@@ -9,5 +9,5 @@ sealed class AddExpensesUiEffect {
     data class ShowSuccess(
         val snackBarState: SnackBarState = SnackBarState.SUCCESS
     ) : AddExpensesUiEffect()
-    object Idle: AddExpensesUiEffect()
+    data object Idle: AddExpensesUiEffect()
 }

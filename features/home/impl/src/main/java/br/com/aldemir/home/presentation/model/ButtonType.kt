@@ -1,6 +1,6 @@
 package br.com.aldemir.home.presentation.model
 
 sealed class ButtonType {
-    object ButtonRecipe: ButtonType()
-    object ButtonExpense: ButtonType()
+    data object ButtonRecipe: ButtonType()
+    data object ButtonExpense: ButtonType()
 }
