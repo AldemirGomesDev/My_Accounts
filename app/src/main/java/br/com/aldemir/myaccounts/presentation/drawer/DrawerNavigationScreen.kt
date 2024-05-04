@@ -2,6 +2,7 @@ package br.com.aldemir.myaccounts.presentation.drawer
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import br.com.aldemir.myaccounts.R
 import br.com.aldemir.myaccounts.presentation.bottomappbar.BottomBar
 import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.theme.DarkModeDropDownState
+import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.navigation.Route
 import br.com.aldemir.navigation.SetupNavigation
 import br.com.aldemir.navigation.state.TopBarState
@@ -89,7 +91,11 @@ fun DrawerNavigationScreen(
             }
         },
         content = {
-            Box(modifier = Modifier.padding(it)) {
+            Box(
+                modifier = Modifier
+                    .padding(it)
+                    .background(MyAccountsTheme.colors.background)
+            ) {
                 SetupNavigation(
                     navHostController = navController,
                     startDestination = Route.Splash.route,
