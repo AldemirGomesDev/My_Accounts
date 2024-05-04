@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.White
-import br.com.aldemir.common.theme.primaryDark
 
 @Composable
 fun BottomBar(

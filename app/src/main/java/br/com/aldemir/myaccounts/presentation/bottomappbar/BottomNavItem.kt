@@ -21,7 +21,7 @@ val bottomNavItems = listOf(
     ),
     BottomNavItem(
         resourceNameId = R.string.expense_list_screen_title,
-        route = Route.ExpenseGraphRoute.route,
+        route = Route.ExpenseGraphRoute.ExpenseList.route,
         icon = Icons.AutoMirrored.Outlined.List,
     ),
     BottomNavItem(
