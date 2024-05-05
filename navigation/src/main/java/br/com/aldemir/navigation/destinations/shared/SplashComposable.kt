@@ -11,6 +11,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.splashComposable(
+    isDarkTheme: Boolean,
     navHostController: NavHostController
 ) {
     composable(
@@ -29,6 +30,7 @@ fun NavGraphBuilder.splashComposable(
         },
     ) {
         SplashScreen(
+            isDarkTheme = isDarkTheme,
             navigateToListScreen = {
                 navHostController.navigate(Route.Home.route) {
                     popUpTo(Route.Splash.route) {

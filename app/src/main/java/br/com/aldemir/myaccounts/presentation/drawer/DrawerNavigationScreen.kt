@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigationScreen(
+    isDarkTheme: Boolean,
     listItems: List<DarkModeDropDownState>,
     onItemClicked: (state: DarkModeDropDownState) -> Unit,
     darkModeStateSelected: DarkModeDropDownState,
@@ -97,6 +98,7 @@ fun DrawerNavigationScreen(
                     .background(MyAccountsTheme.colors.background)
             ) {
                 SetupNavigation(
+                    isDarkTheme = isDarkTheme,
                     navHostController = navController,
                     startDestination = Route.Splash.route,
                 )
@@ -225,6 +227,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
 @Composable
 fun DrawerNavigationScreenPreview() {
     DrawerNavigationScreen(
+        isDarkTheme = true,
         darkModeStateSelected = DarkModeDropDownState(),
         onItemClicked = {},
         listItems = listOf()

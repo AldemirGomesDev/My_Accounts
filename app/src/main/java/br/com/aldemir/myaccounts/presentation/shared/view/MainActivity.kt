@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = isDarkMode
             ) {
                 DrawerNavigationScreen(
+                    isDarkTheme = isDarkMode,
                     listItems = uiState.listItems,
                     onItemClicked = {
                         viewModel.onAction(MainAction.UpdateDarkModeState(it.appDarkMode))

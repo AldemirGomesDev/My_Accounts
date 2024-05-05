@@ -22,12 +22,13 @@ import br.com.aldemir.navigation.destinations.shared.splashComposable
 fun SetupNavigation(
     navHostController: NavHostController,
     startDestination: String,
+    isDarkTheme: Boolean,
 ) {
     NavHost(
         navController = navHostController,
         startDestination = startDestination
     ) {
-        splashComposable(navHostController)
+        splashComposable(isDarkTheme, navHostController)
 
         homeComposable(navHostController)
 

@@ -1,6 +1,7 @@
 package br.com.aldemir.common.presentation.splash
 
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -27,12 +29,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import br.com.aldemir.common.util.emptyString
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
+    isDarkTheme: Boolean,
     navigateToListScreen: () -> Unit,
 ) {
     var startAnimation by remember { mutableStateOf(false) }
@@ -54,11 +58,12 @@ fun SplashScreen(
         navigateToListScreen()
     }
 
-    Splash(offsetState = offsetState, alphaState = alphaState)
+    Splash(isDarkTheme = isDarkTheme, offsetState = offsetState, alphaState = alphaState)
 }
 
 @Composable
 fun Splash(
+    isDarkTheme: Boolean,
     offsetState: Dp, alphaState: Float
 ) {
     Box(
@@ -72,23 +77,35 @@ fun Splash(
                 .size(MyAccountsTheme.dimensions.sizing120)
                 .offset(y = offsetState)
                 .alpha(alpha = alphaState),
-            painter = painterResource(id = getLogo()),
+            painter = painterResource(id = getLogo(isDarkTheme)),
             contentDescription = stringResource(id = R.string.account_logo)
         )
     }
 }
 
 @Composable
-private fun getLogo(): Int {
-    return if (isSystemInDarkTheme()) {
-        R.drawable.icon_despesa
+private fun getLogo(isDarkTheme: Boolean): Int {
+    return if (isDarkTheme) {
+        R.drawable.icon_despesa_light
     } else {
         R.drawable.icon_despesa
     }
 }
 
 @Composable
-@Preview
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 private fun SplashScreenPreview() {
-    SplashScreen(navigateToListScreen = {})
+    MyAccountsTheme {
+        Surface {
+            SplashScreen(
+                isDarkTheme = true,
+                navigateToListScreen = {}
+            )
+        }
+    }
 }
