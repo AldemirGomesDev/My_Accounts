@@ -2,6 +2,7 @@ package br.com.aldemir.myaccounts.presentation.drawer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
@@ -15,6 +16,7 @@ import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.myaccounts.R
 import br.com.aldemir.common.component.TextTitleLarge
+import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.common.theme.MyAccountsTheme
 
@@ -48,7 +50,9 @@ internal fun DrawerHeader(
                 Image(
                     modifier = Modifier
                         .size(MyAccountsTheme.dimensions.sizing52),
-                    painter = painterResource(id = R.drawable.icon_despesa),
+                    painter = painterResource(
+                        id = getLogo(appDarkMode = darkModeStateSelected.appDarkMode)
+                    ),
                     contentDescription = stringResource(id = R.string.account_logo)
                 )
                 TextTitleLarge(
@@ -66,6 +70,20 @@ internal fun DrawerHeader(
                 tintColor = White
             )
         }
+    }
+}
+
+@Composable
+private fun getLogo(appDarkMode: AppDarkMode): Int {
+    val isDarkMode = when(appDarkMode) {
+        AppDarkMode.Default -> isSystemInDarkTheme()
+        AppDarkMode.Dark -> true
+        AppDarkMode.Light -> false
+    }
+    return if (isDarkMode) {
+        R.drawable.icon_despesa_light
+    } else {
+        R.drawable.icon_despesa
     }
 }
 
