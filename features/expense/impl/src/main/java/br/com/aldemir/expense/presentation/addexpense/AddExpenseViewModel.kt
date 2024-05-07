@@ -16,7 +16,9 @@ import br.com.aldemir.expense.presentation.addexpense.state.AddExpenseUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddExpenseViewModel(
@@ -25,7 +27,7 @@ class AddExpenseViewModel(
 ) : ViewModel() {
 
     private val _uiEffect = MutableSharedFlow<AddExpensesUiEffect>(replay = 0)
-    val uiEffect: SharedFlow<AddExpensesUiEffect> = _uiEffect
+    val uiEffect = _uiEffect.asSharedFlow()
 
     private val _uiState = MutableStateFlow(AddExpenseUiState())
     val uiState = _uiState.asStateFlow()
@@ -45,61 +47,77 @@ class AddExpenseViewModel(
     }
 
     private fun clearForm() {
-        _uiState.value = _uiState.value.copy(
-            name = emptyString(),
-            value = emptyString(),
-            description = emptyString(),
-            isCheckedPaid = false,
-            isAccountRepeat = false,
-            dueDateSelected = 0,
-            amountThatRepeatsSelected = 0
-        )
+        _uiState.update {
+            it.copy(
+                name = emptyString(),
+                value = emptyString(),
+                description = emptyString(),
+                isCheckedPaid = false,
+                isAccountRepeat = false,
+                dueDateSelected = 0,
+                amountThatRepeatsSelected = 0
+            )
+        }
         shouldEnabledRegisterButton()
     }
 
     private fun handleNameChange(name: String) {
-        _uiState.value = _uiState.value.copy(
-            name = name
-        )
+        _uiState.update {
+            it.copy(
+                name = name
+            )
+        }
         validateName()
     }
 
     private fun handleValueChange(value: String) {
-        _uiState.value = _uiState.value.copy(
-            value = value
-        )
+        _uiState.update {
+            it.copy(
+                value = value
+            )
+        }
         validateValue()
     }
 
     private fun handleDescriptionChange(description: String) {
-        _uiState.value = _uiState.value.copy(
-            description = description
-        )
+        _uiState.update {
+            it.copy(
+                description = description
+            )
+        }
         validateDescription()
     }
 
     private fun handleAccountRepeat(checked: Boolean) {
-        _uiState.value = _uiState.value.copy(
-            isAccountRepeat = checked
-        )
+        _uiState.update {
+            it.copy(
+                isAccountRepeat = checked
+            )
+        }
     }
 
     private fun handleCheckedPaid(checked: Boolean) {
-        _uiState.value = _uiState.value.copy(
-            isCheckedPaid = checked
-        )
+        _uiState.update {
+            it.copy(
+                isCheckedPaid = checked
+            )
+        }
     }
 
     private fun handleDueDateSelected(dueDate: String) {
-        _uiState.value = _uiState.value.copy(
-            dueDateSelected = dueDate.toInt()
-        )
+        _uiState.update {
+            it.copy(
+                dueDateSelected = dueDate.toInt()
+            )
+        }
     }
 
     private fun handleAmountThatRepeatsSelected(amountThatRepeatsSelected: String) {
-        _uiState.value = _uiState.value.copy(
-            amountThatRepeatsSelected = amountThatRepeatsSelected.toInt()
-        )
+        _uiState.update {
+            it.copy(
+                amountThatRepeatsSelected = amountThatRepeatsSelected.toInt()
+            )
+        }
     }
 
     private fun saveAccount() = viewModelScope.launch {

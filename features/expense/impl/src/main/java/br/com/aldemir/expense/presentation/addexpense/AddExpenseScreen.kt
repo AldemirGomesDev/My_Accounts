@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
-import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.CustomSnackBar
@@ -59,29 +58,25 @@ fun AddExpenseScreen(
     val messageSuccess = stringResource(id = R.string.expense_save_success)
 
     var snackBarState by remember { mutableStateOf(SnackBarState.NONE) }
-    var uiEffect by remember { mutableStateOf<AddExpensesUiEffect>(AddExpensesUiEffect.Idle) }
+    val uiEffect by viewModel.uiEffect.collectAsState(initial = AddExpensesUiEffect.Idle)
 
-    LaunchedEffect(key1 = viewModel.uiEffect) {
-
-        viewModel.uiEffect.collect {
-            uiEffect = it
-            when (it) {
-                is AddExpensesUiEffect.ShowError -> {
-                    snackBarState = it.snackBarState
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = messageError,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-                is AddExpensesUiEffect.ShowSuccess -> {
-                    snackBarState = it.snackBarState
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = messageSuccess,
-                        duration = SnackbarDuration.Short
-                    )
-                    viewModel.onAction(AddExpenseAction.ClearForm)
-                } else -> {}
+    LaunchedEffect(key1 = uiEffect) {
+        when (uiEffect) {
+            is AddExpensesUiEffect.ShowError -> {
+                snackBarState = (uiEffect as AddExpensesUiEffect.ShowError).snackBarState
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = messageError,
+                    duration = SnackbarDuration.Short
+                )
             }
+            is AddExpensesUiEffect.ShowSuccess -> {
+                snackBarState = (uiEffect as AddExpensesUiEffect.ShowSuccess).snackBarState
+                viewModel.onAction(AddExpenseAction.ClearForm)
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = messageSuccess,
+                    duration = SnackbarDuration.Short
+                )
+            } else -> {}
         }
     }
 
