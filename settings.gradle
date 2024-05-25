@@ -1,19 +1,22 @@
 pluginManagement {
-    buildscript {
-        repositories {
-            gradlePluginPortal()
-            google()
-            mavenCentral()
-            maven {
-                url = uri("https://storage.googleapis.com/r8-releases/raw")
-            }
-        }
-        dependencies {
-            classpath 'com.android.tools:r8:8.2.42'
-            classpath('com.google.guava:guava:30.1.1-jre')  // <-- THIS IS REQUIRED UNTIL R8 3.2.4-dev
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
         }
     }
 }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = "My Accounts"
 include ':app'
 include ':features:home:impl'

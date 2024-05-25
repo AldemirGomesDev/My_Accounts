@@ -1,9 +1,10 @@
 [versions]
+kotlin = "2.0.0"
 minSdk = "24"
 targetSdk = "33"
 compileSdk = "34"
 buildTools = "33.0.2"
-androidGradlePlugin = "7.4.2"
+agp = "8.4.0"
 android-core-ktx = "1.13.1"
 compose = "1.6.7"
 lifecycle = "2.8.0"
@@ -17,6 +18,11 @@ compose-navigation = "2.7.7"
 firebase-bom = "33.0.0"
 compose-material3 = "1.2.1"
 compose-activity = "1.9.0"
+googleServicesPlugin = "4.4.1"
+crashlyticsPlugin = "2.9.9"
+ksp = "2.0.0-1.0.21"
+espresso = '3.5.1'
+jvmTarget = "17"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
@@ -42,8 +48,23 @@ firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "fire
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics-ktx"}
 firebase-analytics = {module = "com.google.firebase:firebase-analytics-ktx"}
 
+# Tests
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.1.5" }
+junit = { group = "junit", name = "junit", version = "4.13.2" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+
 [plugins]
-android-application = {id = "com.android.application", version.ref = "androidGradlePlugin"}
+androidApplication = {id = "com.android.application", version.ref = "agp"}
+androidLibrary = { id = 'com.android.library', version.ref = 'agp' }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+googleServices = { id = 'com.google.gms.google-services', version.ref = 'googleServicesPlugin' }
+crashlytics = { id = 'com.google.firebase.crashlytics', version.ref = 'crashlyticsPlugin' }
+kotlinAndroid = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
+kotlinJvm = { id = 'org.jetbrains.kotlin.jvm', version.ref = 'kotlin' }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = 'kotlin' }
+ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 
 [bundles]
 compose-all = ["compose-ui", "compose-material", "compose-tooling", "compose-activity", "compose-livedata"]
