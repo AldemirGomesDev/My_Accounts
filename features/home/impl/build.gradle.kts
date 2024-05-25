@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "br.com.aldemir.home"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -21,12 +21,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
         multiDexEnabled = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
     }
 }
 
@@ -36,22 +32,14 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":features:home:publ"))
 
-    val koin_version = "3.2.0"
-    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
-    implementation ("io.insert-koin:koin-android:$koin_version")
+    implementation (libs.bundles.koin.all)
 
-    implementation("com.android.support:multidex:2.0.1")
+    implementation(libs.multidex)
 
     //Compose
-    val compose_version = "1.4.3"
-    val lifecycle_version = "2.6.0-alpha01"
-    implementation ("androidx.compose.ui:ui:$compose_version")
-    implementation ("androidx.compose.material:material:$compose_version")
-    implementation ("androidx.compose.ui:ui-tooling-preview:$compose_version")
-    implementation ("androidx.activity:activity-compose:1.4.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.3.3")
+    implementation (libs.bundles.compose.all)
+    implementation (libs.compose.lifecycle.viewmodel)
+    implementation (libs.compoose.constraintlayout)
 
-    implementation("io.github.bytebeats:compose-charts:0.1.2")
+    implementation(libs.charts.compose)
 }

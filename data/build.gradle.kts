@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "br.com.aldemir.data"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
         multiDexEnabled = true
 
         ksp {
@@ -31,15 +31,11 @@ dependencies {
     implementation(project(":domain"))
 
     //room
-    val roomVersion = "2.4.3"
-    implementation ("androidx.room:room-runtime:$roomVersion")
-    implementation ("androidx.room:room-ktx:$roomVersion")
-    ksp ("androidx.room:room-compiler:$roomVersion")
+    implementation (libs.bundles.room.all)
+    ksp (libs.room.compiler)
 
-    val koin_version = "3.2.0"
-    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
-    implementation ("io.insert-koin:koin-android:$koin_version")
+    implementation (libs.bundles.koin.all)
 
     //DATA STORE PREFERENCES
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.datastore.preferences)
 }

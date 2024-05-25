@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "br.com.aldemir.domain"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
 
     }
 
@@ -26,9 +26,7 @@ android {
 
 dependencies {
 
-    val koin_version = "3.2.0"
-    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
-    implementation ("io.insert-koin:koin-android:$koin_version")
+    implementation (libs.bundles.koin.all)
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

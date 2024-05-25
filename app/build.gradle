@@ -10,13 +10,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 34
-    buildToolsVersion "30.0.3"
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "br.com.aldemir.myaccounts"
-        minSdkVersion 24
-        targetSdkVersion 33
+        buildToolsVersion = libs.versions.buildTools.get()
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
         versionCode 1
         versionName "1.0"
 
@@ -47,11 +47,6 @@ android {
         compose true
         viewBinding true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.13'
-    }
-
 }
 
 dependencies {
@@ -64,57 +59,25 @@ dependencies {
     implementation(project(":features:recipe:impl"))
     implementation(project(":features:expense:impl"))
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.13.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-
-    def nav_version = "2.7.6"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
-    implementation("com.android.support:multidex:2.0.1")
-
-    //coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
+    implementation libs.android.core.ktx
+    implementation(libs.multidex)
     // Koin for Android
-    def koin_version = "3.2.0"
-    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-
-    implementation 'com.google.android.material:material:1.11.0'
-
+    implementation (libs.bundles.koin.all)
     //Compose
-//    def compose_version = "1.4.3"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.activity:activity-compose:1.9.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation 'androidx.compose.runtime:runtime-livedata:1.6.6'
-    def material3_version = "1.1.2"
-    implementation "androidx.compose.material3:material3:$material3_version"
-
+    implementation (libs.bundles.compose.all)
+    implementation (libs.compose.lifecycle.viewmodel)
+    implementation (libs.compoose.constraintlayout)
     // Paging
     implementation "androidx.paging:paging-compose:$paging_version"
+    implementation (libs.compose.navigation)
 
-    //Accompanist Navigation Animation
-//    implementation "com.google.accompanist:accompanist-navigation-animation:0.32.0"
-    implementation "androidx.navigation:navigation-compose:2.7.7"
-
-
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    androidTestImplementation (libs.compose.test.junit)
+    debugImplementation (libs.compose.tooling)
 }

@@ -1,0 +1,51 @@
+[versions]
+minSdk = "24"
+targetSdk = "33"
+compileSdk = "34"
+buildTools = "33.0.2"
+androidGradlePlugin = "7.4.2"
+android-core-ktx = "1.13.1"
+compose = "1.6.7"
+lifecycle = "2.8.0"
+constraintlayout = "1.0.1"
+room = "2.4.3"
+koin = "3.2.0"
+datastore = "1.1.1"
+charts = "0.1.2"
+multidex = "2.0.1"
+compose-navigation = "2.7.7"
+firebase-bom = "33.0.0"
+compose-material3 = "1.2.1"
+compose-activity = "1.9.0"
+
+[libraries]
+android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
+compose-ui = {module = "androidx.compose.ui:ui", version.ref = "compose"}
+compose-material = {module = "androidx.compose.material:material", version.ref = "compose"}
+compose-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
+compose-activity = {module = "androidx.activity:activity-compose", version.ref = "compose-activity"}
+compose-livedata = {module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
+compose-lifecycle-viewmodel = {module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
+compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
+compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
+compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
+compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
+room-runtime = {module = "androidx.room:room-runtime", version.ref = "room"}
+room-ktx = {module = "androidx.room:room-ktx", version.ref = "room"}
+room-compiler = {module = "androidx.room:room-compiler", version.ref = "room"}
+koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
+koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
+datastore-preferences = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
+charts-compose = {module = "io.github.bytebeats:compose-charts", version.ref = "charts"}
+multidex = {module = "com.android.support:multidex", version.ref = "multidex"}
+firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
+firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics-ktx"}
+firebase-analytics = {module = "com.google.firebase:firebase-analytics-ktx"}
+
+[plugins]
+android-application = {id = "com.android.application", version.ref = "androidGradlePlugin"}
+
+[bundles]
+compose-all = ["compose-ui", "compose-material", "compose-tooling", "compose-activity", "compose-livedata"]
+room-all = ["room-runtime", "room-ktx"]
+koin-all = ["koin-compose", "koin-android"]

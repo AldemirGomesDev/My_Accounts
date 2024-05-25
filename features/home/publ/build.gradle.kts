@@ -7,19 +7,15 @@ plugins {
 
 android {
     namespace = "br.com.aldemir.publ"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     kotlinOptions {
         jvmTarget = "1.8"
     }
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
         multiDexEnabled = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
     }
 }
 
@@ -27,8 +23,5 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
 
-    //coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
-
-    implementation("com.android.support:multidex:2.0.1")
+    implementation(libs.multidex)
 }
