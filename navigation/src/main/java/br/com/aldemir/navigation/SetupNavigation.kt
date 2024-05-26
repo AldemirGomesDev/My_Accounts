@@ -6,6 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import br.com.aldemir.navigation.destinations.authentication.authenticationComposable
 import br.com.aldemir.navigation.destinations.expense.expenseGraph
 import br.com.aldemir.navigation.destinations.recipe.addRecipeComposable
 import br.com.aldemir.navigation.destinations.recipe.changeRecipeComposable
@@ -31,6 +32,8 @@ fun SetupNavigation(
         splashComposable(isDarkTheme, navHostController)
 
         homeComposable(navHostController)
+
+        authenticationComposable(navHostController)
 
         expenseGraph(navHostController = navHostController)
 

@@ -70,7 +70,7 @@ fun DrawerNavigationScreen(
             }
         },
         bottomBar = {
-            if (currentRoute != Route.Splash.route && currentRoute != null){
+            if (currentRoute != Route.Splash.route && currentRoute != null && currentRoute != Route.Authentication.route) {
                 BottomBar(navController = navController)
             }
         },
@@ -118,6 +118,11 @@ fun currentRoute(navController: NavHostController): String? {
 fun getTopBarState(navController: NavHostController): TopBarState {
     return when (currentRoute(navController = navController)) {
         Route.Splash.route -> {
+            TopBarState(
+                onClick = {}
+            )
+        }
+        Route.Authentication.route -> {
             TopBarState(
                 onClick = {}
             )

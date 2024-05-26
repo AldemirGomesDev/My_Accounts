@@ -51,7 +51,7 @@ dependencies {
     //Compose
     implementation(libs.bundles.compose.all)
     implementation(libs.compose.lifecycle.viewmodel)
-
+    implementation(libs.gson)
     implementation(libs.biometric)
     // tests
     testImplementation(libs.junit)

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="biometric_prompt_title_text">Autenticação</string>
+    <string name="biometric_prompt_subtitle_text">Faça a autenticação para entrar</string>
+    <string name="biometric_prompt_description_text">Teste de autenticação</string>
+    <string name="biometric_prompt_use_password_instead_text">Entrar com senha</string>
+</resources>

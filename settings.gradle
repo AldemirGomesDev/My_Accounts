@@ -28,5 +28,5 @@ include ':features:expense:impl'
 
 include ':domain'
 include ':navigation'
-include ':features:login'
-include ':features:login:impl'
+include ':features:authentication'
+include ':features:authentication:impl'

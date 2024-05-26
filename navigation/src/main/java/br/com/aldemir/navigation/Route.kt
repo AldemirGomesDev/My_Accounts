@@ -19,7 +19,7 @@ import br.com.aldemir.common.util.Const.RECIPE_SCREEN
 
 sealed class Route(val route: String) {
     data object Splash: Route(SPLASH_SCREEN)
-    data object Login: Route(LOGIN_SCREEN)
+    data object Authentication: Route(LOGIN_SCREEN)
     data object Home: Route(HOME_SCREEN)
     data object Historic: Route(HISTORIC_SCREEN)
 

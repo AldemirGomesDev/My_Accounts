@@ -9,6 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -18,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     private val viewModel: MainViewModel by viewModel()
 

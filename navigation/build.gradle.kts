@@ -44,7 +44,7 @@ dependencies {
     implementation(project(":features:home:impl"))
     implementation(project(":features:recipe:impl"))
     implementation(project(":features:expense:impl"))
-    implementation(project(":features:login:impl"))
+    implementation(project(":features:authentication:impl"))
 
     //Compose
     implementation(libs.bundles.compose.all)
