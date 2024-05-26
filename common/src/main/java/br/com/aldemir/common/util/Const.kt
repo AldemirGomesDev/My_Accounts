@@ -4,6 +4,7 @@ object Const {
     const val EXPENSE_GRAPH_ROUTE = "expenseGraph"
     const val HOME_SCREEN = "home"
     const val SPLASH_SCREEN = "splash"
+    const val LOGIN_SCREEN = "login"
     const val EXPENSE_SCREEN = "expense"
     const val EXPENSE_LIST_SCREEN = "expenseList"
     const val EXPENSE_ADD_SCREEN = "expenseAdd"

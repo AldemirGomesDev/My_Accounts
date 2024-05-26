@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":features:home:impl"))
     implementation(project(":features:recipe:impl"))
     implementation(project(":features:expense:impl"))
+    implementation(project(":features:login:impl"))
 
     implementation(libs.android.core.ktx)
     implementation(libs.multidex)

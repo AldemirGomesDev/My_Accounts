@@ -6,6 +6,7 @@ import br.com.aldemir.expense.di.expenseModule
 import br.com.aldemir.domain.di.domainModule
 import br.com.aldemir.home.presentation.di.presentationHomeModule
 import br.com.aldemir.data.database.di.appModule
+import br.com.aldemir.login.di.loginModule
 import br.com.aldemir.myaccounts.di.mainModule
 import br.com.aldemir.recipe.di.recipeModule
 import org.koin.android.ext.koin.androidContext
@@ -29,6 +30,7 @@ class MyApplication: Application() {
                     add(presentationHomeModule)
                     add(expenseModule)
                     add(recipeModule)
+                    add(loginModule)
                 }
             )
         }
