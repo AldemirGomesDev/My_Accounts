@@ -46,13 +46,13 @@ dependencies {
     implementation(project(":features:expense:impl"))
 
     //Compose
-    implementation (libs.bundles.compose.all)
-    implementation (libs.compose.lifecycle.viewmodel)
-    implementation (libs.compoose.constraintlayout)
+    implementation(libs.bundles.compose.all)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compoose.constraintlayout)
     implementation(libs.compose.material3)
-    implementation (libs.compose.navigation)
+    implementation(libs.compose.navigation)
 
-    testImplementation (libs.junit)
-    androidTestImplementation (libs.androidx.test.ext.junit)
-    androidTestImplementation (libs.espresso.core)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }

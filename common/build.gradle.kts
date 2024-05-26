@@ -30,7 +30,7 @@ dependencies {
 
     //Compose
     debugImplementation(libs.compose.tooling)
-    implementation (libs.bundles.compose.all)
-    implementation (libs.compose.lifecycle.viewmodel)
-    implementation (libs.compoose.constraintlayout)
+    implementation(libs.bundles.compose.all)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compoose.constraintlayout)
 }

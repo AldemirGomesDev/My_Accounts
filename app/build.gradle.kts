@@ -62,25 +62,25 @@ dependencies {
     implementation(project(":features:recipe:impl"))
     implementation(project(":features:expense:impl"))
 
-    implementation (libs.android.core.ktx)
+    implementation(libs.android.core.ktx)
     implementation(libs.multidex)
     // Koin for Android
-    implementation (libs.bundles.koin.all)
+    implementation(libs.bundles.koin.all)
     //Compose
-    implementation (libs.bundles.compose.all)
-    implementation (libs.compose.lifecycle.viewmodel)
-    implementation (libs.compoose.constraintlayout)
+    implementation(libs.bundles.compose.all)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compoose.constraintlayout)
     // Paging
-    implementation ("androidx.paging:paging-compose:3.3.0-alpha02")
-    implementation (libs.compose.navigation)
+    implementation(libs.paging.compose)
+    implementation(libs.compose.navigation)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
-    testImplementation (libs.junit)
-    androidTestImplementation (libs.androidx.test.ext.junit)
-    androidTestImplementation (libs.espresso.core)
-    androidTestImplementation (libs.compose.test.junit)
-    debugImplementation (libs.compose.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.test.junit)
+    debugImplementation(libs.compose.tooling)
 }

@@ -23,6 +23,7 @@ crashlyticsPlugin = "2.9.9"
 ksp = "2.0.0-1.0.21"
 espresso = '3.5.1'
 jvmTarget = "17"
+pagingCompose = "3.3.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
@@ -47,6 +48,9 @@ multidex = {module = "com.android.support:multidex", version.ref = "multidex"}
 firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics-ktx"}
 firebase-analytics = {module = "com.google.firebase:firebase-analytics-ktx"}
+paging-compose = {module = "androidx.paging:paging-compose", version.ref = "pagingCompose"}
+appCompat = {module = "androidx.appcompat:appcompat", version = "1.6.1"}
+androidMaterial = {module = "com.google.android.material:material", version = "1.12.0"}
 
 # Tests
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.1.5" }

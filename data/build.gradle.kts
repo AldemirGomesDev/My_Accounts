@@ -31,10 +31,10 @@ dependencies {
     implementation(project(":domain"))
 
     //room
-    implementation (libs.bundles.room.all)
+    implementation(libs.bundles.room.all)
     ksp (libs.room.compiler)
 
-    implementation (libs.bundles.koin.all)
+    implementation(libs.bundles.koin.all)
 
     //DATA STORE PREFERENCES
     implementation(libs.datastore.preferences)

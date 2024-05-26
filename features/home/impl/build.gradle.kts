@@ -32,14 +32,14 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":features:home:publ"))
 
-    implementation (libs.bundles.koin.all)
+    implementation(libs.bundles.koin.all)
 
     implementation(libs.multidex)
 
     //Compose
-    implementation (libs.bundles.compose.all)
-    implementation (libs.compose.lifecycle.viewmodel)
-    implementation (libs.compoose.constraintlayout)
+    implementation(libs.bundles.compose.all)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compoose.constraintlayout)
 
     implementation(libs.charts.compose)
 }
