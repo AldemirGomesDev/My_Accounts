@@ -17,8 +17,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.common.theme.addAccountBorderColor
-import br.com.aldemir.common.theme.addAccountLabelColor
 
 @Composable
 fun InputTextOutlinedTextField(
