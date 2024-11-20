@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -16,12 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.Purple200
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingAnimation(
-    circleColor: Color = Purple200,
+    circleColor: Color = MyAccountsTheme.colors.primary,
     circleSize: Dp = 36.dp,
     animationDelay: Int = 400,
     initialAlpha: Float = 0.3f
@@ -70,8 +73,17 @@ fun LoadingAnimation(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun LoadingAnimationPreview() {
-    LoadingAnimation()
+    MyAccountsTheme {
+        LoadingAnimation()
+    }
 }

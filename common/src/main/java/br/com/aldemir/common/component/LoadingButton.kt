@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +26,7 @@ import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.Green200
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.AnimationType
 import br.com.aldemir.common.util.emptyString
 
@@ -78,18 +80,27 @@ fun LoadingButton(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun LoadingButtonPreview() {
-    LoadingButton(
-        enabled = true,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
-        onClick = {}
-    ) {
-        Text(
-            color = Color.White,
-            text = stringResource(id = R.string.button_add_text),
-            fontSize = FontSize.scale16,
-        )
+    MyAccountsTheme {
+        LoadingButton(
+            enabled = true,
+            colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+            onClick = {}
+        ) {
+            Text(
+                color = Color.White,
+                text = stringResource(id = R.string.button_add_text),
+                fontSize = FontSize.scale16,
+            )
+        }
     }
 }

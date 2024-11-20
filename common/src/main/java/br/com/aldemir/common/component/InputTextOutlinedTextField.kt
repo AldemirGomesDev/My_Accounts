@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
 @Composable
 fun InputTextOutlinedTextField(
@@ -76,13 +78,22 @@ fun InputTextOutlinedTextField(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun PreviewComponent() {
-    InputTextOutlinedTextField(
-        value = "",
-        label = "Nome",
-        isError = false,
-        onValueChange = {}
-    )
+    MyAccountsTheme {
+        InputTextOutlinedTextField(
+            value = "",
+            label = "Nome",
+            isError = false,
+            onValueChange = {}
+        )
+    }
 }
