@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -21,10 +22,12 @@ import br.com.aldemir.common.theme.addAccountLabelColor
 
 @Composable
 fun InputTextOutlinedTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean,
+    shape: Shape = MaterialTheme.shapes.small,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         imeAction = ImeAction.Next,
         keyboardType = KeyboardType.Text,
@@ -35,7 +38,7 @@ fun InputTextOutlinedTextField(
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -43,6 +46,7 @@ fun InputTextOutlinedTextField(
         label = { Text(text = label) },
         textStyle = MaterialTheme.typography.body1,
         singleLine = true,
+        shape = shape,
         keyboardActions = KeyboardActions(
             onNext = {
                 focusManager.moveFocus(FocusDirection.Down)

@@ -1,21 +1,46 @@
 package br.com.aldemir.authentication.presentation
 
-import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
-import br.com.aldemir.authentication.data.BiometricHelperImpl
-import br.com.aldemir.authentication.data.CryptoManagerImpl
+import br.com.aldemir.common.theme.MyAccountsTheme
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.com.aldemir.common.component.InputTextOutlinedTextField
+import br.com.aldemir.common.component.LoadingAnimation
+import br.com.aldemir.common.component.LoadingButton
+import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.Purple700
+import br.com.aldemir.common.util.emptyString
 
-private const val ENCRYPTED_FILE_NAME = "encrypted_file_name"
-private const val PREF_BIOMETRIC = "pref_biometric"
 
 @Composable
 fun LoginScreen(
@@ -38,9 +63,18 @@ fun LoginScreen(
         viewModel.checkIfBiometricLoginEnabled()
     }
 
-    LaunchedEffect(key1 = uiModel) {
-        if (uiModel.state == AuthenticationState.SUCCESS) {
+    when(uiModel.state) {
+        AuthenticationState.SUCCESS -> {
             Log.w("TAG_auth", "SUCCESS")
+            LoadingScreen()
+        }
+        AuthenticationState.IDLE -> {
+            Log.w("TAG_auth", "ERROR")
+            LoginPage()
+        }
+        AuthenticationState.FAILED -> {
+            Log.w("TAG_auth", "NONE")
+            LoginPage()
         }
     }
 
@@ -50,5 +84,118 @@ fun LoginScreen(
         }
         Log.d("TAG_auth", "isBiometricAvailable $uiModel.isBiometricAvailable")
     }
+}
 
+@Composable
+fun LoginPage() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MyAccountsTheme.colors.background),
+    ) {
+        ClickableText(
+            text = AnnotatedString("Sign up here"),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(20.dp),
+            onClick = { },
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = FontFamily.Default,
+                textDecoration = TextDecoration.Underline,
+                color = Purple700
+            )
+        )
+    }
+    Column(
+        modifier = Modifier
+            .padding(
+                start = MyAccountsTheme.dimensions.padding20,
+                top = MyAccountsTheme.dimensions.padding64,
+                end = MyAccountsTheme.dimensions.padding20
+            ),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val username = remember { mutableStateOf(emptyString()) }
+        val password = remember { mutableStateOf(emptyString()) }
+
+        Text(
+            text = "Login",
+            color = MyAccountsTheme.colors.primary,
+            style = TextStyle(
+                fontSize = 40.sp,
+                fontFamily = FontFamily.Cursive
+            )
+        )
+
+        Spacer(modifier = Modifier.height(MyAccountsTheme.dimensions.sizing32))
+
+        InputTextOutlinedTextField(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            value = username.value,
+            onValueChange = {
+                username.value = it
+            },
+            label = "Username",
+            isError = false,
+            shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        InputTextOutlinedTextField(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            value = password.value,
+            onValueChange = {
+                password.value = it
+            },
+            label = "Password",
+            isError = false,
+            shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Box(modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
+            LoadingButton(
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MyAccountsTheme.dimensions.sizing52),
+                loading = false,
+                enabled = true,
+                shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
+            ) {
+                Text(
+                    color = Color.White,
+                    text = "Login",
+                    fontSize = FontSize.scale16,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+        ClickableText(
+            text = AnnotatedString("Forgot password?"),
+            onClick = { },
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = FontFamily.Default
+            )
+        )
+    }
+}
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MyAccountsTheme.colors.background),
+        contentAlignment = Alignment.Center
+    ) {
+        LoadingAnimation(
+            circleColor = MyAccountsTheme.colors.primary
+        )
+    }
 }

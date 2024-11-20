@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
 @Composable
 fun DrawerItem(
@@ -56,13 +57,19 @@ fun DrawerItem(
 }
 
 @Preview(
-    showBackground = true,
+    name = "Light Mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun DrawerPreview() {
-    DrawerItem(
-        menuItem = DrawerScreens.Home,
-        onItemClick = {}
-    )
+    MyAccountsTheme {
+        DrawerItem(
+            menuItem = DrawerScreens.Home,
+            onItemClick = {}
+        )
+    }
 }

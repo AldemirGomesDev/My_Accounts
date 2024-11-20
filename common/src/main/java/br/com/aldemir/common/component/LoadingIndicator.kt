@@ -1,5 +1,6 @@
 package br.com.aldemir.common.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.state.LoadingIndicatorState
 import br.com.aldemir.common.state.LoadingIndicatorStateImpl
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.AnimationType
 import br.com.aldemir.common.util.Const.IndicatorSize
 import br.com.aldemir.common.util.Const.NumIndicators
@@ -61,6 +64,7 @@ fun LoadingIndicator(
                                     IndicatorSize / 2f
                                 ).dp
                             )
+
                             AnimationType.Fade -> Modifier.graphicsLayer { alpha = state[index] }
                         }
                     ),
@@ -80,4 +84,24 @@ private fun LoadingDot(
             .clip(shape = CircleShape)
             .background(color = color)
     )
+
+}
+
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun LoadingIndicatorPreview() {
+    MyAccountsTheme {
+        LoadingIndicator(
+            animating = true,
+            color = MyAccountsTheme.colors.primary,
+            animationType = AnimationType.Bounce
+        )
+    }
 }

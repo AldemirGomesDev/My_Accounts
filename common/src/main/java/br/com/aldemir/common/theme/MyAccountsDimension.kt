@@ -109,6 +109,10 @@ class MyAccountsDimension {
         @Composable
         get() = 52.dp
 
+    val padding64: Dp
+        @Composable
+        get() = 64.dp
+
 }
 
 internal val LocalDimensions = staticCompositionLocalOf { MyAccountsDimension() }

@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.multidex)
     //Compose
     implementation(libs.bundles.compose.all)
+    implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.viewmodel)
     implementation(libs.gson)
     implementation(libs.biometric)

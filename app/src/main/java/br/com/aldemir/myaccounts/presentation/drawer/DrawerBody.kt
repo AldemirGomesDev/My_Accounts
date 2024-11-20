@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.taskItemBackgroundColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -45,17 +46,25 @@ fun DrawerBody(
 }
 
 @Preview(
-    showBackground = true, showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+    name = "Light Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun DrawerBodyPreview() {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    DrawerBody(
-        menuItems = screens,
-        scaffoldState = scaffoldState,
-        scope = scope,
-        onItemClick = {}
-    )
+    MyAccountsTheme {
+        DrawerBody(
+            menuItems = screens,
+            scaffoldState = scaffoldState,
+            scope = scope,
+            onItemClick = {}
+        )
+    }
 }

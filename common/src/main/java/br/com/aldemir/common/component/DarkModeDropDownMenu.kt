@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.util.emptyString
 
@@ -46,9 +47,10 @@ fun DarkModeDropDownMenu(
             .clip(CircleShape)
             .border(
                 width = MyAccountsTheme.dimensions.sizing2,
-                color = White,
+                color = tintColor,
                 shape = CircleShape
             ).clickable { expanded = true }
+            .background(MyAccountsTheme.colors.backgroundGreen)
             .padding(
                 vertical = MyAccountsTheme.dimensions.padding6,
                 horizontal = MyAccountsTheme.dimensions.padding12
@@ -57,7 +59,7 @@ fun DarkModeDropDownMenu(
     ) {
         Text(
             text = stringResource(id = darkModeStateSelected.titleRes),
-            color = White,
+            color = tintColor,
             style = MyAccountsTheme.typography.subTitleMedium,
         )
         Spacer(Modifier.width(MyAccountsTheme.dimensions.sizing4))
@@ -103,15 +105,22 @@ fun DarkModeDropDownMenu(
     }
 }
 
-@Preview(showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    backgroundColor = 0xFF009688
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 private fun DarkModeDropDownMenuPreview() {
-    DarkModeDropDownMenu(
-        darkModeStateSelected = DarkModeDropDownState(),
-        onItemClicked = {},
-        listItems = listOf()
-    )
+    MyAccountsTheme {
+        DarkModeDropDownMenu(
+            darkModeStateSelected = DarkModeDropDownState(),
+            onItemClicked = {},
+            listItems = listOf(),
+            tintColor = White
+        )
+    }
 }

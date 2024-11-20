@@ -1,10 +1,12 @@
 package br.com.aldemir.myaccounts.presentation.drawer
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
 @Composable
 internal fun DrawerHeader(
@@ -87,12 +90,21 @@ private fun getLogo(appDarkMode: AppDarkMode): Int {
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun DrawerHeaderPreview() {
-    DrawerHeader(
-        darkModeStateSelected = DarkModeDropDownState(),
-        onItemClicked = {},
-        listItems = listOf()
-    )
+    MyAccountsTheme {
+        DrawerHeader(
+            darkModeStateSelected = DarkModeDropDownState(),
+            onItemClicked = {},
+            listItems = listOf()
+        )
+    }
 }
