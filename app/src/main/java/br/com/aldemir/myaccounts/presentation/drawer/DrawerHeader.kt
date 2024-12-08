@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.myaccounts.R
@@ -69,7 +70,7 @@ internal fun DrawerHeader(
                 },
                 listItems = listItems,
                 darkModeStateSelected = darkModeStateSelected,
-                tintColor = White
+                tintColor = MyAccountsTheme.colors.second
             )
         }
     }
@@ -89,14 +90,7 @@ private fun getLogo(appDarkMode: AppDarkMode): Int {
     }
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 fun DrawerHeaderPreview() {
     MyAccountsTheme {

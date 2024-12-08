@@ -46,6 +46,7 @@ object MyAccountsTheme {
         val myAccountsColor = MyAccountsColor(
             primary = if (darkTheme) primaryLight else primaryDark,
             onPrimary = if (darkTheme) primaryLight else primaryDark,
+            second = if (darkTheme) LightGray else White,
             error = if (darkTheme) RedErrorLight else RedErrorDark,
             onError = if (darkTheme) RedErrorLight else RedErrorDark,
             success = if (darkTheme) primaryLight else primaryDark,

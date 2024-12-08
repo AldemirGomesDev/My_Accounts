@@ -37,7 +37,7 @@ fun DarkModeDropDownMenu(
     darkModeStateSelected: DarkModeDropDownState,
     onItemClicked: (state: DarkModeDropDownState) -> Unit,
     listItems: List<DarkModeDropDownState>,
-    tintColor: Color = MyAccountsTheme.colors.primary
+    tintColor: Color = MyAccountsTheme.colors.second
 ) {
 
     var expanded by remember { mutableStateOf(false) }

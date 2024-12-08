@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 data class MyAccountsColor(
     val primary: Color,
     val onPrimary: Color,
+    val second: Color,
     val error: Color,
     val onError: Color,
     val success: Color,
@@ -25,6 +26,7 @@ data class MyAccountsColor(
 internal val LocalColors = staticCompositionLocalOf { MyAccountsColor(
     primary = Color.Unspecified,
     onPrimary = Color.Unspecified,
+    second = Color.Unspecified,
     error = Color.Unspecified,
     onError = Color.Unspecified,
     success = Color.Unspecified,
