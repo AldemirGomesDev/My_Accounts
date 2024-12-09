@@ -28,12 +28,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.util.emptyString
 
@@ -65,12 +67,12 @@ fun LoginScreen(
             LoadingScreen()
         }
         AuthenticationState.IDLE -> {
-            Log.w("TAG_auth", "ERROR")
-            LoginPage()
+            Log.w("TAG_auth", "IDLE")
+            LoginPage(navigateToHomeScreen)
         }
         AuthenticationState.FAILED -> {
-            Log.w("TAG_auth", "NONE")
-            LoginPage()
+            Log.w("TAG_auth", "ERROR")
+            LoginPage(navigateToHomeScreen)
         }
     }
 
@@ -83,14 +85,16 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginPage() {
+fun LoginPage(
+    navigateToHomeScreen: () -> Unit = {},
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MyAccountsTheme.colors.background),
     ) {
         ClickableText(
-            text = AnnotatedString("Sign up here"),
+            text = AnnotatedString("Cadastre-se aqui"),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
@@ -134,7 +138,7 @@ fun LoginPage() {
             onValueChange = {
                 username.value = it
             },
-            label = "Username",
+            label = "Usuário",
             isError = false,
             shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
         )
@@ -145,7 +149,7 @@ fun LoginPage() {
             onValueChange = {
                 password.value = it
             },
-            label = "Password",
+            label = "Senha",
             isError = false,
             shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
             visualTransformation = PasswordVisualTransformation(),
@@ -154,7 +158,9 @@ fun LoginPage() {
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 0.dp)) {
             LoadingButton(
-                onClick = {},
+                onClick = {
+                    navigateToHomeScreen()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MyAccountsTheme.dimensions.sizing52),
@@ -164,7 +170,7 @@ fun LoginPage() {
             ) {
                 Text(
                     color = Color.White,
-                    text = "Login",
+                    text = "Entrar",
                     fontSize = FontSize.scale16,
                 )
             }
@@ -175,6 +181,7 @@ fun LoginPage() {
             text = AnnotatedString("Forgot password?"),
             onClick = { },
             style = TextStyle(
+                color = MyAccountsTheme.colors.primary,
                 fontSize = 14.sp,
                 fontFamily = FontFamily.Default
             )
@@ -193,5 +200,13 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         LoadingAnimation(
             circleColor = MyAccountsTheme.colors.primary
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun LoginPagePreview() {
+    MyAccountsTheme {
+        LoginPage()
     }
 }

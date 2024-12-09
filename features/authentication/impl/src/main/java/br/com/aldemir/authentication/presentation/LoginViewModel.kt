@@ -58,6 +58,15 @@ class LoginViewModel(
         }
     }
 
+    fun loginUser(user: String, password: String) {
+        if (user.isEmpty() || password.isEmpty()) {
+            handleUiState(uiState.value.copy(state = AuthenticationState.FAILED))
+            return
+        }
+        handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
+        emitEffect(AuthenticationEffect.NavigateToHomeScreen)
+    }
+
     private fun handleUiState(uiModel: AuthenticationUiModel) {
         _uiState.update { uiModel }
     }
