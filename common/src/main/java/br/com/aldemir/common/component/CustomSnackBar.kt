@@ -22,12 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.GreenLight
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.RedErrorDark
 import br.com.aldemir.common.theme.RedErrorLight
 import br.com.aldemir.common.theme.White
@@ -41,7 +43,7 @@ fun CustomSnackBar(
 ) {
     Snackbar(
         modifier = Modifier.offset(y = offsetY),
-        backgroundColor = snackBarState.backgroundColor,
+        backgroundColor = snackBarState.backgroundColor(),
         contentColor = snackBarState.contentColor
     ) {
         CompositionLocalProvider(
@@ -50,7 +52,7 @@ fun CustomSnackBar(
         ) {
             Row(
                 modifier = Modifier
-                    .background(color = snackBarState.backgroundColor)
+                    .background(color = snackBarState.backgroundColor())
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -70,52 +72,56 @@ fun CustomSnackBar(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun CustomSnackBarPreview() {
-    CustomSnackBar(
-        snackBarState = SnackBarState.SUCCESS,
-        message = "Salvo com Sucesso!"
-    )
+    MyAccountsTheme {
+        CustomSnackBar(
+            snackBarState = SnackBarState.SUCCESS,
+            message = "Salvo com Sucesso!"
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun CustomSnackBarPreview2() {
-    CustomSnackBar(
-        snackBarState = SnackBarState.ERROR,
-        message = "Erro ao salvar!"
-    )
+    MyAccountsTheme {
+        CustomSnackBar(
+            snackBarState = SnackBarState.ERROR,
+            message = "Erro ao salvar!"
+        )
+    }
 }
 
 enum class SnackBarState(
     val imageVector: ImageVector,
-    val backgroundColor: Color = White,
+    val backgroundColor: @Composable () -> Color,
     val contentColor: Color = GreenLight,
     val tintIcon: Color = GreenLight,
 ) {
 
     SUCCESS(
         imageVector = Icons.Default.Check,
-        backgroundColor = LowPriorityColor,
+        backgroundColor = { MyAccountsTheme.colors.success},
         contentColor = White,
         tintIcon = White,
     ),
     ALERT(
         imageVector = Icons.Default.Info,
-        backgroundColor = White,
+        backgroundColor = { White },
         contentColor = GreenLight,
         tintIcon = GreenLight,
     ),
     ERROR(
         imageVector = Icons.Filled.Close,
-        backgroundColor = RedErrorDark,
+        backgroundColor = { MyAccountsTheme.colors.error },
         contentColor = White,
         tintIcon = White,
     ),
     NONE(
         imageVector = Icons.Default.Close,
-        backgroundColor = White,
+        backgroundColor = { White },
         contentColor = RedErrorLight,
         tintIcon = GreenLight,
     )
