@@ -14,7 +14,8 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.authenticationComposable(
-    navHostController: NavHostController
+    isDarkTheme: Boolean,
+    navHostController: NavHostController,
 ) {
     composable(
         route = Route.Authentication.route,
@@ -32,6 +33,7 @@ fun NavGraphBuilder.authenticationComposable(
         },
     ) {
         LoginScreen(
+            isDarkTheme = isDarkTheme,
             navigateToHomeScreen = {
                 navHostController.navigate(Route.Home.route) {
                     popUpTo(Route.Authentication.route) {

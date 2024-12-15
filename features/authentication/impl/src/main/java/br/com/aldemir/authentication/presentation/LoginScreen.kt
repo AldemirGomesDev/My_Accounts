@@ -1,6 +1,8 @@
 package br.com.aldemir.authentication.presentation
 
-import android.util.Log
+import android.app.Activity
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,14 +20,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.aldemir.common.R
 import br.com.aldemir.common.component.CustomSnackBar
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingAnimation
@@ -43,12 +46,12 @@ import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.util.emptyString
 
 
 @Composable
 fun LoginScreen(
+    isDarkTheme: Boolean,
     navigateToHomeScreen: () -> Unit,
 ) {
     val context = LocalContext.current as FragmentActivity
@@ -60,15 +63,18 @@ fun LoginScreen(
         viewModel.checkIfBiometricLoginEnabled()
     }
 
+    val activity = (LocalContext.current as? Activity)
+
+    BackHandler { activity?.finish() }
+
     when(uiModel.state) {
         AuthenticationState.SUCCESS -> {
-            Log.w("TAG_auth", "SUCCESS")
             LoadingScreen()
             navigateToHomeScreen()
         }
         AuthenticationState.IDLE -> {
-            Log.w("TAG_auth", "IDLE")
             LoginPage(
+                isDarkTheme = isDarkTheme,
                 uiModel = uiModel,
                 loginOnclick = { userName, password ->
                     viewModel.loginUser(userName, password)
@@ -81,24 +87,24 @@ fun LoginScreen(
         if (uiModel.isBiometricAvailable) {
             viewModel.checkPreferencesEnabled(context)
         }
-        Log.d("TAG_auth", "isBiometricAvailable $uiModel.isBiometricAvailable")
     }
 }
 
 @Composable
 fun LoginPage(
+    isDarkTheme: Boolean,
     uiModel: AuthenticationUiModel,
     loginOnclick: (userName: String, password: String) -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val messageError = stringResource(id = uiModel.snackBarMessage)
 
     LaunchedEffect(uiModel.snackBarState) {
         when(uiModel.snackBarState) {
             SnackBarState.ERROR -> {
-                Log.w("TAG_auth", "ERROR")
-                scaffoldState.snackbarHostState.showSnackbar(
+                snackbarHostState.showSnackbar(
                     message = messageError,
                     duration = SnackbarDuration.Short
                 )
@@ -107,36 +113,16 @@ fun LoginPage(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MyAccountsTheme.colors.background),
-    ) {
-        ClickableText(
-            text = AnnotatedString("Cadastre-se aqui"),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(20.dp),
-            onClick = { },
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = FontFamily.Default,
-                textDecoration = TextDecoration.Underline,
-                color = Purple700
-            )
-        )
-    }
     Scaffold(
-        scaffoldState = scaffoldState,
         snackbarHost = {
-            SnackbarHost(it) { data ->
+            SnackbarHost(snackbarHostState) { data ->
                 CustomSnackBar(
                     snackBarState = uiModel.snackBarState,
-                    message = data.message,
+                    message = data.visuals.message,
                 )
             }
         },
-        backgroundColor = MyAccountsTheme.colors.background,
+        containerColor = MyAccountsTheme.colors.background,
         content = {
             Column(
                 modifier = Modifier.
@@ -153,8 +139,16 @@ fun LoginPage(
                 val username = remember { mutableStateOf(emptyString()) }
                 val password = remember { mutableStateOf(emptyString()) }
 
+                Image(
+                    modifier = Modifier
+                        .size(MyAccountsTheme.dimensions.sizing120),
+                    painter = painterResource(id = getLogo(isDarkTheme)),
+                    contentDescription = stringResource(id = R.string.account_logo)
+                )
+
                 Text(
-                    text = "Login",
+                    modifier = Modifier.padding(top = MyAccountsTheme.dimensions.padding24),
+                    text = "Minhas contas",
                     color = MyAccountsTheme.colors.primary,
                     style = TextStyle(
                         fontSize = 40.sp,
@@ -201,7 +195,7 @@ fun LoginPage(
                         shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
                     ) {
                         Text(
-                            color = Color.White,
+                            color = MyAccountsTheme.colors.onSecond,
                             text = "Entrar",
                             fontSize = FontSize.scale16,
                         )
@@ -218,9 +212,31 @@ fun LoginPage(
                         fontFamily = FontFamily.Default
                     )
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                ClickableText(
+                    text = AnnotatedString("Cadastre-se aqui"),
+                    modifier = Modifier
+                        .padding(20.dp),
+                    onClick = { },
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily.Default,
+                        textDecoration = TextDecoration.Underline,
+                        color = MyAccountsTheme.colors.primary
+                    )
+                )
             }
         }
     )
+}
+
+@Composable
+private fun getLogo(isDarkTheme: Boolean): Int {
+    return if (isDarkTheme) {
+        R.drawable.icon_despesa_light
+    } else {
+        R.drawable.icon_despesa
+    }
 }
 
 @Composable
@@ -242,6 +258,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 private fun LoginPagePreview() {
     MyAccountsTheme {
         LoginPage(
+            isDarkTheme = true,
             uiModel = AuthenticationUiModel(),
             loginOnclick = { _, _ -> }
         )

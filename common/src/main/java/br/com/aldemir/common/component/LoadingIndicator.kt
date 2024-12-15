@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.state.LoadingIndicatorState
@@ -44,7 +45,7 @@ fun rememberLoadingIndicatorState(
 fun LoadingIndicator(
     animating: Boolean,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.primary,
+    color: Color = MyAccountsTheme.colors.primary,
     indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding16,
     animationType: AnimationType,
 ) {
@@ -87,14 +88,7 @@ private fun LoadingDot(
 
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun LoadingIndicatorPreview() {
     MyAccountsTheme {

@@ -1,38 +1,27 @@
 package br.com.aldemir.authentication.presentation
 
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.authentication.data.BiometricHelper
 import br.com.aldemir.common.component.SnackBarState
-import br.com.aldemir.domain.usecase.authentication.InsertUserUseCase
 import br.com.aldemir.domain.usecase.authentication.LoginUseCase
+import br.com.aldemir.domain.usecase.authentication.LoginUseCaseState
 import br.com.aldemir.domain.usecase.authentication.Params
 import br.com.aldemir.login.R
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val biometricHelper: BiometricHelper,
-    private val insertUserUseCase: InsertUserUseCase,
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    fun setToken(plainText: String) {
-        Log.w("TAG_auth", "setToken: $plainText")
-    }
-
     private val _uiState = MutableStateFlow(AuthenticationUiModel())
     val uiState = _uiState.asStateFlow()
-
-    private val _uiEffect = MutableSharedFlow<AuthenticationEffect>(replay = 0)
-    val uiEffect = _uiEffect.asSharedFlow()
 
     fun checkIfBiometricLoginEnabled() {
         _uiState.update {
@@ -43,7 +32,6 @@ class LoginViewModel(
     private fun registerUserBiometrics(fragmentActivity: FragmentActivity) {
         biometricHelper.registerUserBiometrics(fragmentActivity, onSuccess = {
             handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
-            emitEffect(AuthenticationEffect.NavigateToHomeScreen)
         })
     }
 
@@ -52,7 +40,6 @@ class LoginViewModel(
             fragmentActivity,
             onSuccess = {
                 handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
-                emitEffect(AuthenticationEffect.NavigateToHomeScreen)
             }
         )
     }
@@ -65,22 +52,17 @@ class LoginViewModel(
         }
     }
 
-    fun loginUser(user: String, password: String) {
+    fun loginUser(userName: String, password: String) {
         viewModelScope.launch {
             handleUiLoading()
-            delay(1000)
-            if (user.isEmpty() || password.isEmpty()) {
+            if (checkUserNameAndPasswordIsEmpty(userName, password)) {
+                delay(500)
                 handleUiError(R.string.snack_bar_empty)
             } else {
-                loginUseCase(this, Params(user, password)).apply {
+                delay(1000)
+                loginUseCase(this, Params(userName, password)).apply {
                     onSuccess {
-                        if (it != null) {
-                            handleUiSuccess()
-                        } else {
-                            handleUiError(
-                                R.string.snack_bar_user_or_password_error
-                            )
-                        }
+                        handleLoginSuccess(it)
                     }
                     onFailure {
                         handleUiError(
@@ -88,6 +70,17 @@ class LoginViewModel(
                         )
                     }
                 }
+            }
+        }
+    }
+
+    private fun handleLoginSuccess(loginUseCaseState: LoginUseCaseState) {
+        when (loginUseCaseState) {
+            is LoginUseCaseState.Success -> {
+                handleUiSuccess()
+            }
+            is LoginUseCaseState.NotFound -> {
+                handleUiError(R.string.snack_bar_user_or_password_error)
             }
         }
     }
@@ -109,7 +102,6 @@ class LoginViewModel(
             state = AuthenticationState.SUCCESS,
             snackBarState = SnackBarState.NONE
         ))
-        emitEffect(AuthenticationEffect.NavigateToHomeScreen)
     }
 
     private fun handleUiError(message: Int) {
@@ -127,9 +119,7 @@ class LoginViewModel(
         _uiState.update { uiModel }
     }
 
-    private fun emitEffect(effect: AuthenticationEffect) {
-        viewModelScope.launch {
-            _uiEffect.emit(effect)
-        }
+    private fun checkUserNameAndPasswordIsEmpty(userName: String, password: String): Boolean {
+        return (userName.isEmpty() || password.isEmpty())
     }
 }

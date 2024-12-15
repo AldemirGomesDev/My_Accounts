@@ -1,6 +1,5 @@
 package br.com.aldemir.common.component
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,15 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
-import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.FontSize
@@ -40,7 +37,7 @@ fun LoadingButton(
     loading: Boolean = false,
     animationType: AnimationType = AnimationType.Bounce,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
+        backgroundColor = MyAccountsTheme.colors.onBackgroundGreen,
         disabledBackgroundColor = Green200
     ),
     indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding8,
@@ -67,7 +64,6 @@ fun LoadingButton(
             LoadingIndicator(
                 animating = loading,
                 modifier = Modifier.graphicsLayer { alpha = loadingAlpha },
-                color = colors.contentColor(enabled = enabled).value,
                 indicatorSpacing = indicatorSpacing,
                 animationType = animationType,
             )
@@ -80,24 +76,19 @@ fun LoadingButton(
     }
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun LoadingButtonPreview() {
     MyAccountsTheme {
         LoadingButton(
             enabled = true,
-            colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MyAccountsTheme.colors.onBackgroundGreen
+            ),
             onClick = {}
         ) {
             Text(
-                color = Color.White,
+                color = MyAccountsTheme.colors.onSecond,
                 text = stringResource(id = R.string.button_add_text),
                 fontSize = FontSize.scale16,
             )

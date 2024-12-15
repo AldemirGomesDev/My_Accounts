@@ -33,7 +33,7 @@ fun SetupNavigation(
 
         homeComposable(navHostController)
 
-        authenticationComposable(navHostController)
+        authenticationComposable(isDarkTheme, navHostController)
 
         expenseGraph(navHostController = navHostController)
 

@@ -6,9 +6,17 @@ import br.com.aldemir.domain.repository.AuthenticationRepository
 
 class LoginUseCase(
     private val authenticationRepository: AuthenticationRepository
-) : BaseUseCase<Params, UserDomain?> {
-    override suspend fun execute(params: Params): UserDomain? {
-        return authenticationRepository.login(params.userName, params.password)
+) : BaseUseCase<Params, LoginUseCaseState> {
+    override suspend fun execute(params: Params): LoginUseCaseState {
+        return checkUser(authenticationRepository.login(params.userName, params.password))
+    }
+
+    private fun checkUser(userDomain: UserDomain?): LoginUseCaseState {
+        return if (userDomain != null) {
+            LoginUseCaseState.Success(userDomain)
+        } else {
+            LoginUseCaseState.NotFound
+        }
     }
 }
 
@@ -16,3 +24,8 @@ data class Params(
     val userName: String,
     val password: String
 )
+
+sealed class LoginUseCaseState {
+    data class Success(val userDomain: UserDomain) : LoginUseCaseState()
+    data object NotFound : LoginUseCaseState()
+}
