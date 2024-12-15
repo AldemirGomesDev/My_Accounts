@@ -86,6 +86,8 @@
     <!-- Message snack bar -->
     <string name="expense_save_error">Não foi possível salvar a despesa</string>
     <string name="expense_save_success">Despesa salva com sucesso!</string>
+    <string name="snack_bar_empty">Campos obrigatórios vazios</string>
+    <string name="snack_bar_user_or_password_error">Usuário e/ou senha incorretos</string>
 
     <string-array name="months">
         <item>JANEIRO</item>
