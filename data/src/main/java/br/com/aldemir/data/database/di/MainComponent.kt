@@ -12,6 +12,7 @@ val appModule = module {
     factory { get<ConfigDatabase>().recipeDao() }
     factory { get<ConfigDatabase>().monthlyPaymentDao() }
     factory { get<ConfigDatabase>().recipeMonthlyDao() }
+    factory { get<ConfigDatabase>().authenticationDao() }
 
     factory<DataStorePreference> { DataStorePreferenceImpl(context = get()) }
 }

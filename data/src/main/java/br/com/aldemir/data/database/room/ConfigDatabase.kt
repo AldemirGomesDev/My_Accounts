@@ -11,6 +11,8 @@ import br.com.aldemir.data.database.model.ExpenseDTO
 import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
 import br.com.aldemir.data.database.model.RecipeDTO
 import br.com.aldemir.data.database.model.RecipeMonthlyDTO
+import br.com.aldemir.data.database.model.UserDTO
+import br.com.aldemir.data.database.room.authentication.AuthenticationDao
 import br.com.aldemir.data.database.room.expense.ExpenseDao
 import br.com.aldemir.data.database.room.expense.MonthlyPaymentDao
 import br.com.aldemir.data.database.room.recipe.RecipeDao
@@ -22,7 +24,9 @@ import br.com.aldemir.data.database.room.recipe.RecipeMonthlyDao
         ExpenseDTO::class,
         ExpenseMonthlyDTO::class,
         RecipeDTO::class,
-        RecipeMonthlyDTO::class], version = 1
+        RecipeMonthlyDTO::class,
+        UserDTO::class],
+    version = 1
 )
 @TypeConverters(DateTypeConverter::class)
 abstract class ConfigDatabase : RoomDatabase() {
@@ -35,9 +39,26 @@ abstract class ConfigDatabase : RoomDatabase() {
 
     abstract fun recipeMonthlyDao(): RecipeMonthlyDao
 
+    abstract fun authenticationDao(): AuthenticationDao
+
     companion object {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("""
+            CREATE TABLE IF NOT EXISTS `user` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `name` TEXT NOT NULL,
+                `user_name` TEXT NOT NULL,
+                `password` TEXT NOT NULL,
+                `is_logged` INTEGER NOT NULL,
+                UNIQUE(`name`)
+            )
+        """)
+            }
+        }
+
+        private val MIGRATION_1_24 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE Expense ADD COLUMN created_at INTEGER")
                 database.execSQL("ALTER TABLE Expense ADD COLUMN due_date INTEGER")
@@ -61,9 +82,7 @@ abstract class ConfigDatabase : RoomDatabase() {
                 context,
                 ConfigDatabase::class.java,
                 "AccountDataBase"
-            ).fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                .build()
+            ).build()
     }
 
 }
