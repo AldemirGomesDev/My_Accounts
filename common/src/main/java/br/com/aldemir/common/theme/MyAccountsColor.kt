@@ -9,6 +9,7 @@ data class MyAccountsColor(
     val primary: Color,
     val onPrimary: Color,
     val second: Color,
+    val onSecond: Color,
     val error: Color,
     val onError: Color,
     val success: Color,
@@ -21,12 +22,14 @@ data class MyAccountsColor(
     val onSurface: Color,
     val outline: Color,
     val backgroundGreen: Color,
+    val onBackgroundGreen: Color,
 )
 
 internal val LocalColors = staticCompositionLocalOf { MyAccountsColor(
     primary = Color.Unspecified,
     onPrimary = Color.Unspecified,
     second = Color.Unspecified,
+    onSecond = Color.Unspecified,
     error = Color.Unspecified,
     onError = Color.Unspecified,
     success = Color.Unspecified,
@@ -38,6 +41,7 @@ internal val LocalColors = staticCompositionLocalOf { MyAccountsColor(
     surface = Color.Unspecified,
     onSurface = Color.Unspecified,
     outline = Color.Unspecified,
-    backgroundGreen = Color.Unspecified
+    backgroundGreen = Color.Unspecified,
+    onBackgroundGreen = Color.Unspecified
 ) }
 

@@ -47,6 +47,7 @@ object MyAccountsTheme {
             primary = if (darkTheme) primaryLight else primaryDark,
             onPrimary = if (darkTheme) primaryLight else primaryDark,
             second = if (darkTheme) LightGray else White,
+            onSecond = if (darkTheme) White else LightGray,
             error = if (darkTheme) RedErrorLight else RedErrorDark,
             onError = if (darkTheme) RedErrorLight else RedErrorDark,
             success = if (darkTheme) primaryLight else primaryDark,
@@ -58,7 +59,8 @@ object MyAccountsTheme {
             surface = if (darkTheme) primaryLight else primaryDark,
             onSurface = if (darkTheme) primaryLight else primaryDark,
             outline = if (darkTheme) primaryLight else primaryDark,
-            backgroundGreen = if (darkTheme) GreenDark else GreenLight
+            backgroundGreen = if (darkTheme) GreenDark else GreenLight,
+            onBackgroundGreen = if (darkTheme) GreenLight else GreenDark,
         )
 
         CompositionLocalProvider(
