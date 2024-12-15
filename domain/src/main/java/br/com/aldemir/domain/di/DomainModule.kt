@@ -1,5 +1,7 @@
 package br.com.aldemir.domain.di
 
+import br.com.aldemir.domain.usecase.authentication.InsertUserUseCase
+import br.com.aldemir.domain.usecase.authentication.LoginUseCase
 import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
@@ -52,4 +54,6 @@ val domainModule = module {
     factoryOf(::GetByIdRecipeMonthlyUseCase)
     factoryOf(::UpdateRecipeMonthlyUseCase)
     factoryOf(::UpdateRecipeNameAndDescriptionUseCase)
+    factoryOf(::InsertUserUseCase)
+    factoryOf(::LoginUseCase)
 }
