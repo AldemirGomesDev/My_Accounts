@@ -3,7 +3,6 @@ package br.com.aldemir.common.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -11,7 +10,7 @@ class MyAccountsTypography {
     val h1: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale32,
             fontWeight = FontWeight.Bold,
             lineHeight = 38.sp,
@@ -19,7 +18,7 @@ class MyAccountsTypography {
     val h2: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale24,
             fontWeight = FontWeight.Bold,
             lineHeight = 32.sp,
@@ -27,8 +26,17 @@ class MyAccountsTypography {
     val h3: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale22,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 30.sp,
+        )
+
+    val h4: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = MyAccountsFont,
+            fontSize = FontSize.scale20,
             fontWeight = FontWeight.Bold,
             lineHeight = 30.sp,
         )
@@ -36,7 +44,7 @@ class MyAccountsTypography {
     val titleNormal: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale22,
             fontWeight = FontWeight.Normal,
             lineHeight = 30.sp,
@@ -45,7 +53,7 @@ class MyAccountsTypography {
     val titleMedium: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale22,
             fontWeight = FontWeight.Medium,
             lineHeight = 30.sp,
@@ -54,7 +62,7 @@ class MyAccountsTypography {
     val titleBold: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale22,
             fontWeight = FontWeight.Bold,
             lineHeight = 30.sp,
@@ -63,7 +71,7 @@ class MyAccountsTypography {
     val subTitleNormal: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale18,
             fontWeight = FontWeight.Normal,
             lineHeight = 30.sp,
@@ -72,7 +80,7 @@ class MyAccountsTypography {
     val subTitleMedium: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale18,
             fontWeight = FontWeight.Medium,
             lineHeight = 30.sp,
@@ -81,7 +89,7 @@ class MyAccountsTypography {
     val subTitleBold: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale18,
             fontWeight = FontWeight.Bold,
             lineHeight = 30.sp,
@@ -90,25 +98,57 @@ class MyAccountsTypography {
     val paragraph01: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale12,
             fontWeight = FontWeight.Normal,
         )
 
-    val paragraph02: TextStyle
+    val paragraph02Normal: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale14,
             fontWeight = FontWeight.Normal,
         )
 
-    val paragraph03: TextStyle
+    val paragraph02Medium: TextStyle
         @Composable
         get() = TextStyle(
-            fontFamily = FontFamily.Default,
+            fontFamily = MyAccountsFont,
+            fontSize = FontSize.scale14,
+            fontWeight = FontWeight.Medium,
+        )
+
+    val paragraph02Bold: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = MyAccountsFont,
+            fontSize = FontSize.scale14,
+            fontWeight = FontWeight.Bold,
+        )
+
+    val paragraph03Normal: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = MyAccountsFont,
             fontSize = FontSize.scale16,
             fontWeight = FontWeight.Normal,
+        )
+
+    val paragraph03Medium: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = MyAccountsFont,
+            fontSize = FontSize.scale16,
+            fontWeight = FontWeight.Medium,
+        )
+
+    val paragraph03Bold: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = MyAccountsFont,
+            fontSize = FontSize.scale16,
+            fontWeight = FontWeight.Bold,
         )
 
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.Typography
@@ -20,19 +21,13 @@ fun TextSubTitleItem(
         text = text,
         modifier = modifier,
         color = MyAccountsTheme.colors.primary,
-        style = Typography.subtitle2,
-        fontWeight = FontWeight.Bold,
+        style = MyAccountsTheme.typography.paragraph02Medium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
 }
 
-@Preview(showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
-)
-@Preview(showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+@PreviewLightDark
 @Composable
 private fun TextSubTitleItemPreview() {
     MyAccountsTheme {

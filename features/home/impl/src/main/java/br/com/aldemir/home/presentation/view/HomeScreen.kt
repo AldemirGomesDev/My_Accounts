@@ -119,7 +119,8 @@ private fun MyBarChart(
                     .padding(bottom = MyAccountsTheme.dimensions.padding4),
                 text = title,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.White,
+                fontFamily = MyAccountsFont
             )
             Row(
                 modifier = Modifier
@@ -178,7 +179,8 @@ private fun MyBarChart(
                                     text = textEmpty,
                                     textAlign = TextAlign.Center,
                                     fontWeight = FontWeight.Bold,
-                                    color = MediumGray
+                                    color = MediumGray,
+                                    fontFamily = MyAccountsFont
                                 )
                             }
                         }
@@ -223,7 +225,7 @@ fun ButtonsHomeGrid(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
-                            Text(text = button.name, color = White)
+                            Text(text = button.name, color = White, fontFamily = MyAccountsFont)
                         }
                     }
                 }

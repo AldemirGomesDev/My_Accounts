@@ -13,10 +13,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.common.theme.*
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
@@ -37,18 +40,14 @@ fun HomeCard(
                 .fillMaxWidth()
                 .padding(MyAccountsTheme.dimensions.padding16),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(bottom = MyAccountsTheme.dimensions.padding8),
-                    text = stringResource(id = R.string.account_resume_monthly),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
+            Text(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = MyAccountsTheme.dimensions.padding8),
+                text = stringResource(id = R.string.account_resume_monthly),
+                color = Color.White,
+                style = MyAccountsTheme.typography.subTitleBold,
+                textAlign = TextAlign.Center
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -66,17 +65,17 @@ fun HomeCard(
                         Text(
                             modifier = Modifier
                                 .padding(start = MyAccountsTheme.dimensions.padding4),
-                            fontWeight = FontWeight.Bold,
                             text = stringResource(id = R.string.recipe_card_title),
-                            color = Color.White
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Bold
                         )
                         Spacer(modifier = Modifier.height(MyAccountsTheme.dimensions.sizing2))
                         Text(
                             modifier = Modifier
                                 .padding(start = MyAccountsTheme.dimensions.padding4),
-                            fontWeight = FontWeight.Normal,
                             text = homeCardData.valueRecipe.toCurrency(currencySymbol),
-                            color = LowPriorityColor
+                            color = LowPriorityColor,
+                            style = MyAccountsTheme.typography.paragraph02Normal
                         )
                     }
                 }
@@ -100,17 +99,17 @@ fun HomeCard(
                                 .padding(
                                     start = MyAccountsTheme.dimensions.padding4,
                                 ),
-                            fontWeight = FontWeight.Bold,
                             text = stringResource(id = R.string.add_expense),
-                            color = Color.White
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Bold
                         )
                         Spacer(modifier = Modifier.height(MyAccountsTheme.dimensions.sizing2))
                         Text(
                             modifier = Modifier
                                 .padding(start = MyAccountsTheme.dimensions.padding4),
-                            fontWeight = FontWeight.Normal,
                             text = homeCardData.valueExpense.toCurrency(currencySymbol),
-                            color = MediumPriorityColor
+                            color = MediumPriorityColor,
+                            style = MyAccountsTheme.typography.paragraph02Normal
                         )
                     }
                 }
@@ -124,24 +123,26 @@ fun HomeCard(
                 Text(
                     modifier = Modifier
                         .padding(start = MyAccountsTheme.dimensions.padding4),
-                    fontWeight = FontWeight.Bold,
                     text = stringResource(id = R.string.home_balance),
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Bold
                 )
                 Text(
                     modifier = Modifier
                         .padding(start = MyAccountsTheme.dimensions.padding4),
-                    fontWeight = FontWeight.Bold,
                     text = homeCardData.valueBalance.toCurrency(currencySymbol),
-                    color = if (homeCardData.valueBalance >= 0) LowPriorityColor else MediumPriorityColor
+                    color = if (homeCardData.valueBalance >= 0) LowPriorityColor else MediumPriorityColor,
+                    style = MyAccountsTheme.typography.paragraph02Normal
                 )
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 fun HomeCardPreview() {
-    HomeCard(homeCardData = HomeCardData())
+    MyAccountsTheme {
+        HomeCard(homeCardData = HomeCardData())
+    }
 }

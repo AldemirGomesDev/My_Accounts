@@ -25,8 +25,7 @@ fun TextTitleLarge(
         modifier = modifier,
         text = text,
         color = color,
-        style = MyAccountsTheme.typography.titleNormal,
-        fontWeight = FontWeight.Bold,
+        style = MyAccountsTheme.typography.titleBold,
         textAlign = textAlign,
         maxLines = 1
     )

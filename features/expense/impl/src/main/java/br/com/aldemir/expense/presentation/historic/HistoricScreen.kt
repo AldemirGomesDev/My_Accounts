@@ -144,13 +144,8 @@ private fun HistoricContent(
                     },
                 loading = viewModel.isLoading.value,
                 enabled = enabled,
-            ) {
-                Text(
-                    color = Color.White,
-                    text = stringResource(id = R.string.button_search),
-                    fontSize = FontSize.scale16,
-                )
-            }
+                text = stringResource(id = R.string.button_search)
+            )
         }
 
     }

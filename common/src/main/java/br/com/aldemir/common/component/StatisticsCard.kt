@@ -25,6 +25,7 @@ import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.common.util.toDecimal
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
@@ -69,8 +70,8 @@ fun StatisticsCard(
                         }
                         .padding(bottom = 20.dp),
                     text = stringResource(id = R.string.home_total_month),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Bold
                 )
                 Text(
                     modifier = Modifier
@@ -78,9 +79,9 @@ fun StatisticsCard(
                             end.linkTo(parent.end)
                         }
                         .padding(bottom = 16.dp),
-                    fontWeight = FontWeight.Bold,
                     text = cardState.valueTotal.toCurrency(currencySymbol),
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Normal
                 )
                 Image(
                     modifier = Modifier.constrainAs(iconPaidOut) {
@@ -98,9 +99,9 @@ fun StatisticsCard(
                             start.linkTo(iconPaidOut.end)
                         }
                         .padding(start = 4.dp),
-                    fontWeight = FontWeight.Bold,
                     text = textChecked,
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Bold
                 )
                 Text(
                     modifier = Modifier
@@ -109,9 +110,9 @@ fun StatisticsCard(
                             start.linkTo(iconPaidOut.end)
                         }
                         .padding(start = 4.dp),
-                    fontWeight = FontWeight.Normal,
                     text = cardState.paidOut.toCurrency(currencySymbol),
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Normal
                 )
                 Image(
                     modifier = Modifier
@@ -131,9 +132,9 @@ fun StatisticsCard(
                             start.linkTo(iconPayable.end)
                         }
                         .padding(start = 4.dp),
-                    fontWeight = FontWeight.Bold,
                     text = textPending,
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Bold
                 )
                 Text(
                     modifier = Modifier
@@ -144,7 +145,8 @@ fun StatisticsCard(
                         .padding(start = 4.dp),
                     fontWeight = FontWeight.Normal,
                     text = cardState.pending.toCurrency(currencySymbol),
-                    color = Color.White
+                    color = Color.White,
+                    style = MyAccountsTheme.typography.paragraph02Normal
                 )
                 LinearProgressIndicatorSample(
                     value = if (!cardState.percentage.isNaN()) {

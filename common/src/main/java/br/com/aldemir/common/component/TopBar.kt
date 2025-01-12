@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
+import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.White
@@ -28,7 +29,11 @@ fun TopBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = stringResource(id = titleResId), color = White)
+            Text(
+                text = stringResource(id = titleResId),
+                color = White,
+                style = MyAccountsTheme.typography.subTitleMedium
+            )
         },
         navigationIcon = {
             Icon(
@@ -47,10 +52,12 @@ fun TopBar(
     )
 }
 
-@Preview(showBackground = true,
+@Preview(
+    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
 )
-@Preview(showBackground = true,
+@Preview(
+    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable

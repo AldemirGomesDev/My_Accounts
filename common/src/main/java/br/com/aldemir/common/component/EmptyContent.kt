@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MediumGray
@@ -47,23 +48,13 @@ fun EmptyContent(
         Text(
             text = context.getString(R.string.empty_content, text),
             color = MediumGray,
-            fontWeight = FontWeight.Bold,
-            fontSize = MaterialTheme.typography.h6.fontSize
+            style = MyAccountsTheme.typography.h4
         )
     }
 }
 
 @Composable
-@Preview(
-    name = "Dark mode",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-)
-@Preview(
-    name = "Light mode",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-)
+@PreviewLightDark
 private fun EmptyContentPreview() {
     MyAccountsTheme {
         Surface {

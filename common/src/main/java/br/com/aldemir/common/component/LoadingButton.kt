@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -41,7 +42,7 @@ fun LoadingButton(
         disabledBackgroundColor = Green200
     ),
     indicatorSpacing: Dp = MyAccountsTheme.dimensions.padding8,
-    content: @Composable () -> Unit,
+    text: String,
 ) {
     val contentAlpha by animateFloatAsState(targetValue = if (loading) 0f else 1f, label = emptyString())
     val loadingAlpha by animateFloatAsState(targetValue = if (loading) 1f else 0f, label = emptyString())
@@ -70,7 +71,11 @@ fun LoadingButton(
             Box(
                 modifier = Modifier.graphicsLayer { alpha = contentAlpha }
             ) {
-                content()
+                Text(
+                    color = Color.White,
+                    text = text,
+                    style = MyAccountsTheme.typography.paragraph03Bold,
+                )
             }
         }
     }
@@ -85,13 +90,8 @@ private fun LoadingButtonPreview() {
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MyAccountsTheme.colors.onBackgroundGreen
             ),
-            onClick = {}
-        ) {
-            Text(
-                color = MyAccountsTheme.colors.onSecond,
-                text = stringResource(id = R.string.button_add_text),
-                fontSize = FontSize.scale16,
-            )
-        }
+            onClick = {},
+            text = stringResource(id = R.string.button_add_text)
+        )
     }
 }

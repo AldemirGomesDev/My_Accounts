@@ -45,6 +45,7 @@ import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 
@@ -151,8 +152,8 @@ fun LoginPage(
                     text = "Minhas contas",
                     color = MyAccountsTheme.colors.primary,
                     style = TextStyle(
-                        fontSize = 40.sp,
-                        fontFamily = FontFamily.Cursive
+                        fontSize = 32.sp,
+                        fontFamily = MyAccountsFont
                     )
                 )
 
@@ -193,13 +194,8 @@ fun LoginPage(
                         loading = uiModel.isLoading,
                         enabled = true,
                         shape = RoundedCornerShape(MyAccountsTheme.dimensions.sizing48),
-                    ) {
-                        Text(
-                            color = MyAccountsTheme.colors.onSecond,
-                            text = "Entrar",
-                            fontSize = FontSize.scale16,
-                        )
-                    }
+                        text = "Entrar",
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

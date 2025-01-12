@@ -237,14 +237,10 @@ private fun ChangeRecipeContent(
                 .height(52.dp),
             loading = loading,
             enabled = enabled,
+            text = stringResource(id = R.string.button_update),
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
-        ) {
-            Text(
-                color = Color.White,
-                text = stringResource(id = R.string.button_update),
-                fontSize = FontSize.scale16,
-            )
-        }
+        )
+
     }
 }
 

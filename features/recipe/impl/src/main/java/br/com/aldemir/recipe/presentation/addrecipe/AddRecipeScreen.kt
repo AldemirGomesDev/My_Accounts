@@ -247,11 +247,6 @@ private fun AddAccountContent(
             .height(52.dp),
         loading = isLoading.value,
         enabled = enabled,
-    ) {
-        Text(
-            color = Color.White,
-            text = stringResource(id = R.string.button_add_text),
-            fontSize = FontSize.scale16,
-        )
-    }
+        text = stringResource(id = R.string.button_add_text)
+    )
 }

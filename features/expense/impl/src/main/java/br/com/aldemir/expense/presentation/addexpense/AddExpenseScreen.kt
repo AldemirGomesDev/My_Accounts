@@ -299,13 +299,8 @@ private fun AddAccountContent(
             .height(MyAccountsTheme.dimensions.sizing52),
         loading = isLoading.value,
         enabled = enabled,
-    ) {
-        Text(
-            color = Color.White,
-            text = stringResource(id = R.string.button_add_text),
-            fontSize = FontSize.scale16,
-        )
-    }
+        text = stringResource(id = R.string.button_add_text)
+    )
     Spacer(modifier = Modifier.height(MyAccountsTheme.dimensions.sizing8))
     LoadingButton(
         onClick = {
@@ -315,13 +310,8 @@ private fun AddAccountContent(
             .fillMaxWidth()
             .height(MyAccountsTheme.dimensions.sizing52),
         enabled = true,
-    ) {
-        Text(
-            color = Color.White,
-            text = stringResource(id = R.string.button_back_text),
-            fontSize = FontSize.scale16,
-        )
-    }
+        text = stringResource(id = R.string.button_back_text)
+    )
 }
 
 @Composable

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
@@ -43,8 +44,13 @@ fun InputTextOutlinedTextField(
         onValueChange = {
             onValueChange(it)
         },
-        label = { Text(text = label) },
-        textStyle = MaterialTheme.typography.body1,
+        label = {
+            Text(
+                text = label,
+                style = MyAccountsTheme.typography.paragraph02Normal
+            )
+        },
+        textStyle = MyAccountsTheme.typography.paragraph02Normal,
         singleLine = true,
         shape = shape,
         keyboardActions = KeyboardActions(
@@ -78,14 +84,7 @@ fun InputTextOutlinedTextField(
     )
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun PreviewComponent() {
     MyAccountsTheme {
