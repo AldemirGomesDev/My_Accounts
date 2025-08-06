@@ -1,9 +1,7 @@
 package br.com.aldemir.authentication.data
 
-import android.content.Context
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import com.google.gson.Gson
 
 interface BiometricHelper {
     fun isBiometricAvailable(): Boolean

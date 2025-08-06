@@ -44,7 +44,6 @@ import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.SnackBarState
-import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString

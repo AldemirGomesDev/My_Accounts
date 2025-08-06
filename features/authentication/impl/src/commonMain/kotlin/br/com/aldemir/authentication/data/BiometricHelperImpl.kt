@@ -20,11 +20,15 @@ class BiometricHelperImpl(
     override fun isBiometricAvailable(): Boolean {
 
         val biometricManager = BiometricManager.from(context)
-        return when (biometricManager.canAuthenticate(
+        val canAuthenticationState = biometricManager.canAuthenticate(
             BiometricManager.Authenticators.BIOMETRIC_STRONG or
                     BiometricManager.Authenticators.BIOMETRIC_WEAK)
-        ) {
-            BiometricManager.BIOMETRIC_SUCCESS -> true
+        return when (canAuthenticationState) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                cryptoManager.initSecretKey()
+                Log.e("TAG_auth", "Biometric authentication success")
+                true
+            }
             else -> {
                 Log.e("TAG_auth", "Biometric authentication not available")
                 false

@@ -19,12 +19,13 @@ class CryptoManagerImpl : CryptoManager {
 
     private val keyStore: KeyStore = KeyStore.getInstance(ANDROID_KEYSTORE)
 
-    init {
+    override fun initSecretKey() {
         keyStore.load(null)
         if (!keyStore.containsAlias(KEY_ALIAS)) {
             createSecretKey()
         }
     }
+
     override fun initEncryptionCipher(keyName: String): Cipher {
         val cipher = Cipher.getInstance(ENCRYPTION_TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())

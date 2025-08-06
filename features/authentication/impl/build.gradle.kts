@@ -23,6 +23,20 @@ kotlin {
         androidMain.dependencies {
 
         }
+        commonMain.dependencies {
+            implementation(project(":data"))
+            implementation(project(":common"))
+            implementation(project(":domain"))
+
+            implementation(libs.bundles.koin.all)
+            implementation(libs.multidex)
+            //Compose
+            implementation(compose.material3)
+            implementation(libs.bundles.compose.all)
+            implementation(libs.compose.lifecycle.viewmodel)
+            implementation(libs.biometric)
+            implementation(libs.gson)
+        }
     }
 }
 
@@ -54,27 +68,4 @@ android {
     buildFeatures {
         compose = true
     }
-}
-
-dependencies {
-
-    implementation(project(":data"))
-    implementation(project(":common"))
-    implementation(project(":domain"))
-
-    implementation(libs.android.core.ktx)
-    implementation(libs.appCompat)
-    implementation(libs.androidMaterial)
-    implementation(libs.bundles.koin.all)
-    implementation(libs.multidex)
-    //Compose
-    implementation(compose.material3)
-    implementation(libs.bundles.compose.all)
-    implementation(libs.compose.lifecycle.viewmodel)
-    implementation(libs.gson)
-    implementation(libs.biometric)
-    // tests
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 }

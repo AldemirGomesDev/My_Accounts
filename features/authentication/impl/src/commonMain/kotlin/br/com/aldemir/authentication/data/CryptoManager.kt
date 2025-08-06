@@ -4,6 +4,8 @@ import android.content.Context
 import javax.crypto.Cipher
 
 interface CryptoManager {
+    fun initSecretKey()
+
     fun initEncryptionCipher(keyName: String): Cipher
 
     fun initDecryptionCipher(keyName: String, initializationVector: ByteArray): Cipher
