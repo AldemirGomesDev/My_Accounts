@@ -1,7 +1,29 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.jetbrainsCompose)
+}
+
+kotlin {
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    sourceSets.named("androidMain").configure {
+        kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
+    }
+
+    sourceSets {
+        androidMain.dependencies {
+
+        }
+    }
 }
 
 android {
@@ -28,9 +50,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 
     buildFeatures {
         compose = true
@@ -49,8 +68,8 @@ dependencies {
     implementation(libs.bundles.koin.all)
     implementation(libs.multidex)
     //Compose
+    implementation(compose.material3)
     implementation(libs.bundles.compose.all)
-    implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.viewmodel)
     implementation(libs.gson)
     implementation(libs.biometric)
