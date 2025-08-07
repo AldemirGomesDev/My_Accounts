@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.multidex)
             //Compose
             implementation(compose.material3)
+            implementation(compose.components.resources)
             implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.biometric)

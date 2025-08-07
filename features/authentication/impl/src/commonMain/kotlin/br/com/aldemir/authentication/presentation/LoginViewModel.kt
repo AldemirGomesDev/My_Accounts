@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.authentication.data.BiometricHelper
+import br.com.aldemir.authentication.data.DialogModel
 import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.domain.usecase.authentication.LoginUseCase
 import br.com.aldemir.domain.usecase.authentication.LoginUseCaseState
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val biometricHelper: BiometricHelper,
     private val loginUseCase: LoginUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthenticationUiModel())
     val uiState = _uiState.asStateFlow()
@@ -29,26 +30,37 @@ class LoginViewModel(
         }
     }
 
-    private fun registerUserBiometrics(fragmentActivity: FragmentActivity) {
-        biometricHelper.registerUserBiometrics(fragmentActivity, onSuccess = {
-            handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
-        })
-    }
-
-    private fun authenticateUser(fragmentActivity: FragmentActivity) {
-        biometricHelper.authenticateUser(
+    private fun registerUserBiometrics(
+        fragmentActivity: FragmentActivity,
+        dialogModel: DialogModel
+    ) {
+        biometricHelper.registerUserBiometrics(
             fragmentActivity,
+            dialogModel,
             onSuccess = {
                 handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
             }
         )
     }
 
-    fun checkPreferencesEnabled(fragmentActivity: FragmentActivity) {
+    private fun authenticateUser(
+        fragmentActivity: FragmentActivity,
+        dialogModel: DialogModel
+    ) {
+        biometricHelper.authenticateUser(
+            fragmentActivity,
+            dialogModel,
+            onSuccess = {
+                handleUiState(uiState.value.copy(state = AuthenticationState.SUCCESS))
+            }
+        )
+    }
+
+    fun checkPreferencesEnabled(fragmentActivity: FragmentActivity, dialogModel: DialogModel) {
         if (biometricHelper.checkPreferencesEnabled()) {
-            authenticateUser(fragmentActivity)
+            authenticateUser(fragmentActivity, dialogModel)
         } else {
-            registerUserBiometrics(fragmentActivity)
+            registerUserBiometrics(fragmentActivity, dialogModel)
         }
     }
 
@@ -79,6 +91,7 @@ class LoginViewModel(
             is LoginUseCaseState.Success -> {
                 handleUiSuccess()
             }
+
             is LoginUseCaseState.NotFound -> {
                 handleUiError(R.string.snack_bar_user_or_password_error)
             }
@@ -96,12 +109,14 @@ class LoginViewModel(
     }
 
     private fun handleUiSuccess() {
-        handleUiState(uiState.value.copy(
-            isLoading = false,
-            isError = false,
-            state = AuthenticationState.SUCCESS,
-            snackBarState = SnackBarState.NONE
-        ))
+        handleUiState(
+            uiState.value.copy(
+                isLoading = false,
+                isError = false,
+                state = AuthenticationState.SUCCESS,
+                snackBarState = SnackBarState.NONE
+            )
+        )
     }
 
     private fun handleUiError(message: Int) {

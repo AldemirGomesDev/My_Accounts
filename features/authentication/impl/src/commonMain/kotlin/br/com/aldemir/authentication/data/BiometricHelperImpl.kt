@@ -6,7 +6,6 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import br.com.aldemir.login.R
 import java.util.UUID
 
 private const val SECRET_KEY = "secret_key"
@@ -64,20 +63,19 @@ class BiometricHelperImpl(
         return biometricPrompt
     }
 
-    override fun getPromptInfo(context: FragmentActivity): BiometricPrompt.PromptInfo {
+    override fun getPromptInfo(dialogModel: DialogModel): BiometricPrompt.PromptInfo {
         return BiometricPrompt.PromptInfo.Builder()
-            .setTitle(context.getString(R.string.biometric_prompt_title_text))
-            .setSubtitle(context.getString(R.string.biometric_prompt_subtitle_text))
-            .setDescription(context.getString(R.string.biometric_prompt_description_text))
+            .setTitle(dialogModel.title)
+            .setSubtitle(dialogModel.subtitle)
+            .setDescription(dialogModel.description)
             .setConfirmationRequired(false)
-            .setNegativeButtonText(
-                context.getString(R.string.biometric_prompt_use_password_instead_text)
-            )
+            .setNegativeButtonText(dialogModel.negativeButtonText)
             .build()
     }
 
     override fun registerUserBiometrics(
         context: FragmentActivity,
+        dialogModel: DialogModel,
         onSuccess: (authResult: BiometricPrompt.AuthenticationResult) -> Unit
     ) {
         val cipher = cryptoManager.initEncryptionCipher(SECRET_KEY)
@@ -96,10 +94,13 @@ class BiometricHelperImpl(
                     onSuccess(authResult)
                 }
             }
-        biometricPrompt.authenticate(getPromptInfo(context), BiometricPrompt.CryptoObject(cipher))
+        biometricPrompt.authenticate(getPromptInfo(dialogModel), BiometricPrompt.CryptoObject(cipher))
     }
 
-    override fun authenticateUser(context: FragmentActivity, onSuccess: (plainText: String) -> Unit) {
+    override fun authenticateUser(
+        context: FragmentActivity,
+        dialogModel: DialogModel,
+        onSuccess: (plainText: String) -> Unit) {
         val encryptedData =
             cryptoManager.getFromPrefs(
                 context,
@@ -117,7 +118,7 @@ class BiometricHelperImpl(
                         onSuccess(plainText)
                     }
                 }
-            val promptInfo = getPromptInfo(context)
+            val promptInfo = getPromptInfo(dialogModel)
             biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
         }
     }

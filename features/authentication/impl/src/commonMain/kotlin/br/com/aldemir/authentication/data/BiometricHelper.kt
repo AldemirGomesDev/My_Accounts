@@ -9,11 +9,15 @@ interface BiometricHelper {
         context: FragmentActivity,
         onAuthSucceed: (BiometricPrompt.AuthenticationResult) -> Unit
     ): BiometricPrompt
-    fun getPromptInfo(context: FragmentActivity): BiometricPrompt.PromptInfo
+    fun getPromptInfo(dialogModel: DialogModel): BiometricPrompt.PromptInfo
     fun registerUserBiometrics(
         context: FragmentActivity,
+        dialogModel: DialogModel,
         onSuccess: (authResult: BiometricPrompt.AuthenticationResult) -> Unit = {}
     )
-    fun authenticateUser(context: FragmentActivity, onSuccess: (plainText: String) -> Unit)
+    fun authenticateUser(
+        context: FragmentActivity,
+        dialogModel: DialogModel,
+        onSuccess: (plainText: String) -> Unit)
     fun checkPreferencesEnabled(): Boolean
 }

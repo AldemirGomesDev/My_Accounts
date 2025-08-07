@@ -38,7 +38,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.aldemir.authentication.data.DialogModel
 import br.com.aldemir.common.R
+import org.jetbrains.compose.resources.stringResource as stringRes
 import br.com.aldemir.common.component.CustomSnackBar
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingAnimation
@@ -47,6 +49,12 @@ import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
+import myaccounts.features.authentication.impl.generated.resources.Res
+import myaccounts.features.authentication.impl.generated.resources.account_logo
+import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_description_text
+import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_subtitle_text
+import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_title_text
+import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_use_password_instead_text
 
 
 @Composable
@@ -82,10 +90,11 @@ fun LoginScreen(
             )
         }
     }
+    val dialogModel = getDialogModel()
 
     LaunchedEffect(key1 = uiModel.isBiometricAvailable) {
         if (uiModel.isBiometricAvailable) {
-            viewModel.checkPreferencesEnabled(context)
+            viewModel.checkPreferencesEnabled(context, dialogModel)
         }
     }
 }
@@ -143,7 +152,7 @@ fun LoginPage(
                     modifier = Modifier
                         .size(MyAccountsTheme.dimensions.sizing120),
                     painter = painterResource(id = getLogo(isDarkTheme)),
-                    contentDescription = stringResource(id = R.string.account_logo)
+                    contentDescription = stringRes(Res.string.account_logo)
                 )
 
                 Text(
@@ -248,6 +257,15 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun getDialogModel(): DialogModel {
+    return DialogModel(
+        title = stringRes(Res.string.biometric_prompt_title_text),
+        subtitle = stringRes(Res.string.biometric_prompt_subtitle_text),
+        description = stringRes(Res.string.biometric_prompt_description_text),
+        negativeButtonText = stringRes(Res.string.biometric_prompt_use_password_instead_text)
+    )
+}
 @PreviewLightDark
 @Composable
 private fun LoginPagePreview() {

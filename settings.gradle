@@ -17,7 +17,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Accounts"
+rootProject.name = "MyAccounts"
 include ':app'
 include ':features:home:impl'
 include ':features:home:publ'
