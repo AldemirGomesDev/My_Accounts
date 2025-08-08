@@ -9,7 +9,8 @@ android-core-ktx = "1.13.1"
 compose = "1.6.7"
 lifecycle = "2.8.0"
 constraintlayout = "1.0.1"
-room = "2.4.3"
+room = "2.7.2"
+sqlite = "2.5.2"
 koin = "3.5.3"
 datastore = "1.1.1"
 charts = "0.1.2"
@@ -38,9 +39,12 @@ compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayou
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
+
 room-runtime = {module = "androidx.room:room-runtime", version.ref = "room"}
 room-ktx = {module = "androidx.room:room-ktx", version.ref = "room"}
 room-compiler = {module = "androidx.room:room-compiler", version.ref = "room"}
+room-bundled = {module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite"}
+
 koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
 koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
 datastore-preferences = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
