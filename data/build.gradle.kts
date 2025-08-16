@@ -38,4 +38,7 @@ dependencies {
 
     //DATA STORE PREFERENCES
     implementation(libs.datastore.preferences)
+
+    implementation(libs.retrofit)
+    implementation(libs.gsonConverter)
 }

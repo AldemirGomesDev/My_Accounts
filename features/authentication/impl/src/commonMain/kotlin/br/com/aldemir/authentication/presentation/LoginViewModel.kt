@@ -1,5 +1,6 @@
 package br.com.aldemir.authentication.presentation
 
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,8 @@ import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.domain.usecase.authentication.LoginUseCase
 import br.com.aldemir.domain.usecase.authentication.LoginUseCaseState
 import br.com.aldemir.domain.usecase.authentication.Params
+import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
+import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import br.com.aldemir.login.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +21,43 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val biometricHelper: BiometricHelper,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val getAllPostsUseCase: GetAllPostsUseCase,
+    private val getAllProductsUseCase: GetAllProductsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthenticationUiModel())
     val uiState = _uiState.asStateFlow()
+
+    private fun getAllPosts() {
+        viewModelScope.launch {
+            getAllPostsUseCase(viewModelScope, Unit).apply {
+                onSuccess {
+                    // Handle success if needed
+                    Log.d("TAG_auth", "sucesso: ${it.first()}")
+                }
+                onFailure {
+                    Log.e("TAG_auth", "Error: $it")
+                    // Handle failure if needed
+                }
+            }
+        }
+    }
+
+    private fun getAllProducts() {
+        viewModelScope.launch {
+            getAllProductsUseCase(viewModelScope, Unit).apply {
+                onSuccess {
+                    // Handle success if needed
+                    Log.d("TAG_auth", "sucesso-> Product ${it.toList().random()}")
+                }
+                onFailure {
+                    Log.e("TAG_auth", "Error: $it")
+                    // Handle failure if needed
+                }
+            }
+        }
+    }
 
     fun checkIfBiometricLoginEnabled() {
         _uiState.update {
@@ -65,6 +100,7 @@ class LoginViewModel(
     }
 
     fun loginUser(userName: String, password: String) {
+        getAllProducts()
         viewModelScope.launch {
             handleUiLoading()
             if (checkUserNameAndPasswordIsEmpty(userName, password)) {

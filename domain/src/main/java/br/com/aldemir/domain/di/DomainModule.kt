@@ -14,6 +14,8 @@ import br.com.aldemir.domain.usecase.expense.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
 import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
+import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import br.com.aldemir.domain.usecase.recipe.DeleteRecipeUseCase
@@ -56,4 +58,6 @@ val domainModule = module {
     factoryOf(::UpdateRecipeNameAndDescriptionUseCase)
     factoryOf(::InsertUserUseCase)
     factoryOf(::LoginUseCase)
+    factoryOf(::GetAllPostsUseCase)
+    factoryOf(::GetAllProductsUseCase)
 }
