@@ -61,6 +61,7 @@ import myaccounts.features.authentication.impl.generated.resources.biometric_pro
 fun LoginScreen(
     isDarkTheme: Boolean,
     navigateToHomeScreen: () -> Unit,
+    navigateToRegisterScreen: () -> Unit
 ) {
     val context = LocalContext.current as FragmentActivity
     val viewModel: LoginViewModel = koinViewModel()
@@ -75,17 +76,21 @@ fun LoginScreen(
 
     BackHandler { activity?.finish() }
 
-    when(uiModel.state) {
+    when (uiModel.state) {
         AuthenticationState.SUCCESS -> {
             LoadingScreen()
             navigateToHomeScreen()
         }
+
         AuthenticationState.IDLE -> {
             LoginPage(
                 isDarkTheme = isDarkTheme,
                 uiModel = uiModel,
                 loginOnclick = { userName, password ->
                     viewModel.loginUser(userName, password)
+                },
+                navigateToRegisterScreen = {
+                    navigateToRegisterScreen()
                 }
             )
         }
@@ -103,7 +108,8 @@ fun LoginScreen(
 fun LoginPage(
     isDarkTheme: Boolean,
     uiModel: AuthenticationUiModel,
-    loginOnclick: (userName: String, password: String) -> Unit
+    loginOnclick: (userName: String, password: String) -> Unit,
+    navigateToRegisterScreen: () -> Unit
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -111,13 +117,14 @@ fun LoginPage(
     val messageError = stringResource(id = uiModel.snackBarMessage)
 
     LaunchedEffect(uiModel.snackBarState) {
-        when(uiModel.snackBarState) {
+        when (uiModel.snackBarState) {
             SnackBarState.ERROR -> {
                 snackbarHostState.showSnackbar(
                     message = messageError,
                     duration = SnackbarDuration.Short
                 )
             }
+
             else -> Unit
         }
     }
@@ -134,8 +141,10 @@ fun LoginPage(
         containerColor = MyAccountsTheme.colors.background,
         content = {
             Column(
-                modifier = Modifier.
-                    padding(it)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MyAccountsTheme.colors.background)
+                    .padding(it)
                     .padding(
                         start = MyAccountsTheme.dimensions.padding20,
                         top = MyAccountsTheme.dimensions.padding64,
@@ -152,7 +161,7 @@ fun LoginPage(
                     modifier = Modifier
                         .size(MyAccountsTheme.dimensions.sizing120),
                     painter = painterResource(id = getLogo(isDarkTheme)),
-                    contentDescription = stringRes(Res.string.account_logo)
+                    contentDescription = null
                 )
 
                 Text(
@@ -221,7 +230,7 @@ fun LoginPage(
                     text = AnnotatedString("Cadastre-se aqui"),
                     modifier = Modifier
                         .padding(20.dp),
-                    onClick = { },
+                    onClick = { navigateToRegisterScreen() },
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily.Default,
@@ -266,14 +275,18 @@ private fun getDialogModel(): DialogModel {
         negativeButtonText = stringRes(Res.string.biometric_prompt_use_password_instead_text)
     )
 }
+
 @PreviewLightDark
 @Composable
 private fun LoginPagePreview() {
     MyAccountsTheme {
         LoginPage(
             isDarkTheme = true,
-            uiModel = AuthenticationUiModel(),
-            loginOnclick = { _, _ -> }
+            uiModel = AuthenticationUiModel(
+                state = AuthenticationState.SUCCESS,
+            ),
+            loginOnclick = { _, _ -> },
+            navigateToRegisterScreen = {}
         )
     }
 }

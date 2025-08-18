@@ -70,7 +70,11 @@ fun DrawerNavigationScreen(
             }
         },
         bottomBar = {
-            if (currentRoute != Route.Splash.route && currentRoute != null && currentRoute != Route.Authentication.route) {
+            if (currentRoute != Route.Splash.route
+                && currentRoute != null
+                && currentRoute != Route.Authentication.route
+                && currentRoute != Route.Register.route
+            ) {
                 BottomBar(navController = navController)
             }
         },
@@ -122,11 +126,13 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = {}
             )
         }
+
         Route.Authentication.route -> {
             TopBarState(
                 onClick = {}
             )
         }
+
         Route.Home.route -> {
             TopBarState(
                 titleResId = R.string.app_name,
@@ -136,6 +142,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.Historic.route -> {
             TopBarState(
                 isVisible = true,
@@ -145,6 +152,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
 
             )
         }
+
         Route.AddRecipe.route -> {
             TopBarState(
                 isVisible = true,
@@ -153,6 +161,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ListRecipe.route -> {
             TopBarState(
                 isVisible = true,
@@ -161,6 +170,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.DetailRecipe.route -> {
             TopBarState(
                 isVisible = true,
@@ -169,6 +179,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ChangeRecipe.route -> {
             TopBarState(
                 isVisible = true,
@@ -177,6 +188,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ExpenseGraphRoute.route -> {
             TopBarState(
                 isVisible = true,
@@ -185,6 +197,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ExpenseGraphRoute.ExpenseAdd.route -> {
             TopBarState(
                 isVisible = true,
@@ -193,6 +206,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ExpenseGraphRoute.ExpenseList.route -> {
             TopBarState(
                 isVisible = true,
@@ -201,6 +215,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ExpenseGraphRoute.ExpenseDetail.route -> {
             TopBarState(
                 isVisible = true,
@@ -209,6 +224,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         Route.ExpenseGraphRoute.ExpenseChange.route -> {
             TopBarState(
                 isVisible = true,
@@ -217,6 +233,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
                 onClick = { navController.navigateUp() }
             )
         }
+
         else -> {
             TopBarState(onClick = { navController.navigateUp() })
         }

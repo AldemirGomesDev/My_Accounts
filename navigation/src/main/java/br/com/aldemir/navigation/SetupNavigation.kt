@@ -12,6 +12,7 @@ import br.com.aldemir.navigation.destinations.recipe.addRecipeComposable
 import br.com.aldemir.navigation.destinations.recipe.changeRecipeComposable
 import br.com.aldemir.navigation.destinations.recipe.detailRecipeComposable
 import br.com.aldemir.navigation.destinations.recipe.listRecipeComposable
+import br.com.aldemir.navigation.destinations.register.registerComposable
 import br.com.aldemir.navigation.destinations.shared.historicComposable
 import br.com.aldemir.navigation.destinations.shared.homeComposable
 import br.com.aldemir.navigation.destinations.shared.splashComposable
@@ -34,6 +35,8 @@ fun SetupNavigation(
         homeComposable(navHostController)
 
         authenticationComposable(isDarkTheme, navHostController)
+
+        registerComposable(isDarkTheme, navHostController)
 
         expenseGraph(navHostController = navHostController)
 

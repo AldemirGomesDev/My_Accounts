@@ -5,4 +5,7 @@
     <string name="biometric_prompt_description_text">Teste de autenticação</string>
     <string name="biometric_prompt_use_password_instead_text">Entrar com senha</string>
     <string name="account_logo">To-Do Logo</string>
+    <string name="register_error">Erro ao cadastrar, tente novamente</string>
+    <string name="register_success">Cadastrado com sucesso!</string>
+    <string name="register_empty_fields">Campos vazios, preencha todos os campos!</string>
 </resources>

@@ -16,12 +16,14 @@ import br.com.aldemir.common.util.Const.RECIPE_DETAIL_SCREEN
 import br.com.aldemir.common.util.Const.RECIPE_ID
 import br.com.aldemir.common.util.Const.RECIPE_LIST_SCREEN
 import br.com.aldemir.common.util.Const.RECIPE_SCREEN
+import br.com.aldemir.common.util.Const.REGISTER_SCREEN
 
 sealed class Route(val route: String) {
     data object Splash: Route(SPLASH_SCREEN)
     data object Authentication: Route(LOGIN_SCREEN)
     data object Home: Route(HOME_SCREEN)
     data object Historic: Route(HISTORIC_SCREEN)
+    data object Register: Route(REGISTER_SCREEN)
 
     data object AddRecipe: Route(RECIPE_SCREEN)
     data object ListRecipe: Route(RECIPE_LIST_SCREEN)
