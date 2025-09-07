@@ -1,5 +1,8 @@
 package br.com.aldemir.data.remote
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ProductDTO(
     val id: Int,
     val title: String,
@@ -10,6 +13,7 @@ data class ProductDTO(
     val rating: RatingDTO
 )
 
+@Serializable
 data class RatingDTO(
     val rate: Double,
     val count: Int

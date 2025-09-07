@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.21"
-minSdk = "24"
+minSdk = "26"
 targetSdk = "33"
 compileSdk = "34"
 buildTools = "33.0.2"
@@ -12,6 +12,7 @@ constraintlayout = "1.0.1"
 room = "2.7.2"
 sqlite = "2.5.2"
 koin = "3.5.3"
+ktor = "2.3.0"
 datastore = "1.1.1"
 charts = "0.1.2"
 multidex = "2.0.1"
@@ -61,6 +62,14 @@ biometric = {module = "androidx.biometric:biometric", version = "1.1.0"}
 gson = {module = "com.google.code.gson:gson", version = "2.10.1"}
 retrofit = {module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion"}
 gsonConverter = {module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitVersion"}
+
+# Ktor
+ktor_client_core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
+ktor_client_okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor"}
+ktor_client_logger = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
+ktor_client_auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor"}
+ktor_client_content_negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
+ktor_client_serialization_json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor"}
 
 # Tests
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.1.5" }

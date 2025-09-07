@@ -100,6 +100,7 @@ class LoginViewModel(
     }
 
     fun loginUser(userName: String, password: String) {
+        getAllProducts()
         viewModelScope.launch {
             handleUiLoading()
             if (checkUserNameAndPasswordIsEmpty(userName, password)) {
