@@ -17,7 +17,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-object RetrofitClient {
+object MyAccountHttpClient {
 //    private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
     private const val BASE_URL = "https://fakestoreapi.com/"
 

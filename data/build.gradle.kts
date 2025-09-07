@@ -29,9 +29,6 @@ kotlin {
             //DATA STORE PREFERENCES
             implementation(libs.datastore.preferences)
 
-            implementation(libs.retrofit)
-            implementation(libs.gsonConverter)
-
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.okhttp)

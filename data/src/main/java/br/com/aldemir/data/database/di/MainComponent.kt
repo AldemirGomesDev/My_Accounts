@@ -6,7 +6,7 @@ import br.com.aldemir.data.database.room.ConfigDatabase
 import br.com.aldemir.data.remote.ApiService
 import br.com.aldemir.data.remote.ApiServiceImpl
 import br.com.aldemir.data.remote.ResponseCacheControlInterceptor
-import br.com.aldemir.data.remote.RetrofitClient
+import br.com.aldemir.data.remote.MyAccountHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -23,7 +23,7 @@ val appModule = module {
         ResponseCacheControlInterceptor()
     }
     single {
-        RetrofitClient.provideHttpClient(interceptor = get())
+        MyAccountHttpClient.provideHttpClient(interceptor = get())
     }
 
     factory<ApiService> { ApiServiceImpl(httpClient = get()) }
