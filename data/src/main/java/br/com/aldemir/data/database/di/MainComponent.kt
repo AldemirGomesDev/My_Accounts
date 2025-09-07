@@ -1,6 +1,5 @@
 package br.com.aldemir.data.database.di
 
-import android.content.Context
 import br.com.aldemir.data.database.preference.DataStorePreference
 import br.com.aldemir.data.database.preference.DataStorePreferenceImpl
 import br.com.aldemir.data.database.room.ConfigDatabase
