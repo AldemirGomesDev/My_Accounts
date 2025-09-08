@@ -40,7 +40,14 @@ fun NavGraphBuilder.authenticationComposable(
                         inclusive = true
                     }
                 }
-            }
+            },
+            navigateToRegisterScreen = {
+                navHostController.navigate(Route.Register.route) {
+                    popUpTo(Route.Authentication.route) {
+                        inclusive = false
+                    }
+                }
+            },
         )
     }
 }

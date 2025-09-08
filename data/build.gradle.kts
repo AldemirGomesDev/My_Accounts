@@ -1,7 +1,59 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.room)
+}
+
+kotlin {
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    sourceSets.named("androidMain").configure {
+        kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
+    }
+    sourceSets {
+        androidMain.dependencies {  }
+        commonMain.dependencies {
+            implementation(project(":common"))
+            implementation(project(":domain"))
+
+            implementation(libs.bundles.koin.all)
+
+            //DATA STORE PREFERENCES
+            implementation(libs.datastore.preferences)
+
+            //ROOM
+            implementation(libs.room.bundled)
+            implementation(libs.room.runtime)
+
+            // Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.client.logger)
+            implementation(libs.ktor.client.auth)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.serialization.json)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+    }
 }
 
 android {
@@ -11,9 +63,15 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         multiDexEnabled = true
+    }
 
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -21,21 +79,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 }
 
 dependencies {
-    implementation(project(":common"))
-    implementation(project(":domain"))
-
     //room
-    implementation(libs.bundles.room.all)
-    ksp (libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+}
 
-    implementation(libs.bundles.koin.all)
+configurations.implementation{
+    exclude(group = "com.intellij", module = "annotations")
+}
 
-    //DATA STORE PREFERENCES
-    implementation(libs.datastore.preferences)
+room {
+    schemaDirectory("$projectDir/schemas")
 }

@@ -1,9 +1,5 @@
 package br.com.aldemir.expense.mapper
 
-import br.com.aldemir.data.database.model.ExpenseDTO
-import br.com.aldemir.data.database.model.ExpenseMonthlyDTO
-import br.com.aldemir.data.database.model.ExpensePerMonthDTO
-import br.com.aldemir.data.database.model.MonthlyPaymentDTO
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain

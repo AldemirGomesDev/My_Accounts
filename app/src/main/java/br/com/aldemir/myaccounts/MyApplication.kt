@@ -27,10 +27,10 @@ class MyApplication: Application() {
                     add(mainModule)
                     add(dataModule)
                     add(domainModule)
+                    add(authenticationModule)
                     add(presentationHomeModule)
                     add(expenseModule)
                     add(recipeModule)
-                    add(authenticationModule)
                 }
             )
         }
