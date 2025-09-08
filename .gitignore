@@ -16,3 +16,4 @@
 .cxx
 local.properties
 .kotlin/metadata/kotlinTransformedMetadataLibraries
+.kotlin/errors
