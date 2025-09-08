@@ -41,10 +41,9 @@ compose-navigation = {module = "androidx.navigation:navigation-compose", version
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 
-room-runtime = {module = "androidx.room:room-runtime", version.ref = "room"}
-room-ktx = {module = "androidx.room:room-ktx", version.ref = "room"}
-room-compiler = {module = "androidx.room:room-compiler", version.ref = "room"}
-room-bundled = {module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite"}
+room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room_bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
 koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
 koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
@@ -84,6 +83,7 @@ kotlinJvm = { id = 'org.jetbrains.kotlin.jvm', version.ref = 'kotlin' }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = 'kotlin' }
 ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+room = { id = "androidx.room", version.ref = "room" }
 
 # KMP
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose_plugin_multplatform" }
@@ -93,5 +93,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 
 [bundles]
 compose-all = ["compose-ui", "compose-material", "compose-tooling", "compose-activity", "compose-livedata"]
-room-all = ["room-runtime", "room-ktx"]
 koin-all = ["koin-compose", "koin-android"]

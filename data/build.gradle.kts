@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -29,6 +30,10 @@ kotlin {
             //DATA STORE PREFERENCES
             implementation(libs.datastore.preferences)
 
+            //ROOM
+            implementation(libs.room.bundled)
+            implementation(libs.room.runtime)
+
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.okhttp)
@@ -36,6 +41,17 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization.json)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
         }
     }
 }
@@ -47,10 +63,6 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         multiDexEnabled = true
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
     }
 
     buildTypes {
@@ -60,9 +72,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            isMinifyEnabled = false
         }
     }
 
@@ -74,6 +83,16 @@ android {
 
 dependencies {
     //room
-    implementation(libs.bundles.room.all)
-    ksp (libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+}
+
+configurations.implementation{
+    exclude(group = "com.intellij", module = "annotations")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
