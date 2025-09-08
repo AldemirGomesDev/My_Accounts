@@ -10,6 +10,7 @@ object Const {
     const val EXPENSE_ADD_SCREEN = "expenseAdd"
     const val EXPENSE_CHANGE_SCREEN = "expenseChange"
     const val HISTORIC_SCREEN = "historic"
+    const val REGISTER_SCREEN = "register"
     const val SPLASH_SCREEN_DELAY = 1000L
 
     const val RECIPE_SCREEN = "addRecipe"

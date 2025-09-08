@@ -29,7 +29,6 @@ import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.data.database.model.RecipePerMonthDTO
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import org.koin.androidx.compose.koinViewModel
 

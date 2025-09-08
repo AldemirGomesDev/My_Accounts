@@ -1,0 +1,23 @@
+package br.com.aldemir.authentication.data
+
+import androidx.biometric.BiometricPrompt
+import androidx.fragment.app.FragmentActivity
+
+interface BiometricHelper {
+    fun isBiometricAvailable(): Boolean
+    fun getBiometricPrompt(
+        context: FragmentActivity,
+        onAuthSucceed: (BiometricPrompt.AuthenticationResult) -> Unit
+    ): BiometricPrompt
+    fun getPromptInfo(dialogModel: DialogModel): BiometricPrompt.PromptInfo
+    fun registerUserBiometrics(
+        context: FragmentActivity,
+        dialogModel: DialogModel,
+        onSuccess: (authResult: BiometricPrompt.AuthenticationResult) -> Unit = {}
+    )
+    fun authenticateUser(
+        context: FragmentActivity,
+        dialogModel: DialogModel,
+        onSuccess: (plainText: String) -> Unit)
+    fun checkPreferencesEnabled(): Boolean
+}

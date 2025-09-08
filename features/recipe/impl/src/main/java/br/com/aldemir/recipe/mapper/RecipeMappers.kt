@@ -1,7 +1,5 @@
 package br.com.aldemir.recipe.mapper
 
-import br.com.aldemir.data.database.model.RecipeMonthlyDTO
-import br.com.aldemir.data.database.model.RecipePerMonthDTO
 import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
