@@ -6,13 +6,7 @@ import kotlinx.coroutines.launch
 interface UseCase<in Param, R> {
     suspend fun execute(params: Param): R
 
-    /**
-     * Chamado quando houver erro no invoke.
-     * Pode ser sobreescrito pelos UseCases concretos para enviar logs/monitoria.
-     */
-    fun dispatchErrorResult(throwable: Throwable) {
-        // Implementação default: não faz nada
-    }
+    fun dispatchErrorResult(throwable: Throwable) { }
 
     operator fun invoke(
         scope: CoroutineScope,
@@ -26,7 +20,7 @@ interface UseCase<in Param, R> {
             result.fold(
                 onSuccess = { handler.success?.invoke(it) },
                 onFailure = { throwable ->
-                    dispatchErrorResult(throwable) // ✅ hook para log/monitoria
+                    dispatchErrorResult(throwable)
                     handler.error?.invoke(throwable)
                 }
             )
