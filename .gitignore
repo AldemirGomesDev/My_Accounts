@@ -3,6 +3,7 @@
 .apk
 /local.properties
 /.idea/caches
+/.idea/artifacts
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
