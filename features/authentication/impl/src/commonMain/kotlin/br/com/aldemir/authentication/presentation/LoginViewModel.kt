@@ -46,14 +46,12 @@ class LoginViewModel(
 
     private fun getAllProducts() {
         viewModelScope.launch {
-            getAllProductsUseCase(viewModelScope, Unit).apply {
-                onSuccess {
-                    // Handle success if needed
-                    Log.d("TAG_auth", "sucesso-> Product ${it.toList().random()}")
+            getAllProductsUseCase(viewModelScope) {
+                success = { listProductDomainModel ->
+                    Log.d("TAG_auth", "sucesso-> Product ${listProductDomainModel.toList().random()}")
                 }
-                onFailure {
-                    Log.e("TAG_auth", "Error: $it")
-                    // Handle failure if needed
+                error = { error ->
+                    Log.e("TAG_auth", "ViewModel Error: $error")
                 }
             }
         }
