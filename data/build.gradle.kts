@@ -10,6 +10,8 @@ plugins {
 }
 
 kotlin {
+    jvm()
+    androidTarget()
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -25,9 +27,13 @@ kotlin {
             implementation(project(":common"))
             implementation(project(":domain"))
 
+            // LOGGING
+            api(libs.logging)
+
             implementation(libs.bundles.koin.all)
 
             //DATA STORE PREFERENCES
+            implementation(libs.datastore.library)
             implementation(libs.datastore.preferences)
 
             //ROOM

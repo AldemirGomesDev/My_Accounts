@@ -7,7 +7,7 @@ import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.repository.RecipeMonthlyRepository
 
-class RecipeMonthlyRepositoryImpl constructor(
+class RecipeMonthlyRepositoryImpl(
     private val recipeMonthlyDao: RecipeMonthlyDao
 ) : RecipeMonthlyRepository {
     override suspend fun insert(recipeMonthly: RecipeMonthlyDomain): Long {
