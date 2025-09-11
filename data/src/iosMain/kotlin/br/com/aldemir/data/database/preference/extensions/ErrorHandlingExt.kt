@@ -1,5 +1,6 @@
 package br.com.aldemir.data.database.preference.extensions
 
+import com.diamondedge.logging.logging
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -19,7 +20,7 @@ fun <T> executeWithErrorHandling(logTag: String = "ErrorHandlingExt", operation:
         val result: T = operation(errorPtr)
         val error: NSError? = errorPtr.pointed.value
         if (error != null) {
-            println(error.localizedDescription)
+            logging(logTag).i { error.localizedDescription }
             throw Exception(error.localizedDescription)
         }
         return result

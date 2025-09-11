@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.0.21"
+logging = "2.0.3"
 minSdk = "26"
 targetSdk = "33"
 compileSdk = "34"
@@ -41,6 +42,7 @@ compose-navigation = {module = "androidx.navigation:navigation-compose", version
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 
+logging = { module = "com.diamondedge:logging", version.ref = "logging" }
 room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room_bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }

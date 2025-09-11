@@ -13,6 +13,7 @@ import br.com.aldemir.domain.usecase.authentication.Params
 import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import br.com.aldemir.login.R
+import com.diamondedge.logging.logging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,10 +49,10 @@ class LoginViewModel(
         viewModelScope.launch {
             getAllProductsUseCase(viewModelScope) {
                 success = { listProductDomainModel ->
-                    Log.d("TAG_auth", "sucesso-> Product ${listProductDomainModel.toList().random()}")
+                    logging("TAG_auth").i { "sucesso: ${listProductDomainModel.toList().random()}" }
                 }
                 error = { error ->
-                    Log.e("TAG_auth", "ViewModel Error: $error")
+                    logging("TAG_auth").e { "ViewModel Error: $error" }
                 }
             }
         }
