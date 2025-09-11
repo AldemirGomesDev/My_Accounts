@@ -6,7 +6,7 @@ import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.repository.ExpenseRepository
 
-class ExpenseRepositoryImpl constructor(
+class ExpenseRepositoryImpl(
     private val expenseDao: ExpenseDao
 ): ExpenseRepository {
     override suspend fun insertExpense(expense: ExpenseDomain): Long {

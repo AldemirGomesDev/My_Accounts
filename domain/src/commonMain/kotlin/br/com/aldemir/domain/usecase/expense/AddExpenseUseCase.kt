@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.repository.ExpenseRepository
 
-class AddExpenseUseCase constructor(
+class AddExpenseUseCase(
     private val expenseRepository: ExpenseRepository
 ): BaseUseCase<ExpenseDomain, Long> {
     override suspend fun execute(params: ExpenseDomain): Long {

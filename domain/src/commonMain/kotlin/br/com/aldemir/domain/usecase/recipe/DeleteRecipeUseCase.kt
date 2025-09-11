@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.domain.repository.RecipeRepository
 
-class DeleteRecipeUseCase constructor(
+class DeleteRecipeUseCase(
     private val recipeRepository: RecipeRepository
 ): BaseUseCase<RecipeDomain, Int> {
 

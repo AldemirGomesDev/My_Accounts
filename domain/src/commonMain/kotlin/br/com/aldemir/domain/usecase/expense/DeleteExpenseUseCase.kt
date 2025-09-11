@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.repository.ExpenseRepository
 import br.com.aldemir.domain.model.ExpenseDomain
 
-class DeleteExpenseUseCase constructor(
+class DeleteExpenseUseCase(
     private val expenseRepository: ExpenseRepository
 ): BaseUseCase<ExpenseDomain, Int> {
 

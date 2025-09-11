@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.repository.RecipeMonthlyRepository
 
-class GetAllRecipePerMonthUseCase constructor(
+class GetAllRecipePerMonthUseCase(
     private val recipePerMonthlyRepository: RecipeMonthlyRepository
 ) : BaseUseCase<GetAllRecipePerMonthUseCase.Params, List<RecipePerMonthDomain>> {
 

@@ -5,7 +5,7 @@ import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.repository.MonthlyPaymentRepository
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 
-class GetAllExpensesMonthUseCase constructor(
+class GetAllExpensesMonthUseCase(
     private val monthlyPaymentRepository: MonthlyPaymentRepository
 ): BaseUseCase<Params, List<ExpenseMonthlyDomain>> {
     override suspend fun execute(params: Params): List<ExpenseMonthlyDomain> {

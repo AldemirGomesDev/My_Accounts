@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.repository.MonthlyPaymentRepository
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 
-class AddMonthlyPaymentUseCase constructor(
+class AddMonthlyPaymentUseCase(
     private val monthlyPaymentRepository: MonthlyPaymentRepository
 ): BaseUseCase<ExpenseMonthlyDomain, Long> {
 

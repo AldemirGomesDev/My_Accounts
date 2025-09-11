@@ -4,7 +4,7 @@ import br.com.aldemir.domain.base.BaseUseCase
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.repository.MonthlyPaymentRepository
 
-class GetAllExpensePerMonthUseCase constructor(
+class GetAllExpensePerMonthUseCase(
     private val monthlyPaymentRepository: MonthlyPaymentRepository
 ): BaseUseCase<GetAllExpensePerMonthUseCase.Params, List<ExpensePerMonthDomain>> {
 
