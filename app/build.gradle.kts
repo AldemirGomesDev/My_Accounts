@@ -63,6 +63,8 @@ dependencies {
     implementation(project(":features:expense:impl"))
     implementation(project(":features:authentication:impl"))
 
+    api(libs.logging)
+
     implementation(libs.android.core.ktx)
     implementation(libs.multidex)
     // Koin for Android

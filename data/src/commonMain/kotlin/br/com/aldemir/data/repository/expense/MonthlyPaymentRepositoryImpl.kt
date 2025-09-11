@@ -8,7 +8,7 @@ import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.domain.repository.MonthlyPaymentRepository
 
-class MonthlyPaymentRepositoryImpl constructor(
+class MonthlyPaymentRepositoryImpl(
     private val monthlyPaymentDao: MonthlyPaymentDao
 ): MonthlyPaymentRepository {
     override suspend fun insertMonthlyPayment(expenseMonthly: ExpenseMonthlyDomain): Long {
