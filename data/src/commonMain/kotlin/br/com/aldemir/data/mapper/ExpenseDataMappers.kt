@@ -18,7 +18,6 @@ fun ExpenseDomain.toDto() = ExpenseDTO(
     status = status
 )
 
-@JvmName("ExpenseDTOToDomain")
 fun List<ExpenseDTO>.toDomain(): List<ExpenseDomain> {
     return this.map {
         ExpenseDomain(
@@ -41,7 +40,6 @@ fun ExpenseMonthlyDomain.toDto() = ExpenseMonthlyDTO(
     situation = situation
 )
 
-@JvmName("MonthlyPaymentDTOToDomain")
 fun List<MonthlyPaymentDTO>.toDomain(): List<MonthlyPaymentDomain> {
     return this.map {
         MonthlyPaymentDomain(
@@ -65,7 +63,6 @@ fun ExpenseMonthlyDTO.toDomain() = ExpenseMonthlyDomain(
     situation = situation
 )
 
-@JvmName("ExpenseMonthlyDTOToDomain")
 fun List<ExpenseMonthlyDTO>.toDomain(): List<ExpenseMonthlyDomain> {
     return this.map {
         ExpenseMonthlyDomain(
@@ -79,7 +76,6 @@ fun List<ExpenseMonthlyDTO>.toDomain(): List<ExpenseMonthlyDomain> {
     }
 }
 
-@JvmName("ExpensePerMonthDTOToDomain")
 fun List<ExpensePerMonthDTO>.toDomain(): List<ExpensePerMonthDomain> {
     return this.map {
         ExpensePerMonthDomain(

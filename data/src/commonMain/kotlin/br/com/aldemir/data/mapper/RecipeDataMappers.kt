@@ -24,7 +24,6 @@ fun RecipeUpdateDomain.toDto() = RecipeUpdateDTO(
     description = description
 )
 
-@JvmName("RecipeDTOToDomain")
 fun List<RecipeDTO>.toDomain(): List<RecipeDomain> {
     return this.map {
         RecipeDomain(
@@ -59,7 +58,6 @@ fun RecipePerMonthDTO.toDomain() = RecipePerMonthDomain(
     status = status
 )
 
-@JvmName("RecipeMonthlyDTOToDomain")
 fun List<RecipeMonthlyDTO>.toDomain(): List<RecipeMonthlyDomain> {
     return this.map {
         RecipeMonthlyDomain(
@@ -73,7 +71,6 @@ fun List<RecipeMonthlyDTO>.toDomain(): List<RecipeMonthlyDomain> {
     }
 }
 
-@JvmName("RecipePerMonthDTOToDomain")
 fun List<RecipePerMonthDTO>.toDomain(): List<RecipePerMonthDomain> {
     return this.map {
         RecipePerMonthDomain(
