@@ -1,5 +1,6 @@
 package br.com.aldemir.data.config
 
-actual object PlatformConfig {
-    actual val isDebug: Boolean = false
-}
+import kotlin.experimental.ExperimentalNativeApi
+
+@OptIn(ExperimentalNativeApi::class)
+actual fun isDebug(): Boolean = Platform.isDebugBinary

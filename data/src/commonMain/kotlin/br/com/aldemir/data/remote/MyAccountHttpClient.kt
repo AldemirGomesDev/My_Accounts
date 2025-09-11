@@ -1,6 +1,6 @@
 package br.com.aldemir.data.remote
 
-import br.com.aldemir.data.config.PlatformConfig
+import br.com.aldemir.data.config.isDebug
 import com.diamondedge.logging.logging
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpResponseValidator
@@ -38,7 +38,7 @@ object MyAccountHttpClient {
             install(HttpTimeout) {
                 requestTimeoutMillis = 10000
             }
-            if (PlatformConfig.isDebug) {
+            if (isDebug()) {
                 install(Logging) {
                     logger = object : Logger {
                         override fun log(message: String) {
