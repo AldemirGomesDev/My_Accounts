@@ -21,7 +21,6 @@ import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.R
-import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.Green200
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
