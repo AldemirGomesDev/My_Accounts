@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.drawer
+package br.com.aldemir.navigation.drawer
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,18 +24,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import br.com.aldemir.common.theme.DarkModeDropDownState
+import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.util.emptyString
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DarkModeDropDownMenu(
     modifier: Modifier = Modifier,
-    darkModeStateSelected: DarkModeDropDownState,
-    onItemClicked: (state: DarkModeDropDownState) -> Unit,
-    listItems: List<DarkModeDropDownState>,
+    darkModeStateSelected: AppDarkMode,
+    onItemClicked: (state: AppDarkMode) -> Unit,
+    listItems: List<AppDarkMode>,
     tintColor: Color = MyAccountsTheme.colors.second
 ) {
 
@@ -58,7 +58,7 @@ fun DarkModeDropDownMenu(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = stringResource(id = darkModeStateSelected.titleRes),
+            text = stringResource(darkModeStateSelected.titleRes),
             color = tintColor,
             style = MyAccountsTheme.typography.subTitleMedium,
         )
@@ -92,7 +92,7 @@ fun DarkModeDropDownMenu(
                             contentDescription = emptyString()
                         )
                         Text(
-                            text = stringResource(id = itemValue.titleRes),
+                            text = stringResource(itemValue.titleRes),
                             color = MyAccountsTheme.colors.primary
                         )
                     }
@@ -117,7 +117,7 @@ fun DarkModeDropDownMenu(
 private fun DarkModeDropDownMenuPreview() {
     MyAccountsTheme {
         DarkModeDropDownMenu(
-            darkModeStateSelected = DarkModeDropDownState(),
+            darkModeStateSelected = AppDarkMode.Default,
             onItemClicked = {},
             listItems = listOf(),
             tintColor = White

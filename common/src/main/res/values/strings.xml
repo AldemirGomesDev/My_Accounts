@@ -1,18 +1,13 @@
 <resources>
     <string name="app_name">common</string>
-    <string name="main_screen_title">Minhas contas</string>
-    <string name="drawer_dark_mode_enabled">Modo escuro</string>
-    <string name="drawer_dark_mode_disabled">Modo claro</string>
-    <string name="drawer_dark_mode_auto">Modo automático</string>
-    <string name="drawer_welcome">Bem vindo!</string>
-    <string name="account_pending">Pendente</string>
-    <string name="account_list_item_status">Status:</string>
-    <string name="account_logo">To-Do Logo</string>
-    <string name="account_label_value">Valor:</string>
-    <string name="account_resume_monthly">RESUMO MENSAL</string>
     <string name="home_title">Home</string>
+    <string name="drawer_welcome">Bem vindo!</string>
+    <string name="account_label_value">Valor:</string>
+    <string name="account_pending">Pendente</string>
+    <string name="account_resume_monthly">RESUMO MENSAL</string>
+    <string name="account_list_item_status">Status:</string>
     <string name="home_balance">Saldo:</string>
-    <string name="home_total_month">Total no mês</string>
+
 
     <!-- Expense -->
     <string name="expense_detail_screen_title">Detalhes da despesa</string>

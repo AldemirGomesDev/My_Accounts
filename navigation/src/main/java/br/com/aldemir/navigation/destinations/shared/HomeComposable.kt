@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
-import br.com.aldemir.navigation.Route
+import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 
 @ExperimentalFoundationApi

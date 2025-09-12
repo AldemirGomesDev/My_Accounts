@@ -2,9 +2,7 @@ package br.com.aldemir.myaccounts.presentation.shared.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.AppDarkMode
-import br.com.aldemir.common.theme.DarkModeDropDownState
 import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
@@ -71,7 +69,6 @@ class MainViewModel(
         _uiState.update { uiState ->
             uiState.copy(
                 appDarkMode = appDarkMode,
-                appDarkModeSelected = getDarkModeSelected(appDarkMode)
             )
         }
     }
@@ -83,30 +80,11 @@ class MainViewModel(
             AppDarkMode.valueOf(darkMode)
         }
     }
-
-    private fun getDarkModeSelected(darkMode: AppDarkMode) : DarkModeDropDownState {
-        return when(darkMode) {
-            AppDarkMode.Default -> DarkModeDropDownState()
-            AppDarkMode.Dark -> getDarkModeState()
-            AppDarkMode.Light -> getLightModeState()
-        }
-    }
+    
 
     private fun getItemsMenu() = listOf(
-        DarkModeDropDownState(),
-        getDarkModeState(),
-        getLightModeState()
-    )
-
-    private fun getDarkModeState() = DarkModeDropDownState(
-            appDarkMode = AppDarkMode.Dark,
-            titleRes = R.string.drawer_dark_mode_enabled,
-            iconRes = R.drawable.ic_dark_mode_24
-    )
-
-    private fun getLightModeState() = DarkModeDropDownState(
-        appDarkMode = AppDarkMode.Light,
-        titleRes = R.string.drawer_dark_mode_disabled,
-        iconRes = R.drawable.ic_light_mode_24
+        AppDarkMode.Default,
+        AppDarkMode.Dark,
+        AppDarkMode.Light
     )
 }

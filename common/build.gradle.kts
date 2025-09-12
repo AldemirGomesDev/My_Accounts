@@ -24,6 +24,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(compose.components.resources)
             implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)

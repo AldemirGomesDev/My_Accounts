@@ -1,4 +1,4 @@
-package br.com.aldemir.navigation
+package br.com.aldemir.common.navigation
 
 import br.com.aldemir.common.util.Const.EXPENSE_ADD_SCREEN
 import br.com.aldemir.common.util.Const.EXPENSE_CHANGE_SCREEN
@@ -34,7 +34,7 @@ sealed class Route(val route: String) {
         fun createRoute(idMonthlyRecipe: Int) = "$RECIPE_CHANGE_SCREEN/$idMonthlyRecipe"
     }
 
-    data object ExpenseGraphRoute: Route (EXPENSE_GRAPH_ROUTE) {
+    data object ExpenseGraphRoute: Route(EXPENSE_GRAPH_ROUTE) {
         data object ExpenseList: Route(EXPENSE_LIST_SCREEN)
         data object ExpenseAdd: Route(EXPENSE_ADD_SCREEN)
         data object ExpenseDetail: Route("$EXPENSE_SCREEN/{$EXPENSE_ID}/{$EXPENSE_NAME}") {

@@ -1,12 +1,12 @@
-package br.com.aldemir.myaccounts.presentation.drawer
+package br.com.aldemir.navigation.drawer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.ui.graphics.vector.ImageVector
-import br.com.aldemir.myaccounts.R
-import br.com.aldemir.navigation.Route
+import br.com.aldemir.common.navigation.Route
+import br.com.aldemir.navigation.R
 
 sealed class DrawerScreens(val titleResourceId: Int, val route: String, val imageIcon: ImageVector) {
     data object Home : DrawerScreens(

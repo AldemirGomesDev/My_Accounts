@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import br.com.aldemir.navigation.Route
+import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.common.util.emptyString

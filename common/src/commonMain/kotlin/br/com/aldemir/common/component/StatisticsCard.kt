@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,20 +26,29 @@ import br.com.aldemir.common.util.toDecimal
 import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.home_add_expense
+import myaccounts.common.generated.resources.home_expense_paid_out
+import myaccounts.common.generated.resources.home_expense_to_pay
+import myaccounts.common.generated.resources.home_recipe_card_title
+import myaccounts.common.generated.resources.home_recipe_checked
+import myaccounts.common.generated.resources.home_recipe_pending
+import myaccounts.common.generated.resources.home_total_month
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun StatisticsCard(
     cardState: CardState,
 ) {
     val textChecked: String = when (cardState.cardType) {
-        CardType.EXPENSE -> stringResource(id = R.string.expense_paid_out)
-        CardType.RECIPE -> stringResource(id = R.string.recipe_checked)
-        CardType.HOME -> stringResource(id = R.string.recipe_card_title)
+        CardType.EXPENSE -> stringResource(Res.string.home_expense_paid_out)
+        CardType.RECIPE -> stringResource(Res.string.home_recipe_checked)
+        CardType.HOME -> stringResource(Res.string.home_recipe_card_title)
     }
     val textPending: String = when (cardState.cardType) {
-        CardType.EXPENSE ->stringResource(id = R.string.expense_to_pay)
-        CardType.RECIPE -> stringResource(id = R.string.recipe_pending)
-        CardType.HOME -> stringResource(id = R.string.add_expense)
+        CardType.EXPENSE ->stringResource(Res.string.home_expense_to_pay)
+        CardType.RECIPE -> stringResource(Res.string.home_recipe_pending)
+        CardType.HOME -> stringResource(Res.string.home_add_expense)
     }
 
     val currentLocal = Locale.current
@@ -68,7 +76,7 @@ fun StatisticsCard(
                             top.linkTo(parent.top)
                         }
                         .padding(bottom = 20.dp),
-                    text = stringResource(id = R.string.home_total_month),
+                    text = stringResource(Res.string.home_total_month),
                     color = Color.White,
                     style = MyAccountsTheme.typography.paragraph02Bold
                 )

@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.bottomappbar
+package br.com.aldemir.navigation.bottomappbar
 
 import android.content.res.Configuration
 import androidx.compose.material.*

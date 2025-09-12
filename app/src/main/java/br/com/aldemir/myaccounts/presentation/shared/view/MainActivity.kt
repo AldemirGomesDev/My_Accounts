@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.AppDarkMode
-import br.com.aldemir.myaccounts.presentation.drawer.DrawerNavigationScreen
+import br.com.aldemir.navigation.drawer.DrawerNavigationScreen
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.myaccounts.presentation.shared.action.MainAction
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,9 +43,9 @@ class MainActivity : FragmentActivity() {
                     isDarkTheme = isDarkMode,
                     listItems = uiState.listItems,
                     onItemClicked = {
-                        viewModel.onAction(MainAction.UpdateDarkModeState(it.appDarkMode))
+                        viewModel.onAction(MainAction.UpdateDarkModeState(it))
                     },
-                    darkModeStateSelected = uiState.appDarkModeSelected
+                    darkModeStateSelected = uiState.appDarkMode
                 )
             }
         }
