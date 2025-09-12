@@ -8,10 +8,10 @@ import kotlin.math.roundToInt
 private val onlyNumberRegex by lazy { "[^0-9 ]".toRegex() }
 private const val DECIMAL_FACTOR = 100
 
-fun String.fromCurrency(): Double = this
-    .replace(onlyNumberRegex, "")
-    .toDouble()
-    .div(DECIMAL_FACTOR)
+fun String.fromCurrency(): Double {
+    val clean = this.replace(onlyNumberRegex, "")
+    return clean.toDoubleOrNull()?.div(DECIMAL_FACTOR) ?: 0.0
+}
 
 fun Double.toCurrency(currencySymbol: String): String {
     val currentPattern = "$currencySymbol #,###,##0.00"
