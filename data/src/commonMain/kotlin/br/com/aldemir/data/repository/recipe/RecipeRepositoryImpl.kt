@@ -3,6 +3,7 @@ package br.com.aldemir.data.repository.recipe
 import br.com.aldemir.data.database.room.recipe.RecipeDao
 import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toDto
+import br.com.aldemir.data.mapper.toRecipeDomain
 import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.domain.model.RecipeUpdateDomain
 import br.com.aldemir.domain.repository.RecipeRepository
@@ -27,6 +28,6 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun getAll(): List<RecipeDomain> {
-        return recipeDao.getAll().toDomain()
+        return recipeDao.getAll().toRecipeDomain()
     }
 }

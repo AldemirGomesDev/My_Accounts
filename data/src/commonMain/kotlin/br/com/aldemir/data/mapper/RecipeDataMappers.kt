@@ -24,7 +24,7 @@ fun RecipeUpdateDomain.toDto() = RecipeUpdateDTO(
     description = description
 )
 
-fun List<RecipeDTO>.toDomain(): List<RecipeDomain> {
+fun List<RecipeDTO>.toRecipeDomain(): List<RecipeDomain> {
     return this.map {
         RecipeDomain(
             id = it.id,
@@ -46,7 +46,7 @@ fun RecipeMonthlyDomain.toDTO() = RecipeMonthlyDTO(
     status = status
 )
 
-fun RecipePerMonthDTO.toDomain() = RecipePerMonthDomain(
+fun RecipePerMonthDTO.toRecipePerMonthDomain() = RecipePerMonthDomain(
     id = id,
     id_recipe = id_recipe,
     name = name,
@@ -58,7 +58,7 @@ fun RecipePerMonthDTO.toDomain() = RecipePerMonthDomain(
     status = status
 )
 
-fun List<RecipeMonthlyDTO>.toDomain(): List<RecipeMonthlyDomain> {
+fun List<RecipeMonthlyDTO>.toRecipeMonthlyDomain(): List<RecipeMonthlyDomain> {
     return this.map {
         RecipeMonthlyDomain(
             id = it.id,
@@ -71,7 +71,7 @@ fun List<RecipeMonthlyDTO>.toDomain(): List<RecipeMonthlyDomain> {
     }
 }
 
-fun List<RecipePerMonthDTO>.toDomain(): List<RecipePerMonthDomain> {
+fun List<RecipePerMonthDTO>.toRecipePerMonthDomain(): List<RecipePerMonthDomain> {
     return this.map {
         RecipePerMonthDomain(
             id = it.id,
