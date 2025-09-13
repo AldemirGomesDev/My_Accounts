@@ -10,13 +10,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.navigation.R
 import br.com.aldemir.navigation.Routes
 import br.com.aldemir.navigation.SetupNavigation
@@ -245,13 +246,15 @@ fun getTopBarState(navController: NavHostController): TopBarState {
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class
 )
-@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 fun DrawerNavigationScreenPreview() {
-    DrawerNavigationScreen(
-        isDarkTheme = true,
-        darkModeStateSelected = AppDarkMode.Default,
-        onItemClicked = {},
-        listItems = listOf()
-    )
+    MyAccountsTheme {
+        DrawerNavigationScreen(
+            isDarkTheme = true,
+            darkModeStateSelected = AppDarkMode.Default,
+            onItemClicked = {},
+            listItems = listOf()
+        )
+    }
 }
