@@ -3,9 +3,15 @@ package br.com.aldemir.common.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +44,7 @@ fun MyDropdownMenuItem(
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "Open Options",
-                tint = MaterialTheme.colors.taskItemTextColor,
+                tint = MaterialTheme.colorScheme.taskItemTextColor,
             )
         }
         DropdownMenu(

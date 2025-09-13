@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -188,7 +189,7 @@ fun HistoricScreenList(
                     )
                     Divider(
                         modifier = Modifier.height(0.5.dp),
-                        color = MaterialTheme.colors.dividerColor
+                        color = MaterialTheme.colorScheme.dividerColor
                     )
                 }
             }

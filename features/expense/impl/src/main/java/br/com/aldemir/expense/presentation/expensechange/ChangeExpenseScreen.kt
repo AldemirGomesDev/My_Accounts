@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -138,17 +139,17 @@ private fun ChangeExpenseContent(
             value = value,
             onValueChange = { onValueChange(it) },
             label = { Text(text = stringResource(R.string.form_add_value)) },
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.bodySmall,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             visualTransformation = MaskCurrencyVisualTransformation(currencySymbol),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedLabelColor = MaterialTheme.colors.addAccountLabelColor,
-                textColor = MaterialTheme.colors.addAccountBorderColor,
-                disabledTextColor = MaterialTheme.colors.addAccountBorderColor
+                focusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                focusedLabelColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                unfocusedLabelColor = MaterialTheme.colorScheme.addAccountLabelColor,
+                textColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                disabledTextColor = MaterialTheme.colorScheme.addAccountBorderColor
             ),
             isError = value.isEmpty(),
             trailingIcon = {
@@ -160,7 +161,7 @@ private fun ChangeExpenseContent(
         )
         if (value.isEmpty()) Text(
             text = stringResource(id = R.string.form_invalid_value),
-            color = MaterialTheme.colors.error,
+            color = MaterialTheme.colorScheme.error,
             fontSize = FontSize.scale12
         )
         Divider(

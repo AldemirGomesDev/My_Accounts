@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":features:home:publ"))
 
+    implementation(libs.compose.material3)
     implementation(libs.bundles.koin.all)
 
     implementation(libs.multidex)

@@ -24,7 +24,9 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(compose.material3)
             implementation(compose.components.resources)
+            implementation(compose.preview)
             implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)
@@ -51,7 +53,10 @@ android {
 }
 
 dependencies {
-
     //Compose
     debugImplementation(libs.compose.tooling)
+}
+
+compose.resources {
+    publicResClass = true
 }

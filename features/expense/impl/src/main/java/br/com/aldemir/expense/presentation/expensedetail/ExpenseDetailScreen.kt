@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -89,7 +90,7 @@ fun ExpenseDetailScreen(
             ) {
                 TextTitleLarge(
                     text = expenseName,
-                    color = MaterialTheme.colors.taskItemTextColor,
+                    color = MaterialTheme.colorScheme.taskItemTextColor,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = LARGE_PADDING, vertical = MEDIUM_PADDING)
@@ -239,7 +240,7 @@ private fun ExpenseDetailContent(
             }
             Divider(
                 modifier = Modifier.height(0.5.dp),
-                color = MaterialTheme.colors.dividerColor
+                color = MaterialTheme.colorScheme.dividerColor
             )
         }
     }

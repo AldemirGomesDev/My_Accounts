@@ -20,7 +20,6 @@ import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.common.theme.taskItemTextColor
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem

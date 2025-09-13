@@ -1,29 +1,29 @@
 package br.com.aldemir.common.component
 
-import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.theme.Shapes
 import br.com.aldemir.common.util.emptyFloat
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.common.util.toDecimal
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import myaccounts.common.generated.resources.Res
@@ -56,7 +56,9 @@ fun StatisticsCard(
 
     Card(
         shape = Shapes.large,
-        backgroundColor = MyAccountsTheme.colors.backgroundGreen,
+        colors = CardDefaults.cardColors(
+            containerColor = MyAccountsTheme.colors.backgroundGreen
+        ),
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
         Column(
@@ -90,14 +92,15 @@ fun StatisticsCard(
                     color = Color.White,
                     style = MyAccountsTheme.typography.paragraph02Normal
                 )
-                Image(
+                Icon(
                     modifier = Modifier.constrainAs(iconPaidOut) {
                         top.linkTo(paidOutLabel.top)
                         bottom.linkTo(paidOutValue.bottom)
                         start.linkTo(parent.start)
                     },
-                    painter = painterResource(id = R.drawable.ic_check_circle),
-                    contentDescription = emptyString()
+                    imageVector = Icons.Filled.CheckCircle,
+                    tint = MyAccountsTheme.colors.success,
+                    contentDescription = null
                 )
                 Text(
                     modifier = Modifier
@@ -121,7 +124,7 @@ fun StatisticsCard(
                     color = Color.White,
                     style = MyAccountsTheme.typography.paragraph02Normal
                 )
-                Image(
+                Icon(
                     modifier = Modifier
                         .constrainAs(iconPayable) {
                             top.linkTo(payableLabel.top)
@@ -129,8 +132,9 @@ fun StatisticsCard(
                             start.linkTo(paidOutValue.end)
                         }
                         .padding(start = 24.dp),
-                    painter = painterResource(id = R.drawable.ic_report_problem),
-                    contentDescription = emptyString()
+                    imageVector = Icons.Filled.Warning,
+                    tint = MyAccountsTheme.colors.warning,
+                    contentDescription = null
                 )
                 Text(
                     modifier = Modifier
@@ -175,14 +179,7 @@ fun StatisticsCard(
     }
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun StatisticsCardPreview() {
     MyAccountsTheme {

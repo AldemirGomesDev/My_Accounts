@@ -1,6 +1,7 @@
 package br.com.aldemir.common.theme
 
-import androidx.compose.material.Colors
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -29,6 +30,12 @@ val primaryLightVariant =Color(0xFFf2ffff)
 val lightSecondary = Color(0xFFefd8bf)
 val lightSecondaryVariant = Color(0xFFefd8bf)
 
+val successLight = Color(0xFF32CD32)
+val successDark = Color(0xFF32CD32)
+
+val warningLight = Color(0xFFFFA500)
+val warningDark = Color(0xFFFFA500)
+
 val Black = Color(0xFF000000)
 val White2= Color(0xFFFFFFFF)
 val RedErrorDark = Color(0xFFB00020)
@@ -39,22 +46,22 @@ val primaryDarkVariant =Color(0xFF00001a)
 val darkSecondary = Color(0xFF402810)
 val darkSecondaryVariant = Color(0xFF200000)
 
-val Colors.taskItemTextColor: Color
+val ColorScheme.taskItemTextColor: Color
     @Composable
-    get() = if (isLight) Purple200 else Purple700
+    get() = if (isSystemInDarkTheme()) Purple700 else Purple200
 
-val Colors.taskItemBackgroundColor: Color
+val ColorScheme.taskItemBackgroundColor: Color
     @Composable
-    get() = if (isLight) Color.White else DarkGray
+    get() = if (isSystemInDarkTheme()) DarkGray else Color.White
 
-val Colors.dividerColor: Color
+val ColorScheme.dividerColor: Color
     @Composable
-    get() = if (isLight) LightGray else MediumGray
+    get() = if (isSystemInDarkTheme()) MediumGray else LightGray
 
-val Colors.addAccountLabelColor: Color
+val ColorScheme.addAccountLabelColor: Color
     @Composable
-    get() = if (isLight) Purple200 else Purple700
+    get() = if (isSystemInDarkTheme()) Purple700 else Purple200
 
-val Colors.addAccountBorderColor: Color
+val ColorScheme.addAccountBorderColor: Color
     @Composable
-    get() = if (isLight) Purple200 else Purple700
+    get() = if (isSystemInDarkTheme()) Purple700 else Purple200

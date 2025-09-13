@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +41,7 @@ fun RecipeItem(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.taskItemBackgroundColor,
+        color = MaterialTheme.colorScheme.taskItemBackgroundColor,
         shape = RectangleShape,
         elevation = MyAccountsTheme.dimensions.sizing2,
         onClick = {

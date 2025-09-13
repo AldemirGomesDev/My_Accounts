@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,14 +25,14 @@ fun CheckboxWithText(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Text(text = text, color = MaterialTheme.colors.taskItemTextColor)
+        Text(text = text, color = MaterialTheme.colorScheme.taskItemTextColor)
         Checkbox(
             checked = isChecked,
             onCheckedChange = { onCheckedChange(it) },
             enabled = true,
             colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.taskItemTextColor,
-                uncheckedColor = MaterialTheme.colors.taskItemTextColor
+                checkedColor = MaterialTheme.colorScheme.taskItemTextColor,
+                uncheckedColor = MaterialTheme.colorScheme.taskItemTextColor
             )
         )
     }

@@ -1,6 +1,7 @@
 package br.com.aldemir.common.component
 
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -42,13 +43,13 @@ fun MyExposedDropdownMenu(
             },
             modifier = modifier,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedBorderColor = MaterialTheme.colors.addAccountBorderColor,
-                focusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-                unfocusedLabelColor = MaterialTheme.colors.addAccountBorderColor,
-                textColor = MaterialTheme.colors.addAccountBorderColor,
-                disabledTextColor = MaterialTheme.colors.addAccountBorderColor,
-                trailingIconColor = MaterialTheme.colors.addAccountBorderColor
+                focusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                focusedLabelColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                unfocusedLabelColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                textColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                disabledTextColor = MaterialTheme.colorScheme.addAccountBorderColor,
+                trailingIconColor = MaterialTheme.colorScheme.addAccountBorderColor
             ),
         )
         ExposedDropdownMenu(
@@ -64,7 +65,7 @@ fun MyExposedDropdownMenu(
                         expanded = false
                     }
                 ) {
-                    Text(text = selectionOption, color = MaterialTheme.colors.taskItemTextColor)
+                    Text(text = selectionOption, color = MaterialTheme.colorScheme.taskItemTextColor)
                 }
             }
         }

@@ -19,7 +19,7 @@ fun TextBodyTwoItem(
         text = text,
         modifier = modifier,
         color = color,
-        style = Typography.body2,
+        style = Typography.bodyMedium,
         textAlign = TextAlign.End,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
