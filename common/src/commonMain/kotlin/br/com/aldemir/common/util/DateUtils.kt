@@ -27,7 +27,7 @@ object DateUtils {
         val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
         val months = arrayListOf<String>()
 
-        for (item in -6 until 0) {
+        for (item in -5..0) {
             val cal = Calendar.getInstance()
             cal.add(Calendar.MONTH, item)
             cal.set(Calendar.DAY_OF_MONTH, 1)
