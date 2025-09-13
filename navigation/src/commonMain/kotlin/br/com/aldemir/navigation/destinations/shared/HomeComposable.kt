@@ -43,7 +43,7 @@ fun NavGraphBuilder.homeComposable(
 
                     ButtonType.ButtonExpense -> {
                         navHostController.navigate(
-                            Routes.ExpenseGraphRoute
+                            Routes.ExpenseGraphRoute.ExpenseList
                         )
                     }
                 }
