@@ -46,5 +46,5 @@ val Typography = Typography(
 )
 
 val MyAccountsFont = FontFamily(
-    Font(R.font.aremat)
+    Font(R.font.cwg_sans)
 )
