@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.shared.view
+package br.com.aldemir.myaccounts.presentation.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,7 @@ import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
-import br.com.aldemir.myaccounts.presentation.shared.action.MainAction
+import br.com.aldemir.myaccounts.presentation.action.MainAction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

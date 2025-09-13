@@ -1,11 +1,61 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.jetbrainsCompose)
+}
+
+kotlin {
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    sourceSets.named("androidMain").configure {
+        kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
+    }
+
+    sourceSets {
+        androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.crashlytics)
+            implementation(libs.firebase.analytics)
+
+            implementation(project(":data"))
+            implementation(project(":common"))
+            implementation(project(":domain"))
+            implementation(project(":navigation"))
+            implementation(project(":features:home:impl"))
+            implementation(project(":features:recipe:impl"))
+            implementation(project(":features:expense:impl"))
+            implementation(project(":features:authentication:impl"))
+
+            api(libs.logging)
+
+            implementation(libs.android.core.ktx)
+            implementation(libs.multidex)
+            // Koin for Android
+            implementation(libs.bundles.koin.all)
+            //Compose
+            implementation(libs.bundles.compose.all)
+            implementation(libs.compose.lifecycle.viewmodel)
+            implementation(libs.compoose.constraintlayout)
+            // Paging
+            implementation(libs.paging.compose)
+            implementation(libs.compose.navigation)
+        }
+        commonMain.dependencies {
+
+        }
+    }
 }
 
 android {
@@ -41,9 +91,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 
     buildFeatures {
         compose = true
@@ -53,33 +100,6 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":data"))
-    implementation(project(":common"))
-    implementation(project(":domain"))
-    implementation(project(":navigation"))
-    implementation(project(":features:home:impl"))
-    implementation(project(":features:recipe:impl"))
-    implementation(project(":features:expense:impl"))
-    implementation(project(":features:authentication:impl"))
-
-    api(libs.logging)
-
-    implementation(libs.android.core.ktx)
-    implementation(libs.multidex)
-    // Koin for Android
-    implementation(libs.bundles.koin.all)
-    //Compose
-    implementation(libs.bundles.compose.all)
-    implementation(libs.compose.lifecycle.viewmodel)
-    implementation(libs.compoose.constraintlayout)
-    // Paging
-    implementation(libs.paging.compose)
-    implementation(libs.compose.navigation)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

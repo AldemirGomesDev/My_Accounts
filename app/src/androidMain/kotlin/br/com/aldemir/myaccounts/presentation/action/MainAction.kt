@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.shared.action
+package br.com.aldemir.myaccounts.presentation.action
 
 import br.com.aldemir.common.theme.AppDarkMode
 

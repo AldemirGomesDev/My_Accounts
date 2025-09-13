@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.shared.view
+package br.com.aldemir.myaccounts.presentation.view
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.navigation.drawer.DrawerNavigationScreen
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.myaccounts.presentation.shared.action.MainAction
+import br.com.aldemir.myaccounts.presentation.action.MainAction
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi
