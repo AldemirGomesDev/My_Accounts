@@ -5,9 +5,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,22 +13,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.home.presentation.model.ButtonType
-import br.com.aldemir.home.presentation.model.HomeButtonType
 import br.com.aldemir.common.theme.*
+import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.home.presentation.state.HomeUiState
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
+import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 import me.bytebeats.views.charts.bar.render.xaxis.SimpleXAxisDrawer
 import me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer
 import org.koin.androidx.compose.koinViewModel
@@ -56,11 +54,27 @@ fun HomeScreen(
 
     val labelDrawer = viewModel.labelDrawer
 
+    HomeContent(
+        labelDrawer = labelDrawer,
+        scaffoldState = scaffoldState,
+        navigateToNextScreen = navigateToNextScreen,
+        uiState = uiState
+    )
+}
+
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier,
+    labelDrawer: SimpleLabelDrawer,
+    scaffoldState: ScaffoldState,
+    navigateToNextScreen: (ButtonType) -> Unit,
+    uiState: HomeUiState
+) {
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(padding)
                     .background(MyAccountsTheme.colors.background)
@@ -191,45 +205,17 @@ private fun MyBarChart(
     }
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
+@PreviewLightDark
 @Composable
-fun ButtonsHomeGrid(
-    navigateToNextScreen: (ButtonType) -> Unit,
-    buttons: List<HomeButtonType>
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 168.dp),
-        content = {
-            items(buttons) { button ->
-                Card(
-                    shape = Shapes.large,
-                    backgroundColor = MyAccountsTheme.colors.backgroundGreen,
-                    modifier = Modifier
-                        .padding(MyAccountsTheme.dimensions.padding8)
-                ) {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MyAccountsTheme.colors.backgroundGreen,
-                        shape = RectangleShape,
-                        elevation = MyAccountsTheme.dimensions.sizing2,
-                        onClick = {
-                            navigateToNextScreen(button.type)
-                        }
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(90.dp)
-                                .padding(MyAccountsTheme.dimensions.padding16),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ){
-                            Text(text = button.name, color = White, fontFamily = MyAccountsFont)
-                        }
-                    }
-                }
-            }
-        }
-    )
+private fun HomeContentPreview() {
+    MyAccountsTheme {
+        HomeContent(
+            labelDrawer = SimpleLabelDrawer(
+                labelTextColor = White
+            ),
+            scaffoldState = rememberScaffoldState(),
+            navigateToNextScreen = {},
+            uiState = homeDataPreview
+        )
+    }
 }
