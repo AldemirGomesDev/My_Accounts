@@ -40,8 +40,6 @@ fun DrawerNavigationScreen(
 
     val navController = rememberNavController()
 
-    val currentRoute = currentRoute(navController)
-
     val scope = rememberCoroutineScope()
 
     val topBarState = getTopBarState(navController)
@@ -51,6 +49,8 @@ fun DrawerNavigationScreen(
             scaffoldState.drawerState.open()
         }
     }
+
+    val currentRoute = currentRoute(navController = navController)?.substringAfterLast(".")
 
     Scaffold(
         scaffoldState = scaffoldState,
