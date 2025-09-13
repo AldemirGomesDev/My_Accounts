@@ -26,7 +26,7 @@ fun BottomBar(
         contentColor = White
     ) {
         bottomNavItems.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
+            val selected = backStackEntry.value?.destination?.route?.endsWith(item.route.toString()) ?: false
             BottomNavigationItem(
                 selected = selected,
                 label = {

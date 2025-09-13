@@ -8,8 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.expense.presentation.listexpense.ListExpenseScreen
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 
 @ExperimentalFoundationApi
@@ -18,8 +18,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 fun NavGraphBuilder.listExpenseComposable(
     navHostController: NavHostController,
 ) {
-    composable(
-        route = Route.ExpenseGraphRoute.ExpenseList.route,
+    composable<Routes.ExpenseGraphRoute.ExpenseList>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -48,12 +47,12 @@ fun NavGraphBuilder.listExpenseComposable(
         ListExpenseScreen(
             navigateToTaskScreen = { expenseId, expenseName ->
                 navHostController.navigate(
-                    Route.ExpenseGraphRoute.ExpenseDetail.createRoute(expenseId, expenseName)
+                    Routes.ExpenseGraphRoute.ExpenseDetail(expenseId, expenseName)
                 )
             },
             navigateToAddScreen = {
                 navHostController.navigate(
-                    Route.ExpenseGraphRoute.ExpenseAdd.route
+                    Routes.ExpenseGraphRoute.ExpenseAdd
                 )
             },
             navigateToHomeScreen = {

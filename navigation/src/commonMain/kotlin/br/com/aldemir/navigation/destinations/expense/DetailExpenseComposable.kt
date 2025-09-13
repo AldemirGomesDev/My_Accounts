@@ -7,14 +7,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import br.com.aldemir.expense.presentation.expensedetail.ExpenseDetailScreen
-import br.com.aldemir.common.navigation.Route
-import br.com.aldemir.common.util.Const
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
-import br.com.aldemir.common.util.emptyString
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -22,8 +19,7 @@ import br.com.aldemir.common.util.emptyString
 fun NavGraphBuilder.detailExpenseComposable(
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.ExpenseGraphRoute.ExpenseDetail.route,
+    composable<Routes.ExpenseGraphRoute.ExpenseDetail>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -48,25 +44,17 @@ fun NavGraphBuilder.detailExpenseComposable(
                 animationSpec = tween(NavigationAnimationDurationMillis)
             )
         },
-        arguments = listOf(
-            navArgument(Const.EXPENSE_ID) {
-                type = NavType.IntType
-            },
-            navArgument(Const.EXPENSE_NAME) {
-                type = NavType.StringType
-            }
-        )
     ) { backStackEntry ->
-        val expenseId = backStackEntry.arguments?.getInt(Const.EXPENSE_ID)
-        val expenseName = backStackEntry.arguments?.getString(Const.EXPENSE_NAME)
+        val expenseId = backStackEntry.toRoute<Routes.ExpenseGraphRoute.ExpenseDetail>().expenseId
+        val expenseName = backStackEntry.toRoute<Routes.ExpenseGraphRoute.ExpenseDetail>().expenseName
         ExpenseDetailScreen(
-            expenseId = expenseId ?: 0,
-            expenseName = expenseName ?: emptyString(),
+            expenseId = expenseId,
+            expenseName = expenseName,
             navigateToChangeScreen = { idMonthlyPayment ->
                 navHostController.navigate(
-                    Route.ExpenseGraphRoute.ExpenseChange.createRoute(
+                    Routes.ExpenseGraphRoute.ExpenseChange(
                         idMonthlyPayment,
-                        expenseName ?: emptyString()
+                        expenseName
                     )
                 )
             },

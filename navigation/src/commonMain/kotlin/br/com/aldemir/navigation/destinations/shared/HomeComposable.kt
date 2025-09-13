@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -18,8 +18,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 fun NavGraphBuilder.homeComposable(
     navHostController: NavHostController,
 ) {
-    composable(
-        route = Route.Home.route,
+    composable<Routes.Home>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
@@ -38,13 +37,13 @@ fun NavGraphBuilder.homeComposable(
                 when (type) {
                     ButtonType.ButtonRecipe -> {
                         navHostController.navigate(
-                            Route.ListRecipe.route
+                            Routes.ListRecipe
                         )
                     }
 
                     ButtonType.ButtonExpense -> {
                         navHostController.navigate(
-                            Route.ExpenseGraphRoute.route
+                            Routes.ExpenseGraphRoute
                         )
                     }
                 }

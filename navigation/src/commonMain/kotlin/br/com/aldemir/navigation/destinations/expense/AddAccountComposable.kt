@@ -7,17 +7,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.expense.presentation.addexpense.AddExpenseScreen
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.addAccountComposable(
     navHostController: NavHostController
 ) {
-      composable(
-        route = Route.ExpenseGraphRoute.ExpenseAdd.route,
+      composable<Routes.ExpenseGraphRoute.ExpenseAdd>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,

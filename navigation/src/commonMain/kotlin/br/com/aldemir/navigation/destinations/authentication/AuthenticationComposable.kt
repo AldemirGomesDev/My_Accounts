@@ -8,8 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.authentication.presentation.LoginScreen
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -17,8 +17,7 @@ fun NavGraphBuilder.authenticationComposable(
     isDarkTheme: Boolean,
     navHostController: NavHostController,
 ) {
-    composable(
-        route = Route.Authentication.route,
+    composable<Routes.Login>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -35,15 +34,15 @@ fun NavGraphBuilder.authenticationComposable(
         LoginScreen(
             isDarkTheme = isDarkTheme,
             navigateToHomeScreen = {
-                navHostController.navigate(Route.Home.route) {
-                    popUpTo(Route.Authentication.route) {
+                navHostController.navigate(Routes.Home) {
+                    popUpTo(Routes.Login) {
                         inclusive = true
                     }
                 }
             },
             navigateToRegisterScreen = {
-                navHostController.navigate(Route.Register.route) {
-                    popUpTo(Route.Authentication.route) {
+                navHostController.navigate(Routes.Register) {
+                    popUpTo(Routes.Login) {
                         inclusive = false
                     }
                 }

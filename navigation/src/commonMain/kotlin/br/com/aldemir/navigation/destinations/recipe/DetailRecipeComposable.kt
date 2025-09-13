@@ -9,13 +9,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import br.com.aldemir.common.navigation.Route
+import androidx.navigation.toRoute
 import br.com.aldemir.recipe.presentation.detail.DetailRecipeScreen
-import br.com.aldemir.common.util.Const
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -23,8 +21,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 fun NavGraphBuilder.detailRecipeComposable(
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.DetailRecipe.route,
+    composable<Routes.DetailRecipe>(
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { 1000 },
@@ -43,18 +40,13 @@ fun NavGraphBuilder.detailRecipeComposable(
         popExitTransition = {
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
-        arguments = listOf(
-            navArgument(Const.RECIPE_ID) {
-                type = NavType.IntType
-            },
-        )
     ) { backStackEntry ->
-        val recipeId = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
+        val recipeId = backStackEntry.toRoute<Routes.DetailRecipe>().recipeId
         DetailRecipeScreen(
             recipeId = recipeId ?: 0,
             navigateToChangeScreen = { idRecipe ->
                 navHostController.navigate(
-                    Route.ChangeRecipe.createRoute(idRecipe)
+                    Routes.ChangeRecipe(idRecipe)
                 )
             },
             navigateToBackScreen = { navHostController.navigateUp() }

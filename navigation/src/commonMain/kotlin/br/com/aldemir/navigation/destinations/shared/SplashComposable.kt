@@ -6,16 +6,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.common.presentation.splash.SplashScreen
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.splashComposable(
     isDarkTheme: Boolean,
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.Splash.route,
+    composable<Routes.Splash>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Up,
@@ -32,8 +31,8 @@ fun NavGraphBuilder.splashComposable(
         SplashScreen(
             isDarkTheme = isDarkTheme,
             navigateToListScreen  = {
-                navHostController.navigate(Route.Authentication.route) {
-                    popUpTo(Route.Splash.route) {
+                navHostController.navigate(Routes.Login) {
+                    popUpTo(Routes.Splash) {
                         inclusive = true
                     }
                 }

@@ -8,17 +8,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.recipe.presentation.addrecipe.AddRecipeScreen
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.addRecipeComposable(
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.AddRecipe.route,
+    composable<Routes.AddRecipe>(
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { 1000 },
@@ -41,7 +40,7 @@ fun NavGraphBuilder.addRecipeComposable(
         AddRecipeScreen(
             navigateToListRecipeScreen = {
                 navHostController.navigate(
-                    Route.ListRecipe.route
+                    Routes.ListRecipe
                 )
             }
         )

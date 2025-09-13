@@ -10,8 +10,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.expense.presentation.historic.HistoricScreen
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -19,8 +19,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 fun NavGraphBuilder.historicComposable(
     navHostController: NavHostController
 ) {
-   composable(
-       route = Route.Historic.route,
+   composable<Routes.Historic>(
        enterTransition = {
            slideInHorizontally(
                initialOffsetX = { 1000 },
@@ -43,7 +42,7 @@ fun NavGraphBuilder.historicComposable(
        HistoricScreen(
            navigateToHistoricScreen = { expenseId, expenseName ->
                navHostController.navigate(
-                   Route.ExpenseGraphRoute.ExpenseDetail.createRoute(expenseId, expenseName)
+                   Routes.ExpenseGraphRoute.ExpenseDetail(expenseId, expenseName)
                )
            }
        )

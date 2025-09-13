@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -36,7 +37,8 @@ kotlin {
             implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)
-            implementation(libs.compose.navigation)
+            implementation(libs.navigation.compose.multplatform)
+            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

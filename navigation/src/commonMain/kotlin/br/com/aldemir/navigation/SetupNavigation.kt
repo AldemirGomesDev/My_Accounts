@@ -23,12 +23,11 @@ import br.com.aldemir.navigation.destinations.shared.splashComposable
 @Composable
 fun SetupNavigation(
     navHostController: NavHostController,
-    startDestination: String,
     isDarkTheme: Boolean,
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = startDestination
+        startDestination = Routes.Splash
     ) {
         splashComposable(isDarkTheme, navHostController)
 

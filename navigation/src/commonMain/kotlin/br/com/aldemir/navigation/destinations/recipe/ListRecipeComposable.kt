@@ -7,17 +7,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.recipe.presentation.list.ListRecipeScreen
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.listRecipeComposable(
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.ListRecipe.route,
+    composable<Routes.ListRecipe>(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -34,17 +33,17 @@ fun NavGraphBuilder.listRecipeComposable(
         ListRecipeScreen(
             navigateToDetailScreen = { recipeId ->
                 navHostController.navigate(
-                    Route.DetailRecipe.createRoute(recipeId)
+                    Routes.DetailRecipe(recipeId)
                 )
             },
             navigateToHomeScreen = {
                 navHostController.navigate(
-                    Route.Home.route
+                    Routes.Home
                 )
             },
             navigateToAddRecipeScreen = {
                 navHostController.navigate(
-                    Route.AddRecipe.route
+                    Routes.AddRecipe
                 )
             },
         )

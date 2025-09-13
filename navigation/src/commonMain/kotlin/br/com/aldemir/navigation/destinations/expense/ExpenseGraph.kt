@@ -6,7 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import br.com.aldemir.common.navigation.Route
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -15,8 +15,8 @@ fun NavGraphBuilder.expenseGraph(
     navHostController: NavHostController,
 ) {
     navigation(
-        startDestination = Route.ExpenseGraphRoute.ExpenseList.route,
-        route = Route.ExpenseGraphRoute.route
+        startDestination = Routes.ExpenseGraphRoute.ExpenseList.toString(),
+        route = Routes.ExpenseGraphRoute.toString()
     ) {
         addAccountComposable(navHostController)
         changeExpenseComposable(navHostController)

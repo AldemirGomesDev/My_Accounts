@@ -8,13 +8,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import br.com.aldemir.common.navigation.Route
+import androidx.navigation.toRoute
 import br.com.aldemir.recipe.presentation.changerecipe.ChangeRecipeScreen
-import br.com.aldemir.common.util.Const
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
+import br.com.aldemir.navigation.Routes
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -22,8 +20,7 @@ import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 fun NavGraphBuilder.changeRecipeComposable(
     navHostController: NavHostController
 ) {
-    composable(
-        route = Route.ChangeRecipe.route,
+    composable<Routes.ChangeRecipe>(
         enterTransition = {
             slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
@@ -36,15 +33,10 @@ fun NavGraphBuilder.changeRecipeComposable(
         popExitTransition = {
             slideOutHorizontally(targetOffsetX = { 1000 }, animationSpec = tween(NavigationAnimationDurationMillis))
         },
-        arguments = listOf(
-            navArgument(Const.RECIPE_ID) {
-                type = NavType.IntType
-            },
-        )
     ) { backStackEntry ->
-        val idMonthlyRecipe = backStackEntry.arguments?.getInt(Const.RECIPE_ID)
+        val idMonthlyRecipe = backStackEntry.toRoute<Routes.ChangeRecipe>().idMonthlyRecipe
         ChangeRecipeScreen(
-            idMonthlyRecipe = idMonthlyRecipe ?: 0,
+            idMonthlyRecipe = idMonthlyRecipe,
             navigateToDetailScreen = {
                 navHostController.navigateUp()
             },

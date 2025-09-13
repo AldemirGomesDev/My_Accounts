@@ -15,10 +15,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.common.component.TopBar
-import br.com.aldemir.common.navigation.Route
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.navigation.R
+import br.com.aldemir.navigation.Routes
 import br.com.aldemir.navigation.SetupNavigation
 import br.com.aldemir.navigation.bottomappbar.BottomBar
 import br.com.aldemir.navigation.state.TopBarState
@@ -70,10 +70,10 @@ fun DrawerNavigationScreen(
             }
         },
         bottomBar = {
-            if (currentRoute != Route.Splash.route
+            if (currentRoute != Routes.Splash.toString()
                 && currentRoute != null
-                && currentRoute != Route.Authentication.route
-                && currentRoute != Route.Register.route
+                && currentRoute != Routes.Login.toString()
+                && currentRoute != Routes.Register.toString()
             ) {
                 BottomBar(navController = navController)
             }
@@ -104,7 +104,6 @@ fun DrawerNavigationScreen(
                 SetupNavigation(
                     isDarkTheme = isDarkTheme,
                     navHostController = navController,
-                    startDestination = Route.Splash.route,
                 )
             }
         }
@@ -120,20 +119,21 @@ fun currentRoute(navController: NavHostController): String? {
 
 @Composable
 fun getTopBarState(navController: NavHostController): TopBarState {
-    return when (currentRoute(navController = navController)) {
-        Route.Splash.route -> {
+    val route = currentRoute(navController = navController)?.substringAfterLast(".")
+    return when (route) {
+        Routes.Splash.toString() -> {
             TopBarState(
                 onClick = {}
             )
         }
 
-        Route.Authentication.route -> {
+        Routes.Login.toString() -> {
             TopBarState(
                 onClick = {}
             )
         }
 
-        Route.Home.route -> {
+        Routes.Home.toString() -> {
             TopBarState(
                 titleResId = R.string.app_name,
                 imageIcon = Icons.Default.Menu,
@@ -143,7 +143,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.Historic.route -> {
+        Routes.Historic.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.historic_screen_title,
@@ -153,7 +153,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.AddRecipe.route -> {
+        Routes.AddRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.recipe_add_screen_title,
@@ -162,7 +162,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ListRecipe.route -> {
+        Routes.ListRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.recipe_list_screen_title,
@@ -171,7 +171,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.DetailRecipe.route -> {
+        Routes.DetailRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.recipe_detail_screen_title,
@@ -180,7 +180,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ChangeRecipe.route -> {
+        Routes.ChangeRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.recipe_change_screen_title,
@@ -189,7 +189,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ExpenseGraphRoute.route -> {
+        Routes.ExpenseGraphRoute.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.expense_list_screen_title,
@@ -198,7 +198,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ExpenseGraphRoute.ExpenseAdd.route -> {
+        Routes.ExpenseGraphRoute.ExpenseAdd.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.expense_add_screen_title,
@@ -207,7 +207,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ExpenseGraphRoute.ExpenseList.route -> {
+        Routes.ExpenseGraphRoute.ExpenseList.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.expense_list_screen_title,
@@ -216,7 +216,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ExpenseGraphRoute.ExpenseDetail.route -> {
+        Routes.ExpenseGraphRoute.ExpenseDetail.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.expense_detail_screen_title,
@@ -225,7 +225,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Route.ExpenseGraphRoute.ExpenseChange.route -> {
+        Routes.ExpenseGraphRoute.ExpenseChange.toString() -> {
             TopBarState(
                 isVisible = true,
                 titleResId = R.string.expense_change_screen_title,
