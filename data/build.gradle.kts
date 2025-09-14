@@ -48,6 +48,9 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization.json)
         }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
     }
 
     listOf(

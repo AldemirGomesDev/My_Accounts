@@ -71,6 +71,7 @@ ktor_client_core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
 ktor_client_okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor"}
 ktor_client_logger = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
 ktor_client_auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor"}
+ktor_client_darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor_client_content_negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
 ktor_client_serialization_json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor"}
 
