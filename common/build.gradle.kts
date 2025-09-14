@@ -1,9 +1,38 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.jetbrainsCompose)
 }
 
+kotlin {
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    sourceSets.named("androidMain").configure {
+        kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
+    }
+
+    sourceSets {
+        androidMain.dependencies {
+
+        }
+        commonMain.dependencies {
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.preview)
+            implementation(libs.bundles.compose.all)
+            implementation(libs.compose.lifecycle.viewmodel)
+            implementation(libs.compoose.constraintlayout)
+        }
+    }
+}
 android {
     namespace = "br.com.aldemir.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -21,16 +50,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 }
 
 dependencies {
-
     //Compose
     debugImplementation(libs.compose.tooling)
-    implementation(libs.bundles.compose.all)
-    implementation(libs.compose.lifecycle.viewmodel)
-    implementation(libs.compoose.constraintlayout)
+}
+
+compose.resources {
+    publicResClass = true
 }

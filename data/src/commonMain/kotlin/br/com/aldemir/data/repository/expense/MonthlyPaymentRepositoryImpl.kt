@@ -3,6 +3,9 @@ package br.com.aldemir.data.repository.expense
 import br.com.aldemir.data.database.room.expense.MonthlyPaymentDao
 import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toDto
+import br.com.aldemir.data.mapper.toExpenseMonthlyDomain
+import br.com.aldemir.data.mapper.toExpensePerMonthDomain
+import br.com.aldemir.data.mapper.toMonthlyPaymentDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.model.MonthlyPaymentDomain
@@ -24,11 +27,11 @@ class MonthlyPaymentRepositoryImpl(
     }
 
     override suspend fun getAllByIdExpense(id: Int): List<MonthlyPaymentDomain> {
-        return monthlyPaymentDao.getById(id).toDomain()
+        return monthlyPaymentDao.getById(id).toMonthlyPaymentDomain()
     }
 
     override suspend fun getByIdMonthlyPayment(id: Int): ExpenseMonthlyDomain {
-        return monthlyPaymentDao.getByIdMonthlyPayment(id).toDomain()
+        return monthlyPaymentDao.getByIdMonthlyPayment(id).toExpenseMonthlyDomain()
     }
 
     override suspend fun getAll(): List<ExpenseMonthlyDomain> {
@@ -40,6 +43,6 @@ class MonthlyPaymentRepositoryImpl(
     }
 
     override suspend fun getAllExpensePerMonth(month: String, year: String): List<ExpensePerMonthDomain> {
-        return monthlyPaymentDao.getAllExpensePerMonth(month, year).toDomain()
+        return monthlyPaymentDao.getAllExpensePerMonth(month, year).toExpensePerMonthDomain()
     }
 }
