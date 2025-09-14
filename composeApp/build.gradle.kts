@@ -52,8 +52,8 @@ kotlin {
             implementation(libs.paging.compose)
             implementation(libs.compose.navigation)
         }
-        commonMain.dependencies {
-
+        iosMain.dependencies {
+            implementation(compose.ui)
         }
     }
 
