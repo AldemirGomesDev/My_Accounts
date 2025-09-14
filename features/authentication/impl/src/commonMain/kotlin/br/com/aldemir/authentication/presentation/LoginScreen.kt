@@ -27,7 +27,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -39,7 +38,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.aldemir.authentication.data.DialogModel
-import br.com.aldemir.common.R
 import org.jetbrains.compose.resources.stringResource as stringRes
 import br.com.aldemir.common.component.CustomSnackBar
 import br.com.aldemir.common.component.InputTextOutlinedTextField
@@ -49,12 +47,16 @@ import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
+import myaccounts.common.generated.resources.icon_despesa
+import myaccounts.common.generated.resources.icon_despesa_light
 import myaccounts.features.authentication.impl.generated.resources.Res
-import myaccounts.features.authentication.impl.generated.resources.account_logo
+import myaccounts.common.generated.resources.Res as ResCommon
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_description_text
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_subtitle_text
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_title_text
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_use_password_instead_text
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -160,7 +162,7 @@ fun LoginPage(
                 Image(
                     modifier = Modifier
                         .size(MyAccountsTheme.dimensions.sizing120),
-                    painter = painterResource(id = getLogo(isDarkTheme)),
+                    painter = painterResource(getLogo(isDarkTheme)),
                     contentDescription = null
                 )
 
@@ -244,11 +246,11 @@ fun LoginPage(
 }
 
 @Composable
-private fun getLogo(isDarkTheme: Boolean): Int {
+private fun getLogo(isDarkTheme: Boolean): DrawableResource {
     return if (isDarkTheme) {
-        R.drawable.icon_despesa_light
+        ResCommon.drawable.icon_despesa_light
     } else {
-        R.drawable.icon_despesa
+        ResCommon.drawable.icon_despesa
     }
 }
 

@@ -3,6 +3,8 @@ package br.com.aldemir.data.repository.recipe
 import br.com.aldemir.data.database.room.recipe.RecipeMonthlyDao
 import br.com.aldemir.data.mapper.toDTO
 import br.com.aldemir.data.mapper.toDomain
+import br.com.aldemir.data.mapper.toRecipeMonthlyDomain
+import br.com.aldemir.data.mapper.toRecipePerMonthDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.repository.RecipeMonthlyRepository
@@ -23,22 +25,22 @@ class RecipeMonthlyRepositoryImpl(
     }
 
     override suspend fun getAllByIdRecipe(id: Int): List<RecipePerMonthDomain> {
-        return recipeMonthlyDao.getById(id).toDomain()
+        return recipeMonthlyDao.getById(id).toRecipePerMonthDomain()
     }
 
     override suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonthDomain {
-        return recipeMonthlyDao.getByIdRecipeMonthly(id).toDomain()
+        return recipeMonthlyDao.getByIdRecipeMonthly(id).toRecipePerMonthDomain()
     }
 
     override suspend fun getAll(): List<RecipeMonthlyDomain> {
-        return recipeMonthlyDao.getAll().toDomain()
+        return recipeMonthlyDao.getAll().toRecipeMonthlyDomain()
     }
 
     override suspend fun getAllRecipeMonth(month: String, year: String): List<RecipeMonthlyDomain> {
-        return recipeMonthlyDao.getAllRecipeMonthly(month, year).toDomain()
+        return recipeMonthlyDao.getAllRecipeMonthly(month, year).toRecipeMonthlyDomain()
     }
 
     override suspend fun getAllRecipePerMonth(month: String, year: String): List<RecipePerMonthDomain> {
-        return recipeMonthlyDao.getAllRecipePerMonth(month, year).toDomain()
+        return recipeMonthlyDao.getAllRecipePerMonth(month, year).toRecipePerMonthDomain()
     }
 }

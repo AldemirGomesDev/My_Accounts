@@ -2,7 +2,7 @@ package br.com.aldemir.data.repository.expense
 
 import br.com.aldemir.data.database.room.expense.ExpenseDao
 import br.com.aldemir.data.mapper.toDto
-import br.com.aldemir.data.mapper.toDomain
+import br.com.aldemir.data.mapper.toExpenseDomain
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.repository.ExpenseRepository
 
@@ -22,6 +22,6 @@ class ExpenseRepositoryImpl(
     }
 
     override suspend fun getAll(): List<ExpenseDomain> {
-        return expenseDao.getAll().toDomain()
+        return expenseDao.getAll().toExpenseDomain()
     }
 }

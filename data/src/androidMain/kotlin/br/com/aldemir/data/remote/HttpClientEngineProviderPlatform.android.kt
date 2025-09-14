@@ -1,0 +1,7 @@
+package br.com.aldemir.data.remote
+
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.okhttp.OkHttpConfig
+import io.ktor.client.engine.okhttp.OkHttpEngine
+
+actual fun httpClientEnginePlatform() : HttpClientEngine = OkHttpEngine(OkHttpConfig())

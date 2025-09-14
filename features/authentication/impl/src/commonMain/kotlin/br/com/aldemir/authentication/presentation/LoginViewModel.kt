@@ -30,15 +30,17 @@ class LoginViewModel(
     private val _uiState = MutableStateFlow(AuthenticationUiModel())
     val uiState = _uiState.asStateFlow()
 
+    private val log = logging("TAG_auth")
+
     private fun getAllPosts() {
         viewModelScope.launch {
             getAllPostsUseCase(viewModelScope, Unit).apply {
                 onSuccess {
                     // Handle success if needed
-                    Log.d("TAG_auth", "sucesso: ${it.first()}")
+                    log.info { "sucesso: ${it.first()}" }
                 }
                 onFailure {
-                    Log.e("TAG_auth", "Error: $it")
+                    log.error { "Error: $it" }
                     // Handle failure if needed
                 }
             }
@@ -49,10 +51,10 @@ class LoginViewModel(
         viewModelScope.launch {
             getAllProductsUseCase(viewModelScope) {
                 success = { listProductDomainModel ->
-                    logging("TAG_auth").i { "sucesso: ${listProductDomainModel.toList().random()}" }
+                    log.info { "sucesso: ${listProductDomainModel.toList().random()}" }
                 }
                 error = { error ->
-                    logging("TAG_auth").e { "ViewModel Error: $error" }
+                    log.error { "ViewModel Error: $error" }
                 }
             }
         }
