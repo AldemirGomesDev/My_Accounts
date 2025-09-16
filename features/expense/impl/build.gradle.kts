@@ -37,6 +37,17 @@ kotlin {
             implementation(libs.compoose.constraintlayout)
         }
     }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+    }
 }
 
 android {

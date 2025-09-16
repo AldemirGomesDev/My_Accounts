@@ -65,10 +65,12 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
             implementation(libs.compose.lifecycle.viewmodel)
         }
         iosMain.dependencies {
+            implementation(compose.ui)
+        }
+        iosSimulatorArm64Main.dependencies {
             implementation(compose.ui)
         }
     }
