@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.common.theme.*
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol

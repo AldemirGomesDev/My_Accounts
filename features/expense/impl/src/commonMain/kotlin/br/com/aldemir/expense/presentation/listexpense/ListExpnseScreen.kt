@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.FabAdd

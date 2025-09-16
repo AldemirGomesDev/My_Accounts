@@ -1,16 +1,14 @@
-package br.com.aldemir.myaccounts.presentation.view
+package br.com.aldemir.myaccounts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
-import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
-import br.com.aldemir.myaccounts.presentation.action.MainAction
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val saveDarkModeStateUseCase: SaveDarkModeStateUseCase,
@@ -80,7 +78,7 @@ class MainViewModel(
             AppDarkMode.valueOf(darkMode)
         }
     }
-    
+
 
     private fun getItemsMenu() = listOf(
         AppDarkMode.Default,

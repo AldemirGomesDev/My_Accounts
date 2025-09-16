@@ -1,6 +1,6 @@
 package br.com.aldemir.common.theme
 
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.drawer_dark_mode_auto
 import myaccounts.common.generated.resources.drawer_dark_mode_disabled

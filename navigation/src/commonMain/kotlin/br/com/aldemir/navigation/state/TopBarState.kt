@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 
 data class TopBarState(
     @StringRes val titleResId: Int = R.string.expense_list_screen_title,

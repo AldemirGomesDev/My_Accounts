@@ -37,7 +37,7 @@ kotlin {
     }
 }
 android {
-    namespace = "br.com.aldemir.domain"
+    namespace = "br.com.aldemir.myaccounts.domain"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

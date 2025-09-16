@@ -34,7 +34,7 @@ kotlin {
     }
 }
 android {
-    namespace = "br.com.aldemir.common"
+    namespace = "br.com.aldemir.myaccounts.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     buildFeatures {

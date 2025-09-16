@@ -43,7 +43,6 @@ kotlin {
             implementation(libs.android.core.ktx)
             implementation(libs.multidex)
             // Koin for Android
-            implementation(libs.bundles.koin.all)
             //Compose
             implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
@@ -51,6 +50,23 @@ kotlin {
             // Paging
             implementation(libs.paging.compose)
             implementation(libs.compose.navigation)
+        }
+        commonMain.dependencies {
+            implementation(project(":common"))
+            implementation(project(":domain"))
+            implementation(project(":navigation"))
+            implementation(project(":features:recipe:impl"))
+            implementation(project(":features:expense:impl"))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.android)
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.lifecycle.viewmodel)
         }
         iosMain.dependencies {
             implementation(compose.ui)
@@ -111,12 +127,6 @@ android {
 }
 
 dependencies {
-    //room
-    add("kspAndroid", libs.room.compiler)
-    add("kspIosSimulatorArm64", libs.room.compiler)
-    add("kspIosX64", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

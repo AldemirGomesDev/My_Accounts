@@ -20,7 +20,7 @@ import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.taskItemBackgroundColor
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.MyAccountsTheme

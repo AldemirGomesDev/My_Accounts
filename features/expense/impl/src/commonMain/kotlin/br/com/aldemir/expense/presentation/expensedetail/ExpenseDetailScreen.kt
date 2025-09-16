@@ -35,7 +35,7 @@ import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.taskItemTextColor
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol

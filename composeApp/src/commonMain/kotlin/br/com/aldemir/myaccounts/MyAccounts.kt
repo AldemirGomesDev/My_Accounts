@@ -1,4 +1,4 @@
-package br.com.aldemir.myaccounts.presentation.view
+package br.com.aldemir.myaccounts
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,9 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.myaccounts.presentation.action.MainAction
-import br.com.aldemir.navigation.drawer.DrawerNavigationScreen
 import org.koin.androidx.compose.koinViewModel
+import br.com.aldemir.navigation.drawer.DrawerNavigationScreen
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class

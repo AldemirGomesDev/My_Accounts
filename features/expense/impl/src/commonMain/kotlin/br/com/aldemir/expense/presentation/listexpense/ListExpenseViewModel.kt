@@ -1,19 +1,15 @@
 package br.com.aldemir.expense.presentation.listexpense
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.R
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
-import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
-import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.expense.DeleteExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
@@ -21,7 +17,6 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toExpenseView
 import br.com.aldemir.expense.model.ExpenseView
-import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -30,11 +30,9 @@ import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.theme.LARGE_PADDING
-import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.R
-import br.com.aldemir.common.theme.FontSize
+import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.expense.mapper.toView
