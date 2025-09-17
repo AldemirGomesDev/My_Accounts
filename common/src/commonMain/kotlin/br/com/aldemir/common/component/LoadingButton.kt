@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
@@ -80,7 +79,6 @@ fun LoadingButton(
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun LoadingButtonPreview() {
     MyAccountsTheme {

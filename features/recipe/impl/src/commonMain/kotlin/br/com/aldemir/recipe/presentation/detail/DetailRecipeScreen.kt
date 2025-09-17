@@ -38,7 +38,7 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.recipe.model.RecipeMonthlyView
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DetailRecipeScreen(

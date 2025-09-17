@@ -43,8 +43,8 @@ kotlin {
             implementation(libs.android.core.ktx)
             implementation(libs.multidex)
             // Koin for Android
+            implementation(libs.koin.android)
             //Compose
-            implementation(libs.bundles.compose.all)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)
             // Paging
@@ -57,8 +57,9 @@ kotlin {
             implementation(project(":navigation"))
             implementation(project(":features:recipe:impl"))
             implementation(project(":features:expense:impl"))
+            implementation(libs.koin.core)
             implementation(libs.koin.compose)
-            implementation(libs.koin.android)
+            implementation(libs.koin.compose.viewmodel)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

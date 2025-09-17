@@ -4,7 +4,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 
@@ -23,7 +22,6 @@ fun TextSubTitleItem(
     )
 }
 
-@PreviewLightDark
 @Composable
 private fun TextSubTitleItemPreview() {
     MyAccountsTheme {

@@ -32,7 +32,7 @@ import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChangeExpenseScreen(

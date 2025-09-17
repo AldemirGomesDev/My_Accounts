@@ -31,7 +31,7 @@ import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.theme.*
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @ExperimentalAnimationApi

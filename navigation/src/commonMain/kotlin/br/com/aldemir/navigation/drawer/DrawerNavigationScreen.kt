@@ -10,7 +10,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -246,7 +245,6 @@ fun getTopBarState(navController: NavHostController): TopBarState {
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class
 )
-@PreviewLightDark
 @Composable
 fun DrawerNavigationScreenPreview() {
     MyAccountsTheme {

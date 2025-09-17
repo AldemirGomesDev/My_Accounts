@@ -27,13 +27,18 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(compose.preview)
+            implementation(compose.uiTooling)
         }
         commonMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.bundles.compose.all)
+            implementation(compose.ui)
+            implementation(compose.material)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)
         }

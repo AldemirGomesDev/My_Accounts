@@ -7,8 +7,8 @@ import br.com.aldemir.authentication.data.CryptoManagerImpl
 import br.com.aldemir.authentication.presentation.LoginViewModel
 import br.com.aldemir.register.presentation.RegisterUiMapper
 import br.com.aldemir.register.presentation.RegisterViewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 

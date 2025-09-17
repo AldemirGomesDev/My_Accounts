@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MediumGray
@@ -50,7 +49,6 @@ fun EmptyContent(
 }
 
 @Composable
-@PreviewLightDark
 private fun EmptyContentPreview() {
     MyAccountsTheme {
         Surface {

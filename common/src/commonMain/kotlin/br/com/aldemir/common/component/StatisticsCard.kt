@@ -14,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.common.model.CardState
@@ -179,7 +178,6 @@ fun StatisticsCard(
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun StatisticsCardPreview() {
     MyAccountsTheme {

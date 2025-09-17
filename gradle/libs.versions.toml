@@ -5,16 +5,16 @@ logging = "2.0.3"
 minSdk = "26"
 navigationMultplatform = "2.8.0-alpha08"
 targetSdk = "33"
-compileSdk = "34"
+compileSdk = "35"
 buildTools = "33.0.2"
-agp = "8.4.0"
+agp = "8.6.0"
 android-core-ktx = "1.13.1"
 compose = "1.6.7"
-lifecycle = "2.8.0"
+lifecycle = "2.8.2"
 constraintlayout = "1.0.1"
 room = "2.7.2"
 sqlite = "2.5.2"
-koin = "3.5.3"
+koin = "4.0.1"
 ktor = "3.0.0"
 datastore = "1.1.7"
 charts = "0.2.1"
@@ -38,7 +38,7 @@ compose-material = {module = "androidx.compose.material:material", version.ref =
 compose-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
 compose-activity = {module = "androidx.activity:activity-compose", version.ref = "compose-activity"}
 compose-livedata = {module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
-compose-lifecycle-viewmodel = {module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
+compose-lifecycle-viewmodel = {module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
 compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
@@ -51,7 +51,9 @@ room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room_bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
-koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
+koin_core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin_compose_viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-compose = {module = "io.insert-koin:koin-compose", version.ref = "koin"}
 koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
 datastore-library = {module = "androidx.datastore:datastore", version.ref = "datastore"}
 datastore-preferences = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}

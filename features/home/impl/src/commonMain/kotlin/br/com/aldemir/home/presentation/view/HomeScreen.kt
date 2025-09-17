@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.LoadingAnimation
@@ -32,7 +31,7 @@ import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 import me.bytebeats.views.charts.bar.render.xaxis.SimpleXAxisDrawer
 import me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -205,7 +204,6 @@ private fun MyBarChart(
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun HomeContentPreview() {
     MyAccountsTheme {

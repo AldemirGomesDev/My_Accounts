@@ -37,7 +37,7 @@ import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.ExpensePerMonthView
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

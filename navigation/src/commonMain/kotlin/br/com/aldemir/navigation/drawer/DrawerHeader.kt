@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.AppDarkMode
@@ -86,7 +85,6 @@ private fun getLogo(appDarkMode: AppDarkMode): Int {
     }
 }
 
-@PreviewLightDark
 @Composable
 fun DrawerHeaderPreview() {
     MyAccountsTheme {

@@ -32,7 +32,7 @@ import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.expense.presentation.addexpense.action.AddExpenseAction
 import br.com.aldemir.expense.presentation.addexpense.state.AddExpenseUiState
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

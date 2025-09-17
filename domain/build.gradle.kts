@@ -24,7 +24,7 @@ kotlin {
             implementation(libs.androidMaterial)
         }
         commonMain.dependencies {
-            implementation (libs.bundles.koin.all)
+            implementation (libs.koin.core)
         }
         androidInstrumentedTest.dependencies {
             implementation(libs.espresso.core)

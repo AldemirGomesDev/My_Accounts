@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.MyAccountsTheme
-import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -34,7 +33,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.aldemir.authentication.data.DialogModel
@@ -57,6 +55,7 @@ import myaccounts.features.authentication.impl.generated.resources.biometric_pro
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_use_password_instead_text
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
@@ -278,7 +277,6 @@ private fun getDialogModel(): DialogModel {
     )
 }
 
-@PreviewLightDark
 @Composable
 private fun LoginPagePreview() {
     MyAccountsTheme {

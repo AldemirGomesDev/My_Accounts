@@ -21,19 +21,24 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(compose.uiTooling)
+            implementation(libs.compose.livedata)
         }
         commonMain.dependencies {
             implementation(project(":data"))
             implementation(project(":common"))
             implementation(project(":domain"))
 
-            implementation(libs.bundles.koin.all)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.multidex)
             //Compose
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(libs.bundles.compose.all)
+            implementation(compose.ui)
+            implementation(compose.material)
+            implementation(libs.compose.activity)
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.biometric)
             implementation(libs.gson)
