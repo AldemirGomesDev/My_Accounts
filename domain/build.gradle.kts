@@ -7,7 +7,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
     androidTarget()
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)

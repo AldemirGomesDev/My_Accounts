@@ -9,6 +9,12 @@ plugins {
 }
 
 kotlin {
+
+    androidTarget() // gera androidJvm
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -46,18 +52,19 @@ kotlin {
 
 }
 android {
+    buildFeatures.buildConfig = true
     namespace = "br.com.aldemir.myaccounts.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     buildFeatures {
         compose = true
     }
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        multiDexEnabled = true
-    }
-
+//
+//    defaultConfig {
+//        minSdk = libs.versions.minSdk.get().toInt()
+//        multiDexEnabled = true
+//    }
+//
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
