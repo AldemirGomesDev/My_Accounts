@@ -40,8 +40,8 @@ class HomeViewModel(
     fun getAllRecipeAndExpense() = viewModelScope.launch {
         var expenses: List<ExpenseMonthlyDomain> = listOf()
         var recipes: List<RecipeMonthlyDomain> = listOf()
-        val month = DateUtils.getMonth()
-        val year = DateUtils.getYear()
+        val month = DateUtils.getMonthString()
+        val year = DateUtils.getYearString()
         getAllRecipeMonthUseCase(
             this,
             GetAllRecipeMonthUseCase.Params(month, year)

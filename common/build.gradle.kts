@@ -34,6 +34,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.datetime)
 
             implementation(compose.material3)
             implementation(compose.components.resources)

@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.0.21"
+kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
 logging = "2.0.3"
 minSdk = "26"
@@ -44,6 +45,7 @@ compose-navigation = {module = "androidx.navigation:navigation-compose", version
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging = { module = "com.diamondedge:logging", version.ref = "logging" }
 navigation-compose-multplatform = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationMultplatform" }

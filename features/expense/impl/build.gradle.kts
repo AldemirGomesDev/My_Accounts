@@ -35,6 +35,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.multidex)
+            implementation(libs.kotlinx.datetime)
 
             //Compose
             implementation(compose.material3)

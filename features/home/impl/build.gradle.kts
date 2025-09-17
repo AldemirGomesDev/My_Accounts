@@ -36,6 +36,8 @@ kotlin {
 
             implementation(libs.multidex)
 
+            implementation(libs.kotlinx.datetime)
+
             implementation(libs.charts.compose)
 
             //Compose

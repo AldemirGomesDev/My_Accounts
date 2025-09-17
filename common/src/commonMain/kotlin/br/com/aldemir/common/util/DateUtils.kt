@@ -2,11 +2,26 @@ package br.com.aldemir.common.util
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
 object DateUtils {
+
+    fun getYearString(timeZone: TimeZone = TimeZone.currentSystemDefault()): String {
+        val now = Clock.System.now()
+        val localDateTime = now.toLocalDateTime(timeZone)
+        return localDateTime.year.toString()
+    }
+
+    fun getMonthString(timeZone: TimeZone = TimeZone.currentSystemDefault()): String {
+        val now = Clock.System.now()
+        val localDateTime = now.toLocalDateTime(timeZone)
+        return localDateTime.month.name.take(3).lowercase().replaceFirstChar { it.titlecase() }
+    }
 
     fun getYear() : String {
         val date = Calendar.getInstance()
