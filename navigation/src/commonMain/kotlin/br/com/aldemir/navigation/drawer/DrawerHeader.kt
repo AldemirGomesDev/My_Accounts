@@ -16,7 +16,7 @@ import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.navigation.R
+import br.com.aldemir.myaccounts.navigation.R
 
 @Composable
 internal fun DrawerHeader(

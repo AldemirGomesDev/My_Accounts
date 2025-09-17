@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen_title">Minhas contas</string>
+    <string name="drawer_dark_mode_enabled">Modo escuro</string>
+    <string name="drawer_dark_mode_disabled">Modo claro</string>
+    <string name="drawer_dark_mode_auto">Modo automático</string>
+    <string name="drawer_welcome">Bem vindo!</string>
+    <string name="account_pending">Pendente</string>
+    <string name="account_list_item_status">Status:</string>
+    <string name="account_logo">To-Do Logo</string>
+    <string name="account_label_value">Valor:</string>
+    <string name="account_resume_monthly">RESUMO MENSAL</string>
+    <string name="home_title">Home</string>
+    <string name="home_balance">Saldo:</string>
+    <string name="home_total_month">Total no mês</string>
+    <string name="home_expense_paid_out">Pago</string>
+    <string name="home_expense_to_pay">À pagar</string>
+    <string name="home_add_expense">Despesa</string>
+    <string name="home_recipe_checked">Recebido</string>
+    <string name="home_recipe_pending">À receber</string>
+    <string name="home_recipe_card_title">Receita</string>
+
+    <string name="historic_screen_title">Histórico</string>
+    <string name="expense_add_screen_title">Adicionar despesa</string>
+    <string name="expense_list_screen_title">Despesas</string>
+
+    <string name="recipe_add_screen_title">Adicionar receita</string>
+    <string name="recipe_detail_screen_title">Detalhes</string>
+    <string name="recipe_list_screen_title">Receitas</string>
+    <string name="recipe_change_screen_title">Editar receita</string>
+    <string name="expense_detail_screen_title">Detalhes da despesa</string>
+    <string name="expense_change_screen_title">Editar despesa</string>
+</resources>

@@ -55,7 +55,7 @@ kotlin {
 }
 
 android {
-    namespace = "br.com.aldemir.navigation"
+    namespace = "br.com.aldemir.myaccounts.navigation"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

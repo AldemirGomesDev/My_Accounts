@@ -17,12 +17,22 @@ import br.com.aldemir.common.component.TopBar
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.navigation.R
 import br.com.aldemir.navigation.Routes
 import br.com.aldemir.navigation.SetupNavigation
 import br.com.aldemir.navigation.bottomappbar.BottomBar
 import br.com.aldemir.navigation.state.TopBarState
 import kotlinx.coroutines.launch
+import myaccounts.navigation.generated.resources.Res
+import myaccounts.navigation.generated.resources.expense_add_screen_title
+import myaccounts.navigation.generated.resources.expense_change_screen_title
+import myaccounts.navigation.generated.resources.expense_detail_screen_title
+import myaccounts.navigation.generated.resources.expense_list_screen_title
+import myaccounts.navigation.generated.resources.historic_screen_title
+import myaccounts.navigation.generated.resources.home_title
+import myaccounts.navigation.generated.resources.recipe_add_screen_title
+import myaccounts.navigation.generated.resources.recipe_change_screen_title
+import myaccounts.navigation.generated.resources.recipe_detail_screen_title
+import myaccounts.navigation.generated.resources.recipe_list_screen_title
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -135,7 +145,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
 
         Routes.Home.toString() -> {
             TopBarState(
-                titleResId = R.string.app_name,
+                titleResId = Res.string.home_title,
                 imageIcon = Icons.Default.Menu,
                 isHome = true,
                 isVisible = true,
@@ -146,7 +156,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.Historic.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.historic_screen_title,
+                titleResId = Res.string.historic_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
 
@@ -156,7 +166,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.AddRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.recipe_add_screen_title,
+                titleResId = Res.string.recipe_add_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -165,7 +175,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ListRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.recipe_list_screen_title,
+                titleResId = Res.string.recipe_list_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -174,7 +184,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.DetailRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.recipe_detail_screen_title,
+                titleResId = Res.string.recipe_detail_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -183,7 +193,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ChangeRecipe.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.recipe_change_screen_title,
+                titleResId = Res.string.recipe_change_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -192,7 +202,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ExpenseGraphRoute.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_list_screen_title,
+                titleResId = Res.string.expense_list_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -201,7 +211,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ExpenseGraphRoute.ExpenseAdd.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_add_screen_title,
+                titleResId = Res.string.expense_add_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -210,7 +220,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ExpenseGraphRoute.ExpenseList.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_list_screen_title,
+                titleResId = Res.string.expense_list_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -219,7 +229,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ExpenseGraphRoute.ExpenseDetail.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_detail_screen_title,
+                titleResId = Res.string.expense_detail_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
@@ -228,7 +238,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
         Routes.ExpenseGraphRoute.ExpenseChange.toString() -> {
             TopBarState(
                 isVisible = true,
-                titleResId = R.string.expense_change_screen_title,
+                titleResId = Res.string.expense_change_screen_title,
                 imageIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onClick = { navController.navigateUp() }
             )
