@@ -77,13 +77,13 @@ private fun HistoricContent(
 
     enabled = !viewModel.isLoading.value
 
-    val defaultOption by remember { mutableStateOf(DateUtils.getYear()) }
+    val defaultOption by remember { mutableStateOf(DateUtils.getYearString()) }
 
     val myYears by viewModel.yearsList.observeAsState()
 
     val monthOptions = stringArrayResource(id = R.array.months)
     var yearOptionSelected by remember { mutableStateOf(defaultOption) }
-    var monthOptionSelected by remember { mutableStateOf(DateUtils.getMonth()) }
+    var monthOptionSelected by remember { mutableStateOf(DateUtils.getMonthString()) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -160,7 +160,7 @@ fun HistoricScreenList(
 ) {
     val state = rememberLazyListState()
     LaunchedEffect(Unit) {
-        viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
     val expenses by viewModel.expensePerMonthDomain.observeAsState()

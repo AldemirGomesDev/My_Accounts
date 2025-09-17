@@ -5,11 +5,8 @@ import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.HighPriorityColor
@@ -19,16 +16,22 @@ import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.recipe.mapper.toDatabase
 import br.com.aldemir.recipe.mapper.toView
 import br.com.aldemir.recipe.mapper.viewToDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.button_text_pay
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 
-class DetailRecipeViewModel constructor(
+class DetailRecipeViewModel(
     private val getAllByIdRecipeUseCase: GetAllByIdRecipeUseCase,
     private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase
 ): ViewModel() {
@@ -38,11 +41,11 @@ class DetailRecipeViewModel constructor(
     private val _menuItemsState = MutableStateFlow<Array<DropdownItemState>>(arrayOf())
     val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
-    private val _id = MutableLiveData<Int>()
-    val id: LiveData<Int> = _id
+    private val _id = MutableStateFlow<Int>(0)
+    val id: StateFlow<Int> = _id
 
-    private val _name = MutableLiveData(emptyString())
-    val name: LiveData<String> = _name
+    private val _name = MutableStateFlow(emptyString())
+    val name: StateFlow<String> = _name
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -73,16 +76,16 @@ class DetailRecipeViewModel constructor(
     }
 
     fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
-        _id.postValue(0)
+        _id.update { 0 }
         updateRecipeMonthlyUseCase(this, recipeMonthlyView.viewToDomain()).apply {
             onSuccess {id ->
-                _id.postValue(id)
+                _id.update { id }
             }
         }
     }
 
     private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
-        return (year == DateUtils.getYear() && month == DateUtils.getMonth() && DateUtils.getDay() > dueDay)
+        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getDay() > dueDay)
     }
 
     fun getStatusColor(status: Boolean, expired: Boolean): Color {
@@ -91,10 +94,10 @@ class DetailRecipeViewModel constructor(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.expense_paid_out
+        else if (expired) Res.string.expense_expired
+        else Res.string.account_pending
     }
 
     fun showToast(context: Context, message: String) {
@@ -105,7 +108,7 @@ class DetailRecipeViewModel constructor(
         _menuItemsState.value = arrayOf(
             DropdownItemState(
                 type = DropdownItemType.PAY,
-                titleRes = R.string.button_text_pay,
+                titleRes = Res.string.button_text_pay,
                 icon = Icons.Default.Check,
             ),
         )

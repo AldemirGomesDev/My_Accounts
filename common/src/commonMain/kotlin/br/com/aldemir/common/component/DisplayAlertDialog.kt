@@ -1,16 +1,16 @@
 package br.com.aldemir.common.component
 
-import android.content.res.Configuration
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.White
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_no
+import myaccounts.common.generated.resources.button_yes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DisplayAlertDialog(
@@ -49,7 +49,7 @@ fun DisplayAlertDialog(
                         backgroundColor = MyAccountsTheme.colors.primary
                     ),
                 ) {
-                    Text(text = stringResource(R.string.button_yes), color = White)
+                    Text(text = stringResource(Res.string.button_yes), color = White)
                 }
             },
             dismissButton = {
@@ -62,7 +62,7 @@ fun DisplayAlertDialog(
                     ),
                 ) {
                     Text(
-                        text = stringResource(R.string.button_no),
+                        text = stringResource(Res.string.button_no),
                         color = MyAccountsTheme.colors.primary
                     )
                 }
@@ -73,14 +73,6 @@ fun DisplayAlertDialog(
 
 }
 
-@Preview(
-    name = "Light mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
-)
-@Preview(
-    name = "Dark mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
 @Composable
 private fun DisplayAlertDialogPreview() {
     MyAccountsTheme {

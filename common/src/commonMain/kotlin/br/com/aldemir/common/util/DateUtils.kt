@@ -23,17 +23,6 @@ object DateUtils {
         return localDateTime.month.name.take(3).lowercase().replaceFirstChar { it.titlecase() }
     }
 
-    fun getYear() : String {
-        val date = Calendar.getInstance()
-        return date.get(Calendar.YEAR).toString()
-    }
-
-    fun getMonth() : String {
-        val date = Calendar.getInstance()
-        val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
-        return sdf.format(date.time).uppercase()
-    }
-
     fun getDate(): Date {
         return Calendar.getInstance().time
     }

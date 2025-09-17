@@ -61,7 +61,7 @@ class HistoricViewModel constructor(
     }
 
     fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
-        return (year == DateUtils.getYear() && month == DateUtils.getMonth() && DateUtils.getDay() > dueDay)
+        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getDay() > dueDay)
     }
 
     fun getStatusColor(status: Boolean, expired: Boolean): Color {

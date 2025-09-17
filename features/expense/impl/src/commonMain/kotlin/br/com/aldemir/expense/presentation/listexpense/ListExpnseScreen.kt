@@ -112,7 +112,7 @@ fun HomeScreenList(
 ) {
     val state = rememberLazyListState()
     LaunchedEffect(true) {
-        viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
     val expenses by viewModel.expenses.collectAsState()
@@ -150,7 +150,7 @@ private fun HomeCard(
 ) {
 
     LaunchedEffect(true) {
-        viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
     val valueTotal by viewModel.valueTotal.collectAsState()
@@ -183,5 +183,5 @@ private fun showToast(context: Context, message: String) {
 }
 
 private fun getAllExpenseMonth(viewModel: ListExpenseViewModel) {
-    viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+    viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
 }

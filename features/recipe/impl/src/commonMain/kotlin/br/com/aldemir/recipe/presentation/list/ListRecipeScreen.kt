@@ -11,15 +11,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
@@ -29,6 +26,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.dialog_delete_message
+import myaccounts.common.generated.resources.dialog_delete_title
+import myaccounts.common.generated.resources.expense_delete_message_toast
+import myaccounts.common.generated.resources.expense_list_screen_title
+import myaccounts.common.generated.resources.recipe_text
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @ExperimentalMaterialApi
@@ -56,11 +60,11 @@ fun ListRecipeScreen(
 
     LaunchedEffect(true) {
         viewModel.getItemsMenu()
-        viewModel.getAllRecipePerMonth(DateUtils.getMonth(), DateUtils.getYear())
-        viewModel.getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllRecipePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+        viewModel.getAllRecipeMonthly(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
-    val recipes by viewModel.recipes.observeAsState()
+    val recipes by viewModel.recipes.collectAsState()
     val cardState by viewModel.cardState.collectAsState()
     val menuItems by viewModel.menuItemsState.collectAsState()
 
@@ -105,26 +109,21 @@ fun ListRecipeScreen(
                                 )
                             }
                         }
-                    } else EmptyContent(text = stringResource(id = R.string.recipe_text))
+                    } else EmptyContent(text = stringResource(Res.string.recipe_text))
                 } ?: run {
                     EmptyContent()
                 }
+                val message = stringResource(Res.string.expense_delete_message_toast)
                 DisplayAlertDialog(
-                    title = stringResource(id = R.string.dialog_delete_title),
-                    message = stringResource(id = R.string.dialog_delete_message),
+                    title = stringResource(Res.string.dialog_delete_title),
+                    message = stringResource(Res.string.dialog_delete_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
                     },
                     onYesClicked = {
                         deleteExpense(viewModel, recipeToSave)
-                        showToast(
-                            context,
-                            context.getString(
-                                R.string.expense_delete_message_toast,
-                                recipeToSave.id
-                            )
-                        )
+                        showToast(context, message)
                         viewModel.onDialogConfirm()
                     }
                 )
@@ -149,5 +148,5 @@ private fun deleteExpense(viewModel: ListRecipeViewModel, recipe: RecipeView) {
 }
 
 private fun getAllExpenseMonth(viewModel: ListRecipeViewModel) {
-    viewModel.getAllRecipePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+    viewModel.getAllRecipePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
 }

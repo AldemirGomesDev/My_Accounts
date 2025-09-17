@@ -15,6 +15,7 @@
     <string name="home_total_month">Total no mês</string>
     <string name="home_expense_paid_out">Pago</string>
     <string name="home_expense_to_pay">À pagar</string>
+    <string name="home_expense_expired">Atrasado</string>
     <string name="home_add_expense">Despesa</string>
     <string name="home_recipe_checked">Recebido</string>
     <string name="home_recipe_pending">À receber</string>
@@ -27,5 +28,32 @@
     <string name="recipe_add_screen_title">Adicionar receita</string>
     <string name="recipe_detail_screen_title">Detalhes</string>
     <string name="recipe_list_screen_title">Receitas</string>
+    <string name="expense_paid_out">Pago</string>
+    <string name="expense_to_pay">À pagar</string>
+    <string name="expense_expired">Atrasado</string>
+    <string name="expense_text">despesa</string>
+    <string name="empty_content">Nenhuma %1$s no mês.</string>
 
+
+    <string name="button_yes">Sim</string>
+    <string name="button_no">Não</string>
+    <string name="button_text_pay">Pagar</string>
+    <string name="button_update">Atualizar</string>
+    <string name="button_add_text">Adicionar</string>
+    <string name="button_back_text">Voltar</string>
+
+    <string name="item_due_date">Vencimento: </string>
+
+    <!-- Recipe -->
+    <string name="recipe_text">receita</string>
+
+    <!-- Dialog -->
+    <string name="dialog_confirm_alert_title">Aviso</string>
+    <string name="dialog_confirm_alert_message">Deseja confirmar o pagamento?</string>
+    <string name="dialog_delete_title">Excluir</string>
+    <string name="dialog_delete_message">Deseja excluir esta despesa?</string>
+    <string name="dialog_confirm_recipe_message">Deseja confirmar o recebimento?</string>
+
+    <string name="expense_delete_message_toast">Despesa com o código: %1$d excluída com sucesso</string>
+    <string name="expense_no_update_message_toast">Essa despesa já foi paga, por isso não poderá ser alterada</string>
 </resources>

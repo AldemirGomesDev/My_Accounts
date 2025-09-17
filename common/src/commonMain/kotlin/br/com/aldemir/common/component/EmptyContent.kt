@@ -8,24 +8,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MediumGray
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.empty_content
+import myaccounts.common.generated.resources.expense_text
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EmptyContent(
     modifier: Modifier = Modifier,
-    text: String = stringResource(id = R.string.expense_text)
+    text: String = stringResource(Res .string.expense_text)
 ) {
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -36,12 +37,12 @@ fun EmptyContent(
     ) {
         Icon(
             modifier = Modifier.size(120.dp),
-            painter = painterResource(id = R.drawable.ic_sad_face),
-            contentDescription = stringResource(R.string.sad_face_icon),
+            imageVector = Icons.Filled.Face,
+            contentDescription = null,
             tint = MediumGray
         )
         Text(
-            text = context.getString(R.string.empty_content, text),
+            text = stringResource(Res.string.empty_content, text),
             color = MediumGray,
             style = MyAccountsTheme.typography.h4
         )

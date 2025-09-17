@@ -14,12 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Shapes
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.Green200
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -88,7 +86,7 @@ private fun LoadingButtonPreview() {
                 backgroundColor = MyAccountsTheme.colors.onBackgroundGreen
             ),
             onClick = {},
-            text = stringResource(id = R.string.button_add_text)
+            text = "Adicionar"
         )
     }
 }

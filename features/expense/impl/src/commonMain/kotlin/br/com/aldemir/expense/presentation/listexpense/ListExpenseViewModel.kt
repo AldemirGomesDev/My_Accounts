@@ -74,7 +74,7 @@ class ListExpenseViewModel(
         deleteExpenseUseCase(this, expenseView.toDomain()).apply {
             onSuccess { expenseId ->
                 if (expenseId > 0) {
-                    getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+                    getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
                 }
             }
         }
