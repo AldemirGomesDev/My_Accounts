@@ -1,7 +1,5 @@
 package br.com.aldemir.recipe.presentation.detail
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.ui.graphics.Color
@@ -98,10 +96,6 @@ class DetailRecipeViewModel(
         return if (status) Res.string.expense_paid_out
         else if (expired) Res.string.expense_expired
         else Res.string.account_pending
-    }
-
-    fun showToast(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     fun getItemsMenu(){

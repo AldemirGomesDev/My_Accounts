@@ -1,6 +1,6 @@
 package br.com.aldemir.recipe.presentation.detail
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -11,10 +11,10 @@ import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +30,7 @@ import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.model.DropdownItemType
+import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
@@ -43,6 +44,7 @@ import myaccounts.common.generated.resources.expense_no_update_message_toast
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @Composable
 fun DetailRecipeScreen(
     navigateToChangeScreen: (recipeId: Int) -> Unit,
@@ -66,9 +68,7 @@ fun DetailRecipeScreen(
         mutableStateOf(RecipeMonthlyView())
     }
 
-    id?.let {
-        if (it > 0) viewModel.getAllByIdRecipeMonthly(recipeId)
-    }
+    if (id > 0) viewModel.getAllByIdRecipeMonthly(recipeId)
 
     val recipeMonthlyViews by viewModel.recipeMonthlyView.collectAsState()
 
@@ -157,8 +157,6 @@ private fun DetailRecipeItem(
     LaunchedEffect(key1 = true){
         viewModel.getItemsMenu()
     }
-    val context = LocalContext.current
-
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
@@ -188,10 +186,7 @@ private fun DetailRecipeItem(
                     detectTapGestures(
                         onLongPress = {
                             if (recipeMonthlyView.status)
-                                viewModel.showToast(
-                                    context,
-                                    toastMessage
-                                )
+                                showMessage(toastMessage)
                             else navigateToChangeScreen(recipeMonthlyView.id)
                         },
                     )
