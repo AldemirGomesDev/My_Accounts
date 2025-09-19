@@ -20,7 +20,7 @@ object DateUtils {
     fun getMonthString(timeZone: TimeZone = TimeZone.currentSystemDefault()): String {
         val now = Clock.System.now()
         val localDateTime = now.toLocalDateTime(timeZone)
-        return localDateTime.month.name.take(3).lowercase().replaceFirstChar { it.titlecase() }
+        return localDateTime.month.name.uppercase()
     }
 
     fun getDate(): Date {

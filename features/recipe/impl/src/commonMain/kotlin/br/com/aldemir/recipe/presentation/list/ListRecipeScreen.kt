@@ -1,7 +1,5 @@
 package br.com.aldemir.recipe.presentation.list
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.backhandler.BackHandler
 import br.com.aldemir.common.component.EmptyContent
@@ -21,6 +18,7 @@ import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
+import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.CoroutineScope
@@ -52,8 +50,6 @@ fun ListRecipeScreen(
     }
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
-
-    val context = LocalContext.current
 
     BackHandler {
         navigateToHomeScreen()
@@ -124,7 +120,7 @@ fun ListRecipeScreen(
                     },
                     onYesClicked = {
                         deleteExpense(viewModel, recipeToSave)
-                        showToast(context, message)
+                        showToast(message)
                         viewModel.onDialogConfirm()
                     }
                 )
@@ -136,8 +132,8 @@ fun ListRecipeScreen(
     )
 }
 
-private fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+private fun showToast( message: String) {
+    showMessage(message)
 }
 
 private fun deleteExpense(viewModel: ListRecipeViewModel, recipe: RecipeView) {
