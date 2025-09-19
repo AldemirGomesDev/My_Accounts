@@ -3,6 +3,7 @@ package br.com.aldemir.common.util
 import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
@@ -23,10 +24,9 @@ object DateUtils {
         return localDateTime.month.name.uppercase()
     }
 
-    fun getDate(): Date {
-        return Calendar.getInstance().time
+    fun getCurrentDate(): Instant {
+        return Clock.System.now()
     }
-
     fun getSixMonthsPrevious(): MutableList<String> {
         val sdf = SimpleDateFormat("MMMM", Locale.getDefault())
         val months = arrayListOf<String>()

@@ -25,6 +25,7 @@ kotlin {
         }
         commonMain.dependencies {
             implementation (libs.koin.core)
+            implementation(libs.kotlinx.datetime)
         }
         androidInstrumentedTest.dependencies {
             implementation(libs.espresso.core)

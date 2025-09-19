@@ -124,7 +124,7 @@ class AddExpenseViewModel(
         val expenseDomain = ExpenseDomain(
             name = uiState.value.name,
             description = uiState.value.description,
-            created_at = DateUtils.getDate(),
+            created_at = DateUtils.getCurrentDate(),
             due_date = uiState.value.dueDateSelected
         )
         addExpenseUseCase(this, expenseDomain).apply {

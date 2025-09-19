@@ -38,6 +38,7 @@ kotlin {
             //ROOM
             implementation(libs.room.bundled)
             implementation(libs.room.runtime)
+            implementation(libs.kotlinx.datetime)
 
             // Ktor
             implementation(libs.ktor.client.core)

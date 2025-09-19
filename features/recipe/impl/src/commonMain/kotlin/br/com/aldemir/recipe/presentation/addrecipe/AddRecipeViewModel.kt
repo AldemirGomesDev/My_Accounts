@@ -44,7 +44,7 @@ class AddRecipeViewModel(
         val recipeDomain = RecipeDomain(
             name = name.value,
             description = description.value,
-            created_at = DateUtils.getDate(),
+            created_at = DateUtils.getCurrentDate(),
             due_date = dueDateSelected.value
         )
         addRecipeUseCase(this, recipeDomain).apply {
