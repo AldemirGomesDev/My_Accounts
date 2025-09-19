@@ -1,6 +1,5 @@
 package br.com.aldemir.authentication.presentation
 
-import android.app.Activity
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -63,7 +62,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun LoginScreen(
     isDarkTheme: Boolean,
     navigateToHomeScreen: () -> Unit,
-    navigateToRegisterScreen: () -> Unit
+    navigateToRegisterScreen: () -> Unit,
+    onFinish: () -> Unit,
 ) {
     val context = LocalContext.current as FragmentActivity
     val viewModel: LoginViewModel = koinViewModel()
@@ -74,9 +74,7 @@ fun LoginScreen(
         viewModel.checkIfBiometricLoginEnabled()
     }
 
-    val activity = (LocalContext.current as? Activity)
-
-    BackHandler { activity?.finish() }
+    BackHandler { onFinish }
 
     when (uiModel.state) {
         AuthenticationState.SUCCESS -> {

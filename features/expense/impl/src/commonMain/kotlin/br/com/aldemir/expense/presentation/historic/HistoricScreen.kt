@@ -11,17 +11,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.MyExposedDropdownMenu
@@ -32,11 +26,19 @@ import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
+import br.com.aldemir.common.util.formatTwoDigits
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.ExpensePerMonthView
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_search
+import myaccounts.common.generated.resources.historic_month_text
+import myaccounts.common.generated.resources.historic_year_text
+import myaccounts.common.generated.resources.item_due_date
+import myaccounts.common.generated.resources.months
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @ExperimentalAnimationApi
@@ -79,27 +81,22 @@ private fun HistoricContent(
 
     val defaultOption by remember { mutableStateOf(DateUtils.getYearString()) }
 
-    val myYears by viewModel.yearsList.observeAsState()
+    val myYears by viewModel.yearsList.collectAsState()
 
-    val monthOptions = stringArrayResource(id = R.array.months)
+    val monthOptions = stringArrayResource(Res.array.months)
     var yearOptionSelected by remember { mutableStateOf(defaultOption) }
     var monthOptionSelected by remember { mutableStateOf(DateUtils.getMonthString()) }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (constraintRow, constraintList, constraintButton) = createRefs()
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .constrainAs(constraintRow) {
-                        top.linkTo(parent.top, margin = 10.dp)
-                    }
             ) {
                 MyExposedDropdownMenu(
-                    label = stringResource(id = R.string.historic_month_text),
+                    label = stringResource(Res.string.historic_month_text),
                     listItems = monthOptions.toList(),
                     selected = monthOptionSelected,
                     onItemSelected = { item ->
@@ -110,7 +107,7 @@ private fun HistoricContent(
                         .padding(end = 16.dp)
                 )
                 MyExposedDropdownMenu(
-                    label = stringResource(id = R.string.historic_year_text),
+                    label = stringResource(Res.string.historic_year_text),
                     listItems = myYears?.toList() ?: listOf(),
                     selected = yearOptionSelected,
                     onItemSelected = { item ->
@@ -123,10 +120,7 @@ private fun HistoricContent(
                 viewModel = viewModel,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 150.dp)
-                    .constrainAs(constraintList) {
-                        top.linkTo(constraintRow.top, margin = 70.dp)
-                    },
+                    .padding(bottom = 150.dp),
                 navigateToHistoricScreen = navigateToHistoricScreen
             )
             LoadingButton(
@@ -137,15 +131,12 @@ private fun HistoricContent(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 8.dp)
-                    .height(52.dp)
-                    .constrainAs(constraintButton) {
-                        bottom.linkTo(parent.bottom)
-                    },
+                    .height(52.dp),
                 loading = viewModel.isLoading.value,
                 enabled = enabled,
-                text = stringResource(id = R.string.button_search)
+                text = stringResource(Res.string.button_search)
             )
-        }
+
 
     }
 }
@@ -163,7 +154,7 @@ fun HistoricScreenList(
         viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
-    val expenses by viewModel.expensePerMonthDomain.observeAsState()
+    val expenses by viewModel.expensePerMonthDomain.collectAsState()
 
     if (expenses.isNullOrEmpty()) {
         EmptyContent(
@@ -175,7 +166,7 @@ fun HistoricScreenList(
         ) {
             LazyColumn(state = state, modifier = Modifier.fillMaxWidth()) {
                 items(
-                    items = expenses!!,
+                    items = expenses,
                     key = { account ->
                         account.id_expense
                     }
@@ -203,7 +194,7 @@ fun HistoricItem(
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val statusColor = viewModel.getStatusColor(expense.situation, expense.expired)
-    val dueDate = String.format("%02d", expense.due_date)
+    val dueDate = formatTwoDigits(expense.due_date)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -247,7 +238,7 @@ fun HistoricItem(
                 color = MyAccountsTheme.colors.background
             )
             Row {
-                TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
+                TextSubTitleItem(text = stringResource(Res.string.item_due_date))
                 TextBodyTwoItem(text = dueDate)
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
@@ -257,14 +248,6 @@ fun HistoricItem(
             }
         }
     }
-}
-
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Composable
-@Preview(showBackground = true)
-private fun HistoricScreenPreview() {
 }
 
 fun TextFieldValue.isBlank() = this.text.isBlank()

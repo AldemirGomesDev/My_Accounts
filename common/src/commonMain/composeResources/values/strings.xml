@@ -36,8 +36,18 @@
     <string name="expense_expired">Atrasado</string>
     <string name="expense_text">despesa</string>
     <string name="empty_content">Nenhuma %1$s no mês.</string>
+    <string name="recipe_card_title">Receita</string>
+    <string name="recipe_chart_title">RECEITAS DOS ÚLTIMOS 6 MESES</string>
+    <string name="recipe_chart_empty">Nenhuma receita nos últimos 6 meses</string>
+    <string name="expense_chart_title">DESPESAS DOS ÚLTIMOS 6 MESES</string>
+    <string name="expense_chart_empty">Nenhuma despesa nos últimos 6 meses</string>
+
+    <!-- Historic -->
+    <string name="historic_month_text">Mês</string>
+    <string name="historic_year_text">Ano</string>
 
 
+    <string name="button_search">Buscar</string>
     <string name="button_yes">Sim</string>
     <string name="button_no">Não</string>
     <string name="button_text_pay">Pagar</string>

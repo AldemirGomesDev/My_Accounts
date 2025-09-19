@@ -3,11 +3,8 @@ package br.com.aldemir.expense.presentation.historic
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
@@ -16,20 +13,27 @@ import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 
-class HistoricViewModel constructor(
+class HistoricViewModel(
     private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
 ) : ViewModel() {
 
     val isLoading: MutableState<Boolean> = mutableStateOf(false)
 
-    private val _expensePerMonthDomain = MutableLiveData<List<ExpensePerMonthDomain>>()
-    val expensePerMonthDomain: LiveData<List<ExpensePerMonthDomain>> = _expensePerMonthDomain
+    private val _expensePerMonthDomain = MutableStateFlow<List<ExpensePerMonthDomain>>(listOf())
+    val expensePerMonthDomain = _expensePerMonthDomain.asStateFlow()
 
-    private val _yearsList = MutableLiveData<List<String>>()
-    val yearsList: LiveData<List<String>> = _yearsList
+    private val _yearsList = MutableStateFlow<List<String>>(listOf())
+    val yearsList = _yearsList.asStateFlow()
 
     fun getAllMonthlyPayment() = viewModelScope.launch {
         getAllMonthlyPaymentUseCase(this, Unit).apply {
@@ -70,9 +74,9 @@ class HistoricViewModel constructor(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.expense_paid_out
+        else if (expired) Res.string.expense_expired
+        else Res.string.account_pending
     }
 }

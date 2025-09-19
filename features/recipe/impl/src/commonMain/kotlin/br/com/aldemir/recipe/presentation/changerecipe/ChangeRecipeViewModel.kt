@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChangeRecipeViewModel constructor(
+class ChangeRecipeViewModel(
     private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase,
     private val getByIdRecipeMonthlyUseCase: GetByIdRecipeMonthlyUseCase,
     private val updateRecipeNameAndDescriptionUseCase: UpdateRecipeNameAndDescriptionUseCase

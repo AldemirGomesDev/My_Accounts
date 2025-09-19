@@ -1,7 +1,7 @@
 package br.com.aldemir.recipe.presentation.addrecipe
 
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,11 +10,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
@@ -31,11 +28,25 @@ import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.theme.*
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_add_text
+import myaccounts.common.generated.resources.days
+import myaccounts.common.generated.resources.form_add_description
+import myaccounts.common.generated.resources.form_add_name
+import myaccounts.common.generated.resources.form_add_value
+import myaccounts.common.generated.resources.form_due_date_day
+import myaccounts.common.generated.resources.form_how_many_times_repeat
+import myaccounts.common.generated.resources.form_text_checkbox
+import myaccounts.common.generated.resources.form_text_checkbox_repeat
+import myaccounts.common.generated.resources.numbers
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
+@ExperimentalComposeUiApi
 @Composable
 fun AddRecipeScreen(
     viewModel: AddRecipeViewModel = koinViewModel(),
@@ -115,8 +126,8 @@ private fun AddAccountContent(
     var enabled by remember {
         mutableStateOf(false)
     }
-    val repeatOptions = stringArrayResource(id = R.array.numbers)
-    val dueDateOptions = stringArrayResource(id = R.array.days)
+    val repeatOptions = stringArrayResource(Res.array.numbers)
+    val dueDateOptions = stringArrayResource(Res.array.days)
 
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
@@ -128,7 +139,7 @@ private fun AddAccountContent(
             onTitleChange(it)
             viewModel.validateName()
         },
-        label = stringResource(R.string.form_add_name),
+        label = stringResource(Res.string.form_add_name),
         isError = viewModel.isNameValid.value
     )
     Text(
@@ -146,7 +157,7 @@ private fun AddAccountContent(
             onValueChange(it)
             viewModel.validateValue()
         },
-        label = stringResource(R.string.form_add_value),
+        label = stringResource(Res.string.form_add_value),
         isError = viewModel.isValueValid.value,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
@@ -169,7 +180,7 @@ private fun AddAccountContent(
             onDescriptionChange(it)
             viewModel.validateDescription()
         },
-        label = stringResource(R.string.form_add_description),
+        label = stringResource(Res.string.form_add_description),
         isError = viewModel.isDescriptionValid.value,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done,
@@ -187,7 +198,7 @@ private fun AddAccountContent(
         color = MyAccountsTheme.colors.background
     )
     MyExposedDropdownMenu(
-        label = stringResource(id = R.string.form_due_date_day),
+        label = stringResource( Res.string.form_due_date_day),
         listItems = dueDateOptions.toList(),
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
@@ -201,7 +212,7 @@ private fun AddAccountContent(
         color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
-        text = stringResource(id = R.string.form_text_checkbox),
+        text = stringResource(Res.string.form_text_checkbox),
         isChecked = viewModel.isCheckedPaid.value,
         onCheckedChange = { viewModel.isCheckedPaid.value = it }
     )
@@ -210,7 +221,7 @@ private fun AddAccountContent(
         color = MyAccountsTheme.colors.background
     )
     CheckboxWithText(
-        text = stringResource(id = R.string.form_text_checkbox_repeat),
+        text = stringResource(Res.string.form_text_checkbox_repeat),
         isChecked = viewModel.isAccountRepeat.value,
         onCheckedChange = {
             viewModel.isAccountRepeat.value = it
@@ -223,7 +234,7 @@ private fun AddAccountContent(
     )
     if (viewModel.isAccountRepeat.value) {
         MyExposedDropdownMenu(
-            label = stringResource(id = R.string.form_how_many_times_repeat),
+            label = stringResource(Res.string.form_how_many_times_repeat),
             listItems = repeatOptions.toList(),
             selected = viewModel.amountThatRepeatsSelected.value.toString(),
             onItemSelected = { item ->
@@ -246,6 +257,6 @@ private fun AddAccountContent(
             .height(52.dp),
         loading = isLoading.value,
         enabled = enabled,
-        text = stringResource(id = R.string.button_add_text)
+        text = stringResource(Res.string.button_add_text)
     )
 }

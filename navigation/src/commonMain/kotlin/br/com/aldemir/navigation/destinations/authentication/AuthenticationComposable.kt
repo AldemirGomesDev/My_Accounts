@@ -49,6 +49,7 @@ fun NavGraphBuilder.authenticationComposable(
                     }
                 }
             },
+            onFinish = { navHostController.popBackStack() }
         )
     }
 }

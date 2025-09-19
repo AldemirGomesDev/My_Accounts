@@ -1,6 +1,5 @@
 package br.com.aldemir.expense.presentation.listexpense
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,20 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.util.formatTwoDigits
 import br.com.aldemir.expense.model.ExpenseView
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_list_item_status
+import myaccounts.common.generated.resources.delete_icon
+import myaccounts.common.generated.resources.item_due_date
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RedBackground(degrees: Float) {
@@ -40,7 +42,7 @@ fun RedBackground(degrees: Float) {
         Icon(
             modifier = Modifier.rotate(degrees = degrees),
             imageVector = Icons.Filled.Delete,
-            contentDescription = stringResource(id = R.string.delete_icon),
+            contentDescription = stringResource(Res.string.delete_icon),
             tint = Color.White
         )
     }
@@ -56,7 +58,7 @@ fun ListExpenseItem(
 ) {
 
     val statusColor = viewModel.getStatusColor(expense.status, expense.expired)
-    val dueDate = String.format("%02d", expense.due_date)
+    val dueDate = formatTwoDigits(expense.due_date)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -111,14 +113,14 @@ fun ListExpenseItem(
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
+                            TextSubTitleItem(text = stringResource(Res.string.item_due_date))
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
                                 text = dueDate
                             )
                             TextSubTitleItem(
                                 modifier = Modifier.padding(start = LARGEST_PADDING),
-                                text = stringResource(id = R.string.account_list_item_status)
+                                text = stringResource(Res.string.account_list_item_status)
                             )
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
@@ -147,16 +149,4 @@ fun ListExpenseItem(
             }
         }
     }
-}
-
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
-@Composable
-@Preview
-private fun TaskContentPreview() {
-//    HandleListContent(
-//        accounts = listOf(),
-//        onSwipeToDelete = {},
-//        navigateToTaskScreen =  {}
-//    )
 }

@@ -3,7 +3,6 @@ package br.com.aldemir.expense.presentation.listexpense
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
@@ -21,6 +20,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 
 class ListExpenseViewModel(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
@@ -116,10 +120,10 @@ class ListExpenseViewModel(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.expense_paid_out
+        else if (expired) Res.string.expense_expired
+        else Res.string.account_pending
     }
 
     private fun calculateValues() {

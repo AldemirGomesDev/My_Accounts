@@ -1,25 +1,23 @@
 package br.com.aldemir.home.presentation.view
 
-import android.app.Activity
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.common.theme.*
@@ -31,12 +29,20 @@ import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 import me.bytebeats.views.charts.bar.render.xaxis.SimpleXAxisDrawer
 import me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.expense_chart_empty
+import myaccounts.common.generated.resources.expense_chart_title
+import myaccounts.common.generated.resources.recipe_chart_empty
+import myaccounts.common.generated.resources.recipe_chart_title
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToNextScreen: (ButtonType) -> Unit,
+    onFinish: () -> Unit,
 ){
     LaunchedEffect(true) {
         viewModel.getAllRecipeAndExpense()
@@ -45,9 +51,7 @@ fun HomeScreen(
     }
     val scaffoldState = rememberScaffoldState()
 
-    val activity = (LocalContext.current as? Activity)
-
-    BackHandler { activity?.finish() }
+    BackHandler { onFinish }
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -84,8 +88,8 @@ fun HomeContent(
                     uiState = uiState,
                     barChartData = uiState.uiModel.barChartDataExpense,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.expense_chart_title),
-                    textEmpty = stringResource(id = R.string.expense_chart_empty),
+                    title = stringResource(Res.string.expense_chart_title),
+                    textEmpty = stringResource(Res.string.expense_chart_empty),
                     buttonType = ButtonType.ButtonExpense,
                     navigateToNextScreen = navigateToNextScreen
                 )
@@ -93,8 +97,8 @@ fun HomeContent(
                     uiState = uiState,
                     barChartData = uiState.uiModel.barChartDataRecipe,
                     labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.recipe_chart_title),
-                    textEmpty = stringResource(id = R.string.recipe_chart_empty),
+                    title = stringResource(Res.string.recipe_chart_title),
+                    textEmpty = stringResource(Res.string.recipe_chart_empty),
                     buttonType = ButtonType.ButtonRecipe,
                     navigateToNextScreen = navigateToNextScreen
                 )
@@ -180,8 +184,8 @@ private fun MyBarChart(
                                     modifier = Modifier
                                         .size(60.dp)
                                         .padding(top = MyAccountsTheme.dimensions.padding8),
-                                    painter = painterResource(id = R.drawable.ic_sad_face),
-                                    contentDescription = stringResource(R.string.sad_face_icon),
+                                    imageVector = Icons.Filled.Warning,
+                                    contentDescription = null,
                                     tint = MediumGray
                                 )
                                 Text(

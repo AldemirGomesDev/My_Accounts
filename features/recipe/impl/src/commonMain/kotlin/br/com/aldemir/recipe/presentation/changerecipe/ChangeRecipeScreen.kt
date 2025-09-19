@@ -6,15 +6,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
@@ -23,13 +19,20 @@ import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.RecipePerMonthDomain
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_update
+import myaccounts.common.generated.resources.expense_month_and_year
+import myaccounts.common.generated.resources.form_add_description
+import myaccounts.common.generated.resources.form_add_name
+import myaccounts.common.generated.resources.form_add_value
+import myaccounts.common.generated.resources.form_text_checkbox
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -39,8 +42,6 @@ fun ChangeRecipeScreen(
     navigateToDetailScreen: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
-
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.getAllByIdMonthlyRecipe(idMonthlyRecipe)
@@ -58,8 +59,8 @@ fun ChangeRecipeScreen(
 
     mMonthlyRecipes.value = monthlyRecipes
 
-    val yearAndMonth = context.getString(
-        R.string.expense_month_and_year,
+    val yearAndMonth = stringResource(
+        Res.string.expense_month_and_year,
         mMonthlyRecipes.value.year,
         mMonthlyRecipes.value.month
     )
@@ -155,7 +156,7 @@ private fun ChangeRecipeContent(
                 onTitleChange(it)
                 viewModel.validateName()
             },
-            label = stringResource(R.string.form_add_name),
+            label = stringResource(Res.string.form_add_name),
             isError = viewModel.isNameValid.value
         )
         Text(
@@ -174,7 +175,7 @@ private fun ChangeRecipeContent(
                 onValueChange(it)
                 viewModel.validateValue()
             },
-            label = stringResource(R.string.form_add_value),
+            label = stringResource(Res.string.form_add_value),
             isError = viewModel.isValueValid.value,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
@@ -198,7 +199,7 @@ private fun ChangeRecipeContent(
                 onDescriptionChange(it)
                 viewModel.validateDescription()
             },
-            label = stringResource(R.string.form_add_description),
+            label = stringResource(Res.string.form_add_description),
             isError = viewModel.isDescriptionValid.value,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
@@ -217,7 +218,7 @@ private fun ChangeRecipeContent(
         )
 
         CheckboxWithText(
-            text = stringResource(id = R.string.form_text_checkbox),
+            text = stringResource(Res.string.form_text_checkbox),
             isChecked = viewModel.isCheckedPaid.value,
             onCheckedChange = { viewModel.isCheckedPaid.value = it }
         )
@@ -236,14 +237,13 @@ private fun ChangeRecipeContent(
                 .height(52.dp),
             loading = loading,
             enabled = enabled,
-            text = stringResource(id = R.string.button_update),
+            text = stringResource(Res.string.button_update),
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
         )
 
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 private fun ChangeRecipeContentPreview() {
     ChangeRecipeContent(

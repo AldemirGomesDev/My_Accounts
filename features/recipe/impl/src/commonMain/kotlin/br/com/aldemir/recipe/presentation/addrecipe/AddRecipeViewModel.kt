@@ -13,7 +13,7 @@ import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import kotlinx.coroutines.launch
 
-class AddRecipeViewModel constructor(
+class AddRecipeViewModel(
     private val addRecipeUseCase: AddRecipeUseCase,
     private val addRecipeMonthlyUseCase: AddRecipeMonthlyUseCase
 ) : ViewModel() {
