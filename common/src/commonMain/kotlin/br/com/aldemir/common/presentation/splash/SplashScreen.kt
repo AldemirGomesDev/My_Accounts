@@ -20,15 +20,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.myaccounts.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import br.com.aldemir.common.util.emptyString
 import kotlinx.coroutines.delay
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.icon_despesa
+import myaccounts.common.generated.resources.icon_despesa_light
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SplashScreen(
@@ -73,18 +76,18 @@ fun Splash(
                 .size(MyAccountsTheme.dimensions.sizing120)
                 .offset(y = offsetState)
                 .alpha(alpha = alphaState),
-            painter = painterResource(id = getLogo(isDarkTheme)),
+            painter = painterResource(getLogo(isDarkTheme)),
             contentDescription = null
         )
     }
 }
 
 @Composable
-private fun getLogo(isDarkTheme: Boolean): Int {
+private fun getLogo(isDarkTheme: Boolean): DrawableResource {
     return if (isDarkTheme) {
-        R.drawable.icon_despesa_light
+        Res.drawable.icon_despesa_light
     } else {
-        R.drawable.icon_despesa
+        Res.drawable.icon_despesa
     }
 }
 
