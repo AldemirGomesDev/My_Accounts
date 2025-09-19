@@ -1,11 +1,9 @@
 package br.com.aldemir.recipe.presentation.addrecipe
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
@@ -123,8 +121,6 @@ class AddRecipeViewModel constructor(
     }
 
     fun getNumberOfTimesItRepeats(): MutableList<String> {
-        Log.w(TAG, "getNumberOfTimesItRepeats: ")
-
         val numberOfTimesItRepeats = arrayListOf<String>()
         for (i in 1..100) {
             numberOfTimesItRepeats.add(i.toString())
