@@ -13,8 +13,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -65,7 +63,7 @@ fun DarkModeDropDownMenu(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = darkModeStateSelected.iconRes),
+                imageVector = darkModeStateSelected.imageVector,
                 contentDescription = emptyString(),
                 tint = tintColor
             )
@@ -85,7 +83,7 @@ fun DarkModeDropDownMenu(
                     ) {
                         Icon(
                             modifier = Modifier.padding(end = MyAccountsTheme.dimensions.padding8),
-                            imageVector = ImageVector.vectorResource(itemValue.iconRes),
+                            imageVector = itemValue.imageVector,
                             tint = MyAccountsTheme.colors.primary,
                             contentDescription = emptyString()
                         )

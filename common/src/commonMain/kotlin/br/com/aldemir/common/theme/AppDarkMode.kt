@@ -1,6 +1,10 @@
 package br.com.aldemir.common.theme
 
-import br.com.aldemir.myaccounts.common.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.ui.graphics.vector.ImageVector
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.drawer_dark_mode_auto
 import myaccounts.common.generated.resources.drawer_dark_mode_disabled
@@ -9,18 +13,18 @@ import org.jetbrains.compose.resources.StringResource
 
 enum class AppDarkMode(
     val titleRes: StringResource,
-    val iconRes: Int = R.drawable.ic_night_sight_auto_24,
+    val imageVector: ImageVector = Icons.Filled.Star,
 ) {
     Light(
         titleRes = Res.string.drawer_dark_mode_disabled,
-        iconRes = R.drawable.ic_light_mode_24
+        imageVector = Icons.Filled.Warning
     ),
     Dark(
         titleRes = Res.string.drawer_dark_mode_enabled,
-        iconRes = R.drawable.ic_dark_mode_24
+        imageVector = Icons.Filled.Build
     ),
     Default(
         titleRes = Res.string.drawer_dark_mode_auto,
-        iconRes = R.drawable.ic_night_sight_auto_24
+        imageVector = Icons.Filled.Star
     )
 }
