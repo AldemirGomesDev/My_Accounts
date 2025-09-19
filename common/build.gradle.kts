@@ -43,6 +43,9 @@ kotlin {
             implementation(libs.compose.lifecycle.viewmodel)
             implementation(libs.compoose.constraintlayout)
         }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
     }
 
     listOf(
