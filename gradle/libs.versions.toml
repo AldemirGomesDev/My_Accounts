@@ -46,6 +46,7 @@ compose-navigation = {module = "androidx.navigation:navigation-compose", version
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "compose_multplatform" }
 
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
