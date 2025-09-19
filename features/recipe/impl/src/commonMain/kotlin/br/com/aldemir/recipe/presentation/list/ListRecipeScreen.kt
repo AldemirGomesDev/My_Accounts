@@ -2,7 +2,6 @@ package br.com.aldemir.recipe.presentation.list
 
 import android.content.Context
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,9 +10,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.backhandler.BackHandler
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.util.DateUtils
@@ -30,11 +31,11 @@ import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.dialog_delete_message
 import myaccounts.common.generated.resources.dialog_delete_title
 import myaccounts.common.generated.resources.expense_delete_message_toast
-import myaccounts.common.generated.resources.expense_list_screen_title
 import myaccounts.common.generated.resources.recipe_text
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun ListRecipeScreen(

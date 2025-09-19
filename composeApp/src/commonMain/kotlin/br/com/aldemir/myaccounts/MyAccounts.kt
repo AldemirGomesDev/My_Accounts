@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -15,6 +16,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class
 )
+@ExperimentalComposeUiApi
 @Composable
 fun MyAccountsApp(
     viewModel: MainViewModel = koinViewModel()

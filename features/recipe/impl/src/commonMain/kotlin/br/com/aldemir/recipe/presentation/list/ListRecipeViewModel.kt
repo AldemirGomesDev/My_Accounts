@@ -4,8 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.model.CardState
@@ -38,7 +36,7 @@ import org.jetbrains.compose.resources.StringResource
 
 private const val TAG = "listRecipeViewModel"
 
-class ListRecipeViewModel constructor(
+class ListRecipeViewModel(
     private val getAllRecipePerMonthUseCase: GetAllRecipePerMonthUseCase,
     private val getAllRecipeMonthlyUseCase: GetAllRecipeMonthlyUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase

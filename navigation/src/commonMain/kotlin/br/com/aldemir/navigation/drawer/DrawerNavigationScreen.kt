@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -34,6 +35,7 @@ import myaccounts.navigation.generated.resources.recipe_change_screen_title
 import myaccounts.navigation.generated.resources.recipe_detail_screen_title
 import myaccounts.navigation.generated.resources.recipe_list_screen_title
 
+@ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -255,6 +257,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class
 )
+@ExperimentalComposeUiApi
 @Composable
 fun DrawerNavigationScreenPreview() {
     MyAccountsTheme {

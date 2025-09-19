@@ -31,6 +31,7 @@ espresso = '3.5.1'
 jvmTarget = "17"
 pagingCompose = "3.3.5"
 compose_plugin_multplatform = "1.7.1"
+compose_multplatform = "1.8.1"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
@@ -44,6 +45,8 @@ compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayou
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
+compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
+
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
