@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.theme.Shapes
@@ -66,114 +65,81 @@ fun StatisticsCard(
                 .height(145.dp)
                 .padding(16.dp),
         ) {
-            ConstraintLayout(
-                modifier = Modifier.fillMaxSize()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val (totalLabel, totalValue, paidOutLabel, paidOutValue,
-                    payableLabel, payableValue, progressValue, iconPaidOut, iconPayable) = createRefs()
                 Text(
-                    modifier = Modifier
-                        .constrainAs(totalLabel) {
-                            top.linkTo(parent.top)
-                        }
-                        .padding(bottom = 20.dp),
+                    modifier = Modifier.padding(bottom = 20.dp),
                     text = stringResource(Res.string.home_total_month),
                     color = Color.White,
                     style = MyAccountsTheme.typography.paragraph02Bold
                 )
                 Text(
-                    modifier = Modifier
-                        .constrainAs(totalValue) {
-                            end.linkTo(parent.end)
-                        }
-                        .padding(bottom = 16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp),
                     text = cardState.valueTotal.toCurrency(currencySymbol),
                     color = Color.White,
                     style = MyAccountsTheme.typography.paragraph02Normal
                 )
-                Icon(
-                    modifier = Modifier.constrainAs(iconPaidOut) {
-                        top.linkTo(paidOutLabel.top)
-                        bottom.linkTo(paidOutValue.bottom)
-                        start.linkTo(parent.start)
-                    },
-                    imageVector = Icons.Filled.CheckCircle,
-                    tint = MyAccountsTheme.colors.success,
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(paidOutLabel) {
-                            top.linkTo(totalLabel.bottom)
-                            start.linkTo(iconPaidOut.end)
-                        }
-                        .padding(start = 4.dp),
-                    text = textChecked,
-                    color = Color.White,
-                    style = MyAccountsTheme.typography.paragraph02Bold
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(paidOutValue) {
-                            top.linkTo(paidOutLabel.bottom)
-                            start.linkTo(iconPaidOut.end)
-                        }
-                        .padding(start = 4.dp),
-                    text = cardState.paidOut.toCurrency(currencySymbol),
-                    color = Color.White,
-                    style = MyAccountsTheme.typography.paragraph02Normal
-                )
-                Icon(
-                    modifier = Modifier
-                        .constrainAs(iconPayable) {
-                            top.linkTo(payableLabel.top)
-                            bottom.linkTo(payableValue.bottom)
-                            start.linkTo(paidOutValue.end)
-                        }
-                        .padding(start = 24.dp),
-                    imageVector = Icons.Filled.Warning,
-                    tint = MyAccountsTheme.colors.warning,
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(payableLabel) {
-                            top.linkTo(totalLabel.bottom)
-                            start.linkTo(iconPayable.end)
-                        }
-                        .padding(start = 4.dp),
-                    text = textPending,
-                    color = Color.White,
-                    style = MyAccountsTheme.typography.paragraph02Bold
-                )
-                Text(
-                    modifier = Modifier
-                        .constrainAs(payableValue) {
-                            top.linkTo(paidOutLabel.bottom)
-                            start.linkTo(iconPayable.end)
-                        }
-                        .padding(start = 4.dp),
-                    fontWeight = FontWeight.Normal,
-                    text = cardState.pending.toCurrency(currencySymbol),
-                    color = Color.White,
-                    style = MyAccountsTheme.typography.paragraph02Normal
-                )
-                LinearProgressIndicatorSample(
-                    value = if (!cardState.percentage.isNaN()) {
-                        cardState.percentage.toDecimal()
-                    } else {
-                        emptyFloat()
-                    },
-                    modifier = Modifier
-                        .constrainAs(progressValue) {
-                            top.linkTo(payableValue.bottom)
-                        }
-                        .fillMaxWidth()
-                        .height(30.dp)
-                        .padding(top = 12.dp)
-                        .clip(shape = Shapes.large)
-                )
             }
+            Row {
+                Row {
+                    Icon(
+                        imageVector = Icons.Filled.CheckCircle,
+                        tint = MyAccountsTheme.colors.success,
+                        contentDescription = null
+                    )
+                    Column {
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp),
+                            text = textChecked,
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Bold
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp),
+                            text = cardState.paidOut.toCurrency(currencySymbol),
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Normal
+                        )
+                    }
+                }
+                Row {
+                    Icon(
+                        modifier = Modifier .padding(start = 24.dp),
+                        imageVector = Icons.Filled.Warning,
+                        tint = MyAccountsTheme.colors.warning,
+                        contentDescription = null
+                    )
+                    Column {
+                        Text(
+                            modifier = Modifier .padding(start = 4.dp),
+                            text = textPending,
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Bold
+                        )
+                        Text(
+                            modifier = Modifier .padding(start = 4.dp),
+                            fontWeight = FontWeight.Normal,
+                            text = cardState.pending.toCurrency(currencySymbol),
+                            color = Color.White,
+                            style = MyAccountsTheme.typography.paragraph02Normal
+                        )
+                    }
+                }
+            }
+            LinearProgressIndicatorSample(
+                value = if (!cardState.percentage.isNaN()) {
+                    cardState.percentage.toDecimal()
+                } else {
+                    emptyFloat()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(30.dp)
+                    .padding(top = 12.dp)
+                    .clip(shape = Shapes.large)
+            )
         }
     }
 }
