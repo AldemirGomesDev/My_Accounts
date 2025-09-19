@@ -1,7 +1,9 @@
 package br.com.aldemir.authentication.presentation
 
 import br.com.aldemir.common.component.SnackBarState
-import br.com.aldemir.login.R
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.snack_bar_empty
+import org.jetbrains.compose.resources.StringResource
 
 data class AuthenticationUiModel(
     val state: AuthenticationState = AuthenticationState.IDLE,
@@ -10,5 +12,5 @@ data class AuthenticationUiModel(
     val showBiometricPrompt: Boolean = false,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val snackBarMessage: Int = R.string.snack_bar_empty
+    val snackBarMessage: StringResource = Res.string.snack_bar_empty
 )

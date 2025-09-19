@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -13,6 +14,7 @@ import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.authenticationComposable(
     isDarkTheme: Boolean,
     navHostController: NavHostController,

@@ -1,6 +1,5 @@
 package br.com.aldemir.authentication.presentation
 
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +11,16 @@ import br.com.aldemir.domain.usecase.authentication.LoginUseCaseState
 import br.com.aldemir.domain.usecase.authentication.Params
 import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
-import br.com.aldemir.login.R
 import com.diamondedge.logging.logging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.snack_bar_empty
+import myaccounts.common.generated.resources.snack_bar_user_or_password_error
+import org.jetbrains.compose.resources.StringResource
 
 class LoginViewModel(
     private val biometricHelper: BiometricHelper,
@@ -106,7 +108,7 @@ class LoginViewModel(
             handleUiLoading()
             if (checkUserNameAndPasswordIsEmpty(userName, password)) {
                 delay(500)
-                handleUiError(R.string.snack_bar_empty)
+                handleUiError(Res.string.snack_bar_empty)
             } else {
                 delay(1000)
                 loginUseCase(this, Params(userName, password)).apply {
@@ -115,7 +117,7 @@ class LoginViewModel(
                     }
                     onFailure {
                         handleUiError(
-                            R.string.snack_bar_user_or_password_error
+                            Res.string.snack_bar_user_or_password_error
                         )
                     }
                 }
@@ -130,7 +132,7 @@ class LoginViewModel(
             }
 
             is LoginUseCaseState.NotFound -> {
-                handleUiError(R.string.snack_bar_user_or_password_error)
+                handleUiError(Res.string.snack_bar_user_or_password_error)
             }
         }
     }
@@ -156,7 +158,7 @@ class LoginViewModel(
         )
     }
 
-    private fun handleUiError(message: Int) {
+    private fun handleUiError(message: StringResource) {
         handleUiState(
             uiState.value.copy(
                 isLoading = false,

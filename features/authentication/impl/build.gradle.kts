@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.multidex)
+            implementation(libs.compose.ui.backhandler)
             //Compose
             implementation(compose.material3)
             implementation(compose.components.resources)

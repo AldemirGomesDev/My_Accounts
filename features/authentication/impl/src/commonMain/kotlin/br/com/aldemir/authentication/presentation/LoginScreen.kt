@@ -1,7 +1,7 @@
 package br.com.aldemir.authentication.presentation
 
 import android.app.Activity
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,7 +26,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -55,9 +55,10 @@ import myaccounts.features.authentication.impl.generated.resources.biometric_pro
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_use_password_instead_text
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-
+@ExperimentalComposeUiApi
 @Composable
 fun LoginScreen(
     isDarkTheme: Boolean,
@@ -115,7 +116,7 @@ fun LoginPage(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val messageError = stringResource(id = uiModel.snackBarMessage)
+    val messageError = stringResource(uiModel.snackBarMessage)
 
     LaunchedEffect(uiModel.snackBarState) {
         when (uiModel.snackBarState) {
