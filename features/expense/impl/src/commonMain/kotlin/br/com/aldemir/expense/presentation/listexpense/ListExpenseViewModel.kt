@@ -101,7 +101,7 @@ class ListExpenseViewModel(
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toExpenseView(
                 checkIfExpired(
-                    DateUtils.getDay(),
+                    DateUtils.getCurrentDay(),
                     expensePerMonth.due_date
                 )
             )

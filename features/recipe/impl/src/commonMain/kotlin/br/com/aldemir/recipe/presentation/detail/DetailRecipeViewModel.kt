@@ -83,7 +83,7 @@ class DetailRecipeViewModel(
     }
 
     private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
-        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getDay() > dueDay)
+        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getCurrentDay() > dueDay)
     }
 
     fun getStatusColor(status: Boolean, expired: Boolean): Color {

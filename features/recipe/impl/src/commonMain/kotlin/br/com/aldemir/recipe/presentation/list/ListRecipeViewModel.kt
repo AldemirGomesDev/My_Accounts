@@ -88,7 +88,7 @@ class ListRecipeViewModel(
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toRecipeView(
                 checkIfExpired(
-                    DateUtils.getDay(),
+                    DateUtils.getCurrentDay(),
                     expensePerMonth.due_date
                 )
             )
