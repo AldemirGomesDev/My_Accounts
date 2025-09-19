@@ -93,7 +93,6 @@ android {
 
     defaultConfig {
         applicationId = "br.com.aldemir.myaccounts"
-        buildToolsVersion = libs.versions.buildTools.get()
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
