@@ -29,6 +29,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(compose.uiTooling)
+            implementation(libs.compose.lifecycle.viewmodel)
+            implementation(libs.compoose.constraintlayout)
         }
         commonMain.dependencies {
             implementation(libs.koin.core)
@@ -40,8 +42,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.material)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
         }
         iosMain.dependencies {
             implementation(compose.ui)

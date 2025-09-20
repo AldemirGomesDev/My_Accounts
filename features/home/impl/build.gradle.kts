@@ -22,7 +22,6 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(compose.uiTooling)
-            implementation(libs.compose.livedata)
         }
         commonMain.dependencies {
             implementation(project(":data"))
@@ -46,9 +45,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.material)
-            implementation(libs.compose.activity)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
         }
     }
 

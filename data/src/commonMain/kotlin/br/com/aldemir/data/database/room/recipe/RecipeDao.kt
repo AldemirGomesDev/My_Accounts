@@ -1,6 +1,5 @@
 package br.com.aldemir.data.database.room.recipe
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.aldemir.data.database.model.RecipeDTO
 import br.com.aldemir.data.database.model.RecipeUpdateDTO
@@ -28,7 +27,4 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipe")
     suspend fun getAll(): List<RecipeDTO>
-
-    @Query("SELECT * FROM recipe WHERE name = :name")
-    fun getByName(name: String): LiveData<List<RecipeDTO>>
 }

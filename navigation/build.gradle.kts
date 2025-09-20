@@ -35,8 +35,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.material)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
             implementation(libs.navigation.compose.multplatform)
             implementation(libs.kotlinx.serialization.json)
         }

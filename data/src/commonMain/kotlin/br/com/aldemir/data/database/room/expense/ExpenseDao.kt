@@ -1,6 +1,5 @@
 package br.com.aldemir.data.database.room.expense
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.aldemir.data.database.model.ExpenseDTO
 
@@ -24,8 +23,4 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM Expense")
     suspend fun getAll(): List<ExpenseDTO>
-
-    @Query("SELECT * FROM Expense WHERE name = :name")
-    fun getByName(name: String): LiveData<List<ExpenseDTO>>
-
 }

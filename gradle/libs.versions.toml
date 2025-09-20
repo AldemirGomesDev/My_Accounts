@@ -22,8 +22,6 @@ charts = "0.2.1"
 multidex = "2.0.1"
 compose-navigation = "2.7.7"
 firebase-bom = "33.0.0"
-compose-material3 = "1.2.1"
-compose-activity = "1.9.0"
 googleServicesPlugin = "4.4.1"
 crashlyticsPlugin = "2.9.9"
 ksp = "2.2.0-2.0.2"
@@ -36,15 +34,10 @@ coroutinesMultplatform = "1.9.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
-compose-ui = {module = "androidx.compose.ui:ui", version.ref = "compose"}
-compose-material = {module = "androidx.compose.material:material", version.ref = "compose"}
 compose-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
-compose-activity = {module = "androidx.activity:activity-compose", version.ref = "compose-activity"}
-compose-livedata = {module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
 compose-lifecycle-viewmodel = {module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
 compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
-compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesMultplatform" }
@@ -92,14 +85,12 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 [plugins]
 androidApplication = {id = "com.android.application", version.ref = "agp"}
 androidLibrary = { id = 'com.android.library', version.ref = 'agp' }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleServices = { id = 'com.google.gms.google-services', version.ref = 'googleServicesPlugin' }
 crashlytics = { id = 'com.google.firebase.crashlytics', version.ref = 'crashlyticsPlugin' }
 kotlinAndroid = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
 kotlinJvm = { id = 'org.jetbrains.kotlin.jvm', version.ref = 'kotlin' }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = 'kotlin' }
 ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }
-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 
 # KMP
@@ -109,5 +100,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 
 
 [bundles]
-compose-all = ["compose-ui", "compose-material", "compose-tooling", "compose-activity", "compose-livedata"]
 koin-all = ["koin-compose", "koin-android"]
