@@ -42,7 +42,11 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.ui)
-            implementation(compose.material) }
+            implementation(compose.material)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
     }
 
     listOf(

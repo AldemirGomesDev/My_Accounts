@@ -38,32 +38,32 @@ fun SplashScreen(
     isDarkTheme: Boolean,
     navigateToListScreen: () -> Unit,
 ) {
-    var startAnimation by remember { mutableStateOf(false) }
-    val offsetState by animateDpAsState(
-        targetValue = if (startAnimation) 0.dp else 100.dp,
-        animationSpec = tween(
-            durationMillis = 1000
-        ), label = emptyString()
-    )
-    val alphaState by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000
-        ), label = emptyString()
-    )
+//    var startAnimation by remember { mutableStateOf(false) }
+//    val offsetState by animateDpAsState(
+//        targetValue = if (startAnimation) 0.dp else 100.dp,
+//        animationSpec = tween(
+//            durationMillis = 1000
+//        ), label = emptyString()
+//    )
+//    val alphaState by animateFloatAsState(
+//        targetValue = if (startAnimation) 1f else 0f,
+//        animationSpec = tween(
+//            durationMillis = 1000
+//        ), label = emptyString()
+//    )
     LaunchedEffect(key1 = true) {
-        startAnimation = true
+//        startAnimation = true
         delay(SPLASH_SCREEN_DELAY)
         navigateToListScreen()
     }
 
-    Splash(isDarkTheme = isDarkTheme, offsetState = offsetState, alphaState = alphaState)
+    Splash(isDarkTheme = isDarkTheme)
 }
 
 @Composable
 fun Splash(
     isDarkTheme: Boolean,
-    offsetState: Dp, alphaState: Float
+//    offsetState: Dp, alphaState: Float
 ) {
     Box(
         modifier = Modifier
@@ -73,9 +73,7 @@ fun Splash(
     ) {
         Image(
             modifier = Modifier
-                .size(MyAccountsTheme.dimensions.sizing120)
-                .offset(y = offsetState)
-                .alpha(alpha = alphaState),
+                .size(MyAccountsTheme.dimensions.sizing120),
             painter = painterResource(getLogo(isDarkTheme)),
             contentDescription = null
         )

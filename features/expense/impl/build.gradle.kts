@@ -44,6 +44,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.material)
         }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
     }
 
     listOf(

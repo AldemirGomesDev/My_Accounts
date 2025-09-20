@@ -49,8 +49,6 @@ kotlin {
             implementation(libs.multidex)
             // Koin for Android
             implementation(libs.koin.android)
-            // Paging
-            implementation(libs.compose.navigation)
         }
         commonMain.dependencies {
             implementation(project(":common"))
@@ -61,6 +59,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.navigation.compose.multplatform)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

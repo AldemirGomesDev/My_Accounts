@@ -42,6 +42,9 @@ kotlin {
             implementation(compose.material)
             implementation(libs.gson)
         }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
     }
 
     listOf(

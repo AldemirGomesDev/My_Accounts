@@ -17,21 +17,19 @@ koin = "4.0.1"
 ktor = "3.0.0"
 datastore = "1.1.7"
 multidex = "2.0.1"
-compose-navigation = "2.8.0-beta03"
 firebase-bom = "33.0.0"
 googleServicesPlugin = "4.4.1"
 crashlyticsPlugin = "2.9.9"
 ksp = "2.2.0-2.0.2"
 espresso = '3.5.1'
 jvmTarget = "17"
-compose_plugin_multplatform = "1.7.1"
+compose_plugin_multplatform = "1.7.3"
 compose_multplatform = "1.8.1"
 coroutinesMultplatform = "1.9.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
 compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
-compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesMultplatform" }
 

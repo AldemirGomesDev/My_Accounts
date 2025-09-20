@@ -39,6 +39,9 @@ kotlin {
             implementation(libs.navigation.compose.multplatform)
             implementation(libs.kotlinx.serialization.json)
         }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
     }
 
     listOf(
