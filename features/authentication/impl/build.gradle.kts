@@ -35,6 +35,7 @@ kotlin {
             implementation(libs.multidex)
             implementation(libs.compose.ui.backhandler)
             //Compose
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.ui)
@@ -84,3 +85,4 @@ android {
         compose = true
     }
 }
+

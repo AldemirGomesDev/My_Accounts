@@ -36,6 +36,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.datetime)
 
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.ui)
@@ -66,21 +67,11 @@ android {
     buildFeatures {
         compose = true
     }
-//
-//    defaultConfig {
-//        minSdk = libs.versions.minSdk.get().toInt()
-//        multiDexEnabled = true
-//    }
-//
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    //Compose
-    debugImplementation(libs.compose.tooling)
 }
 
 compose.resources {

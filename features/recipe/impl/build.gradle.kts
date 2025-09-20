@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
 
             //Compose
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.ui)
@@ -74,3 +75,4 @@ android {
         multiDexEnabled = true
     }
 }
+

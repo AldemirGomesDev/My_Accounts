@@ -41,6 +41,7 @@ kotlin {
             implementation (libs.compose.charts)
 
             //Compose
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.ui)
@@ -78,4 +79,5 @@ android {
         multiDexEnabled = true
     }
 }
+
 

@@ -13,6 +13,10 @@ plugins {
 }
 
 kotlin {
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -40,12 +44,12 @@ kotlin {
 
             api(libs.logging)
 
+            implementation(libs.androidMaterial)
             implementation(libs.android.core.ktx)
             implementation(libs.multidex)
             // Koin for Android
             implementation(libs.koin.android)
             // Paging
-            implementation(libs.paging.compose)
             implementation(libs.compose.navigation)
         }
         commonMain.dependencies {
@@ -122,12 +126,4 @@ android {
         viewBinding = true
     }
     namespace = "br.com.aldemir.myaccounts"
-}
-
-dependencies {
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.compose.test.junit)
-    debugImplementation(libs.compose.tooling)
 }
