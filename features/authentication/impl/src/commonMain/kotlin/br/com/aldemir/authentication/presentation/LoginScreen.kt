@@ -11,8 +11,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.fragment.app.FragmentActivity
+//import androidx.compose.ui.platform.LocalContext
+//import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.MyAccountsTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,14 +65,14 @@ fun LoginScreen(
     navigateToRegisterScreen: () -> Unit,
     onFinish: () -> Unit,
 ) {
-    val context = LocalContext.current as FragmentActivity
+//    val context = LocalContext.current as FragmentActivity
     val viewModel: LoginViewModel = koinViewModel()
 
     val uiModel by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.checkIfBiometricLoginEnabled()
-    }
+//    LaunchedEffect(Unit) {
+//        viewModel.checkIfBiometricLoginEnabled()
+//    }
 
     BackHandler { onFinish }
 
@@ -97,11 +97,11 @@ fun LoginScreen(
     }
     val dialogModel = getDialogModel()
 
-    LaunchedEffect(key1 = uiModel.isBiometricAvailable) {
-        if (uiModel.isBiometricAvailable) {
-            viewModel.checkPreferencesEnabled(context, dialogModel)
-        }
-    }
+//    LaunchedEffect(key1 = uiModel.isBiometricAvailable) {
+//        if (uiModel.isBiometricAvailable) {
+//            viewModel.checkPreferencesEnabled(context, dialogModel)
+//        }
+//    }
 }
 
 @Composable

@@ -21,7 +21,9 @@ kotlin {
         kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
     }
     sourceSets {
-        androidMain.dependencies {  }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
         commonMain.dependencies {
             implementation(project(":common"))
             implementation(project(":domain"))
@@ -42,7 +44,6 @@ kotlin {
 
             // Ktor
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.logger)
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.content.negotiation)
