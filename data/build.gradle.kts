@@ -23,6 +23,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(project(":common"))
@@ -31,7 +32,7 @@ kotlin {
             // LOGGING
             api(libs.logging)
 
-            implementation(libs.bundles.koin.all)
+            implementation(libs.koin.core)
 
             //DATA STORE PREFERENCES
             implementation(libs.datastore.library)
