@@ -32,7 +32,7 @@ jvmTarget = "17"
 pagingCompose = "3.3.5"
 compose_plugin_multplatform = "1.7.1"
 compose_multplatform = "1.8.1"
-coroutines_multplatform = "1.9.0"
+coroutinesMultplatform = "1.9.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
@@ -47,7 +47,7 @@ compose-navigation = {module = "androidx.navigation:navigation-compose", version
 compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "coroutines_multplatform" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesMultplatform" }
 
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
