@@ -1,4 +1,5 @@
 [versions]
+composeCharts = "0.1.11"
 kotlin = "2.2.20"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
@@ -11,8 +12,6 @@ buildTools = "33.0.2"
 agp = "8.6.0"
 android-core-ktx = "1.13.1"
 compose = "1.6.7"
-lifecycle = "2.8.2"
-constraintlayout = "1.0.1"
 room = "2.7.2"
 sqlite = "2.5.2"
 koin = "4.0.1"
@@ -34,9 +33,8 @@ coroutinesMultplatform = "1.9.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
+compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
 compose-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
-compose-lifecycle-viewmodel = {module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
-compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
 compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }

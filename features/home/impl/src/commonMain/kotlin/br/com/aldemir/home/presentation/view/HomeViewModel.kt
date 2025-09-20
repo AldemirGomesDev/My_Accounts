@@ -1,14 +1,10 @@
 package br.com.aldemir.home.presentation.view
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
-import br.com.aldemir.common.theme.White
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
@@ -16,6 +12,7 @@ import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
+import br.com.aldemir.home.presentation.model.BarChart
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.MonthValue
 import br.com.aldemir.home.presentation.state.HomeUiState
@@ -23,8 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.bytebeats.views.charts.bar.BarChartData
-import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
 
 class HomeViewModel(
     private val getAllRecipeMonthUseCase: GetAllRecipeMonthUseCase,
@@ -123,14 +118,14 @@ class HomeViewModel(
 
     private fun setValuesExpenseToChart() {
         val months = DateUtils.getSixMonthsPrevious()
-        val bars = arrayListOf<BarChartData.Bar>()
+        val bars = arrayListOf<BarChart>()
         val maxBar = 6
         val rest = maxBar - _monthValuesExpense.size
         for (i in 0 until rest) {
             bars.add(
-                BarChartData.Bar(
+                BarChart(
                     label = emptyString(),
-                    value = 0F,
+                    value = 0.0,
                     color = MediumPriorityColor,
                 ),
             )
@@ -139,9 +134,9 @@ class HomeViewModel(
         _monthValuesExpense.forEach {
             if (it.month.isNotEmpty()) {
                 bars.add(
-                    BarChartData.Bar(
+                    BarChart(
                         label = it.month.substring(0, 3),
-                        value = it.value.toFloat(),
+                        value = it.value,
                         color = MediumPriorityColor,
                     ),
                 )
@@ -152,9 +147,9 @@ class HomeViewModel(
         if (monthsDropLast.size < 6) {
             monthsDropLast.forEachIndexed { index, s ->
                 bars.add(index,
-                    BarChartData.Bar(
+                    BarChart(
                         label = s.ifEmpty { "MÊS" }.substring(0, 3),
-                        value = 0f,
+                        value = 0.0,
                         color = MediumPriorityColor,
                     ),
                 )
@@ -164,13 +159,13 @@ class HomeViewModel(
         if (bars.isNotEmpty()) {
             _uiState.update {
                 HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataExpense = BarChartData(bars = bars.toList()))
+                    it.uiModel.copy(barChartDataExpenses = bars)
                 )
             }
         } else {
             _uiState.update {
                 HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataExpense = null)
+                    it.uiModel.copy(barChartDataExpenses = emptyList())
                 )
             }
         }
@@ -178,14 +173,14 @@ class HomeViewModel(
 
     private fun setValuesRecipeToChart() {
         val months = DateUtils.getSixMonthsPrevious()
-        val bars = arrayListOf<BarChartData.Bar>()
+        val bars = arrayListOf<BarChart>()
         val maxBar = 6
         val rest = maxBar - _monthValuesRecipe.size
         for (i in 0 until rest) {
             bars.add(
-                BarChartData.Bar(
+                BarChart(
                     label = emptyString(),
-                    value = 0F,
+                    value = 0.0,
                     color = LowPriorityColor,
                 ),
             )
@@ -193,9 +188,9 @@ class HomeViewModel(
         _monthValuesRecipe.forEach {
             if (it.month.isNotEmpty()) {
                 bars.add(
-                    BarChartData.Bar(
+                    BarChart(
                         label = it.month.substring(0, 3),
-                        value = it.value.toFloat(),
+                        value = it.value,
                         color = LowPriorityColor,
                     ),
                 )
@@ -206,9 +201,9 @@ class HomeViewModel(
         if (monthsDropLast.size < 6) {
             monthsDropLast.forEachIndexed { index, s ->
                 bars.add(index,
-                    BarChartData.Bar(
+                    BarChart(
                         label = s.ifEmpty { "MÊS" }.substring(0, 3),
-                        value = 0f,
+                        value = 0.0,
                         color = LowPriorityColor,
                     ),
                 )
@@ -218,13 +213,13 @@ class HomeViewModel(
         if (bars.isNotEmpty()) {
             _uiState.update {
                 HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataRecipe = BarChartData(bars = bars.toList()))
+                    it.uiModel.copy(barChartDataRecipes = bars)
                 )
             }
         } else {
             _uiState.update {
                 HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataRecipe = null)
+                    it.uiModel.copy(barChartDataRecipes = emptyList())
                 )
             }
         }
@@ -264,12 +259,12 @@ class HomeViewModel(
         )
     }
 
-    var labelDrawer by mutableStateOf(
-        SimpleLabelDrawer(
-            drawLocation = SimpleLabelDrawer.DrawLocation.Inside,
-            labelTextColor = White
-        )
-    )
+//    var labelDrawer by mutableStateOf(
+//        SimpleLabelDrawer(
+//            drawLocation = SimpleLabelDrawer.DrawLocation.Inside,
+//            labelTextColor = White
+//        )
+//    )
 
 
     private var colors = mutableListOf(

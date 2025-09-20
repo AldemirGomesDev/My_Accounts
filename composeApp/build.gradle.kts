@@ -44,9 +44,6 @@ kotlin {
             implementation(libs.multidex)
             // Koin for Android
             implementation(libs.koin.android)
-            //Compose
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
             // Paging
             implementation(libs.paging.compose)
             implementation(libs.compose.navigation)

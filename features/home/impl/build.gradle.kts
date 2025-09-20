@@ -38,7 +38,7 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
 
-            implementation(libs.charts.compose)
+            implementation (libs.compose.charts)
 
             //Compose
             implementation(compose.material3)
