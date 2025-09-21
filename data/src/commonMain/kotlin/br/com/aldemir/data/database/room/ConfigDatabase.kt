@@ -27,7 +27,7 @@ import br.com.aldemir.data.database.room.recipe.RecipeMonthlyDao
         AutoMigration(from = 1, to = 2)
     ],
     version = 2,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(DateTypeConverter::class)
 @ConstructedBy(AppDatabaseConstructor::class)
