@@ -41,9 +41,7 @@ fun NavGraphBuilder.addRecipeComposable(
     ) {
         AddRecipeScreen(
             navigateToListRecipeScreen = {
-                navHostController.navigate(
-                    Routes.ListRecipe
-                )
+                navHostController.navigateUp()
             }
         )
     }
