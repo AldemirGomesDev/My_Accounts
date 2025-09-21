@@ -15,7 +15,7 @@ class RecipeRepositoryImpl(
         return recipeDao.insert(recipe.toDto())
     }
 
-    override fun update(recipe: RecipeDomain): Int {
+    override suspend fun update(recipe: RecipeDomain): Int {
         return recipeDao.update(recipe.toDto())
     }
 
