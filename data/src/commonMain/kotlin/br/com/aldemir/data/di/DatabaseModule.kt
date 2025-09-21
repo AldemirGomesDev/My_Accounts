@@ -1,19 +1,21 @@
-package br.com.aldemir.data.database.di
+package br.com.aldemir.data.di
 
 import br.com.aldemir.data.database.preference.DataStorePreference
 import br.com.aldemir.data.database.preference.DataStorePreferenceImpl
 import br.com.aldemir.data.database.preference.extensions.preferencesDataStoreDI
 import br.com.aldemir.data.database.room.ConfigDatabase
+import br.com.aldemir.data.database.room.databaseInstance
 import br.com.aldemir.data.remote.ApiService
 import br.com.aldemir.data.remote.ApiServiceImpl
-import br.com.aldemir.data.remote.ResponseCacheControlInterceptor
 import br.com.aldemir.data.remote.MyAccountHttpClient
+import br.com.aldemir.data.remote.ResponseCacheControlInterceptor
 import org.koin.dsl.module
 
 private const val PREFERENCE_NAME = "my_accounts_preferences"
 
-val appModule = module {
+val dataBaseModule = module {
     preferencesDataStoreDI(name = PREFERENCE_NAME)
+    single { databaseInstance() }
     factory { get<ConfigDatabase>().expenseDao() }
     factory { get<ConfigDatabase>().recipeDao() }
     factory { get<ConfigDatabase>().monthlyPaymentDao() }

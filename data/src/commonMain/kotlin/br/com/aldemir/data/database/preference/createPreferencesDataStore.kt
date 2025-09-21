@@ -7,4 +7,13 @@ fun createPreferencesDataStore(producePath: () -> String) = PreferenceDataStoreF
     producePath().toPath()
 }
 
-fun getDataStorePreferenceFile(name: String) = "$name.preferences_pb"
+//fun getDataStorePreferenceFile(name: String) = "$name.preferences_pb"
+
+fun getDataStorePreferenceFile(name: String): String {
+    // Garante extensão correta e evita nomes inválidos
+    return if (name.endsWith(".preferences_pb")) {
+        name
+    } else {
+        "$name.preferences_pb"
+    }
+}

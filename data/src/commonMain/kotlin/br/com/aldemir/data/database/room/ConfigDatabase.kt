@@ -1,9 +1,8 @@
 package br.com.aldemir.data.database.room
 
-import android.content.Context
 import androidx.room.AutoMigration
+import androidx.room.ConstructedBy
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.aldemir.data.database.model.ExpenseDTO
@@ -27,9 +26,11 @@ import br.com.aldemir.data.database.room.recipe.RecipeMonthlyDao
     autoMigrations = [
         AutoMigration(from = 1, to = 2)
     ],
-    version = 2
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)
+@ConstructedBy(AppDatabaseConstructor::class)
 abstract class ConfigDatabase : RoomDatabase() {
 
     abstract fun expenseDao(): ExpenseDao
@@ -41,13 +42,5 @@ abstract class ConfigDatabase : RoomDatabase() {
     abstract fun recipeMonthlyDao(): RecipeMonthlyDao
 
     abstract fun authenticationDao(): AuthenticationDao
-
-    companion object {
-        fun createDataBase(context: Context) = Room.databaseBuilder(
-                context,
-                ConfigDatabase::class.java,
-                "AccountDataBase"
-            ).build()
-    }
 
 }
