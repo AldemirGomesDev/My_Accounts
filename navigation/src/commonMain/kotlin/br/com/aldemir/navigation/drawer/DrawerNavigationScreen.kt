@@ -64,62 +64,64 @@ fun DrawerNavigationScreen(
 
     val currentRoute = currentRoute(navController = navController)?.substringAfterLast(".")
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            if (topBarState.isVisible) {
-                TopBar(
-                    titleResId = topBarState.titleResId,
-                    imageIcon = topBarState.imageIcon,
-                    onClick = {
-                        if (topBarState.isHome) {
-                            openDrawer.invoke()
-                        } else {
-                            topBarState.onClick()
+    MyAccountsTheme(isDarkTheme) {
+        Scaffold(
+            scaffoldState = scaffoldState,
+            topBar = {
+                if (topBarState.isVisible) {
+                    TopBar(
+                        titleResId = topBarState.titleResId,
+                        imageIcon = topBarState.imageIcon,
+                        onClick = {
+                            if (topBarState.isHome) {
+                                openDrawer.invoke()
+                            } else {
+                                topBarState.onClick()
+                            }
                         }
-                    }
+                    )
+                }
+            },
+            bottomBar = {
+                if (currentRoute != Routes.Splash.toString()
+                    && currentRoute != null
+                    && currentRoute != Routes.Login.toString()
+                    && currentRoute != Routes.Register.toString()
+                ) {
+                    BottomBar(navController = navController)
+                }
+            },
+            drawerGesturesEnabled = true,
+            drawerContent = {
+                DrawerHeader(
+                    listItems = listItems,
+                    onItemClicked = onItemClicked,
+                    darkModeStateSelected = darkModeStateSelected,
                 )
-            }
-        },
-        bottomBar = {
-            if (currentRoute != Routes.Splash.toString()
-                && currentRoute != null
-                && currentRoute != Routes.Login.toString()
-                && currentRoute != Routes.Register.toString()
-            ) {
-                BottomBar(navController = navController)
-            }
-        },
-        drawerGesturesEnabled = true,
-        drawerContent = {
-            DrawerHeader(
-                listItems = listItems,
-                onItemClicked = onItemClicked,
-                darkModeStateSelected = darkModeStateSelected,
-            )
-            DrawerBody(
-                menuItems = screens,
-                scaffoldState,
-                scope
-            ) {
-                navController.navigate(it.route) {
-                    launchSingleTop = true
+                DrawerBody(
+                    menuItems = screens,
+                    scaffoldState,
+                    scope
+                ) {
+                    navController.navigate(it.route) {
+                        launchSingleTop = true
+                    }
+                }
+            },
+            content = {
+                Box(
+                    modifier = Modifier
+                        .padding(it)
+                        .background(MyAccountsTheme.colors.background)
+                ) {
+                    SetupNavigation(
+                        isDarkTheme = isDarkTheme,
+                        navHostController = navController,
+                    )
                 }
             }
-        },
-        content = {
-            Box(
-                modifier = Modifier
-                    .padding(it)
-                    .background(MyAccountsTheme.colors.background)
-            ) {
-                SetupNavigation(
-                    isDarkTheme = isDarkTheme,
-                    navHostController = navController,
-                )
-            }
-        }
-    )
+        )
+    }
 }
 
 
