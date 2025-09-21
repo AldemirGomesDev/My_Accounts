@@ -74,14 +74,14 @@ class RegisterViewModel(
             isLogged = false
         )
         viewModelScope.launch {
-            insertUserUseCase(viewModelScope, user).apply {
-                onSuccess {
+            insertUserUseCase(viewModelScope, user) {
+                success = {
                     triggerEffect(RegisterEffect.NavigateToLogin)
                     _uiState.update {
                         mapper.mapToUiModel(Res.string.register_success, SnackBarState.SUCCESS)
                     }
                 }
-                onFailure {
+                error = {
                     triggerEffect(RegisterEffect.ShowSnackBar(Res.string.register_error))
                     _uiState.update {
                         mapper.mapToUiModel(Res.string.register_error, SnackBarState.ERROR, it)

@@ -111,11 +111,11 @@ class LoginViewModel(
                 handleUiError(Res.string.snack_bar_empty)
             } else {
                 delay(1000)
-                loginUseCase(this, Params(userName, password)).apply {
-                    onSuccess {
+                loginUseCase(this, Params(userName, password))  {
+                    success = {
                         handleLoginSuccess(it)
                     }
-                    onFailure {
+                    error = {
                         handleUiError(
                             Res.string.snack_bar_user_or_password_error
                         )

@@ -30,25 +30,24 @@ class MainViewModel(
 
     private fun saveDarkModeState(appDarkMode: AppDarkMode) {
         viewModelScope.launch {
-            saveDarkModeStateUseCase(this, appDarkMode.name)
+            saveDarkModeStateUseCase(this, appDarkMode.name) {}
             readDarkModeState()
         }
     }
 
     private fun readDarkModeState() {
         try {
-            viewModelScope.launch {
-                readDarkModeStateUseCase(this, Unit).apply {
-                    onSuccess {
-                        it.collect { darkMode ->
+            readDarkModeStateUseCase(viewModelScope, Unit) {
+                success = { flow ->
+                    viewModelScope.launch {
+                        flow.collect { darkMode ->
                             updateDarkMode(darkMode)
                         }
                     }
-                    onFailure {
-                        updateDarkMode(AppDarkMode.Default.name)
-                    }
                 }
-
+                error = {
+                    updateDarkMode(AppDarkMode.Default.name)
+                }
             }
         } catch (e: Exception) {
             updateDarkMode(AppDarkMode.Default.name)
