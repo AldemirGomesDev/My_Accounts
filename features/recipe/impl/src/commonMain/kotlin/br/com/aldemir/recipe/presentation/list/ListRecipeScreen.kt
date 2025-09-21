@@ -77,39 +77,36 @@ fun ListRecipeScreen(
                 Box(modifier = Modifier.padding(horizontal = MyAccountsTheme.dimensions.padding16)) {
                     StatisticsCard(cardState)
                 }
-                recipes?.let {
-                    if (it.isNotEmpty()) {
-                        LazyColumn(
-                            state = state
-                        ) {
-                            items(
-                                items = it,
-                                key = { recipeView ->
-                                    recipeView.id
-                                }
-                            ) { recipeView ->
-                                RecipeItem(
-                                    listItems = menuItems,
-                                    recipeView = recipeView,
-                                    viewModel = viewModel,
-                                    onDelete = {
-                                        recipeToSave = recipeView
-                                        viewModel.onOpenDialogClicked()
-                                    },
-                                    navigateToDetailScreen = { recipeId ->
-                                        navigateToDetailScreen(recipeId)
-                                    },
-                                )
-                                Divider(
-                                    modifier = Modifier.height(0.5.dp),
-                                    color = MaterialTheme.colorScheme.dividerColor
-                                )
+                if (recipes.isNotEmpty()) {
+                    LazyColumn(
+                        state = state
+                    ) {
+                        items(
+                            items = recipes,
+                            key = { recipeView ->
+                                recipeView.id
                             }
+                        ) { recipeView ->
+                            RecipeItem(
+                                listItems = menuItems,
+                                recipeView = recipeView,
+                                viewModel = viewModel,
+                                onDelete = {
+                                    recipeToSave = recipeView
+                                    viewModel.onOpenDialogClicked()
+                                },
+                                navigateToDetailScreen = { recipeId ->
+                                    navigateToDetailScreen(recipeId)
+                                },
+                            )
+                            Divider(
+                                modifier = Modifier.height(0.5.dp),
+                                color = MaterialTheme.colorScheme.dividerColor
+                            )
                         }
-                    } else EmptyContent(text = stringResource(Res.string.recipe_text))
-                } ?: run {
-                    EmptyContent()
-                }
+                    }
+                } else EmptyContent(text = stringResource(Res.string.recipe_text))
+
                 val message = stringResource(Res.string.expense_delete_message_toast)
                 DisplayAlertDialog(
                     title = stringResource(Res.string.dialog_delete_title),
@@ -132,7 +129,7 @@ fun ListRecipeScreen(
     )
 }
 
-private fun showToast( message: String) {
+private fun showToast(message: String) {
     showMessage(message)
 }
 

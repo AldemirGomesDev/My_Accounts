@@ -32,7 +32,6 @@ import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.recipe.model.RecipeMonthlyView
@@ -84,7 +83,7 @@ fun DetailRecipeScreen(
                     .background(MyAccountsTheme.colors.background)
             ) {
                 TextTitleLarge(
-                    text = name?: emptyString(),
+                    text = name,
                     color = Purple700,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
