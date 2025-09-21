@@ -6,7 +6,7 @@ import org.koin.core.context.startKoin
 class KoinIosHelper {
     fun initKoin() {
         startKoin {
-             listOf(mainModules)
+             modules(mainModules)
         }
     }
 }

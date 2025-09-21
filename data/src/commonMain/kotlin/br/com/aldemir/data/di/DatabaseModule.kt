@@ -9,6 +9,7 @@ import br.com.aldemir.data.remote.ApiService
 import br.com.aldemir.data.remote.ApiServiceImpl
 import br.com.aldemir.data.remote.MyAccountHttpClient
 import br.com.aldemir.data.remote.ResponseCacheControlInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private const val PREFERENCE_NAME = "my_accounts_preferences"
@@ -21,7 +22,7 @@ val dataBaseModule = module {
     factory { get<ConfigDatabase>().monthlyPaymentDao() }
     factory { get<ConfigDatabase>().recipeMonthlyDao() }
     factory { get<ConfigDatabase>().authenticationDao() }
-    factory<DataStorePreference> { DataStorePreferenceImpl(dataStore = get()) }
+    factory<DataStorePreference> { DataStorePreferenceImpl(dataStore = get(named(PREFERENCE_NAME))) }
 
     single {
         ResponseCacheControlInterceptor()
