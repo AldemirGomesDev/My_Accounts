@@ -15,6 +15,7 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_pending
@@ -36,8 +37,8 @@ class HistoricViewModel(
     val yearsList = _yearsList.asStateFlow()
 
     fun getAllMonthlyPayment() = viewModelScope.launch {
-        getAllMonthlyPaymentUseCase(this, Unit).apply {
-            onSuccess { getDistinctYears(monthList = it) }
+        getAllMonthlyPaymentUseCase(this, Unit) {
+            success = { getDistinctYears(monthList = it) }
         }
     }
 
@@ -48,12 +49,12 @@ class HistoricViewModel(
             this, GetAllExpensePerMonthUseCase.Params(
                 month, year
             )
-        ).apply {
-            onSuccess { listExpensePerMonth ->
-                _expensePerMonthDomain.value = listExpensePerMonth
+        ) {
+            success = { listExpensePerMonth ->
+                _expensePerMonthDomain.update { listExpensePerMonth }
                 isLoading.value = false
             }
-            onFailure { isLoading.value = false }
+            error = { isLoading.value = false }
         }
     }
 
@@ -61,7 +62,7 @@ class HistoricViewModel(
         val myYears = mutableListOf<String>()
         val yearUnique = monthList.distinctBy { it.year }
         yearUnique.forEach { myYears.add(it.year) }
-        _yearsList.value = myYears
+        _yearsList.update { myYears }
     }
 
     fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {

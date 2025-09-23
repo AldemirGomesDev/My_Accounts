@@ -19,6 +19,7 @@ import br.com.aldemir.expense.model.ExpenseView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_pending
@@ -66,17 +67,17 @@ class ListExpenseViewModel(
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
         val params = Params(month, year)
-        getAllExpensesMonthUseCase(this, params).apply {
-            onSuccess {
-                _monthExpenses.value = it
+        getAllExpensesMonthUseCase(this, params) {
+            success = {
+                _monthExpenses.update { it }
             }
         }
         calculateValues()
     }
 
     fun delete(expenseView: ExpenseView) = viewModelScope.launch {
-        deleteExpenseUseCase(this, expenseView.toDomain()).apply {
-            onSuccess { expenseId ->
+        deleteExpenseUseCase(this, expenseView.toDomain()) {
+            success = { expenseId ->
                 if (expenseId > 0) {
                     getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
                 }
@@ -86,11 +87,9 @@ class ListExpenseViewModel(
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
         getAllExpensePerMonthUseCase(
-            this, GetAllExpensePerMonthUseCase.Params(
-                month, year
-            )
-        ).apply {
-            onSuccess { listExpensePerMonth ->
+            this, GetAllExpensePerMonthUseCase.Params(month, year)
+        ) {
+            success = { listExpensePerMonth ->
                 convertToExpenses(listExpensePerMonth)
             }
         }
@@ -107,7 +106,7 @@ class ListExpenseViewModel(
             )
             expenses.add(expense)
         }
-        _expenses.value = expenses.toList()
+        _expenses.update { expenses.toList() }
     }
 
     private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {

@@ -127,12 +127,14 @@ class AddExpenseViewModel(
             created_at = DateUtils.getCurrentDate(),
             due_date = uiState.value.dueDateSelected
         )
-        addExpenseUseCase(this, expenseDomain).apply {
-            onSuccess {
+        addExpenseUseCase(this, expenseDomain) {
+            success = {
                 handleMonthlyPayment(it)
             }
-            onFailure {
-                _uiEffect.emit(AddExpensesUiEffect.ShowError())
+            error = {
+                viewModelScope.launch {
+                    emitUiEffect(AddExpensesUiEffect.ShowError())
+                }
             }
         }
 
@@ -156,15 +158,19 @@ class AddExpenseViewModel(
 
     private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) =
         viewModelScope.launch {
-            addMonthlyPaymentUseCase(this, expenseMonthlyDomain).apply {
-                onSuccess {
-                    _uiEffect.emit(AddExpensesUiEffect.ShowSuccess())
+            addMonthlyPaymentUseCase(this, expenseMonthlyDomain) {
+                success = {
+                    emitUiEffect(AddExpensesUiEffect.ShowSuccess())
                 }
-                onFailure {
-                    _uiEffect.emit(AddExpensesUiEffect.ShowError())
+                error = {
+                    emitUiEffect(AddExpensesUiEffect.ShowError())
                 }
             }
         }
+
+    private fun emitUiEffect(uiEffect: AddExpensesUiEffect) = viewModelScope.launch {
+        _uiEffect.emit(uiEffect)
+    }
 
     private fun shouldEnabledRegisterButton() {
         uiState.value.isEnabledRegisterButton = !validateLength(uiState.value.name, 3)

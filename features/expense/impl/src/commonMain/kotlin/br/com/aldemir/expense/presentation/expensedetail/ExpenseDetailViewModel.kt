@@ -55,8 +55,8 @@ class ExpenseDetailViewModel(
 
     fun getAllByIdExpense(id: Int) = viewModelScope.launch {
         val monthlyPaymentViewList: MutableList<MonthlyPaymentView> = mutableListOf()
-        getAllByIdExpenseUseCase(this, id).apply {
-            onSuccess { monthlyPaymentDomain ->
+        getAllByIdExpenseUseCase(this, id) {
+            success = { monthlyPaymentDomain ->
                 monthlyPaymentDomain.forEach { item ->
                     monthlyPaymentViewList.add(
                         item.toView(
@@ -75,8 +75,8 @@ class ExpenseDetailViewModel(
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPaymentView) = viewModelScope.launch {
         _id.update { 0 }
-        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()).apply {
-            onSuccess { id -> _id.update { id } }
+        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()) {
+            success = { id -> _id.update { id } }
         }
     }
 

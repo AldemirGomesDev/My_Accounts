@@ -7,6 +7,7 @@ import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
+import br.com.aldemir.domain.base.awaitForResult
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
@@ -16,6 +17,7 @@ import br.com.aldemir.home.presentation.model.BarChart
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.MonthValue
 import br.com.aldemir.home.presentation.state.HomeUiState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -33,23 +35,22 @@ class HomeViewModel(
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
 
     fun getAllRecipeAndExpense() = viewModelScope.launch {
-        var expenses: List<ExpenseMonthlyDomain> = listOf()
-        var recipes: List<RecipeMonthlyDomain> = listOf()
         val month = DateUtils.getMonthString()
         val year = DateUtils.getYearString()
-        getAllRecipeMonthUseCase(
-            this,
-            GetAllRecipeMonthUseCase.Params(month, year)
-        ).apply {
-            onSuccess {
-                recipes = it
-            }
+
+        val recipesDeferred = async {
+            getAllRecipeMonthUseCase(
+                this,
+                GetAllRecipeMonthUseCase.Params(month, year)
+            ).getOrNull().orEmpty()
         }
-        getAllExpensesMonthUseCase(this, Params(month, year)).apply {
-            onSuccess {
-                expenses = it
-            }
+
+        val expensesDeferred = async {
+            getAllExpensesMonthUseCase.awaitForResult(this, Params(month, year))
         }
+        val recipes = recipesDeferred.await()
+        val expenses = expensesDeferred.await()
+
         calculateValues(recipes, expenses)
     }
 
@@ -59,11 +60,8 @@ class HomeViewModel(
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
             val params = Params(month, years[index])
-            getAllExpensesMonthUseCase(this, params).apply {
-                onSuccess {
-                    setMonthValuesExpense(it)
-                }
-            }
+            val expenses = getAllExpensesMonthUseCase.awaitForResult(this, params)
+            setMonthValuesExpense(expenses)
 
         }
         setValuesExpenseToChart()
@@ -252,20 +250,14 @@ class HomeViewModel(
 
     private fun updateHomeCardData(homeCardData: HomeCardData) {
         val currentModel = checkNotNull(uiState.value.uiModel)
-        _uiState.value = HomeUiState.ShowHomeCards(
-            currentModel.copy(
-                homeCardData = homeCardData
+        _uiState.update {
+            HomeUiState.ShowHomeCards(
+                currentModel.copy(
+                    homeCardData = homeCardData
+                )
             )
-        )
+        }
     }
-
-//    var labelDrawer by mutableStateOf(
-//        SimpleLabelDrawer(
-//            drawLocation = SimpleLabelDrawer.DrawLocation.Inside,
-//            labelTextColor = White
-//        )
-//    )
-
 
     private var colors = mutableListOf(
         Color(0XFFF44336),
