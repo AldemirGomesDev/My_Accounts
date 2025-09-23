@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
 import br.com.aldemir.data.database.model.UserDTO
 
@@ -19,15 +18,6 @@ interface AuthenticationDao {
 
     @Delete
     suspend fun delete(userDTO: UserDTO): Int
-
-    @Transaction
-    suspend fun login(userName: String, password: String): UserDTO? {
-        val user = getUser(userName, password)
-        if (user != null) {
-            setLoggedIn(user.id, true)
-        }
-        return user
-    }
 
     @Query("SELECT * FROM user WHERE user_name = :userName AND password = :password")
     suspend fun getUser(userName: String, password: String): UserDTO?

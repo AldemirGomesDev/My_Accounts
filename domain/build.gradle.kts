@@ -7,7 +7,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
     androidTarget()
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -22,10 +21,11 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.appCompat)
-            implementation(libs.androidMaterial)
         }
         commonMain.dependencies {
-            implementation (libs.bundles.koin.all)
+            implementation (libs.koin.core)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.coroutines.core)
         }
         androidInstrumentedTest.dependencies {
             implementation(libs.espresso.core)
@@ -35,9 +35,20 @@ kotlin {
             implementation(libs.junit)
         }
     }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+    }
 }
 android {
-    namespace = "br.com.aldemir.domain"
+    namespace = "br.com.aldemir.myaccounts.domain"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

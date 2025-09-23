@@ -1,19 +1,14 @@
 package br.com.aldemir.expense.presentation.listexpense
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
-import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
-import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.expense.DeleteExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
@@ -21,11 +16,16 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toExpenseView
 import br.com.aldemir.expense.model.ExpenseView
-import br.com.aldemir.expense.presentation.listexpense.state.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 
 class ListExpenseViewModel(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
@@ -67,19 +67,19 @@ class ListExpenseViewModel(
 
     fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
         val params = Params(month, year)
-        getAllExpensesMonthUseCase(this, params).apply {
-            onSuccess {
-                _monthExpenses.value = it
+        getAllExpensesMonthUseCase(this, params) {
+            success = {
+                _monthExpenses.update { it }
             }
         }
         calculateValues()
     }
 
     fun delete(expenseView: ExpenseView) = viewModelScope.launch {
-        deleteExpenseUseCase(this, expenseView.toDomain()).apply {
-            onSuccess { expenseId ->
+        deleteExpenseUseCase(this, expenseView.toDomain()) {
+            success = { expenseId ->
                 if (expenseId > 0) {
-                    getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+                    getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
                 }
             }
         }
@@ -87,11 +87,9 @@ class ListExpenseViewModel(
 
     fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
         getAllExpensePerMonthUseCase(
-            this, GetAllExpensePerMonthUseCase.Params(
-                month, year
-            )
-        ).apply {
-            onSuccess { listExpensePerMonth ->
+            this, GetAllExpensePerMonthUseCase.Params(month, year)
+        ) {
+            success = { listExpensePerMonth ->
                 convertToExpenses(listExpensePerMonth)
             }
         }
@@ -102,13 +100,13 @@ class ListExpenseViewModel(
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toExpenseView(
                 checkIfExpired(
-                    DateUtils.getDay(),
+                    DateUtils.getCurrentDay(),
                     expensePerMonth.due_date
                 )
             )
             expenses.add(expense)
         }
-        _expenses.value = expenses.toList()
+        _expenses.update { expenses.toList() }
     }
 
     private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
@@ -121,10 +119,10 @@ class ListExpenseViewModel(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.expense_paid_out
+        else if (expired) Res.string.expense_expired
+        else Res.string.account_pending
     }
 
     private fun calculateValues() {

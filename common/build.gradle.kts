@@ -9,6 +9,12 @@ plugins {
 }
 
 kotlin {
+
+    androidTarget() // gera androidJvm
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -21,40 +27,51 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(compose.preview)
+            implementation(compose.uiTooling)
         }
         commonMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.datetime)
+
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.bundles.compose.all)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
+            implementation(compose.ui)
+            implementation(compose.material)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
         }
     }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+    }
+
 }
 android {
-    namespace = "br.com.aldemir.common"
+    buildFeatures.buildConfig = true
+    namespace = "br.com.aldemir.myaccounts.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     buildFeatures {
         compose = true
     }
 
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        multiDexEnabled = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    //Compose
-    debugImplementation(libs.compose.tooling)
 }
 
 compose.resources {

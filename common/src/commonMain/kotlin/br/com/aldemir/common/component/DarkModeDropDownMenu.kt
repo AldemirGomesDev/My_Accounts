@@ -1,6 +1,5 @@
 package br.com.aldemir.common.component
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,9 +13,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -67,7 +63,7 @@ fun DarkModeDropDownMenu(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = darkModeStateSelected.iconRes),
+                imageVector = darkModeStateSelected.imageVector,
                 contentDescription = emptyString(),
                 tint = tintColor
             )
@@ -87,7 +83,7 @@ fun DarkModeDropDownMenu(
                     ) {
                         Icon(
                             modifier = Modifier.padding(end = MyAccountsTheme.dimensions.padding8),
-                            imageVector = ImageVector.vectorResource(itemValue.iconRes),
+                            imageVector = itemValue.imageVector,
                             tint = MyAccountsTheme.colors.primary,
                             contentDescription = emptyString()
                         )
@@ -105,14 +101,6 @@ fun DarkModeDropDownMenu(
     }
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
 @Composable
 private fun DarkModeDropDownMenuPreview() {
     MyAccountsTheme {

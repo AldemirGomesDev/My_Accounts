@@ -1,11 +1,9 @@
 package br.com.aldemir.recipe.presentation.addrecipe
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
@@ -15,7 +13,7 @@ import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.AddRecipeUseCase
 import kotlinx.coroutines.launch
 
-class AddRecipeViewModel constructor(
+class AddRecipeViewModel(
     private val addRecipeUseCase: AddRecipeUseCase,
     private val addRecipeMonthlyUseCase: AddRecipeMonthlyUseCase
 ) : ViewModel() {
@@ -46,11 +44,11 @@ class AddRecipeViewModel constructor(
         val recipeDomain = RecipeDomain(
             name = name.value,
             description = description.value,
-            created_at = DateUtils.getDate(),
+            created_at = DateUtils.getCurrentDate(),
             due_date = dueDateSelected.value
         )
-        addRecipeUseCase(this, recipeDomain).apply {
-            onSuccess { recipeId ->
+        addRecipeUseCase(this, recipeDomain) {
+            success =  { recipeId ->
                 handleMonthlyPayment(recipeId)
             }
         }
@@ -74,7 +72,7 @@ class AddRecipeViewModel constructor(
     }
 
     private fun insertMonthlyPayment(recipeMonthlyDomain: RecipeMonthlyDomain) = viewModelScope.launch {
-        addRecipeMonthlyUseCase(this, recipeMonthlyDomain)
+        addRecipeMonthlyUseCase(this, recipeMonthlyDomain) {}
     }
 
     private fun shouldEnabledRegisterButton() {
@@ -123,8 +121,6 @@ class AddRecipeViewModel constructor(
     }
 
     fun getNumberOfTimesItRepeats(): MutableList<String> {
-        Log.w(TAG, "getNumberOfTimesItRepeats: ")
-
         val numberOfTimesItRepeats = arrayListOf<String>()
         for (i in 1..100) {
             numberOfTimesItRepeats.add(i.toString())

@@ -1,13 +1,8 @@
 package br.com.aldemir.expense.presentation.expensedetail
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
@@ -20,10 +15,15 @@ import br.com.aldemir.expense.model.MonthlyPaymentView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 
-
-class ExpenseDetailViewModel constructor(
+class ExpenseDetailViewModel(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
 ) : ViewModel() {
@@ -35,8 +35,8 @@ class ExpenseDetailViewModel constructor(
     private val _monthlyPayment = MutableStateFlow<List<MonthlyPaymentView>>(emptyList())
     var monthlyPayment: StateFlow<List<MonthlyPaymentView>> = _monthlyPayment
 
-    private val _id = MutableLiveData<Int>()
-    val id: LiveData<Int> = _id
+    private val _id = MutableStateFlow(0)
+    val id: StateFlow<Int> = _id
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -55,8 +55,8 @@ class ExpenseDetailViewModel constructor(
 
     fun getAllByIdExpense(id: Int) = viewModelScope.launch {
         val monthlyPaymentViewList: MutableList<MonthlyPaymentView> = mutableListOf()
-        getAllByIdExpenseUseCase(this, id).apply {
-            onSuccess { monthlyPaymentDomain ->
+        getAllByIdExpenseUseCase(this, id) {
+            success = { monthlyPaymentDomain ->
                 monthlyPaymentDomain.forEach { item ->
                     monthlyPaymentViewList.add(
                         item.toView(
@@ -74,14 +74,14 @@ class ExpenseDetailViewModel constructor(
     }
 
     fun updateMonthlyPayment(monthlyPayment: MonthlyPaymentView) = viewModelScope.launch {
-        _id.postValue(0)
-        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()).apply {
-            onSuccess { id -> _id.postValue(id) }
+        _id.update { 0 }
+        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()) {
+            success = { id -> _id.update { id } }
         }
     }
 
     private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
-        return (year == DateUtils.getYear() && month == DateUtils.getMonth() && DateUtils.getDay() > dueDay)
+        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getCurrentDay() > dueDay)
     }
 
     fun getStatusColor(status: Boolean, expired: Boolean): Color {
@@ -90,13 +90,9 @@ class ExpenseDetailViewModel constructor(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
-    }
-
-    fun showToast(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.expense_paid_out
+        else if (expired) Res.string.expense_expired
+        else Res.string.account_pending
     }
 }

@@ -2,6 +2,9 @@ package br.com.aldemir.domain.base
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 interface UseCase<in Param, R> {
     suspend fun execute(params: Param): R
@@ -37,3 +40,17 @@ interface UseCase<in Param, R> {
 
     class None
 }
+
+suspend fun <P, R> UseCase<P, R>.awaitForResult(scope: CoroutineScope, params: P): R =
+    suspendCancellableCoroutine { cont ->
+        scope.launch {
+            this@awaitForResult(this, params) {
+                success = { result ->
+                    if (cont.isActive) cont.resume(result)
+                }
+                error = { throwable ->
+                    if (cont.isActive) cont.resumeWithException(throwable)
+                }
+            }
+        }
+    }

@@ -1,6 +1,6 @@
 package br.com.aldemir.recipe.presentation.detail
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -10,13 +10,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,7 +23,6 @@ import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
-import br.com.aldemir.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.MyDropdownMenuItem
 import br.com.aldemir.common.component.TextBodyTwoItem
@@ -33,13 +30,20 @@ import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.model.DropdownItemType
+import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.recipe.model.RecipeMonthlyView
-import org.koin.androidx.compose.koinViewModel
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_label_value
+import myaccounts.common.generated.resources.dialog_confirm_alert_title
+import myaccounts.common.generated.resources.dialog_confirm_recipe_message
+import myaccounts.common.generated.resources.expense_no_update_message_toast
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @Composable
 fun DetailRecipeScreen(
     navigateToChangeScreen: (recipeId: Int) -> Unit,
@@ -49,7 +53,7 @@ fun DetailRecipeScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val id by viewModel.id.observeAsState()
+    val id by viewModel.id.collectAsState()
 
     LaunchedEffect(key1 = recipeId) {
         viewModel.getAllByIdRecipeMonthly(recipeId)
@@ -63,15 +67,13 @@ fun DetailRecipeScreen(
         mutableStateOf(RecipeMonthlyView())
     }
 
-    id?.let {
-        if (it > 0) viewModel.getAllByIdRecipeMonthly(recipeId)
-    }
+    if (id > 0) viewModel.getAllByIdRecipeMonthly(recipeId)
 
     val recipeMonthlyViews by viewModel.recipeMonthlyView.collectAsState()
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
 
-    val name by viewModel.name.observeAsState()
+    val name by viewModel.name.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -81,7 +83,7 @@ fun DetailRecipeScreen(
                     .background(MyAccountsTheme.colors.background)
             ) {
                 TextTitleLarge(
-                    text = name?: emptyString(),
+                    text = name,
                     color = Purple700,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -103,8 +105,8 @@ fun DetailRecipeScreen(
                     viewModel = viewModel
                 )
                 DisplayAlertDialog(
-                    title = stringResource(id = R.string.dialog_confirm_alert_title),
-                    message = stringResource(id = R.string.dialog_confirm_recipe_message),
+                    title = stringResource(Res.string.dialog_confirm_alert_title),
+                    message = stringResource(Res.string.dialog_confirm_recipe_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
@@ -154,8 +156,6 @@ private fun DetailRecipeItem(
     LaunchedEffect(key1 = true){
         viewModel.getItemsMenu()
     }
-    val context = LocalContext.current
-
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
@@ -175,6 +175,7 @@ private fun DetailRecipeItem(
         shape = RectangleShape,
         elevation = MyAccountsTheme.dimensions.sizing2,
     ) {
+        val toastMessage = stringResource(Res.string.expense_no_update_message_toast)
         Column(
             modifier = Modifier
                 .padding(horizontal = LARGE_PADDING, vertical = SMALL_PADDING)
@@ -184,10 +185,7 @@ private fun DetailRecipeItem(
                     detectTapGestures(
                         onLongPress = {
                             if (recipeMonthlyView.status)
-                                viewModel.showToast(
-                                    context,
-                                    context.getString(R.string.expense_no_update_message_toast)
-                                )
+                                showMessage(toastMessage)
                             else navigateToChangeScreen(recipeMonthlyView.id)
                         },
                     )
@@ -200,7 +198,7 @@ private fun DetailRecipeItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
+                TextSubTitleItem(text = stringResource(Res.string.account_label_value))
                 TextBodyTwoItem(
                     text = recipeMonthlyView.value.toCurrency(currencySymbol),
                     modifier = Modifier.padding(start = SMALL_PADDING)
@@ -211,7 +209,7 @@ private fun DetailRecipeItem(
                 )
                 TextBodyTwoItem(
                     modifier = Modifier.padding(start = SMALL_PADDING),
-                    text = stringResource(id = resourceId),
+                    text = stringResource(resourceId),
                     color = statusColor,
                 )
                 Spacer(modifier = Modifier.weight(1f))

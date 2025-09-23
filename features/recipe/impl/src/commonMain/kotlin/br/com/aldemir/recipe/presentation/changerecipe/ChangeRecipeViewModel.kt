@@ -17,9 +17,10 @@ import br.com.aldemir.recipe.mapper.toDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ChangeRecipeViewModel constructor(
+class ChangeRecipeViewModel(
     private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase,
     private val getByIdRecipeMonthlyUseCase: GetByIdRecipeMonthlyUseCase,
     private val updateRecipeNameAndDescriptionUseCase: UpdateRecipeNameAndDescriptionUseCase
@@ -50,9 +51,9 @@ class ChangeRecipeViewModel constructor(
     var recipeMonthlyView: StateFlow<RecipePerMonthDomain> = _recipeMonthlyView
 
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
-        getByIdRecipeMonthlyUseCase(this, id).apply {
-            onSuccess { monthlyRecipe ->
-                _recipeMonthlyView.value = monthlyRecipe
+        getByIdRecipeMonthlyUseCase(this, id) {
+            success = { monthlyRecipe ->
+                _recipeMonthlyView.update { monthlyRecipe }
             }
         }
     }
@@ -60,9 +61,9 @@ class ChangeRecipeViewModel constructor(
     fun updateMonthlyRecipe() = viewModelScope.launch {
         _recipeMonthlyView.value.value = value.value.fromCurrency()
         _recipeMonthlyView.value.status = isCheckedPaid.value
-        updateRecipeMonthlyUseCase(this, _recipeMonthlyView.value.toDatabase()).apply {
-            onSuccess {
-                _idMonthlyRecipe.value = it
+        updateRecipeMonthlyUseCase(this, _recipeMonthlyView.value.toDatabase()) {
+            success = {
+                _idMonthlyRecipe.update { it }
             }
         }
         updateRecipeNameAndDescription()
@@ -74,7 +75,7 @@ class ChangeRecipeViewModel constructor(
             name = name.value,
             description = description.value
         )
-        updateRecipeNameAndDescriptionUseCase(this, recipeUpdateDomain)
+        updateRecipeNameAndDescriptionUseCase(this, recipeUpdateDomain) {}
     }
 
     fun getValueWithTwoDecimal(value: String): String {

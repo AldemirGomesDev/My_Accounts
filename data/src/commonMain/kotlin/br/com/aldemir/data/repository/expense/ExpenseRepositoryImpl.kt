@@ -13,7 +13,7 @@ class ExpenseRepositoryImpl(
         return expenseDao.insert(expense.toDto())
     }
 
-    override fun update(expense: ExpenseDomain): Int {
+    override suspend fun update(expense: ExpenseDomain): Int {
         return expenseDao.update(expense.toDto())
     }
 

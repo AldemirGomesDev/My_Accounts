@@ -14,9 +14,10 @@ import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ChangeExpenseViewModel constructor(
+class ChangeExpenseViewModel(
     private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
     private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {
@@ -30,15 +31,15 @@ class ChangeExpenseViewModel constructor(
     val idMonthlyPayment = _idMonthlyPayment.asStateFlow()
 
     fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
-        getByIdMonthlyPaymentUseCase(this, id).apply {
-            onSuccess { _expenseMonthlyDomain.value = it }
+        getByIdMonthlyPaymentUseCase(this, id) {
+            success = { _expenseMonthlyDomain.update { it } }
         }
     }
 
     fun updateMonthlyPayment() = viewModelScope.launch {
         _expenseMonthlyDomain.value.value = value.value.fromCurrency()
-        updateMonthlyPaymentUseCase(this, _expenseMonthlyDomain.value).apply {
-            onSuccess { _idMonthlyPayment.value = it }
+        updateMonthlyPaymentUseCase(this, _expenseMonthlyDomain.value) {
+            success = { _idMonthlyPayment.update { it } }
         }
     }
 

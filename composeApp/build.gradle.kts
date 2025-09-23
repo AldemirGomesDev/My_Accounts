@@ -13,6 +13,10 @@ plugins {
 }
 
 kotlin {
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -40,20 +44,45 @@ kotlin {
 
             api(libs.logging)
 
+            implementation(libs.androidMaterial)
             implementation(libs.android.core.ktx)
             implementation(libs.multidex)
             // Koin for Android
-            implementation(libs.bundles.koin.all)
-            //Compose
-            implementation(libs.bundles.compose.all)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
-            // Paging
-            implementation(libs.paging.compose)
-            implementation(libs.compose.navigation)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(project(":common"))
+            implementation(project(":domain"))
+            implementation(project(":navigation"))
+            implementation(project(":features:recipe:impl"))
+            implementation(project(":features:expense:impl"))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.navigation.compose.multplatform)
 
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
+        iosSimulatorArm64Main.dependencies {
+            implementation(compose.ui)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
         }
     }
 }
@@ -63,7 +92,6 @@ android {
 
     defaultConfig {
         applicationId = "br.com.aldemir.myaccounts"
-        buildToolsVersion = libs.versions.buildTools.get()
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
@@ -97,13 +125,4 @@ android {
         viewBinding = true
     }
     namespace = "br.com.aldemir.myaccounts"
-}
-
-dependencies {
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.compose.test.junit)
-    debugImplementation(libs.compose.tooling)
 }

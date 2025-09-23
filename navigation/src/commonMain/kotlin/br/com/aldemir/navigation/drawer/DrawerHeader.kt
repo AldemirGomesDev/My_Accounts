@@ -9,15 +9,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import br.com.aldemir.common.component.DarkModeDropDownMenu
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
-import br.com.aldemir.navigation.R
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.drawer_welcome
+import myaccounts.common.generated.resources.icon_despesa
+import myaccounts.common.generated.resources.icon_despesa_light
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun DrawerHeader(
@@ -49,13 +52,11 @@ internal fun DrawerHeader(
                 Image(
                     modifier = Modifier
                         .size(MyAccountsTheme.dimensions.sizing52),
-                    painter = painterResource(
-                        id = getLogo(appDarkMode = darkModeStateSelected)
-                    ),
+                    painter = painterResource(getLogo(appDarkMode = darkModeStateSelected)),
                     contentDescription = null
                 )
                 TextTitleLarge(
-                    text = stringResource(id = R.string.drawer_welcome),
+                    text = stringResource(Res.string.drawer_welcome),
                     modifier = Modifier.padding(start = MyAccountsTheme.dimensions.padding12)
                 )
             }
@@ -73,20 +74,19 @@ internal fun DrawerHeader(
 }
 
 @Composable
-private fun getLogo(appDarkMode: AppDarkMode): Int {
+private fun getLogo(appDarkMode: AppDarkMode): DrawableResource {
     val isDarkMode = when(appDarkMode) {
         AppDarkMode.Default -> isSystemInDarkTheme()
         AppDarkMode.Dark -> true
         AppDarkMode.Light -> false
     }
     return if (isDarkMode) {
-        R.drawable.icon_despesa_light
+        Res.drawable.icon_despesa_light
     } else {
-        R.drawable.icon_despesa
+        Res.drawable.icon_despesa
     }
 }
 
-@PreviewLightDark
 @Composable
 fun DrawerHeaderPreview() {
     MyAccountsTheme {

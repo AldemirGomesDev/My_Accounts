@@ -22,7 +22,7 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(compose.preview)
         }
         commonMain.dependencies {
             implementation(project(":common"))
@@ -31,20 +31,33 @@ kotlin {
             implementation(project(":features:expense:impl"))
             implementation(project(":features:authentication:impl"))
 
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.bundles.compose.all)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.compoose.constraintlayout)
+            implementation(compose.ui)
+            implementation(compose.material)
             implementation(libs.navigation.compose.multplatform)
             implementation(libs.kotlinx.serialization.json)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
         }
     }
 }
 
 android {
-    namespace = "br.com.aldemir.navigation"
+    namespace = "br.com.aldemir.myaccounts.navigation"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -72,11 +85,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 }

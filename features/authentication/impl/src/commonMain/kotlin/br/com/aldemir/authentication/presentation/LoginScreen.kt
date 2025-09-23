@@ -1,7 +1,6 @@
 package br.com.aldemir.authentication.presentation
 
-import android.app.Activity
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,10 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.fragment.app.FragmentActivity
+//import androidx.compose.ui.platform.LocalContext
+//import androidx.fragment.app.FragmentActivity
 import br.com.aldemir.common.theme.MyAccountsTheme
-import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -27,14 +25,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.aldemir.authentication.data.DialogModel
@@ -57,26 +54,27 @@ import myaccounts.features.authentication.impl.generated.resources.biometric_pro
 import myaccounts.features.authentication.impl.generated.resources.biometric_prompt_use_password_instead_text
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
-
+@ExperimentalComposeUiApi
 @Composable
 fun LoginScreen(
     isDarkTheme: Boolean,
     navigateToHomeScreen: () -> Unit,
-    navigateToRegisterScreen: () -> Unit
+    navigateToRegisterScreen: () -> Unit,
+    onFinish: () -> Unit,
 ) {
-    val context = LocalContext.current as FragmentActivity
+//    val context = LocalContext.current as FragmentActivity
     val viewModel: LoginViewModel = koinViewModel()
 
     val uiModel by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.checkIfBiometricLoginEnabled()
-    }
+//    LaunchedEffect(Unit) {
+//        viewModel.checkIfBiometricLoginEnabled()
+//    }
 
-    val activity = (LocalContext.current as? Activity)
-
-    BackHandler { activity?.finish() }
+    BackHandler { onFinish }
 
     when (uiModel.state) {
         AuthenticationState.SUCCESS -> {
@@ -99,11 +97,11 @@ fun LoginScreen(
     }
     val dialogModel = getDialogModel()
 
-    LaunchedEffect(key1 = uiModel.isBiometricAvailable) {
-        if (uiModel.isBiometricAvailable) {
-            viewModel.checkPreferencesEnabled(context, dialogModel)
-        }
-    }
+//    LaunchedEffect(key1 = uiModel.isBiometricAvailable) {
+//        if (uiModel.isBiometricAvailable) {
+//            viewModel.checkPreferencesEnabled(context, dialogModel)
+//        }
+//    }
 }
 
 @Composable
@@ -116,7 +114,7 @@ fun LoginPage(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val messageError = stringResource(id = uiModel.snackBarMessage)
+    val messageError = stringResource(uiModel.snackBarMessage)
 
     LaunchedEffect(uiModel.snackBarState) {
         when (uiModel.snackBarState) {
@@ -278,7 +276,6 @@ private fun getDialogModel(): DialogModel {
     )
 }
 
-@PreviewLightDark
 @Composable
 private fun LoginPagePreview() {
     MyAccountsTheme {

@@ -4,15 +4,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
@@ -28,11 +25,19 @@ import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.dialog_delete_title
+import myaccounts.common.generated.resources.home_expense_expired
+import myaccounts.common.generated.resources.home_expense_paid_out
+import myaccounts.common.generated.resources.recipe_detail_screen_title
+import org.jetbrains.compose.resources.StringResource
 
 private const val TAG = "listRecipeViewModel"
 
-class ListRecipeViewModel constructor(
+class ListRecipeViewModel(
     private val getAllRecipePerMonthUseCase: GetAllRecipePerMonthUseCase,
     private val getAllRecipeMonthlyUseCase: GetAllRecipeMonthlyUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase
@@ -40,8 +45,8 @@ class ListRecipeViewModel constructor(
 
     private val _recipeMonthlyDomain = MutableStateFlow<List<RecipeMonthlyDomain>>(emptyList())
 
-    private val _recipes = MutableLiveData<List<RecipeView>>(emptyList())
-    var recipes: LiveData<List<RecipeView>> = _recipes
+    private val _recipes = MutableStateFlow<List<RecipeView>>(emptyList())
+    var recipes: StateFlow<List<RecipeView>> = _recipes
 
     private var _cardState = MutableStateFlow(CardState())
     val cardState: StateFlow<CardState> = _cardState.asStateFlow()
@@ -53,27 +58,27 @@ class ListRecipeViewModel constructor(
     val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     fun delete(expense: RecipeView) = viewModelScope.launch {
-        deleteRecipeUseCase(this, expense.toDomain()).apply {
-            onSuccess { expenseId ->
+        deleteRecipeUseCase(this, expense.toDomain()) {
+            success = { expenseId ->
                 if (expenseId > 0) {
-                    getAllRecipeMonthly(DateUtils.getMonth(), DateUtils.getYear())
+                    getAllRecipeMonthly(DateUtils.getMonthString(), DateUtils.getYearString())
                 }
             }
         }
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
-        getAllRecipeMonthlyUseCase(this, GetAllRecipeMonthlyUseCase.Params(month, year)).apply {
-            onSuccess {
-                _recipeMonthlyDomain.value = it
+        getAllRecipeMonthlyUseCase(this, GetAllRecipeMonthlyUseCase.Params(month, year)) {
+            success = {
+                _recipeMonthlyDomain.update { it }
             }
         }
         calculateValues()
     }
 
     fun getAllRecipePerMonth(month: String, year: String) = viewModelScope.launch {
-        getAllRecipePerMonthUseCase(this, GetAllRecipePerMonthUseCase.Params(month, year)).apply {
-            onSuccess { listExpensePerMonth ->
+        getAllRecipePerMonthUseCase(this, GetAllRecipePerMonthUseCase.Params(month, year)) {
+            success = { listExpensePerMonth ->
                 convertToRecipeView(listExpensePerMonth)
             }
         }
@@ -84,13 +89,13 @@ class ListRecipeViewModel constructor(
         expensesPerMonth.forEach { expensePerMonth ->
             val expense = expensePerMonth.toRecipeView(
                 checkIfExpired(
-                    DateUtils.getDay(),
+                    DateUtils.getCurrentDay(),
                     expensePerMonth.due_date
                 )
             )
             recipeViews.add(expense)
         }
-        _recipes.value = recipeViews.toList()
+        _recipes.update { recipeViews.toList() }
     }
 
     private fun calculateValues() {
@@ -134,22 +139,22 @@ class ListRecipeViewModel constructor(
         else MediumPriorityColor
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): Int {
-        return if (status) R.string.expense_paid_out
-        else if (expired) R.string.expense_expired
-        else R.string.account_pending
+    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+        return if (status) Res.string.home_expense_paid_out
+        else if (expired) Res.string.home_expense_expired
+        else Res.string.account_pending
     }
 
     fun getItemsMenu() {
         _menuItemsState.value = arrayOf(
             DropdownItemState(
                 type = DropdownItemType.UPDATE,
-                titleRes = R.string.recipe_detail_screen_title,
+                titleRes = Res.string.recipe_detail_screen_title,
                 icon = Icons.Default.Edit,
             ),
             DropdownItemState(
                 type = DropdownItemType.DELETE,
-                titleRes = R.string.dialog_delete_title,
+                titleRes = Res.string.dialog_delete_title,
                 icon = Icons.Default.Delete,
             ),
         )

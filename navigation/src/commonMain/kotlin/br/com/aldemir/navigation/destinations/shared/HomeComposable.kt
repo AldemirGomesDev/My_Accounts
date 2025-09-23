@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -15,6 +16,8 @@ import br.com.aldemir.navigation.Routes
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+
 fun NavGraphBuilder.homeComposable(
     navHostController: NavHostController,
 ) {
@@ -48,6 +51,7 @@ fun NavGraphBuilder.homeComposable(
                     }
                 }
             },
+            onFinish = { navHostController.popBackStack() }
         )
     }
 }

@@ -15,14 +15,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.DarkGray
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.taskItemTextColor
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MyDropdownMenuItem(
@@ -69,7 +68,7 @@ fun MyDropdownMenuItem(
                         contentDescription = null
                     )
                     Text(
-                        text = stringResource(id = itemValue.titleRes),
+                        text = stringResource(itemValue.titleRes),
                         color = MyAccountsTheme.colors.primary
                     )
                 }
@@ -80,7 +79,6 @@ fun MyDropdownMenuItem(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 private fun DropdownMenuItemPreview() {
     MyDropdownMenuItem(

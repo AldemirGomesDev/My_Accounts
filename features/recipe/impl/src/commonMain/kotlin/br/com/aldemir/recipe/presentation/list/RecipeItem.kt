@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.stringResource
 import br.com.aldemir.common.component.MyDropdownMenuItem
 import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
@@ -20,11 +19,15 @@ import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.taskItemBackgroundColor
-import br.com.aldemir.common.R
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.theme.MyAccountsTheme
+import br.com.aldemir.common.util.formatTwoDigits
 import br.com.aldemir.recipe.model.RecipeView
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_list_item_status
+import myaccounts.common.generated.resources.item_due_date
+import org.jetbrains.compose.resources.stringResource
 
 @ExperimentalMaterialApi
 @Composable
@@ -37,7 +40,7 @@ fun RecipeItem(
 ) {
 
     val statusColor = viewModel.getStatusColor(recipeView.status, recipeView.expired)
-    val dueDate = String.format("%02d", recipeView.due_date)
+    val dueDate = formatTwoDigits(recipeView.due_date)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -92,14 +95,14 @@ fun RecipeItem(
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TextSubTitleItem(text = stringResource(id = R.string.item_due_date))
+                            TextSubTitleItem(text = stringResource(Res.string.item_due_date))
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
                                 text = dueDate
                             )
                             TextSubTitleItem(
                                 modifier = Modifier.padding(start = LARGEST_PADDING),
-                                text = stringResource(id = R.string.account_list_item_status)
+                                text = stringResource(Res.string.account_list_item_status)
                             )
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),

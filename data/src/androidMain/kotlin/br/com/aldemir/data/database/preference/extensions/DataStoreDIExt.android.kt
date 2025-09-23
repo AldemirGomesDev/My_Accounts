@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import br.com.aldemir.data.database.preference.createPreferencesDataStore
 import br.com.aldemir.data.database.preference.getDataStorePreferenceFile
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 
 /**
  * Koin DI extension function to create a DataStore instance with a specific name.
@@ -15,7 +16,7 @@ import org.koin.core.module.Module
  * @return A Koin module with the DataStore instance.
  */
 
-actual fun Module.preferencesDataStoreDI(name: String) = single<DataStore<Preferences>> {
+actual fun Module.preferencesDataStoreDI(name: String) = single<DataStore<Preferences>>(named(name)) {
     createPreferencesDataStore {
         get<Context>().dataStoreFile(getDataStorePreferenceFile(name)).absolutePath
     }

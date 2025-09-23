@@ -20,48 +20,50 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.Const.SPLASH_SCREEN_DELAY
 import br.com.aldemir.common.util.emptyString
 import kotlinx.coroutines.delay
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.icon_despesa
+import myaccounts.common.generated.resources.icon_despesa_light
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SplashScreen(
     isDarkTheme: Boolean,
     navigateToListScreen: () -> Unit,
 ) {
-    var startAnimation by remember { mutableStateOf(false) }
-    val offsetState by animateDpAsState(
-        targetValue = if (startAnimation) 0.dp else 100.dp,
-        animationSpec = tween(
-            durationMillis = 1000
-        ), label = emptyString()
-    )
-    val alphaState by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000
-        ), label = emptyString()
-    )
+//    var startAnimation by remember { mutableStateOf(false) }
+//    val offsetState by animateDpAsState(
+//        targetValue = if (startAnimation) 0.dp else 100.dp,
+//        animationSpec = tween(
+//            durationMillis = 1000
+//        ), label = emptyString()
+//    )
+//    val alphaState by animateFloatAsState(
+//        targetValue = if (startAnimation) 1f else 0f,
+//        animationSpec = tween(
+//            durationMillis = 1000
+//        ), label = emptyString()
+//    )
     LaunchedEffect(key1 = true) {
-        startAnimation = true
+//        startAnimation = true
         delay(SPLASH_SCREEN_DELAY)
         navigateToListScreen()
     }
 
-    Splash(isDarkTheme = isDarkTheme, offsetState = offsetState, alphaState = alphaState)
+    Splash(isDarkTheme = isDarkTheme)
 }
 
 @Composable
 fun Splash(
     isDarkTheme: Boolean,
-    offsetState: Dp, alphaState: Float
+//    offsetState: Dp, alphaState: Float
 ) {
     Box(
         modifier = Modifier
@@ -71,26 +73,23 @@ fun Splash(
     ) {
         Image(
             modifier = Modifier
-                .size(MyAccountsTheme.dimensions.sizing120)
-                .offset(y = offsetState)
-                .alpha(alpha = alphaState),
-            painter = painterResource(id = getLogo(isDarkTheme)),
+                .size(MyAccountsTheme.dimensions.sizing120),
+            painter = painterResource(getLogo(isDarkTheme)),
             contentDescription = null
         )
     }
 }
 
 @Composable
-private fun getLogo(isDarkTheme: Boolean): Int {
+private fun getLogo(isDarkTheme: Boolean): DrawableResource {
     return if (isDarkTheme) {
-        R.drawable.icon_despesa_light
+        Res.drawable.icon_despesa_light
     } else {
-        R.drawable.icon_despesa
+        Res.drawable.icon_despesa
     }
 }
 
 @Composable
-@PreviewLightDark
 private fun SplashScreenPreview() {
     MyAccountsTheme {
         Surface {

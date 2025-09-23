@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import br.com.aldemir.navigation.Routes
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.addRecipeComposable(
     navHostController: NavHostController
 ) {
@@ -39,9 +41,7 @@ fun NavGraphBuilder.addRecipeComposable(
     ) {
         AddRecipeScreen(
             navigateToListRecipeScreen = {
-                navHostController.navigate(
-                    Routes.ListRecipe
-                )
+                navHostController.navigateUp()
             }
         )
     }

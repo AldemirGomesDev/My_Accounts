@@ -1,6 +1,6 @@
 package br.com.aldemir.expense.presentation.expensechange
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -9,14 +9,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
@@ -27,13 +24,19 @@ import br.com.aldemir.common.theme.addAccountLabelColor
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
-import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
-import org.koin.androidx.compose.koinViewModel
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_update
+import myaccounts.common.generated.resources.expense_month_and_year
+import myaccounts.common.generated.resources.form_add_value
+import myaccounts.common.generated.resources.form_invalid_value
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @Composable
 fun ChangeExpenseScreen(
     viewModel: ChangeExpenseViewModel = koinViewModel(),
@@ -42,8 +45,6 @@ fun ChangeExpenseScreen(
     navigateToDetailScreen: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
-
-    val context = LocalContext.current
 
     viewModel.getAllByIdMonthlyPayment(idMonthlyPayment)
 
@@ -57,8 +58,8 @@ fun ChangeExpenseScreen(
 
     mExpenseMonthlyPayments.value = monthlyPayments
 
-    val title = context.getString(
-        R.string.expense_month_and_year,
+    val title = stringResource(
+        Res.string.expense_month_and_year,
         mExpenseMonthlyPayments.value.year,
         mExpenseMonthlyPayments.value.month
     )
@@ -138,7 +139,7 @@ private fun ChangeExpenseContent(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = { onValueChange(it) },
-            label = { Text(text = stringResource(R.string.form_add_value)) },
+            label = { Text(text = stringResource(Res.string.form_add_value)) },
             textStyle = MaterialTheme.typography.bodySmall,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -160,7 +161,7 @@ private fun ChangeExpenseContent(
             },
         )
         if (value.isEmpty()) Text(
-            text = stringResource(id = R.string.form_invalid_value),
+            text = stringResource(Res.string.form_invalid_value),
             color = MaterialTheme.colorScheme.error,
             fontSize = FontSize.scale12
         )
@@ -179,13 +180,12 @@ private fun ChangeExpenseContent(
                 .height(52.dp),
             loading = loading,
             enabled = enabled,
-            text = stringResource(id = R.string.button_update),
+            text = stringResource(Res.string.button_update),
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
         )
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 private fun ChangeExpenseContentPreview() {
     ChangeExpenseContent(

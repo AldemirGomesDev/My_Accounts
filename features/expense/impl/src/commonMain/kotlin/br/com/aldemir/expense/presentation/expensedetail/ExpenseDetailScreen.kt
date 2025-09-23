@@ -1,6 +1,6 @@
 package br.com.aldemir.expense.presentation.expensedetail
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -13,14 +13,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,23 +28,31 @@ import br.com.aldemir.common.component.TextMyButton
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
+import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.LARGE_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.taskItemTextColor
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.expense.model.MonthlyPaymentView
-import org.koin.androidx.compose.koinViewModel
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_label_value
+import myaccounts.common.generated.resources.button_text_pay
+import myaccounts.common.generated.resources.dialog_confirm_alert_message
+import myaccounts.common.generated.resources.dialog_confirm_alert_title
+import myaccounts.common.generated.resources.expense_no_update_message_toast
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
+@ExperimentalComposeUiApi
 @Composable
 fun ExpenseDetailScreen(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
@@ -57,7 +63,7 @@ fun ExpenseDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val id by viewModel.id.observeAsState()
+    val id by viewModel.id.collectAsState()
 
     LaunchedEffect(key1 = expenseId) {
         viewModel.getAllByIdExpense(expenseId)
@@ -111,8 +117,8 @@ fun ExpenseDetailScreen(
                     viewModel = viewModel
                 )
                 DisplayAlertDialog(
-                    title = stringResource(id = R.string.dialog_confirm_alert_title),
-                    message = stringResource(id = R.string.dialog_confirm_alert_message),
+                    title = stringResource(Res.string.dialog_confirm_alert_title),
+                    message = stringResource(Res.string.dialog_confirm_alert_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
@@ -168,8 +174,6 @@ private fun ExpenseDetailContent(
     viewModel: ExpenseDetailViewModel,
     index: Int,
 ) {
-    val context = LocalContext.current
-
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
@@ -179,6 +183,8 @@ private fun ExpenseDetailContent(
     val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f,
         label = emptyString()
     )
+
+    val message = stringResource(Res.string.expense_no_update_message_toast)
 
     Surface(
         modifier = Modifier
@@ -196,10 +202,7 @@ private fun ExpenseDetailContent(
                     detectTapGestures(
                         onLongPress = {
                             if (monthlyPayment.situation)
-                                viewModel.showToast(
-                                    context,
-                                    context.getString(R.string.expense_no_update_message_toast)
-                                )
+                                showMessage(message)
                             else navigateToChangeScreen(monthlyPayment.id)
                         },
                     )
@@ -213,7 +216,7 @@ private fun ExpenseDetailContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                TextSubTitleItem(text = stringResource(id = R.string.account_label_value))
+                TextSubTitleItem(text = stringResource(Res.string.account_label_value))
                 TextBodyTwoItem(
                     text = monthlyPayment.value.toCurrency(currencySymbol),
                     modifier = Modifier.padding(start = SMALL_PADDING)
@@ -224,7 +227,7 @@ private fun ExpenseDetailContent(
                 )
                 TextBodyTwoItem(
                     modifier = Modifier.padding(start = SMALL_PADDING),
-                    text = stringResource(id = resourceId),
+                    text = stringResource(resourceId),
                     color = statusColor,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -235,7 +238,7 @@ private fun ExpenseDetailContent(
                         onClickUpdate(index, monthlyPayment)
                     }
                 ) {
-                    TextMyButton(text = stringResource(id = R.string.button_text_pay))
+                    TextMyButton(text = stringResource(Res.string.button_text_pay))
                 }
             }
             Divider(
