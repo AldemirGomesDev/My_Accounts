@@ -25,6 +25,7 @@ import br.com.aldemir.recipe.model.RecipeView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_pending
@@ -57,8 +58,8 @@ class ListRecipeViewModel(
     val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     fun delete(expense: RecipeView) = viewModelScope.launch {
-        deleteRecipeUseCase(this, expense.toDomain()).apply {
-            onSuccess { expenseId ->
+        deleteRecipeUseCase(this, expense.toDomain()) {
+            success = { expenseId ->
                 if (expenseId > 0) {
                     getAllRecipeMonthly(DateUtils.getMonthString(), DateUtils.getYearString())
                 }
@@ -67,17 +68,17 @@ class ListRecipeViewModel(
     }
 
     fun getAllRecipeMonthly(month: String, year: String) = viewModelScope.launch {
-        getAllRecipeMonthlyUseCase(this, GetAllRecipeMonthlyUseCase.Params(month, year)).apply {
-            onSuccess {
-                _recipeMonthlyDomain.value = it
+        getAllRecipeMonthlyUseCase(this, GetAllRecipeMonthlyUseCase.Params(month, year)) {
+            success = {
+                _recipeMonthlyDomain.update { it }
             }
         }
         calculateValues()
     }
 
     fun getAllRecipePerMonth(month: String, year: String) = viewModelScope.launch {
-        getAllRecipePerMonthUseCase(this, GetAllRecipePerMonthUseCase.Params(month, year)).apply {
-            onSuccess { listExpensePerMonth ->
+        getAllRecipePerMonthUseCase(this, GetAllRecipePerMonthUseCase.Params(month, year)) {
+            success = { listExpensePerMonth ->
                 convertToRecipeView(listExpensePerMonth)
             }
         }
@@ -94,7 +95,7 @@ class ListRecipeViewModel(
             )
             recipeViews.add(expense)
         }
-        _recipes.value = recipeViews.toList()
+        _recipes.update { recipeViews.toList() }
     }
 
     private fun calculateValues() {

@@ -1,12 +1,12 @@
 package br.com.aldemir.domain.usecase.recipe
 
-import br.com.aldemir.domain.base.BaseUseCase
+import br.com.aldemir.domain.base.UseCase
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.repository.RecipeMonthlyRepository
 
 class GetAllRecipePerMonthUseCase(
     private val recipePerMonthlyRepository: RecipeMonthlyRepository
-) : BaseUseCase<GetAllRecipePerMonthUseCase.Params, List<RecipePerMonthDomain>> {
+) : UseCase<GetAllRecipePerMonthUseCase.Params, List<RecipePerMonthDomain>> {
 
     override suspend fun execute(params: Params): List<RecipePerMonthDomain> {
         return recipePerMonthlyRepository.getAllRecipePerMonth(params.month, params.year)

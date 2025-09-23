@@ -36,14 +36,12 @@ class LoginViewModel(
 
     private fun getAllPosts() {
         viewModelScope.launch {
-            getAllPostsUseCase(viewModelScope, Unit).apply {
-                onSuccess {
-                    // Handle success if needed
+            getAllPostsUseCase(viewModelScope, Unit) {
+                success = {
                     log.info { "sucesso: ${it.first()}" }
                 }
-                onFailure {
+                error = {
                     log.error { "Error: $it" }
-                    // Handle failure if needed
                 }
             }
         }

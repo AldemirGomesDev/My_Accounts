@@ -62,21 +62,21 @@ class DetailRecipeViewModel(
 
     fun getAllByIdRecipeMonthly(id: Int) = viewModelScope.launch {
         val monthlyPaymentViewList: MutableList<RecipeMonthlyView> = mutableListOf()
-        getAllByIdRecipeUseCase(this, id).apply {
-            onSuccess { monthlyPaymentDomain ->
+        getAllByIdRecipeUseCase(this, id) {
+            success = { monthlyPaymentDomain ->
                 monthlyPaymentDomain.forEach { item ->
                     monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
                 }
                 _name.value = monthlyPaymentViewList[0].name
-                _recipeMonthlyView.value = monthlyPaymentViewList
+                _recipeMonthlyView.update { monthlyPaymentViewList }
             }
         }
     }
 
     fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
         _id.update { 0 }
-        updateRecipeMonthlyUseCase(this, recipeMonthlyView.viewToDomain()).apply {
-            onSuccess {id ->
+        updateRecipeMonthlyUseCase(this, recipeMonthlyView.viewToDomain()) {
+            success = { id ->
                 _id.update { id }
             }
         }
@@ -99,12 +99,14 @@ class DetailRecipeViewModel(
     }
 
     fun getItemsMenu(){
-        _menuItemsState.value = arrayOf(
-            DropdownItemState(
-                type = DropdownItemType.PAY,
-                titleRes = Res.string.button_text_pay,
-                icon = Icons.Default.Check,
-            ),
-        )
+        _menuItemsState.update {
+            arrayOf(
+                DropdownItemState(
+                    type = DropdownItemType.PAY,
+                    titleRes = Res.string.button_text_pay,
+                    icon = Icons.Default.Check,
+                ),
+            )
+        }
     }
 }

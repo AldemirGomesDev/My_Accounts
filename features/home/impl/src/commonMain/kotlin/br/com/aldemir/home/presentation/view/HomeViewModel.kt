@@ -39,10 +39,7 @@ class HomeViewModel(
         val year = DateUtils.getYearString()
 
         val recipesDeferred = async {
-            getAllRecipeMonthUseCase(
-                this,
-                GetAllRecipeMonthUseCase.Params(month, year)
-            ).getOrNull().orEmpty()
+            getAllRecipeMonthUseCase.awaitForResult(this, GetAllRecipeMonthUseCase.Params(month, year))
         }
 
         val expensesDeferred = async {
@@ -72,14 +69,11 @@ class HomeViewModel(
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
         months.forEachIndexed { index, month ->
-            getAllRecipeMonthUseCase(
+            val recipes = getAllRecipeMonthUseCase.awaitForResult(
                 this,
                 GetAllRecipeMonthUseCase.Params(month, years[index])
-            ).apply {
-                onSuccess {
-                    setMonthValuesRecipe(it)
-                }
-            }
+            )
+            setMonthValuesRecipe(recipes)
         }
         setValuesRecipeToChart()
     }

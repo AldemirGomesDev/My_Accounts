@@ -47,8 +47,8 @@ class AddRecipeViewModel(
             created_at = DateUtils.getCurrentDate(),
             due_date = dueDateSelected.value
         )
-        addRecipeUseCase(this, recipeDomain).apply {
-            onSuccess { recipeId ->
+        addRecipeUseCase(this, recipeDomain) {
+            success =  { recipeId ->
                 handleMonthlyPayment(recipeId)
             }
         }
@@ -72,7 +72,7 @@ class AddRecipeViewModel(
     }
 
     private fun insertMonthlyPayment(recipeMonthlyDomain: RecipeMonthlyDomain) = viewModelScope.launch {
-        addRecipeMonthlyUseCase(this, recipeMonthlyDomain)
+        addRecipeMonthlyUseCase(this, recipeMonthlyDomain) {}
     }
 
     private fun shouldEnabledRegisterButton() {
