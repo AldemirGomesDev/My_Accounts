@@ -1,11 +1,8 @@
 package br.com.aldemir.navigation.bottomappbar
 
-import android.content.res.Configuration
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -13,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.theme.White
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BottomBar(
@@ -31,7 +29,7 @@ fun BottomBar(
                 selected = selected,
                 label = {
                     Text(
-                        text = stringResource(id = item.resourceNameId),
+                        text = stringResource(item.resourceNameId),
                         fontWeight = FontWeight.Normal,
                     )
                 },
@@ -47,8 +45,6 @@ fun BottomBar(
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 private fun BottomBarPreview() {
     MyAccountsTheme {

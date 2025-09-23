@@ -1,49 +1,40 @@
 [versions]
-kotlin = "2.0.21"
+composeCharts = "0.1.11"
+kotlin = "2.2.20"
+kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
 logging = "2.0.3"
 minSdk = "26"
 navigationMultplatform = "2.8.0-alpha08"
 targetSdk = "33"
-compileSdk = "34"
+compileSdk = "35"
 buildTools = "33.0.2"
-agp = "8.4.0"
+agp = "8.6.0"
 android-core-ktx = "1.13.1"
-compose = "1.6.7"
-lifecycle = "2.8.0"
-constraintlayout = "1.0.1"
 room = "2.7.2"
 sqlite = "2.5.2"
-koin = "3.5.3"
+koin = "4.0.1"
 ktor = "3.0.0"
 datastore = "1.1.7"
-charts = "0.2.1"
 multidex = "2.0.1"
-compose-navigation = "2.7.7"
 firebase-bom = "33.0.0"
-compose-material3 = "1.2.1"
-compose-activity = "1.9.0"
 googleServicesPlugin = "4.4.1"
 crashlyticsPlugin = "2.9.9"
-ksp = "2.0.21-1.0.27"
+ksp = "2.2.20-2.0.3"
 espresso = '3.5.1'
 jvmTarget = "17"
-pagingCompose = "3.3.5"
-compose_plugin_multplatform = "1.7.1"
+compose_plugin_multplatform = "1.7.3"
+compose_multplatform = "1.8.1"
+coroutinesMultplatform = "1.9.0"
 
 [libraries]
 android-core-ktx = {module = "androidx.core:core-ktx", version.ref = "android-core-ktx"}
-compose-ui = {module = "androidx.compose.ui:ui", version.ref = "compose"}
-compose-material = {module = "androidx.compose.material:material", version.ref = "compose"}
-compose-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
-compose-activity = {module = "androidx.activity:activity-compose", version.ref = "compose-activity"}
-compose-livedata = {module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose"}
-compose-lifecycle-viewmodel = {module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
-compoose-constraintlayout = {module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
-compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
-compose-material3 = {module = "androidx.compose.material3:material3", version.ref = "compose-material3"}
-compose-test-junit = {module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
+compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
+compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesMultplatform" }
 
+
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging = { module = "com.diamondedge:logging", version.ref = "logging" }
 navigation-compose-multplatform = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationMultplatform" }
@@ -51,16 +42,17 @@ room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room_bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
-koin-compose = {module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
+koin_core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin_compose_viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-compose = {module = "io.insert-koin:koin-compose", version.ref = "koin"}
 koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
+
 datastore-library = {module = "androidx.datastore:datastore", version.ref = "datastore"}
 datastore-preferences = {module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
-charts-compose = {module = "io.github.bytebeats:compose-charts", version.ref = "charts"}
 multidex = {module = "com.android.support:multidex", version.ref = "multidex"}
 firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics-ktx"}
 firebase-analytics = {module = "com.google.firebase:firebase-analytics-ktx"}
-paging-compose = {module = "androidx.paging:paging-compose", version.ref = "pagingCompose"}
 appCompat = {module = "androidx.appcompat:appcompat", version = "1.6.1"}
 androidMaterial = {module = "com.google.android.material:material", version = "1.12.0"}
 biometric = {module = "androidx.biometric:biometric", version = "1.1.0"}
@@ -71,6 +63,7 @@ ktor_client_core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
 ktor_client_okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor"}
 ktor_client_logger = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
 ktor_client_auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor"}
+ktor_client_darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor_client_content_negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
 ktor_client_serialization_json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor"}
 
@@ -82,14 +75,12 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 [plugins]
 androidApplication = {id = "com.android.application", version.ref = "agp"}
 androidLibrary = { id = 'com.android.library', version.ref = 'agp' }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleServices = { id = 'com.google.gms.google-services', version.ref = 'googleServicesPlugin' }
 crashlytics = { id = 'com.google.firebase.crashlytics', version.ref = 'crashlyticsPlugin' }
 kotlinAndroid = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
 kotlinJvm = { id = 'org.jetbrains.kotlin.jvm', version.ref = 'kotlin' }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = 'kotlin' }
 ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }
-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 
 # KMP
@@ -99,5 +90,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 
 
 [bundles]
-compose-all = ["compose-ui", "compose-material", "compose-tooling", "compose-activity", "compose-livedata"]
 koin-all = ["koin-compose", "koin-android"]

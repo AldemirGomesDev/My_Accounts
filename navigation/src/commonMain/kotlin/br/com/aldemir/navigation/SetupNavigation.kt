@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import br.com.aldemir.navigation.destinations.authentication.authenticationComposable
@@ -17,6 +18,7 @@ import br.com.aldemir.navigation.destinations.shared.historicComposable
 import br.com.aldemir.navigation.destinations.shared.homeComposable
 import br.com.aldemir.navigation.destinations.shared.splashComposable
 
+@ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

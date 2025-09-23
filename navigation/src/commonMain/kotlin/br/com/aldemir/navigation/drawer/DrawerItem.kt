@@ -1,6 +1,5 @@
 package br.com.aldemir.navigation.drawer
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,11 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DrawerItem(
@@ -43,7 +41,7 @@ fun DrawerItem(
                 contentDescription = null
             )
             Text(
-                text = stringResource(id = menuItem.titleResourceId),
+                text = stringResource(menuItem.titleResourceId),
                 color = MyAccountsTheme.colors.primary,
                 fontSize = FontSize.scale18,
                 modifier = Modifier
@@ -56,14 +54,6 @@ fun DrawerItem(
     }
 }
 
-@Preview(
-    name = "Light Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
 @Composable
 fun DrawerPreview() {
     MyAccountsTheme {

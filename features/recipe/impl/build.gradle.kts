@@ -20,20 +20,43 @@ kotlin {
     }
 
     sourceSets {
+        androidMain.dependencies {
+            implementation(compose.uiTooling)
+        }
         commonMain.dependencies {
             implementation(project(":data"))
             implementation(project(":common"))
             implementation(project(":domain"))
             implementation(project(":features:home:publ"))
 
-            implementation(libs.compose.material3)
-            implementation(libs.bundles.koin.all)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.compose.ui.backhandler)
 
             implementation(libs.multidex)
+            implementation(libs.kotlinx.datetime)
 
             //Compose
-            implementation(libs.bundles.compose.all)
-            implementation(libs.compose.lifecycle.viewmodel)
+            implementation(compose.runtime)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.ui)
+            implementation(compose.material)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
         }
     }
 }
@@ -56,3 +79,4 @@ android {
         multiDexEnabled = true
     }
 }
+

@@ -6,11 +6,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import br.com.aldemir.common.R
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.button_add_text
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FabAdd(
@@ -24,15 +24,12 @@ fun FabAdd(
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(
-                id = R.string.button_add_text
-            ),
+            contentDescription = stringResource(Res.string.button_add_text),
             tint = Color.White
         )
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 private fun FabAddPreview() {
     MyAccountsTheme {

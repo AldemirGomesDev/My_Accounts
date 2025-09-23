@@ -10,7 +10,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
     androidTarget()
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -22,7 +21,10 @@ kotlin {
         kotlin.srcDirs("build/generated/ksp/metada/androidMain/kotlin")
     }
     sourceSets {
-        androidMain.dependencies {  }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
+        }
         commonMain.dependencies {
             implementation(project(":common"))
             implementation(project(":domain"))
@@ -30,7 +32,7 @@ kotlin {
             // LOGGING
             api(libs.logging)
 
-            implementation(libs.bundles.koin.all)
+            implementation(libs.koin.core)
 
             //DATA STORE PREFERENCES
             implementation(libs.datastore.library)
@@ -39,14 +41,17 @@ kotlin {
             //ROOM
             implementation(libs.room.bundled)
             implementation(libs.room.runtime)
+            implementation(libs.kotlinx.datetime)
 
             // Ktor
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.logger)
             implementation(libs.ktor.client.auth)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization.json)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 
@@ -93,6 +98,7 @@ dependencies {
     add("kspIosSimulatorArm64", libs.room.compiler)
     add("kspIosX64", libs.room.compiler)
     add("kspIosArm64", libs.room.compiler)
+    add("kspCommonMainMetadata", libs.room.compiler)
 }
 
 configurations.implementation{

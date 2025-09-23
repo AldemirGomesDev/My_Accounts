@@ -30,7 +30,7 @@ actual fun Module.preferencesDataStoreDI(name: String) = single(named(name)) {
                 create = false,
                 error = errorPtr
             )
-            val finalPath: Path = requireNotNull(directory?.path()).toPath() / getDataStorePreferenceFile(name)
+            val finalPath: Path = requireNotNull(directory?.path).toPath() / getDataStorePreferenceFile(name)
             println("Creating DataStore at path: $finalPath")
             finalPath.toString()
         }

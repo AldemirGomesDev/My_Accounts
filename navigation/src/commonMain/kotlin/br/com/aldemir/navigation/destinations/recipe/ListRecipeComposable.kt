@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import br.com.aldemir.recipe.presentation.list.ListRecipeScreen
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.navigation.Routes
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.listRecipeComposable(

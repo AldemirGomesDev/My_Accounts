@@ -1,6 +1,5 @@
 package br.com.aldemir.data.database.room.recipe
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.aldemir.data.database.model.RecipeDTO
 import br.com.aldemir.data.database.model.RecipeUpdateDTO
@@ -12,10 +11,10 @@ interface RecipeDao {
     suspend fun insert(recipeDTO: RecipeDTO): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(recipeDTOS: List<RecipeDTO>): List<Long>
+    suspend fun insertAll(recipeDTOS: List<RecipeDTO>): List<Long>
 
     @Update
-    fun update(recipeDTO: RecipeDTO): Int
+    suspend fun update(recipeDTO: RecipeDTO): Int
 
     @Update(entity = RecipeDTO::class)
     suspend fun updateNameDescription(recipeDTO: RecipeUpdateDTO): Int
@@ -24,11 +23,8 @@ interface RecipeDao {
     suspend fun delete(recipeDTO: RecipeDTO): Int
 
     @Query("SELECT * FROM recipe WHERE id = :id")
-    fun getById(id: Int): RecipeDTO
+    suspend fun getById(id: Int): RecipeDTO
 
     @Query("SELECT * FROM recipe")
     suspend fun getAll(): List<RecipeDTO>
-
-    @Query("SELECT * FROM recipe WHERE name = :name")
-    fun getByName(name: String): LiveData<List<RecipeDTO>>
 }

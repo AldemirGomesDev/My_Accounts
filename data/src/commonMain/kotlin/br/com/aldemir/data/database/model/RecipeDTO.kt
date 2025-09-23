@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.*
+import kotlinx.datetime.Instant
 
 @Entity(tableName = "recipe", indices = [Index(value = ["name"], unique = true) ])
 data class RecipeDTO(
@@ -16,7 +16,7 @@ data class RecipeDTO(
     @ColumnInfo(name = "description")
     var description: String = "",
     @ColumnInfo(name = "created_at")
-    var created_at: Date? = null,
+    var created_at: Instant? = null,
     @ColumnInfo(name = "due_date")
     var due_date: Int = 0,
     @ColumnInfo(name = "status")

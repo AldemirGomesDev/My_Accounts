@@ -7,7 +7,9 @@ import br.com.aldemir.domain.di.domainModule
 import br.com.aldemir.home.presentation.di.presentationHomeModule
 import br.com.aldemir.data.database.di.appModule
 import br.com.aldemir.authentication.di.authenticationModule
+import br.com.aldemir.common.PlatformContext
 import br.com.aldemir.myaccounts.di.mainModule
+import br.com.aldemir.myaccounts.di.mainModules
 import br.com.aldemir.recipe.di.recipeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -18,21 +20,12 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
             androidContext(this@MyApplication)
             modules(
-                arrayListOf<Module>().apply {
-                    add(appModule)
-                    add(mainModule)
-                    add(dataModule)
-                    add(domainModule)
-                    add(authenticationModule)
-                    add(presentationHomeModule)
-                    add(expenseModule)
-                    add(recipeModule)
-                }
+                mainModules
             )
+            PlatformContext.init(this@MyApplication)
         }
     }
 }

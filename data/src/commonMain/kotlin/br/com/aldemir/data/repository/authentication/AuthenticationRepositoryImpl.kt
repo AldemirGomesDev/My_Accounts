@@ -22,7 +22,11 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun login(userName: String, password: String): UserDomain? {
-        return authenticationDao.login(userName, password)?.toDomain()
+        val user = authenticationDao.getUser(userName, password)
+        if (user != null) {
+            authenticationDao.setLoggedIn(user.id, true)
+        }
+        return user?.toDomain()
     }
 
     override suspend fun getUser(userName: String, password: String): UserDomain? {

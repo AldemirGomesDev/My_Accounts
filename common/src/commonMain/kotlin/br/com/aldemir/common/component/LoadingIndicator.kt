@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.state.LoadingIndicatorState
@@ -85,7 +84,6 @@ private fun LoadingDot(
 
 }
 
-@PreviewLightDark
 @Composable
 private fun LoadingIndicatorPreview() {
     MyAccountsTheme {

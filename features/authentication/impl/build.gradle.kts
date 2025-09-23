@@ -21,22 +21,40 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-
+            implementation(compose.uiTooling)
+            implementation(libs.biometric)
         }
         commonMain.dependencies {
             implementation(project(":data"))
             implementation(project(":common"))
             implementation(project(":domain"))
 
-            implementation(libs.bundles.koin.all)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.multidex)
+            implementation(libs.compose.ui.backhandler)
             //Compose
+            implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(libs.bundles.compose.all)
-            implementation(libs.compose.lifecycle.viewmodel)
-            implementation(libs.biometric)
+            implementation(compose.ui)
+            implementation(compose.material)
             implementation(libs.gson)
+        }
+        iosMain.dependencies {
+            implementation(compose.ui)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
         }
     }
 }
@@ -70,3 +88,4 @@ android {
         compose = true
     }
 }
+

@@ -1,9 +1,7 @@
 package br.com.aldemir.expense.presentation.addexpense
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.util.Const.TAG
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
@@ -13,9 +11,9 @@ import br.com.aldemir.domain.usecase.expense.AddExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.AddMonthlyPaymentUseCase
 import br.com.aldemir.expense.presentation.addexpense.action.AddExpenseAction
 import br.com.aldemir.expense.presentation.addexpense.state.AddExpenseUiState
+import com.diamondedge.logging.logging
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,6 +29,8 @@ class AddExpenseViewModel(
 
     private val _uiState = MutableStateFlow(AddExpenseUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val log = logging("Add_Expense_ViewModel")
 
     fun onAction(action: AddExpenseAction) {
         when (action) {
@@ -124,15 +124,17 @@ class AddExpenseViewModel(
         val expenseDomain = ExpenseDomain(
             name = uiState.value.name,
             description = uiState.value.description,
-            created_at = DateUtils.getDate(),
+            created_at = DateUtils.getCurrentDate(),
             due_date = uiState.value.dueDateSelected
         )
-        addExpenseUseCase(this, expenseDomain).apply {
-            onSuccess {
+        addExpenseUseCase(this, expenseDomain) {
+            success = {
                 handleMonthlyPayment(it)
             }
-            onFailure {
-                _uiEffect.emit(AddExpensesUiEffect.ShowError())
+            error = {
+                viewModelScope.launch {
+                    emitUiEffect(AddExpensesUiEffect.ShowError())
+                }
             }
         }
 
@@ -156,15 +158,19 @@ class AddExpenseViewModel(
 
     private fun insertMonthlyPayment(expenseMonthlyDomain: ExpenseMonthlyDomain) =
         viewModelScope.launch {
-            addMonthlyPaymentUseCase(this, expenseMonthlyDomain).apply {
-                onSuccess {
-                    _uiEffect.emit(AddExpensesUiEffect.ShowSuccess())
+            addMonthlyPaymentUseCase(this, expenseMonthlyDomain) {
+                success = {
+                    emitUiEffect(AddExpensesUiEffect.ShowSuccess())
                 }
-                onFailure {
-                    _uiEffect.emit(AddExpensesUiEffect.ShowError())
+                error = {
+                    emitUiEffect(AddExpensesUiEffect.ShowError())
                 }
             }
         }
+
+    private fun emitUiEffect(uiEffect: AddExpensesUiEffect) = viewModelScope.launch {
+        _uiEffect.emit(uiEffect)
+    }
 
     private fun shouldEnabledRegisterButton() {
         uiState.value.isEnabledRegisterButton = !validateLength(uiState.value.name, 3)
@@ -228,7 +234,7 @@ class AddExpenseViewModel(
     }
 
     fun getNumberOfTimesItRepeats(): MutableList<String> {
-        Log.w(TAG, "getNumberOfTimesItRepeats: ")
+        log.info { "getNumberOfTimesItRepeats: " }
 
         val numberOfTimesItRepeats = arrayListOf<String>()
         for (i in 1..100) {

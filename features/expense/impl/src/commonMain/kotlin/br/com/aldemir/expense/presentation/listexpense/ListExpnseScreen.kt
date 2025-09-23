@@ -1,8 +1,6 @@
 package br.com.aldemir.expense.presentation.listexpense
 
-import android.content.Context
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -13,29 +11,34 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.common.R
 import br.com.aldemir.common.component.DisplayAlertDialog
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.FabAdd
 import br.com.aldemir.common.component.StatisticsCard
 import br.com.aldemir.common.model.CardState
+import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.expense.model.ExpenseView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.dialog_delete_message
+import myaccounts.common.generated.resources.dialog_delete_title
+import myaccounts.common.generated.resources.expense_delete_message_toast
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
+@ExperimentalComposeUiApi
 @Composable
 fun ListExpenseScreen(
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit,
@@ -46,8 +49,6 @@ fun ListExpenseScreen(
     val scaffoldState = rememberScaffoldState()
 
     val showDialogState: Boolean by viewModel.showDialog.collectAsState()
-
-    val context = LocalContext.current
 
     var expenseDTOToSave by remember {
         mutableStateOf(ExpenseView())
@@ -75,22 +76,17 @@ fun ListExpenseScreen(
                     },
                     viewModel = viewModel
                 )
+                val message = stringResource(Res.string.expense_delete_message_toast, expenseDTOToSave.id)
                 DisplayAlertDialog(
-                    title = stringResource(id = R.string.dialog_delete_title),
-                    message = stringResource(id = R.string.dialog_delete_message),
+                    title = stringResource(Res.string.dialog_delete_title),
+                    message = stringResource(Res.string.dialog_delete_message),
                     openDialog = showDialogState,
                     closeDialog = {
                         viewModel.onDialogDismiss()
                     },
                     onYesClicked = {
                         deleteExpense(viewModel, expenseDTOToSave)
-                        showToast(
-                            context,
-                            context.getString(
-                                R.string.expense_delete_message_toast,
-                                expenseDTOToSave.id
-                            )
-                        )
+                        showMessage(message)
                         viewModel.onDialogConfirm()
                     }
                 )
@@ -112,7 +108,7 @@ fun HomeScreenList(
 ) {
     val state = rememberLazyListState()
     LaunchedEffect(true) {
-        viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
     val expenses by viewModel.expenses.collectAsState()
@@ -150,7 +146,7 @@ private fun HomeCard(
 ) {
 
     LaunchedEffect(true) {
-        viewModel.getAllExpensesMonth(DateUtils.getMonth(), DateUtils.getYear())
+        viewModel.getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
     }
 
     val valueTotal by viewModel.valueTotal.collectAsState()
@@ -178,10 +174,6 @@ private fun deleteExpense(viewModel: ListExpenseViewModel, expenseView: ExpenseV
     }
 }
 
-private fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-}
-
 private fun getAllExpenseMonth(viewModel: ListExpenseViewModel) {
-    viewModel.getAllExpensePerMonth(DateUtils.getMonth(), DateUtils.getYear())
+    viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
 }

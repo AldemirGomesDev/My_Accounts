@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -69,7 +68,6 @@ fun CustomSnackBar(
     }
 }
 
-@PreviewLightDark
 @Composable
 fun CustomSnackBarPreview() {
     MyAccountsTheme {
@@ -80,7 +78,6 @@ fun CustomSnackBarPreview() {
     }
 }
 
-@PreviewLightDark
 @Composable
 fun CustomSnackBarPreview2() {
     MyAccountsTheme {

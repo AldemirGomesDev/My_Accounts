@@ -1,44 +1,55 @@
 package br.com.aldemir.home.presentation.view
 
-import android.app.Activity
-import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import br.com.aldemir.common.R
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.common.theme.*
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import br.com.aldemir.home.presentation.model.BarChart
 import br.com.aldemir.home.presentation.state.HomeUiState
-import me.bytebeats.views.charts.bar.BarChart
-import me.bytebeats.views.charts.bar.BarChartData
-import me.bytebeats.views.charts.bar.render.label.ILabelDrawer
-import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
-import me.bytebeats.views.charts.bar.render.xaxis.SimpleXAxisDrawer
-import me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer
-import org.koin.androidx.compose.koinViewModel
+import ir.ehsannarmani.compose_charts.ColumnChart
+import ir.ehsannarmani.compose_charts.models.BarProperties
+import ir.ehsannarmani.compose_charts.models.Bars
+import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
+import ir.ehsannarmani.compose_charts.models.LabelProperties
+import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.expense_chart_empty
+import myaccounts.common.generated.resources.expense_chart_title
+import myaccounts.common.generated.resources.recipe_chart_empty
+import myaccounts.common.generated.resources.recipe_chart_title
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
+@ExperimentalComposeUiApi
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToNextScreen: (ButtonType) -> Unit,
-){
+    onFinish: () -> Unit,
+) {
     LaunchedEffect(true) {
         viewModel.getAllRecipeAndExpense()
         viewModel.getAllExpenseSixMonthsPrevious()
@@ -46,16 +57,11 @@ fun HomeScreen(
     }
     val scaffoldState = rememberScaffoldState()
 
-    val activity = (LocalContext.current as? Activity)
-
-    BackHandler { activity?.finish() }
+    BackHandler { onFinish }
 
     val uiState by viewModel.uiState.collectAsState()
 
-    val labelDrawer = viewModel.labelDrawer
-
     HomeContent(
-        labelDrawer = labelDrawer,
         scaffoldState = scaffoldState,
         navigateToNextScreen = navigateToNextScreen,
         uiState = uiState
@@ -65,7 +71,6 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
-    labelDrawer: SimpleLabelDrawer,
     scaffoldState: ScaffoldState,
     navigateToNextScreen: (ButtonType) -> Unit,
     uiState: HomeUiState
@@ -83,19 +88,17 @@ fun HomeContent(
                 HomeCard(homeCardData = uiState.uiModel.homeCardData)
                 MyBarChart(
                     uiState = uiState,
-                    barChartData = uiState.uiModel.barChartDataExpense,
-                    labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.expense_chart_title),
-                    textEmpty = stringResource(id = R.string.expense_chart_empty),
+                    barCharts = uiState.uiModel.barChartDataExpenses,
+                    title = stringResource(Res.string.expense_chart_title),
+                    textEmpty = stringResource(Res.string.expense_chart_empty),
                     buttonType = ButtonType.ButtonExpense,
                     navigateToNextScreen = navigateToNextScreen
                 )
                 MyBarChart(
                     uiState = uiState,
-                    barChartData = uiState.uiModel.barChartDataRecipe,
-                    labelDrawer = labelDrawer,
-                    title = stringResource(id = R.string.recipe_chart_title),
-                    textEmpty = stringResource(id = R.string.recipe_chart_empty),
+                    barCharts = uiState.uiModel.barChartDataRecipes,
+                    title = stringResource(Res.string.recipe_chart_title),
+                    textEmpty = stringResource(Res.string.recipe_chart_empty),
                     buttonType = ButtonType.ButtonRecipe,
                     navigateToNextScreen = navigateToNextScreen
                 )
@@ -105,10 +108,63 @@ fun HomeContent(
 }
 
 @Composable
+private fun MyColumnChart() {
+    ColumnChart(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
+        data = remember {
+            listOf(
+                Bars(
+                    label = "Jan",
+                    values = listOf(
+                        Bars.Data(
+                            label = "Linux",
+                            value = 50.0,
+                            color = Brush.verticalGradient(
+                                0.0f to Color(0xFF3366FF),
+                                1.0f to Color(0xFF00CCFF)
+                            ),
+                        ),
+                        Bars.Data(
+                            label = "Windows",
+                            value = 70.0,
+                            color = SolidColor(Color.Red)
+                        ),
+                    )
+                ),
+//                Bars(
+//                    label = "Feb",
+//                    values = listOf(
+//                        Bars.Data(
+//                            label = "Linux", value = 80.0, color = Brush.verticalGradient(
+//                                0.0f to Color(0xFF3366FF),
+//                                1.0f to Color(0xFF00CCFF)
+//                            ),
+//                        ),
+//                        Bars.Data(
+//                            label = "Windows",
+//                            value = 60.0,
+//                            color = SolidColor(Color.Red)
+//                        )
+//                    )
+//                )
+            )
+        },
+        barProperties = BarProperties(
+            cornerRadius = Bars.Data.Radius.Rectangle(topRight = 6.dp, topLeft = 6.dp),
+            spacing = 3.dp,
+            thickness = 20.dp
+        ),
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+    )
+}
+
+@Composable
 private fun MyBarChart(
     uiState: HomeUiState,
-    barChartData: BarChartData?,
-    labelDrawer: ILabelDrawer,
+    barCharts: List<BarChart>,
     title: String,
     textEmpty: String,
     buttonType: ButtonType,
@@ -139,13 +195,13 @@ private fun MyBarChart(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(200.dp)
                     .padding(vertical = MyAccountsTheme.dimensions.padding8)
                     .background(MyAccountsTheme.colors.backgroundGreen),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                when(uiState) {
+            ) {
+                when (uiState) {
                     HomeUiState.Loading -> {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -156,24 +212,41 @@ private fun MyBarChart(
                             )
                         }
                     }
+
                     is HomeUiState.ShowHomeCards -> {
-                        barChartData?.let {
-                            BarChart(
-                                modifier = Modifier.padding(
-                                    horizontal = MyAccountsTheme.dimensions.padding24,
-                                    vertical = MyAccountsTheme.dimensions.padding8
+                        if (barCharts.isNotEmpty()) {
+                            val data = barCharts.map {
+                                Bars(
+                                    label = it.label,
+                                    values = listOf(
+                                        Bars.Data(
+                                            value = it.value,
+                                            color = SolidColor(it.color),
+                                        ),
+                                    )
+                                )
+                            }
+                            ColumnChart(
+                                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                                data = remember { data },
+                                barProperties = BarProperties(
+                                    cornerRadius = Bars.Data.Radius.Rectangle(topRight = 4.dp, topLeft = 4.dp),
+                                    spacing = 3.dp,
+                                    thickness = 20.dp
                                 ),
-                                barChartData = barChartData,
-                                labelDrawer = labelDrawer,
-                                xAxisDrawer = SimpleXAxisDrawer(
-                                    axisLineColor = White
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
                                 ),
-                                yAxisDrawer = SimpleYAxisDrawer(
-                                    axisLineColor = White,
-                                    labelTextColor = White,
+                                labelProperties = LabelProperties(
+                                    textStyle = TextStyle.Default.copy(color = White),
+                                    enabled = true
                                 ),
+                                indicatorProperties = HorizontalIndicatorProperties(
+                                    textStyle = TextStyle.Default.copy(color = White)
+                                )
                             )
-                        } ?: run {
+                        } else {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
@@ -181,8 +254,8 @@ private fun MyBarChart(
                                     modifier = Modifier
                                         .size(60.dp)
                                         .padding(top = MyAccountsTheme.dimensions.padding8),
-                                    painter = painterResource(id = R.drawable.ic_sad_face),
-                                    contentDescription = stringResource(R.string.sad_face_icon),
+                                    imageVector = Icons.Filled.Warning,
+                                    contentDescription = null,
                                     tint = MediumGray
                                 )
                                 Text(
@@ -205,17 +278,16 @@ private fun MyBarChart(
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun HomeContentPreview() {
     MyAccountsTheme {
-        HomeContent(
-            labelDrawer = SimpleLabelDrawer(
-                labelTextColor = White
-            ),
-            scaffoldState = rememberScaffoldState(),
-            navigateToNextScreen = {},
-            uiState = homeDataPreview
-        )
+//        HomeContent(
+//            labelDrawer = SimpleLabelDrawer(
+//                labelTextColor = White
+//            ),
+//            scaffoldState = rememberScaffoldState(),
+//            navigateToNextScreen = {},
+//            uiState = homeDataPreview
+//        )
     }
 }
