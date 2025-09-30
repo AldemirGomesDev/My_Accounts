@@ -5,6 +5,8 @@ import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toDto
 import br.com.aldemir.domain.model.UserDomain
 import br.com.aldemir.domain.repository.AuthenticationRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AuthenticationRepositoryImpl(
     private val dao: AuthenticationDao
@@ -39,7 +41,7 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun isLogged(userName: String): Boolean {
-        return dao.isLogged(userName)
+        return false
     }
 
     override suspend fun logout(userName: String): Int {
@@ -52,7 +54,8 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun getLoggedUser(): UserDomain? {
-        return dao.getAllUsers().find { it.isLogged }?.toDomain()
+    override suspend fun getLoggedUser(): Flow<UserDomain?> {
+        return dao.getLoggedUser().map { it?.toDomain() }
+//        return dao.getAllUsers().find { it.isLogged }?.toDomain()
     }
 }

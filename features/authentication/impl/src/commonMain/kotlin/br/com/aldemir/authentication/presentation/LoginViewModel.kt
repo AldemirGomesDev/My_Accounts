@@ -16,6 +16,7 @@ import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import com.diamondedge.logging.logging
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,9 +41,17 @@ class LoginViewModel(
 
     init {
         getLoggerUserUseCase(viewModelScope, UseCase.None()) {
-            success = {
-                log.info { "GetLoggerUserUseCase -> sucesso: $it" }
-                if (it is GetLoggerUserState.LoggedUser) {
+            success = { stateFlow ->
+                updateLoggerUser(stateFlow)
+            }
+        }
+    }
+
+    private fun updateLoggerUser(stateFlow: Flow<GetLoggerUserState>) {
+        viewModelScope.launch {
+            stateFlow.collect { state ->
+                log.info { "LoginViewModel -> updateLoggerUser: $state" }
+                if (state is GetLoggerUserState.LoggedUser) {
                     handleUiSuccess()
                 }
             }

@@ -13,6 +13,8 @@ import br.com.aldemir.domain.usecase.authentication.GetLoggerUserUseCase
 import br.com.aldemir.domain.usecase.authentication.LogoutUseCase
 import br.com.aldemir.domain.usecase.darkmode.ReadDarkModeStateUseCase
 import br.com.aldemir.domain.usecase.darkmode.SaveDarkModeStateUseCase
+import com.diamondedge.logging.logging
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.update
 
 class MainViewModel(
@@ -22,12 +24,22 @@ class MainViewModel(
     private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
 
+    private val log = logging("TAG_auth")
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState
 
     init {
         getLoggerUserUseCase(viewModelScope, UseCase.None()) {
-            success = { state ->
+            success = { stateFlow ->
+                updateLoggerUser(stateFlow)
+            }
+        }
+    }
+
+    private fun updateLoggerUser(stateFlow: Flow<GetLoggerUserState>) {
+        viewModelScope.launch {
+            stateFlow.collect { state ->
+                log.info { "MainViewModel -> updateLoggerUser: $state" }
                 if (state is GetLoggerUserState.LoggedUser) {
                     _uiState.update { uiState ->
                         uiState.copy(userLogged = state.userDomain.toUserLogger())

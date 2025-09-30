@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.aldemir.data.database.model.UserDTO
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AuthenticationDao {
@@ -25,8 +26,8 @@ interface AuthenticationDao {
     @Query("UPDATE user SET is_logged = :isLogged WHERE id = :userId")
     suspend fun setLoggedIn(userId: Int, isLogged: Boolean): Int
 
-    @Query("SELECT COUNT(*) > 0 FROM user WHERE user_name = :userName AND is_logged = 1")
-    suspend fun isLogged(userName: String): Boolean
+    @Query("SELECT * FROM user WHERE is_logged = 1 LIMIT 1")
+    fun getLoggedUser(): Flow<UserDTO?>
 
     @Query("UPDATE user SET is_logged = 0 WHERE user_name = :userName")
     suspend fun logout(userName: String): Int
