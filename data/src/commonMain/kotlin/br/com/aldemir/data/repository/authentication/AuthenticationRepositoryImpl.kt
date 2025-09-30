@@ -5,28 +5,31 @@ import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toDto
 import br.com.aldemir.domain.model.UserDomain
 import br.com.aldemir.domain.repository.AuthenticationRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AuthenticationRepositoryImpl(
-    private val authenticationDao: AuthenticationDao
+    private val dao: AuthenticationDao
 ): AuthenticationRepository {
     override suspend fun insert(userDomain: UserDomain): Long {
-        return authenticationDao.insert(userDomain.toDto())
+        return dao.insert(userDomain.toDto())
     }
 
     override suspend fun update(userDomain: UserDomain): Int {
-        return authenticationDao.update(userDomain.toDto())
+        return dao.update(userDomain.toDto())
     }
 
     override suspend fun delete(userDomain: UserDomain): Int {
-        return authenticationDao.delete(userDomain.toDto())
+        return dao.delete(userDomain.toDto())
     }
 
     override suspend fun login(userName: String, password: String): UserDomain? {
-        val user = authenticationDao.getUser(userName, password)
-        if (user != null) {
-            authenticationDao.setLoggedIn(user.id, true)
+        val user = dao.getUser(userName, password) ?: return null
+        dao.getAllUsers().forEach {
+            dao.setLoggedIn(it.id, false)
         }
-        return user?.toDomain()
+        dao.setLoggedIn(user.id, true)
+        return user.toDomain()
     }
 
     override suspend fun getUser(userName: String, password: String): UserDomain? {
@@ -38,10 +41,21 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun isLogged(userName: String): Boolean {
-        return authenticationDao.isLogged(userName)
+        return false
     }
 
     override suspend fun logout(userName: String): Int {
-        return authenticationDao.logout(userName)
+        return dao.logout(userName)
+    }
+
+    override suspend fun getAllUsers(): List<UserDomain> {
+        return dao.getAllUsers().map {
+            it.toDomain()
+        }
+    }
+
+    override suspend fun getLoggedUser(): Flow<UserDomain?> {
+        return dao.getLoggedUser().map { it?.toDomain() }
+//        return dao.getAllUsers().find { it.isLogged }?.toDomain()
     }
 }

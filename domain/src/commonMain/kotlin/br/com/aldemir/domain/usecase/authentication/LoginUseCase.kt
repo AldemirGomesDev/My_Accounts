@@ -3,10 +3,13 @@ package br.com.aldemir.domain.usecase.authentication
 import br.com.aldemir.domain.base.UseCase
 import br.com.aldemir.domain.model.UserDomain
 import br.com.aldemir.domain.repository.AuthenticationRepository
+import com.diamondedge.logging.logging
 
 class LoginUseCase(
     private val authenticationRepository: AuthenticationRepository
 ) : UseCase<Params, LoginUseCaseState> {
+    private val log = logging("TAG_auth")
+
     override suspend fun execute(params: Params): LoginUseCaseState {
         return checkUser(authenticationRepository.login(params.userName, params.password))
     }
@@ -17,6 +20,11 @@ class LoginUseCase(
         } else {
             LoginUseCaseState.NotFound
         }
+    }
+
+    override fun dispatchErrorResult(throwable: Throwable) {
+        super.dispatchErrorResult(throwable)
+        log.error { "LoginUseCase-> Error: $throwable"}
     }
 }
 

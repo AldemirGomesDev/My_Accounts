@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 //import br.com.aldemir.authentication.data.BiometricHelper
 import br.com.aldemir.authentication.data.DialogModel
 import br.com.aldemir.common.component.SnackBarState
+import br.com.aldemir.domain.base.UseCase
+import br.com.aldemir.domain.usecase.authentication.GetLoggerUserState
+import br.com.aldemir.domain.usecase.authentication.GetLoggerUserUseCase
 import br.com.aldemir.domain.usecase.authentication.LoginUseCase
 import br.com.aldemir.domain.usecase.authentication.LoginUseCaseState
 import br.com.aldemir.domain.usecase.authentication.Params
@@ -13,6 +16,7 @@ import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import com.diamondedge.logging.logging
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -25,6 +29,7 @@ import org.jetbrains.compose.resources.StringResource
 class LoginViewModel(
 //    private val biometricHelper: BiometricHelper,
     private val loginUseCase: LoginUseCase,
+    private val getLoggerUserUseCase: GetLoggerUserUseCase,
     private val getAllPostsUseCase: GetAllPostsUseCase,
     private val getAllProductsUseCase: GetAllProductsUseCase
 ) : ViewModel() {
@@ -33,6 +38,25 @@ class LoginViewModel(
     val uiState = _uiState.asStateFlow()
 
     private val log = logging("TAG_auth")
+
+    init {
+        getLoggerUserUseCase(viewModelScope, UseCase.None()) {
+            success = { stateFlow ->
+                updateLoggerUser(stateFlow)
+            }
+        }
+    }
+
+    private fun updateLoggerUser(stateFlow: Flow<GetLoggerUserState>) {
+        viewModelScope.launch {
+            stateFlow.collect { state ->
+                log.info { "LoginViewModel -> updateLoggerUser: $state" }
+                if (state is GetLoggerUserState.LoggedUser) {
+                    handleUiSuccess()
+                }
+            }
+        }
+    }
 
     private fun getAllPosts() {
         viewModelScope.launch {
@@ -51,10 +75,10 @@ class LoginViewModel(
         viewModelScope.launch {
             getAllProductsUseCase(viewModelScope) {
                 success = { listProductDomainModel ->
-                    log.info { "sucesso: ${listProductDomainModel.toList().random()}" }
+                    log.info { "getAllProducts -> sucesso: ${listProductDomainModel.toList().random()}" }
                 }
                 error = { error ->
-                    log.error { "ViewModel Error: $error" }
+                    log.error { "getAllProducts -> Error: $error" }
                 }
             }
         }
@@ -112,8 +136,10 @@ class LoginViewModel(
                 loginUseCase(this, Params(userName, password))  {
                     success = {
                         handleLoginSuccess(it)
+                        log.info { "Login -> success: ${it.toString()}" }
                     }
                     error = {
+                        log.error { "Login -> error: ${it.message}" }
                         handleUiError(
                             Res.string.snack_bar_user_or_password_error
                         )

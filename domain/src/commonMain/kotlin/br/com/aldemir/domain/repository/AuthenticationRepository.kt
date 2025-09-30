@@ -1,6 +1,7 @@
 package br.com.aldemir.domain.repository
 
 import br.com.aldemir.domain.model.UserDomain
+import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationRepository {
     suspend fun insert(userDomain: UserDomain): Long
@@ -11,4 +12,6 @@ interface AuthenticationRepository {
     suspend fun setLoggedIn(userId: Int, isLogged: Boolean): Int
     suspend fun isLogged(userName: String): Boolean
     suspend fun logout(userName: String): Int
+    suspend fun getAllUsers(): List<UserDomain>
+    suspend fun getLoggedUser(): Flow<UserDomain?>
 }

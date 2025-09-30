@@ -41,6 +41,7 @@ import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.SnackBarState
+import br.com.aldemir.common.model.UserLogged
 import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
@@ -61,7 +62,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun LoginScreen(
     isDarkTheme: Boolean,
-    navigateToHomeScreen: () -> Unit,
+    navigateToHomeScreen: (UserLogged) -> Unit,
     navigateToRegisterScreen: () -> Unit,
     onFinish: () -> Unit,
 ) {
@@ -79,7 +80,7 @@ fun LoginScreen(
     when (uiModel.state) {
         AuthenticationState.SUCCESS -> {
             LoadingScreen()
-            navigateToHomeScreen()
+            navigateToHomeScreen(uiModel.userLogged)
         }
 
         AuthenticationState.IDLE -> {
