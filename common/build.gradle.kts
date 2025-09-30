@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -41,6 +42,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.material)
+            implementation(libs.kotlinx.serialization.json)
         }
         iosMain.dependencies {
             implementation(compose.ui)

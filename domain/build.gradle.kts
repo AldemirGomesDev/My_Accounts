@@ -23,6 +23,8 @@ kotlin {
             implementation(libs.appCompat)
         }
         commonMain.dependencies {
+            api(libs.logging)
+
             implementation (libs.koin.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.coroutines.core)

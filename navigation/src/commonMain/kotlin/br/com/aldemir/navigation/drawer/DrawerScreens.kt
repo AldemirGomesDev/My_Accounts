@@ -2,11 +2,13 @@ package br.com.aldemir.navigation.drawer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import br.com.aldemir.navigation.Routes
 import myaccounts.navigation.generated.resources.Res
+import myaccounts.navigation.generated.resources.drawer_logout
 import myaccounts.navigation.generated.resources.expense_add_screen_title
 import myaccounts.navigation.generated.resources.expense_list_screen_title
 import myaccounts.navigation.generated.resources.historic_screen_title
@@ -46,6 +48,11 @@ sealed class DrawerScreens(val titleResourceId: StringResource, val route: Any, 
         route = Routes.ListRecipe,
         imageIcon = Icons.Filled.List
     )
+    data object Logout : DrawerScreens(
+        titleResourceId = Res.string.drawer_logout,
+        route = Routes.Logout,
+        imageIcon = Icons.Filled.Close
+    )
 }
 
 val screens = listOf(
@@ -54,5 +61,6 @@ val screens = listOf(
     DrawerScreens.ListExpense,
     DrawerScreens.Historic,
     DrawerScreens.AddRecipe,
-    DrawerScreens.ListRecipe
+    DrawerScreens.ListRecipe,
+    DrawerScreens.Logout,
 )

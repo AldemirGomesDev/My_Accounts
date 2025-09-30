@@ -33,12 +33,16 @@ fun MyAccountsApp(
 
     MyAccountsTheme {
         DrawerNavigationScreen(
+            userLogged = uiState.userLogged,
             isDarkTheme = isDarkMode,
             listItems = uiState.listItems,
             onItemClicked = {
                 viewModel.onAction(MainAction.UpdateDarkModeState(it))
             },
-            darkModeStateSelected = uiState.appDarkMode
+            darkModeStateSelected = uiState.appDarkMode,
+            onLogoutClicked = {
+                viewModel.onAction(MainAction.Logout(uiState.userLogged.userName))
+            }
         )
     }
 }
