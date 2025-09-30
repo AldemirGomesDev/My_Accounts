@@ -30,4 +30,7 @@ interface AuthenticationDao {
 
     @Query("UPDATE user SET is_logged = 0 WHERE user_name = :userName")
     suspend fun logout(userName: String): Int
+
+    @Query("SELECT * FROM user")
+    suspend fun getAllUsers(): List<UserDTO>
 }

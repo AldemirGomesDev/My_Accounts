@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.aldemir.common.component.TopBar
+import br.com.aldemir.common.model.UserLogged
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -41,9 +42,11 @@ import myaccounts.navigation.generated.resources.recipe_list_screen_title
 @ExperimentalMaterialApi
 @Composable
 fun DrawerNavigationScreen(
+    userLogged: UserLogged,
     isDarkTheme: Boolean,
     listItems: List<AppDarkMode>,
     onItemClicked: (state: AppDarkMode) -> Unit,
+    onLogoutClicked: () -> Unit = {},
     darkModeStateSelected: AppDarkMode,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -94,6 +97,7 @@ fun DrawerNavigationScreen(
             drawerGesturesEnabled = true,
             drawerContent = {
                 DrawerHeader(
+                    userLogged = userLogged,
                     listItems = listItems,
                     onItemClicked = onItemClicked,
                     darkModeStateSelected = darkModeStateSelected,
@@ -103,8 +107,15 @@ fun DrawerNavigationScreen(
                     scaffoldState,
                     scope
                 ) {
-                    navController.navigate(it.route) {
-                        launchSingleTop = true
+                    if (it.route is Routes.Logout) {
+                        onLogoutClicked.invoke()
+                        navController.navigate(Routes.Login) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(it.route) {
+                            launchSingleTop = true
+                        }
                     }
                 }
             },
@@ -264,6 +275,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
 fun DrawerNavigationScreenPreview() {
     MyAccountsTheme {
         DrawerNavigationScreen(
+            userLogged = UserLogged(),
             isDarkTheme = true,
             darkModeStateSelected = AppDarkMode.Default,
             onItemClicked = {},

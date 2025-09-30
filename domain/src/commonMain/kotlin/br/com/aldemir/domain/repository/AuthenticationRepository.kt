@@ -11,4 +11,6 @@ interface AuthenticationRepository {
     suspend fun setLoggedIn(userId: Int, isLogged: Boolean): Int
     suspend fun isLogged(userName: String): Boolean
     suspend fun logout(userName: String): Int
+    suspend fun getAllUsers(): List<UserDomain>
+    suspend fun getLoggedUser(): UserDomain?
 }

@@ -5,6 +5,7 @@
     <string name="drawer_dark_mode_disabled">Modo claro</string>
     <string name="drawer_dark_mode_auto">Modo automático</string>
     <string name="drawer_welcome">Bem vindo!</string>
+    <string name="drawer_logout">Sair</string>
     <string name="account_pending">Pendente</string>
     <string name="account_list_item_status">Status:</string>
     <string name="account_logo">To-Do Logo</string>

@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import br.com.aldemir.common.component.DarkModeDropDownMenu
+import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
+import br.com.aldemir.common.model.UserLogged
 import br.com.aldemir.common.theme.AppDarkMode
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
@@ -24,6 +26,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun DrawerHeader(
+    userLogged: UserLogged,
     listItems: List<AppDarkMode>,
     onItemClicked: (state: AppDarkMode) -> Unit,
     darkModeStateSelected: AppDarkMode,
@@ -55,10 +58,19 @@ internal fun DrawerHeader(
                     painter = painterResource(getLogo(appDarkMode = darkModeStateSelected)),
                     contentDescription = null
                 )
-                TextTitleLarge(
-                    text = stringResource(Res.string.drawer_welcome),
-                    modifier = Modifier.padding(start = MyAccountsTheme.dimensions.padding12)
-                )
+                Column {
+                    TextTitleLarge(
+                        text = stringResource(Res.string.drawer_welcome),
+                        modifier = Modifier.padding(start = MyAccountsTheme.dimensions.padding12)
+                    )
+                    TextSubTitleItem(
+                        text = userLogged.name,
+                        modifier = Modifier.padding(
+                            start = MyAccountsTheme.dimensions.padding12,
+                            top = MyAccountsTheme.dimensions.padding4
+                        )
+                    )
+                }
             }
             Spacer(Modifier.height(MyAccountsTheme.dimensions.sizing12))
             DarkModeDropDownMenu(
@@ -91,6 +103,7 @@ private fun getLogo(appDarkMode: AppDarkMode): DrawableResource {
 fun DrawerHeaderPreview() {
     MyAccountsTheme {
         DrawerHeader(
+            userLogged = UserLogged(name = "Aldemir"),
             darkModeStateSelected = AppDarkMode.Default,
             onItemClicked = {},
             listItems = listOf()

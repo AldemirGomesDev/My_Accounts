@@ -10,6 +10,8 @@ sealed class Routes {
     @Serializable
     data object Home
     @Serializable
+    data object Logout
+    @Serializable
     data object Historic
     @Serializable
     data object Register
