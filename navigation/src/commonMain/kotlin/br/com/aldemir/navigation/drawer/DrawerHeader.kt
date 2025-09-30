@@ -65,6 +65,7 @@ internal fun DrawerHeader(
                     )
                     TextSubTitleItem(
                         text = userLogged.name,
+                        color = MyAccountsTheme.colors.second,
                         modifier = Modifier.padding(
                             start = MyAccountsTheme.dimensions.padding12,
                             top = MyAccountsTheme.dimensions.padding4
