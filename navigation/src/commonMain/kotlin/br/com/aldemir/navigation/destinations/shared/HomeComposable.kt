@@ -8,6 +8,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import br.com.aldemir.common.PlatformActivity
 import br.com.aldemir.home.presentation.view.HomeScreen
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
@@ -51,7 +52,9 @@ fun NavGraphBuilder.homeComposable(
                     }
                 }
             },
-            onFinish = { navHostController.popBackStack() }
+            onFinish = {
+                PlatformActivity.moveAppToBackground()
+            }
         )
     }
 }

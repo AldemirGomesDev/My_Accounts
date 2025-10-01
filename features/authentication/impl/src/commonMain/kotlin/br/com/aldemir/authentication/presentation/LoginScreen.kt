@@ -75,7 +75,7 @@ fun LoginScreen(
 //        viewModel.checkIfBiometricLoginEnabled()
 //    }
 
-    BackHandler { onFinish }
+    BackHandler { onFinish.invoke() }
 
     when (uiModel.state) {
         AuthenticationState.SUCCESS -> {
