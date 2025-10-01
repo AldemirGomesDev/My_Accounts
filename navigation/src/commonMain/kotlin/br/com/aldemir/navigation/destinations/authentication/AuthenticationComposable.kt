@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.com.aldemir.authentication.presentation.LoginScreen
+import br.com.aldemir.common.PlatformActivity
 import br.com.aldemir.common.util.Const.NavigationAnimationDurationMillis
 import br.com.aldemir.navigation.Routes
 
@@ -49,7 +50,7 @@ fun NavGraphBuilder.authenticationComposable(
                     }
                 }
             },
-            onFinish = { navHostController.popBackStack() }
+            onFinish = { PlatformActivity.moveAppToBackground() }
         )
     }
 }
