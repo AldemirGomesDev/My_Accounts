@@ -57,7 +57,7 @@ fun HomeScreen(
     }
     val scaffoldState = rememberScaffoldState()
 
-    BackHandler { onFinish }
+    BackHandler { onFinish.invoke() }
 
     val uiState by viewModel.uiState.collectAsState()
 
