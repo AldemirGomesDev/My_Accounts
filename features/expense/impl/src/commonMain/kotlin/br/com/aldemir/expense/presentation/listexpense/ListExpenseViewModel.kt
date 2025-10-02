@@ -16,6 +16,9 @@ import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.expense.mapper.toDomain
 import br.com.aldemir.expense.mapper.toExpenseView
 import br.com.aldemir.expense.model.ExpenseView
+import br.com.aldemir.expense.presentation.listexpense.action.ExpenseUiAction
+import br.com.aldemir.expense.presentation.listexpense.mapper.toUiModel
+import br.com.aldemir.expense.presentation.listexpense.model.ExpenseUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,61 +36,64 @@ class ListExpenseViewModel(
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase,
 ) : ViewModel() {
 
-    private val _expenses = MutableStateFlow<List<ExpenseView>>(emptyList())
-    var expenses: StateFlow<List<ExpenseView>> = _expenses
+    private val _uiState = MutableStateFlow(ExpenseUiModel())
+    var uiState = _uiState.asStateFlow()
 
-    private val _monthExpenses = MutableStateFlow<List<ExpenseMonthlyDomain>>(emptyList())
-
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
-
-    private var _valueTotal = MutableStateFlow(0.0)
-    val valueTotal: StateFlow<Double> = _valueTotal.asStateFlow()
-
-    private var _paidOut = MutableStateFlow(0.0)
-    val paidOut: StateFlow<Double> = _paidOut.asStateFlow()
-
-    private var _pending = MutableStateFlow(0.0)
-    val pending: StateFlow<Double> = _pending.asStateFlow()
-
-    private var _percentage = MutableStateFlow(0F)
-    val percentage: StateFlow<Float> = _percentage.asStateFlow()
-
-    fun onOpenDialogClicked() {
-        _showDialog.value = true
-    }
-
-    fun onDialogConfirm() {
-        _showDialog.value = false
-    }
-
-    fun onDialogDismiss() {
-        _showDialog.value = false
-    }
-
-    fun getAllExpensesMonth(month: String, year: String) = viewModelScope.launch {
-        val params = Params(month, year)
-        getAllExpensesMonthUseCase(this, params) {
-            success = {
-                _monthExpenses.update { it }
+    fun sendAction(action: ExpenseUiAction) {
+        when (action) {
+            is ExpenseUiAction.LoadData -> {
+                getAllExpensesMonth()
+            }
+            is ExpenseUiAction.DeleteExpense -> {
+                delete(action.expenseView)
+            }
+            is ExpenseUiAction.UpdateExpenseMonthly -> {
+                getAllExpensePerMonth()
+            }
+            is ExpenseUiAction.ShowDialog -> {
+                shouldShowDialog(action.show)
             }
         }
-        calculateValues()
+
     }
 
-    fun delete(expenseView: ExpenseView) = viewModelScope.launch {
+    private fun shouldShowDialog(show: Boolean) {
+        _uiState.update {
+            it.copy(showDialog = show)
+        }
+    }
+
+    private fun getAllExpensesMonth() = viewModelScope.launch {
+        val params = Params(DateUtils.getMonthString(), DateUtils.getYearString())
+        getAllExpensesMonthUseCase(this, params) {
+            success = { listExpenses ->
+                _uiState.update {
+                    it.copy(
+                        monthExpenses = listExpenses.map { item -> item.toUiModel() }
+                    )
+                }
+                calculateValues()
+            }
+            error = { calculateValues() }
+        }
+    }
+
+    private fun delete(expenseView: ExpenseView) = viewModelScope.launch {
         deleteExpenseUseCase(this, expenseView.toDomain()) {
             success = { expenseId ->
                 if (expenseId > 0) {
-                    getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+                    getAllExpensesMonth()
                 }
             }
         }
     }
 
-    fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
+    private fun getAllExpensePerMonth() = viewModelScope.launch {
         getAllExpensePerMonthUseCase(
-            this, GetAllExpensePerMonthUseCase.Params(month, year)
+            this, GetAllExpensePerMonthUseCase.Params(
+                DateUtils.getMonthString(),
+                DateUtils.getYearString()
+            )
         ) {
             success = { listExpensePerMonth ->
                 convertToExpenses(listExpensePerMonth)
@@ -96,55 +102,53 @@ class ListExpenseViewModel(
     }
 
     private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonthDomain>) {
-        val expenses = ArrayList<ExpenseView>()
-        expensesPerMonth.forEach { expensePerMonth ->
-            val expense = expensePerMonth.toExpenseView(
-                checkIfExpired(
-                    DateUtils.getCurrentDay(),
-                    expensePerMonth.due_date
-                )
+        val currentDay = DateUtils.getCurrentDay()
+        val expenses = expensesPerMonth.map { expensePerMonth ->
+            expensePerMonth.toExpenseView(
+                checkIfExpired(currentDay, expensePerMonth.due_date)
             )
-            expenses.add(expense)
         }
-        _expenses.update { expenses.toList() }
+        _uiState.update {
+            it.copy(expenses = expenses)
+        }
     }
 
     private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
         return currentDay > dueDay
     }
 
-    fun getStatusColor(status: Boolean, expired: Boolean): Color {
-        return if (status) LowPriorityColor
-        else if (expired) HighPriorityColor
-        else MediumPriorityColor
-    }
-
-    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
-        return if (status) Res.string.expense_paid_out
-        else if (expired) Res.string.expense_expired
-        else Res.string.account_pending
-    }
-
     private fun calculateValues() {
         clearValues()
-        for (item in _monthExpenses.value) {
-            _valueTotal.value += item.value
-            if (item.situation) {
-                _paidOut.value += item.value
-            } else {
-                _pending.value += item.value
-            }
+        val expenses = _uiState.value.monthExpenses
+        val totalValue = expenses.sumOf { it.value }
+        val paidOut = expenses.filter { it.situation }.sumOf { it.value }
+        val pending = expenses.filter { !it.situation }.sumOf { it.value }
+
+        _uiState.update {
+            it.copy(
+                totalValue = totalValue,
+                paidOut = paidOut,
+                pending = pending
+            )
         }
         calculatePercentage()
     }
 
     private fun clearValues() {
-        _valueTotal.value = 0.0
-        _paidOut.value = 0.0
-        _pending.value = 0.0
+        _uiState.update {
+            it.copy(
+                totalValue = 0.0,
+                paidOut = 0.0,
+                pending = 0.0,
+                percentage = 0f
+            )
+        }
     }
 
     private fun calculatePercentage() {
-        _percentage.value = ((paidOut.value / valueTotal.value) * 100).toFloat()
+        val percentage = ((_uiState.value.paidOut / _uiState.value.totalValue) * 100).toFloat()
+        _uiState.update {
+            it.copy(percentage = if (percentage.isNaN()) 0f else percentage)
+        }
     }
 }
