@@ -1,60 +1,93 @@
 package br.com.aldemir.expense.presentation.expensechange
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
-import br.com.aldemir.common.util.pointString
-import br.com.aldemir.common.util.zeroString
-import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.GetByIdMonthlyPaymentUseCase
-import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateExpenseValueUseCase
+import br.com.aldemir.expense.presentation.expensechange.action.ChangeExpenseAction
+import br.com.aldemir.expense.presentation.expensechange.effect.ChangeExpenseEffect
+import br.com.aldemir.expense.presentation.expensechange.model.ChangeExpenseUiModel
+import br.com.aldemir.expense.presentation.listexpense.mapper.toChangeExpenseUiModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChangeExpenseViewModel(
-    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val updateExpenseValueUseCase: UpdateExpenseValueUseCase,
     private val getByIdMonthlyPaymentUseCase: GetByIdMonthlyPaymentUseCase
 ) : ViewModel() {
 
-    val value: MutableState<String> = mutableStateOf(emptyString())
+    private val _uiModel = MutableStateFlow(ChangeExpenseUiModel())
+    var uiModel = _uiModel.asStateFlow()
 
-    private val _expenseMonthlyDomain = MutableStateFlow(ExpenseMonthlyDomain())
-    var expenseMonthlyDomain: StateFlow<ExpenseMonthlyDomain> = _expenseMonthlyDomain
+    private val _uiEffect = Channel<ChangeExpenseEffect>(Channel.BUFFERED)
+    val uiEffect = _uiEffect.receiveAsFlow()
 
-    private val _idMonthlyPayment = MutableStateFlow(0)
-    val idMonthlyPayment = _idMonthlyPayment.asStateFlow()
+    fun sendAction(action: ChangeExpenseAction) {
+        when(action) {
+            is ChangeExpenseAction.LoadExpense -> {
+                getAllByIdMonthlyPayment(action.id)
+            }
+            is ChangeExpenseAction.UpdateMonthlyExpense -> {
+                updateMonthlyPayment(action.id)
+            }
+            is ChangeExpenseAction.OnValueChange -> {
+                handleValueChange(action.value)
+            }
+        }
+    }
 
-    fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
+    private fun getAllByIdMonthlyPayment(id: Int) = viewModelScope.launch {
         getByIdMonthlyPaymentUseCase(this, id) {
-            success = { _expenseMonthlyDomain.update { it } }
+            success = { expenseMonthly ->
+                _uiModel.update {
+                    expenseMonthly.toChangeExpenseUiModel()
+                }
+            }
         }
     }
 
-    fun updateMonthlyPayment() = viewModelScope.launch {
-        _expenseMonthlyDomain.value.value = value.value.fromCurrency()
-        updateMonthlyPaymentUseCase(this, _expenseMonthlyDomain.value) {
-            success = { _idMonthlyPayment.update { it } }
+    private fun sendEffect(effect: ChangeExpenseEffect) {
+        viewModelScope.launch {
+            _uiEffect.send(effect)
         }
     }
 
-    fun getValueWithTwoDecimal(value: String): String {
-        val newValue = if (verifyTwoCharactersAfterPoint(value)) "$value${zeroString()}"
-        else removePointString(value)
-        return removePointString(newValue)
+    private fun updateMonthlyPayment(id: Int) = viewModelScope.launch {
+        updateLoading(true)
+        updateExpenseValueUseCase(this, UpdateExpenseValueUseCase.Params(
+            id = id,
+            value = _uiModel.value.value
+        )) {
+            success = {
+                updateLoading(false)
+                sendEffect(ChangeExpenseEffect.NavigateBack)
+                _uiModel.update { it }
+            }
+            error = {
+                updateLoading(false)
+                println(it)
+            }
+        }
     }
 
-    private fun removePointString(value: String): String {
-        return value.replace(pointString(), emptyString())
+    private fun handleValueChange(value: String) {
+        _uiModel.update {
+            it.copy(
+                value = value.fromCurrency()
+            )
+        }
     }
 
-    private fun verifyTwoCharactersAfterPoint(value: String): Boolean {
-        val string = value.split(pointString())
-        return string[1].length == 1
+    private fun updateLoading(loading: Boolean) {
+        _uiModel.update {
+            it.copy(
+                loading = loading
+            )
+        }
     }
 }

@@ -137,7 +137,7 @@ private fun updateMonthlyPayment(
     monthlyPayment: MonthlyPaymentView,
     viewModel: ExpenseDetailViewModel
 ) {
-    viewModel.updateMonthlyPayment(monthlyPayment)
+    viewModel.updateMonthlyPayment(monthlyPayment.id, monthlyPayment.situation)
 }
 
 @Composable

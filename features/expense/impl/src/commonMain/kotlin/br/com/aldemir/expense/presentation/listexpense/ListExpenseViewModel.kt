@@ -74,7 +74,10 @@ class ListExpenseViewModel(
                 }
                 calculateValues()
             }
-            error = { calculateValues() }
+            error = {
+                println(it.message)
+                calculateValues()
+            }
         }
     }
 
