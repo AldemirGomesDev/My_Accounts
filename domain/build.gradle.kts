@@ -23,6 +23,7 @@ kotlin {
             implementation(libs.appCompat)
         }
         commonMain.dependencies {
+            implementation(project(":common"))
             api(libs.logging)
 
             implementation (libs.koin.core)

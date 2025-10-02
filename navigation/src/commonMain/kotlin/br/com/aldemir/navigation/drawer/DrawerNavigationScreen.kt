@@ -145,20 +145,20 @@ fun currentRoute(navController: NavHostController): String? {
 @Composable
 fun getTopBarState(navController: NavHostController): TopBarState {
     val route = currentRoute(navController = navController)?.substringAfterLast(".")
-    return when (route) {
-        Routes.Splash.toString() -> {
+    return when (route?.substringBefore("/")) {
+        Routes.Splash::class.simpleName -> {
             TopBarState(
                 onClick = {}
             )
         }
 
-        Routes.Login.toString() -> {
+        Routes.Login::class.simpleName -> {
             TopBarState(
                 onClick = {}
             )
         }
 
-        Routes.Home.toString() -> {
+        Routes.Home::class.simpleName -> {
             TopBarState(
                 titleResId = Res.string.home_title,
                 imageIcon = Icons.Default.Menu,
@@ -168,7 +168,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.Historic.toString() -> {
+        Routes.Historic::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.historic_screen_title,
@@ -178,7 +178,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.AddRecipe.toString() -> {
+        Routes.AddRecipe::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.recipe_add_screen_title,
@@ -187,7 +187,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ListRecipe.toString() -> {
+        Routes.ListRecipe::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.recipe_list_screen_title,
@@ -196,7 +196,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.DetailRecipe.toString() -> {
+        Routes.DetailRecipe::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.recipe_detail_screen_title,
@@ -205,7 +205,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ChangeRecipe.toString() -> {
+        Routes.ChangeRecipe::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.recipe_change_screen_title,
@@ -223,7 +223,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ExpenseGraphRoute.ExpenseAdd.toString() -> {
+        Routes.ExpenseGraphRoute.ExpenseAdd::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.expense_add_screen_title,
@@ -232,7 +232,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ExpenseGraphRoute.ExpenseList.toString() -> {
+        Routes.ExpenseGraphRoute.ExpenseList::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.expense_list_screen_title,
@@ -241,7 +241,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ExpenseGraphRoute.ExpenseDetail.toString() -> {
+        Routes.ExpenseGraphRoute.ExpenseDetail::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.expense_detail_screen_title,
@@ -250,7 +250,7 @@ fun getTopBarState(navController: NavHostController): TopBarState {
             )
         }
 
-        Routes.ExpenseGraphRoute.ExpenseChange.toString() -> {
+        Routes.ExpenseGraphRoute.ExpenseChange::class.simpleName -> {
             TopBarState(
                 isVisible = true,
                 titleResId = Res.string.expense_change_screen_title,

@@ -1,8 +1,10 @@
 package br.com.aldemir.common.util
 
+import br.com.aldemir.common.getDeviceLanguage
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
+import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
@@ -70,5 +72,27 @@ object DateUtils {
             years.add(date.year.toString())
         }
         return years
+    }
+
+    fun getMonthByLanguage(month: String): String {
+        return if (getDeviceLanguage().startsWith("pt", ignoreCase = true)) {
+            when (month) {
+                Month.JANUARY.name -> "JANEIRO"
+                Month.FEBRUARY.name -> "FEVEREIRO"
+                Month.MARCH.name -> "MARÇO"
+                Month.APRIL.name -> "ABRIL"
+                Month.MAY.name -> "MAIO"
+                Month.JUNE.name -> "JUNHO"
+                Month.JULY.name -> "JULHO"
+                Month.AUGUST.name -> "AGOSTO"
+                Month.SEPTEMBER.name -> "SETEMBRO"
+                Month.OCTOBER.name -> "OUTUBRO"
+                Month.NOVEMBER.name -> "NOVEMBRO"
+                Month.DECEMBER.name -> "DEZEMBRO"
+                else -> month.uppercase()
+            }
+        } else {
+            month.uppercase()
+        }
     }
 }
