@@ -1,6 +1,5 @@
 package br.com.aldemir.home.presentation.view
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.theme.LowPriorityColor
@@ -111,113 +110,72 @@ class HomeViewModel(
 
     private fun setValuesExpenseToChart() {
         val months = DateUtils.getSixMonthsPrevious()
-        val bars = arrayListOf<BarChart>()
-        val maxBar = 6
-        val rest = maxBar - _monthValuesExpense.size
-        for (i in 0 until rest) {
-            bars.add(
+        val expenseBars = _monthValuesExpense
+            .filter { it.month.isNotEmpty() }
+            .map {
                 BarChart(
-                    label = emptyString(),
+                    label = it.month.take(3),
+                    value = it.value,
+                    color = MediumPriorityColor
+                )
+            }
+
+        val missingBarsCount = (6 - expenseBars.size).coerceAtLeast(0)
+        val monthsDropLast = months.dropLast(expenseBars.size)
+
+        val emptyBars = monthsDropLast
+            .takeLast(missingBarsCount)
+            .map { month ->
+                BarChart(
+                    label = getMonthByLanguage(month).take(3),
                     value = 0.0,
-                    color = MediumPriorityColor,
-                ),
+                    color = MediumPriorityColor
+                )
+            }
+
+        val bars = (emptyBars + expenseBars).takeLast(6)
+
+        _uiState.update {
+            HomeUiState.ShowHomeCards(
+                it.uiModel.copy(barChartDataExpenses = bars)
             )
-        }
-
-        _monthValuesExpense.forEach {
-            if (it.month.isNotEmpty()) {
-                bars.add(
-                    BarChart(
-                        label = it.month.substring(0, 3),
-                        value = it.value,
-                        color = MediumPriorityColor,
-                    ),
-                )
-            }
-        }
-        val monthsDropLast = months.dropLast(bars.size)
-
-        if (monthsDropLast.size < 6) {
-            monthsDropLast.forEachIndexed { index, month ->
-                bars.add(index,
-                    BarChart(
-                        label = getMonthByLanguage(month).substring(0, 3),
-                        value = 0.0,
-                        color = MediumPriorityColor,
-                    ),
-                )
-            }
-        }
-
-        if (bars.isNotEmpty()) {
-            _uiState.update {
-                HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataExpenses = bars)
-                )
-            }
-        } else {
-            _uiState.update {
-                HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataExpenses = emptyList())
-                )
-            }
         }
     }
 
     private fun setValuesRecipeToChart() {
         val months = DateUtils.getSixMonthsPrevious()
-        val bars = arrayListOf<BarChart>()
-        val maxBar = 6
-        val rest = maxBar - _monthValuesRecipe.size
-        for (i in 0 until rest) {
-            bars.add(
+
+        val recipeBars = _monthValuesRecipe
+            .filter { it.month.isNotEmpty() }
+            .map {
                 BarChart(
-                    label = emptyString(),
+                    label = it.month.take(3),
+                    value = it.value,
+                    color = LowPriorityColor
+                )
+            }
+
+        val missingBarsCount = (6 - recipeBars.size).coerceAtLeast(0)
+        val monthsDropLast = months.dropLast(recipeBars.size)
+
+        val emptyBars = monthsDropLast
+            .takeLast(missingBarsCount)
+            .map { month ->
+                BarChart(
+                    label = getMonthByLanguage(month).take(3),
                     value = 0.0,
-                    color = LowPriorityColor,
-                ),
+                    color = LowPriorityColor
+                )
+            }
+
+        val bars = (emptyBars + recipeBars).takeLast(6)
+
+        _uiState.update {
+            HomeUiState.ShowHomeCards(
+                it.uiModel.copy(barChartDataRecipes = bars)
             )
         }
-        _monthValuesRecipe.forEach {
-            if (it.month.isNotEmpty()) {
-                bars.add(
-                    BarChart(
-                        label = it.month.substring(0, 3),
-                        value = it.value,
-                        color = LowPriorityColor,
-                    ),
-                )
-            }
-        }
-        val monthsDropLast = months.dropLast(bars.size)
-
-        if (monthsDropLast.size < 6) {
-            monthsDropLast.forEachIndexed { index, month ->
-                bars.add(index,
-                    BarChart(
-                        label = getMonthByLanguage(month).substring(0, 3),
-                        value = 0.0,
-                        color = LowPriorityColor,
-                    ),
-                )
-            }
-        }
-
-        if (bars.isNotEmpty()) {
-            _uiState.update {
-                HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataRecipes = bars)
-                )
-            }
-        } else {
-            _uiState.update {
-                HomeUiState.ShowHomeCards(
-                    it.uiModel.copy(barChartDataRecipes = emptyList())
-                )
-            }
-        }
     }
-
 
     private fun calculateValues(
         recipes: List<RecipeMonthlyDomain>,
@@ -253,21 +211,4 @@ class HomeViewModel(
             )
         }
     }
-
-    private var colors = mutableListOf(
-        Color(0XFFF44336),
-        Color(0XFFE91E63),
-        Color(0XFF9C27B0),
-        Color(0XFF673AB7),
-        Color(0XFF3F51B5),
-        Color(0XFF03A9F4),
-        Color(0XFF009688),
-        Color(0XFFCDDC39),
-        Color(0XFFFFC107),
-        Color(0XFFFF5722),
-        Color(0XFF795548),
-        Color(0XFF9E9E9E),
-        Color(0XFF607D8B)
-    )
-
 }
