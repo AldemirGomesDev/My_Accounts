@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
+import br.com.aldemir.common.util.DateUtils.getMonthByLanguage
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.base.awaitForResult
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
@@ -137,10 +138,10 @@ class HomeViewModel(
         val monthsDropLast = months.dropLast(bars.size)
 
         if (monthsDropLast.size < 6) {
-            monthsDropLast.forEachIndexed { index, s ->
+            monthsDropLast.forEachIndexed { index, month ->
                 bars.add(index,
                     BarChart(
-                        label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                        label = getMonthByLanguage(month).substring(0, 3),
                         value = 0.0,
                         color = MediumPriorityColor,
                     ),
@@ -191,10 +192,10 @@ class HomeViewModel(
         val monthsDropLast = months.dropLast(bars.size)
 
         if (monthsDropLast.size < 6) {
-            monthsDropLast.forEachIndexed { index, s ->
+            monthsDropLast.forEachIndexed { index, month ->
                 bars.add(index,
                     BarChart(
-                        label = s.ifEmpty { "MÊS" }.substring(0, 3),
+                        label = getMonthByLanguage(month).substring(0, 3),
                         value = 0.0,
                         color = LowPriorityColor,
                     ),
