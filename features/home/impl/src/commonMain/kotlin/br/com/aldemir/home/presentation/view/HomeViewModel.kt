@@ -181,19 +181,12 @@ class HomeViewModel(
         recipes: List<RecipeMonthlyDomain>,
         expenses: List<ExpenseMonthlyDomain>
     ) {
-        updateHomeCardData(HomeCardData())
-        var valueRecipe = 0.0
-        var valueExpense = 0.0
-        var valueBalance = 0.0
-        recipes.forEach { recipe ->
-            valueRecipe += recipe.value
-        }
-        expenses.forEach { expense ->
-            valueExpense += expense.value
-        }
-        valueBalance = (valueRecipe - valueExpense)
+        val valueRecipe = recipes.sumOf { it.value }
+        val valueExpense = expenses.sumOf { it.value }
+        val valueBalance = valueRecipe - valueExpense
+
         updateHomeCardData(
-            homeCardData = HomeCardData(
+            HomeCardData(
                 valueRecipe = valueRecipe,
                 valueExpense = valueExpense,
                 valueBalance = valueBalance
