@@ -1,97 +1,84 @@
 package br.com.aldemir.expense.presentation.expensedetail
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.theme.HighPriorityColor
-import br.com.aldemir.common.theme.LowPriorityColor
-import br.com.aldemir.common.theme.MediumPriorityColor
-import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.usecase.expense.GetAllByIdExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.UpdateExpenseSituationUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateExpenseSituationUseCase.Params
 import br.com.aldemir.expense.mapper.toView
-import br.com.aldemir.expense.model.MonthlyPaymentView
+import br.com.aldemir.expense.presentation.expensedetail.action.ExpenseDetailAction
+import br.com.aldemir.expense.presentation.expensedetail.model.ExpenseDetailUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import myaccounts.common.generated.resources.Res
-import myaccounts.common.generated.resources.account_pending
-import myaccounts.common.generated.resources.expense_expired
-import myaccounts.common.generated.resources.expense_paid_out
-import org.jetbrains.compose.resources.StringResource
 
 class ExpenseDetailViewModel(
     private val updateExpenseSituationUseCase: UpdateExpenseSituationUseCase,
     private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
 ) : ViewModel() {
 
-    companion object {
-        const val TAG = "ExpenseDetailFragment"
-    }
+    private val _uiModel = MutableStateFlow(ExpenseDetailUiModel())
+    var uiModel = _uiModel.asStateFlow()
 
-    private val _monthlyPayment = MutableStateFlow<List<MonthlyPaymentView>>(emptyList())
-    var monthlyPayment: StateFlow<List<MonthlyPaymentView>> = _monthlyPayment
+    private var idExpense: Int = 0
 
-    private val _id = MutableStateFlow(0)
-    val id: StateFlow<Int> = _id
+    fun handleAction(action: ExpenseDetailAction) {
+        when (action) {
+            is ExpenseDetailAction.FetchExpenseDetail -> {
+                getAllByIdExpense(action.id)
+            }
 
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+            is ExpenseDetailAction.UpdateExpenseSituation -> {
+                updateMonthlyPayment()
+            }
 
-    fun onOpenDialogClicked() {
-        _showDialog.value = true
-    }
+            is ExpenseDetailAction.ShowDialog -> {
+                shouldShowDialog(action.show)
+            }
 
-    fun onDialogConfirm() {
-        _showDialog.value = false
-    }
-
-    fun onDialogDismiss() {
-        _showDialog.value = false
-    }
-
-    fun getAllByIdExpense(id: Int) = viewModelScope.launch {
-        val monthlyPaymentViewList: MutableList<MonthlyPaymentView> = mutableListOf()
-        getAllByIdExpenseUseCase(this, id) {
-            success = { monthlyPaymentDomain ->
-                monthlyPaymentDomain.forEach { item ->
-                    monthlyPaymentViewList.add(
-                        item.toView(
-                            checkIfExpired(
-                                item.due_date,
-                                item.month,
-                                item.year
-                            )
-                        )
-                    )
-                }
-                _monthlyPayment.value = monthlyPaymentViewList
+            is ExpenseDetailAction.OnUpdateClicked -> {
+                updateIdMonthlyExpense(action.id)
+                shouldShowDialog(true)
             }
         }
     }
 
-    fun updateMonthlyPayment(id: Int, situation: Boolean) = viewModelScope.launch {
-        _id.update { 0 }
-        updateExpenseSituationUseCase(this, UpdateExpenseSituationUseCase.Params(id, situation)) {
-            success = { id -> _id.update { id } }
+    private fun shouldShowDialog(show: Boolean) {
+        _uiModel.update {
+            it.copy(showDialog = show)
         }
     }
 
-    private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
-        return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getCurrentDay() > dueDay)
+    private fun getAllByIdExpense(id: Int) = viewModelScope.launch {
+        idExpense = id
+        getAllByIdExpenseUseCase(this, id) {
+            success = { monthlyPaymentDomain ->
+                val monthlyPaymentViewList = monthlyPaymentDomain.map { item ->
+                    item.toView()
+                }
+                _uiModel.update { current ->
+                    current.copy(monthlyExpenses = monthlyPaymentViewList)
+                }
+            }
+        }
     }
 
-    fun getStatusColor(status: Boolean, expired: Boolean): Color {
-        return if (status) LowPriorityColor
-        else if (expired) HighPriorityColor
-        else MediumPriorityColor
+    private fun updateMonthlyPayment() = viewModelScope.launch {
+        val idMonthlyExpense = _uiModel.value.idMonthlyExpense
+        updateExpenseSituationUseCase(this, Params(idMonthlyExpense, true)) {
+            success = { id ->
+                if (id > 0) getAllByIdExpense(idExpense)
+            }
+            error = { exception ->
+                exception.printStackTrace()
+            }
+        }
     }
 
-    fun getStatusText(status: Boolean, expired: Boolean): StringResource {
-        return if (status) Res.string.expense_paid_out
-        else if (expired) Res.string.expense_expired
-        else Res.string.account_pending
+    private fun updateIdMonthlyExpense(id: Int) {
+        _uiModel.update {
+            it.copy(idMonthlyExpense = id)
+        }
     }
 }

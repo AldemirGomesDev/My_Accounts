@@ -1,13 +1,8 @@
 package br.com.aldemir.expense.presentation.listexpense
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.aldemir.common.theme.HighPriorityColor
-import br.com.aldemir.common.theme.LowPriorityColor
-import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.usecase.expense.DeleteExpenseUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
@@ -20,15 +15,9 @@ import br.com.aldemir.expense.presentation.listexpense.action.ExpenseUiAction
 import br.com.aldemir.expense.presentation.listexpense.mapper.toUiModel
 import br.com.aldemir.expense.presentation.listexpense.model.ExpenseUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import myaccounts.common.generated.resources.Res
-import myaccounts.common.generated.resources.account_pending
-import myaccounts.common.generated.resources.expense_expired
-import myaccounts.common.generated.resources.expense_paid_out
-import org.jetbrains.compose.resources.StringResource
 
 class ListExpenseViewModel(
     private val deleteExpenseUseCase: DeleteExpenseUseCase,
@@ -105,19 +94,12 @@ class ListExpenseViewModel(
     }
 
     private fun convertToExpenses(expensesPerMonth: List<ExpensePerMonthDomain>) {
-        val currentDay = DateUtils.getCurrentDay()
         val expenses = expensesPerMonth.map { expensePerMonth ->
-            expensePerMonth.toExpenseView(
-                checkIfExpired(currentDay, expensePerMonth.due_date)
-            )
+            expensePerMonth.toExpenseView()
         }
         _uiState.update {
             it.copy(expenses = expenses)
         }
-    }
-
-    private fun checkIfExpired(currentDay: Int, dueDay: Int): Boolean {
-        return currentDay > dueDay
     }
 
     private fun calculateValues() {

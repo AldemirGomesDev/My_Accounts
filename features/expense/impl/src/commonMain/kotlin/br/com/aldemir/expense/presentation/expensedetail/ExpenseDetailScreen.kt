@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.intl.Locale
@@ -29,8 +30,11 @@ import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.showMessage
+import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LARGE_PADDING
+import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MEDIUM_PADDING
+import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.taskItemTextColor
@@ -39,15 +43,19 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.expense.model.MonthlyPaymentView
+import br.com.aldemir.expense.presentation.expensedetail.action.ExpenseDetailAction
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_label_value
+import myaccounts.common.generated.resources.account_pending
 import myaccounts.common.generated.resources.button_text_pay
 import myaccounts.common.generated.resources.dialog_confirm_alert_message
 import myaccounts.common.generated.resources.dialog_confirm_alert_title
+import myaccounts.common.generated.resources.expense_expired
 import myaccounts.common.generated.resources.expense_no_update_message_toast
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -63,27 +71,15 @@ fun ExpenseDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val id by viewModel.id.collectAsState()
-
     LaunchedEffect(key1 = expenseId) {
-        viewModel.getAllByIdExpense(expenseId)
+        viewModel.handleAction(ExpenseDetailAction.FetchExpenseDetail(expenseId))
     }
 
     BackHandler {
         navigateToBackScreen()
     }
 
-    var monthlyPaymentToUpdate by remember {
-        mutableStateOf(MonthlyPaymentView())
-    }
-
-    id.let {
-        if (it > 0) viewModel.getAllByIdExpense(expenseId)
-    }
-
-    val monthlyPayments by viewModel.monthlyPayment.collectAsState()
-
-    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+    val uiModel by viewModel.uiModel.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -109,23 +105,23 @@ fun ExpenseDetailScreen(
                 )
                 ExpenseDetailList(
                     navigateToChangeScreen = navigateToChangeScreen,
-                    monthlyPayments = monthlyPayments,
+                    monthlyPayments = uiModel.monthlyExpenses,
                     onClickUpdate = { _, monthlyPayment ->
-                        monthlyPaymentToUpdate = monthlyPayment.copy(situation = true)
-                        viewModel.onOpenDialogClicked()
+                        viewModel.handleAction(ExpenseDetailAction.OnUpdateClicked(monthlyPayment.id))
                     },
-                    viewModel = viewModel
                 )
                 DisplayAlertDialog(
                     title = stringResource(Res.string.dialog_confirm_alert_title),
                     message = stringResource(Res.string.dialog_confirm_alert_message),
-                    openDialog = showDialogState,
+                    openDialog = uiModel.showDialog,
                     closeDialog = {
-                        viewModel.onDialogDismiss()
+                        viewModel.handleAction(ExpenseDetailAction.ShowDialog(false))
                     },
                     onYesClicked = {
-                        updateMonthlyPayment(monthlyPaymentToUpdate, viewModel)
-                        viewModel.onDialogConfirm()
+                        viewModel.handleAction(
+                            ExpenseDetailAction.UpdateExpenseSituation
+                        )
+                        viewModel.handleAction(ExpenseDetailAction.ShowDialog(false))
                     }
                 )
             }
@@ -133,19 +129,11 @@ fun ExpenseDetailScreen(
     )
 }
 
-private fun updateMonthlyPayment(
-    monthlyPayment: MonthlyPaymentView,
-    viewModel: ExpenseDetailViewModel
-) {
-    viewModel.updateMonthlyPayment(monthlyPayment.id, monthlyPayment.situation)
-}
-
 @Composable
 private fun ExpenseDetailList(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
     monthlyPayments: List<MonthlyPaymentView>,
     onClickUpdate: (Int, MonthlyPaymentView) -> Unit,
-    viewModel: ExpenseDetailViewModel
 ) {
     val state = rememberLazyListState()
 
@@ -159,7 +147,6 @@ private fun ExpenseDetailList(
                 navigateToChangeScreen = navigateToChangeScreen,
                 monthlyPayment = monthlyPayment,
                 onClickUpdate = onClickUpdate,
-                viewModel = viewModel,
                 index = index
             )
         }
@@ -171,16 +158,16 @@ private fun ExpenseDetailContent(
     navigateToChangeScreen: (idMonthlyPayment: Int) -> Unit,
     monthlyPayment: MonthlyPaymentView,
     onClickUpdate: (Int, MonthlyPaymentView) -> Unit,
-    viewModel: ExpenseDetailViewModel,
     index: Int,
 ) {
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
-    val statusColor = viewModel.getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
-    val resourceId = viewModel.getStatusText(monthlyPayment.situation, monthlyPayment.expired)
+    val statusColor = getStatusColor(monthlyPayment.situation, monthlyPayment.expired)
+    val resourceId = getStatusText(monthlyPayment.situation, monthlyPayment.expired)
 
-    val buttonAlpha by animateFloatAsState(targetValue = if (monthlyPayment.situation) 0f else 1f,
+    val buttonAlpha by animateFloatAsState(
+        targetValue = if (monthlyPayment.situation) 0f else 1f,
         label = emptyString()
     )
 
@@ -200,7 +187,7 @@ private fun ExpenseDetailContent(
                 .background(MyAccountsTheme.colors.background)
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onLongPress = {
+                        onPress = {
                             if (monthlyPayment.situation)
                                 showMessage(message)
                             else navigateToChangeScreen(monthlyPayment.id)
@@ -247,4 +234,16 @@ private fun ExpenseDetailContent(
             )
         }
     }
+}
+
+private fun getStatusColor(status: Boolean, expired: Boolean): Color {
+    return if (status) LowPriorityColor
+    else if (expired) HighPriorityColor
+    else MediumPriorityColor
+}
+
+private fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+    return if (status) Res.string.expense_paid_out
+    else if (expired) Res.string.expense_expired
+    else Res.string.account_pending
 }

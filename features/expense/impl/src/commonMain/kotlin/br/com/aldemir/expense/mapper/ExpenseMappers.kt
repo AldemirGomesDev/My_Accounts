@@ -1,5 +1,6 @@
 package br.com.aldemir.expense.mapper
 
+import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseDomain
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
@@ -8,7 +9,7 @@ import br.com.aldemir.expense.model.ExpensePerMonthView
 import br.com.aldemir.expense.model.ExpenseView
 import br.com.aldemir.expense.model.MonthlyPaymentView
 
-fun MonthlyPaymentDomain.toView(expired: Boolean) = MonthlyPaymentView(
+fun MonthlyPaymentDomain.toView() = MonthlyPaymentView(
     id = id,
     id_expense = id_expense,
     year = year,
@@ -16,7 +17,7 @@ fun MonthlyPaymentDomain.toView(expired: Boolean) = MonthlyPaymentView(
     value = value,
     due_date = due_date,
     situation = situation,
-    expired = expired
+    expired = checkIfExpired(due_date, month, year)
 )
 
 fun MonthlyPaymentView.toDomain() = ExpenseMonthlyDomain(
@@ -28,7 +29,7 @@ fun MonthlyPaymentView.toDomain() = ExpenseMonthlyDomain(
     situation = situation,
 )
 
-fun ExpensePerMonthDomain.toView(expired: Boolean) = ExpensePerMonthView(
+fun ExpensePerMonthDomain.toView() = ExpensePerMonthView(
     id_expense = id_expense,
     name = name,
     description = description,
@@ -37,16 +38,16 @@ fun ExpensePerMonthDomain.toView(expired: Boolean) = ExpensePerMonthView(
     month = month,
     value = value,
     situation = situation,
-    expired = expired
+    expired = checkIfExpired(due_date, month, year)
 )
 
-fun ExpensePerMonthDomain.toExpenseView(expired: Boolean) = ExpenseView(
+fun ExpensePerMonthDomain.toExpenseView() = ExpenseView(
     id = id_expense,
     name = name,
     description = description,
     due_date = due_date,
     status = situation,
-    expired = expired
+    expired = checkIfExpired(due_date, month, year)
 )
 
 fun ExpenseView.toDomain() = ExpenseDomain(
@@ -57,3 +58,7 @@ fun ExpenseView.toDomain() = ExpenseDomain(
     due_date = due_date,
     status = status
 )
+
+private fun checkIfExpired(dueDay: Int, month: String, year: String): Boolean {
+    return (year == DateUtils.getYearString() && month == DateUtils.getMonthString() && DateUtils.getCurrentDay() > dueDay)
+}

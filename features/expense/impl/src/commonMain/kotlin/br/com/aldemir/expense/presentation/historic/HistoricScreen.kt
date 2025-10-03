@@ -13,8 +13,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.component.EmptyContent
 import br.com.aldemir.common.component.LoadingButton
@@ -23,7 +23,10 @@ import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
+import br.com.aldemir.common.theme.HighPriorityColor
 import br.com.aldemir.common.theme.LARGE_PADDING
+import br.com.aldemir.common.theme.LowPriorityColor
+import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.MyAccountsTheme
@@ -32,11 +35,15 @@ import br.com.aldemir.common.util.formatTwoDigits
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.ExpensePerMonthView
 import myaccounts.common.generated.resources.Res
+import myaccounts.common.generated.resources.account_pending
 import myaccounts.common.generated.resources.button_search
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
 import myaccounts.common.generated.resources.historic_month_text
 import myaccounts.common.generated.resources.historic_year_text
 import myaccounts.common.generated.resources.item_due_date
 import myaccounts.common.generated.resources.months
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -108,7 +115,7 @@ private fun HistoricContent(
                 )
                 MyExposedDropdownMenu(
                     label = stringResource(Res.string.historic_year_text),
-                    listItems = myYears?.toList() ?: listOf(),
+                    listItems = myYears.toList(),
                     selected = yearOptionSelected,
                     onItemSelected = { item ->
                         yearOptionSelected = item
@@ -156,7 +163,7 @@ fun HistoricScreenList(
 
     val expenses by viewModel.expensePerMonthDomain.collectAsState()
 
-    if (expenses.isNullOrEmpty()) {
+    if (expenses.isEmpty()) {
         EmptyContent(
             modifier = modifier
         )
@@ -172,8 +179,7 @@ fun HistoricScreenList(
                     }
                 ) { account ->
                     HistoricItem(
-                        expense = account.toView(viewModel.checkIfExpired(account.due_date, account.month, account.year)),
-                        viewModel = viewModel,
+                        expense = account.toView(),
                         navigateToHistoricScreen = navigateToHistoricScreen
                     )
                     Divider(
@@ -190,10 +196,9 @@ fun HistoricScreenList(
 @Composable
 fun HistoricItem(
     expense: ExpensePerMonthView,
-    viewModel: HistoricViewModel,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
-    val statusColor = viewModel.getStatusColor(expense.situation, expense.expired)
+    val statusColor = getStatusColor(expense.situation, expense.expired)
     val dueDate = formatTwoDigits(expense.due_date)
 
     Surface(
@@ -242,7 +247,7 @@ fun HistoricItem(
                 TextBodyTwoItem(text = dueDate)
                 TextBodyTwoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(viewModel.getStatusText(expense.situation, expense.expired)),
+                    text = stringResource(getStatusText(expense.situation, expense.expired)),
                     color = statusColor
                 )
             }
@@ -250,4 +255,14 @@ fun HistoricItem(
     }
 }
 
-fun TextFieldValue.isBlank() = this.text.isBlank()
+private fun getStatusColor(status: Boolean, expired: Boolean): Color {
+    return if (status) LowPriorityColor
+    else if (expired) HighPriorityColor
+    else MediumPriorityColor
+}
+
+private fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+    return if (status) Res.string.expense_paid_out
+    else if (expired) Res.string.expense_expired
+    else Res.string.account_pending
+}
