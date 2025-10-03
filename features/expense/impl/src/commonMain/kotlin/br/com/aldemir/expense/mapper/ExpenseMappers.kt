@@ -2,7 +2,6 @@ package br.com.aldemir.expense.mapper
 
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseDomain
-import br.com.aldemir.domain.model.ExpenseMonthlyDomain
 import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.model.MonthlyPaymentDomain
 import br.com.aldemir.expense.model.ExpensePerMonthView
