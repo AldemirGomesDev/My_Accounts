@@ -42,7 +42,6 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ChangeExpenseScreen(
     viewModel: ChangeExpenseViewModel = koinViewModel(),
     idMonthlyPayment: Int = -1,
-    expenseName: String = emptyString(),
     navigateToDetailScreen: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()

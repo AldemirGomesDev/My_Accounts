@@ -54,10 +54,7 @@ fun NavGraphBuilder.detailExpenseComposable(
             expenseName = expenseName,
             navigateToChangeScreen = { idMonthlyPayment ->
                 navHostController.navigate(
-                    Routes.ExpenseGraphRoute.ExpenseChange(
-                        idMonthlyPayment,
-                        expenseName
-                    )
+                    Routes.ExpenseGraphRoute.ExpenseChange(idMonthlyPayment)
                 )
             },
             navigateToBackScreen = { navHostController.navigateUp() }

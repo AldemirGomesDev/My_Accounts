@@ -35,6 +35,6 @@ sealed class Routes {
         data class ExpenseDetail(val expenseId: Int, val expenseName: String)
 
         @Serializable
-        data class ExpenseChange(val idMonthlyPayment: Int, val expenseName: String)
+        data class ExpenseChange(val idMonthlyPayment: Int)
     }
 }

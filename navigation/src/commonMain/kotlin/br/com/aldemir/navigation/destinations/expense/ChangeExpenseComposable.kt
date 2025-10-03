@@ -36,10 +36,8 @@ fun NavGraphBuilder.changeExpenseComposable(
         },
     ) { backStackEntry ->
         val idMonthlyPayment = backStackEntry.toRoute<Routes.ExpenseGraphRoute.ExpenseChange>().idMonthlyPayment
-        val expenseName = backStackEntry.toRoute<Routes.ExpenseGraphRoute.ExpenseChange>().expenseName
         ChangeExpenseScreen(
             idMonthlyPayment = idMonthlyPayment,
-            expenseName = expenseName,
             navigateToDetailScreen = {
                 navHostController.navigateUp()
             },
