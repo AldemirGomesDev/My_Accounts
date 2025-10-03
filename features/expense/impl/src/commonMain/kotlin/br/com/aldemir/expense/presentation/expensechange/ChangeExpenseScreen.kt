@@ -20,7 +20,6 @@ import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize

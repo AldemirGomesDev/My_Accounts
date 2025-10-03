@@ -20,15 +20,6 @@ fun MonthlyPaymentDomain.toView() = MonthlyPaymentView(
     expired = checkIfExpired(due_date, month, year)
 )
 
-fun MonthlyPaymentView.toDomain() = ExpenseMonthlyDomain(
-    id = id,
-    id_expense = id_expense,
-    year = year,
-    month = month,
-    value = value,
-    situation = situation,
-)
-
 fun ExpensePerMonthDomain.toView() = ExpensePerMonthView(
     id_expense = id_expense,
     name = name,
