@@ -20,6 +20,7 @@ import br.com.aldemir.home.presentation.state.HomeUiState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -29,7 +30,7 @@ class HomeViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
-    val uiState: StateFlow<HomeUiState> = _uiState
+    val uiState = _uiState.asStateFlow()
 
     private var _monthValuesExpense = mutableListOf<MonthValue>()
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
@@ -181,19 +182,12 @@ class HomeViewModel(
         recipes: List<RecipeMonthlyDomain>,
         expenses: List<ExpenseMonthlyDomain>
     ) {
-        updateHomeCardData(HomeCardData())
-        var valueRecipe = 0.0
-        var valueExpense = 0.0
-        var valueBalance = 0.0
-        recipes.forEach { recipe ->
-            valueRecipe += recipe.value
-        }
-        expenses.forEach { expense ->
-            valueExpense += expense.value
-        }
-        valueBalance = (valueRecipe - valueExpense)
+        val valueRecipe = recipes.sumOf { it.value }
+        val valueExpense = expenses.sumOf { it.value }
+        val valueBalance = valueRecipe - valueExpense
+
         updateHomeCardData(
-            homeCardData = HomeCardData(
+            HomeCardData(
                 valueRecipe = valueRecipe,
                 valueExpense = valueExpense,
                 valueBalance = valueBalance

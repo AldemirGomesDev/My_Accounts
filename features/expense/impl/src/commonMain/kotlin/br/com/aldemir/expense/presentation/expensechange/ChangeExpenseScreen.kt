@@ -6,28 +6,29 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
+import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.theme.LARGEST_PADDING
 import br.com.aldemir.common.theme.MEDIUM_PADDING
 import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Purple700
-import br.com.aldemir.common.theme.addAccountBorderColor
-import br.com.aldemir.common.theme.addAccountLabelColor
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.domain.model.ExpenseMonthlyDomain
+import br.com.aldemir.common.util.toPercentString
+import br.com.aldemir.expense.presentation.expensechange.action.ChangeExpenseAction
+import br.com.aldemir.expense.presentation.expensechange.effect.ChangeExpenseEffect
+import br.com.aldemir.expense.presentation.expensechange.model.ChangeExpenseUiModel
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.button_update
 import myaccounts.common.generated.resources.expense_month_and_year
@@ -46,30 +47,11 @@ fun ChangeExpenseScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    viewModel.getAllByIdMonthlyPayment(idMonthlyPayment)
-
-    val initValue: String by viewModel.value
-
-    val mIdMonthlyPayment: Int by viewModel.idMonthlyPayment.collectAsState()
-
-    val mExpenseMonthlyPayments = remember { mutableStateOf(ExpenseMonthlyDomain()) }
-
-    val monthlyPayments by viewModel.expenseMonthlyDomain.collectAsState()
-
-    mExpenseMonthlyPayments.value = monthlyPayments
-
-    val title = stringResource(
-        Res.string.expense_month_and_year,
-        mExpenseMonthlyPayments.value.year,
-        mExpenseMonthlyPayments.value.month
-    )
-
-    viewModel.value.value =
-        viewModel.getValueWithTwoDecimal(mExpenseMonthlyPayments.value.value.toString())
-
-    LaunchedEffect(key1 = mIdMonthlyPayment) {
-        if (mIdMonthlyPayment > 0) navigateToDetailScreen()
+    LaunchedEffect(idMonthlyPayment) {
+        viewModel.sendAction(ChangeExpenseAction.LoadExpense(idMonthlyPayment))
     }
+
+    val uiModel by viewModel.uiModel.collectAsState()
 
     BackHandler {
         navigateToDetailScreen()
@@ -79,42 +61,55 @@ fun ChangeExpenseScreen(
         scaffoldState = scaffoldState,
         content = { padding ->
             ChangeExpenseContent(
-                title = title,
-                value = initValue,
+                uiModel = uiModel,
                 paddingValues = padding,
                 onValueChange = {
-                    viewModel.value.value = it
+                    viewModel.sendAction(ChangeExpenseAction.OnValueChange(it))
                 },
                 onClickUpdate = {
-                    viewModel.updateMonthlyPayment()
+                    viewModel.sendAction(
+                        ChangeExpenseAction.UpdateMonthlyExpense(idMonthlyPayment)
+                    )
                 }
             )
         },
     )
 
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is ChangeExpenseEffect.NavigateBack -> {
+                    navigateToDetailScreen()
+                }
+            }
+        }
+    }
 }
 
 @Composable
 private fun ChangeExpenseContent(
-    title: String,
-    value: String,
+    uiModel: ChangeExpenseUiModel,
     paddingValues: PaddingValues,
     onValueChange: (String) -> Unit,
     onClickUpdate: () -> Unit
 ) {
 
+    val title = stringResource(
+        Res.string.expense_month_and_year,
+        uiModel.month,
+        uiModel.year
+    )
+
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
-
-    var loading by remember {
-        mutableStateOf(false)
-    }
 
     var enabled by remember {
         mutableStateOf(false)
     }
 
-    enabled = (value.isNotEmpty() && !loading)
+    val valueString = uiModel.value.toPercentString()
+
+    enabled = (valueString.isNotEmpty() && !uiModel.loading)
 
     Column(
         modifier = Modifier
@@ -134,33 +129,22 @@ private fun ChangeExpenseContent(
             modifier = Modifier.height(MEDIUM_PADDING),
             color = MyAccountsTheme.colors.background
         )
-
-        OutlinedTextField(
+        InputTextOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = value,
-            onValueChange = { onValueChange(it) },
-            label = { Text(text = stringResource(Res.string.form_add_value)) },
-            textStyle = MaterialTheme.typography.bodySmall,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            visualTransformation = MaskCurrencyVisualTransformation(currencySymbol),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
-                unfocusedBorderColor = MaterialTheme.colorScheme.addAccountBorderColor,
-                focusedLabelColor = MaterialTheme.colorScheme.addAccountBorderColor,
-                unfocusedLabelColor = MaterialTheme.colorScheme.addAccountLabelColor,
-                textColor = MaterialTheme.colorScheme.addAccountBorderColor,
-                disabledTextColor = MaterialTheme.colorScheme.addAccountBorderColor
-            ),
-            isError = value.isEmpty(),
-            trailingIcon = {
-                if (value.isEmpty()) Icon(
-                    imageVector = Icons.Filled.Info,
-                    contentDescription = emptyString()
-                )
+            value = valueString,
+            onValueChange = {
+                onValueChange(it)
             },
+            label = stringResource(Res.string.form_add_value),
+            isError = valueString.isEmpty(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next,
+            ),
+            visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
         )
-        if (value.isEmpty()) Text(
+
+        if (valueString.isEmpty()) Text(
             text = stringResource(Res.string.form_invalid_value),
             color = MaterialTheme.colorScheme.error,
             fontSize = FontSize.scale12
@@ -172,27 +156,15 @@ private fun ChangeExpenseContent(
 
         LoadingButton(
             onClick = {
-                loading = true
                 onClickUpdate()
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
-            loading = loading,
+            loading = uiModel.loading,
             enabled = enabled,
             text = stringResource(Res.string.button_update),
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
         )
     }
-}
-
-@Composable
-private fun ChangeExpenseContentPreview() {
-    ChangeExpenseContent(
-        "12 - Dezembro",
-        "",
-        paddingValues = PaddingValues(),
-        onValueChange = {},
-        onClickUpdate = {}
-    )
 }

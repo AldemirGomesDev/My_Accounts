@@ -8,8 +8,7 @@ import br.com.aldemir.common.theme.LowPriorityColor
 import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.usecase.expense.GetAllByIdExpenseUseCase
-import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
-import br.com.aldemir.expense.mapper.toDomain
+import br.com.aldemir.domain.usecase.expense.UpdateExpenseSituationUseCase
 import br.com.aldemir.expense.mapper.toView
 import br.com.aldemir.expense.model.MonthlyPaymentView
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +23,7 @@ import myaccounts.common.generated.resources.expense_paid_out
 import org.jetbrains.compose.resources.StringResource
 
 class ExpenseDetailViewModel(
-    private val updateMonthlyPaymentUseCase: UpdateMonthlyPaymentUseCase,
+    private val updateExpenseSituationUseCase: UpdateExpenseSituationUseCase,
     private val getAllByIdExpenseUseCase: GetAllByIdExpenseUseCase
 ) : ViewModel() {
 
@@ -73,9 +72,9 @@ class ExpenseDetailViewModel(
         }
     }
 
-    fun updateMonthlyPayment(monthlyPayment: MonthlyPaymentView) = viewModelScope.launch {
+    fun updateMonthlyPayment(id: Int, situation: Boolean) = viewModelScope.launch {
         _id.update { 0 }
-        updateMonthlyPaymentUseCase(this, monthlyPayment.toDomain()) {
+        updateExpenseSituationUseCase(this, UpdateExpenseSituationUseCase.Params(id, situation)) {
             success = { id -> _id.update { id } }
         }
     }

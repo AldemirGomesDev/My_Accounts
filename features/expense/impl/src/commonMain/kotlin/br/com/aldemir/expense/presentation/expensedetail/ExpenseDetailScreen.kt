@@ -77,7 +77,7 @@ fun ExpenseDetailScreen(
         mutableStateOf(MonthlyPaymentView())
     }
 
-    id?.let {
+    id.let {
         if (it > 0) viewModel.getAllByIdExpense(expenseId)
     }
 
@@ -137,7 +137,7 @@ private fun updateMonthlyPayment(
     monthlyPayment: MonthlyPaymentView,
     viewModel: ExpenseDetailViewModel
 ) {
-    viewModel.updateMonthlyPayment(monthlyPayment)
+    viewModel.updateMonthlyPayment(monthlyPayment.id, monthlyPayment.situation)
 }
 
 @Composable

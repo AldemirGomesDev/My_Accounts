@@ -14,8 +14,11 @@ interface MonthlyPaymentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(expenseMonthlyDTOS: List<ExpenseMonthlyDTO>): List<Long>
 
-    @Update
-    suspend fun update(expenseMonthlyDTO: ExpenseMonthlyDTO): Int
+    @Query("UPDATE monthly_payment SET situation = :situation WHERE id = :id")
+    suspend fun updateSituationById(id: Int, situation: Boolean): Int
+
+    @Query("UPDATE monthly_payment SET value = :value WHERE id = :id")
+    suspend fun updateValueById(id: Int, value: Double): Int
 
     @Delete
     suspend fun delete(expenseMonthlyDTO: ExpenseMonthlyDTO): Int

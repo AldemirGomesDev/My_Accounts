@@ -15,7 +15,8 @@ import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
 import br.com.aldemir.domain.usecase.expense.GetByIdMonthlyPaymentUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
-import br.com.aldemir.domain.usecase.expense.UpdateMonthlyPaymentUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateExpenseSituationUseCase
+import br.com.aldemir.domain.usecase.expense.UpdateExpenseValueUseCase
 import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import br.com.aldemir.domain.usecase.recipe.AddRecipeMonthlyUseCase
@@ -41,7 +42,8 @@ val domainModule = module {
     factoryOf(::GetAllExpensePerMonthUseCase)
     factoryOf(::GetAllMonthlyPaymentUseCase)
     factoryOf(::GetByIdMonthlyPaymentUseCase)
-    factoryOf(::UpdateMonthlyPaymentUseCase)
+    factoryOf(::UpdateExpenseSituationUseCase)
+    factoryOf(::UpdateExpenseValueUseCase)
     factoryOf(::GetAllExpensesMonthUseCase)
     // Dark mode
     factoryOf(::SaveDarkModeStateUseCase)

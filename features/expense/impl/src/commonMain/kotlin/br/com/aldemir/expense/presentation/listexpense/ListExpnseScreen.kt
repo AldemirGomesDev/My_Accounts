@@ -24,6 +24,8 @@ import br.com.aldemir.common.model.CardState
 import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.expense.model.ExpenseView
+import br.com.aldemir.expense.presentation.listexpense.action.ExpenseUiAction
+import br.com.aldemir.expense.presentation.listexpense.model.ExpenseUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,7 +50,7 @@ fun ListExpenseScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+    val uiModel by viewModel.uiState.collectAsState()
 
     var expenseDTOToSave by remember {
         mutableStateOf(ExpenseView())
@@ -67,12 +69,12 @@ fun ListExpenseScreen(
                     .padding(padding)
                     .background(MyAccountsTheme.colors.background),
             ) {
-                HomeCard(viewModel = viewModel)
+                HomeCard(viewModel = viewModel, uiModel = uiModel)
                 HomeScreenList(
                     navigateToTaskScreen = navigateToTaskScreen,
                     onDelete = { expense ->
                         expenseDTOToSave = expense
-                        viewModel.onOpenDialogClicked()
+                        viewModel.sendAction(ExpenseUiAction.ShowDialog(true))
                     },
                     viewModel = viewModel
                 )
@@ -80,14 +82,14 @@ fun ListExpenseScreen(
                 DisplayAlertDialog(
                     title = stringResource(Res.string.dialog_delete_title),
                     message = stringResource(Res.string.dialog_delete_message),
-                    openDialog = showDialogState,
+                    openDialog = uiModel.showDialog,
                     closeDialog = {
-                        viewModel.onDialogDismiss()
+                        viewModel.sendAction(ExpenseUiAction.ShowDialog(false))
                     },
                     onYesClicked = {
                         deleteExpense(viewModel, expenseDTOToSave)
                         showMessage(message)
-                        viewModel.onDialogConfirm()
+                        viewModel.sendAction(ExpenseUiAction.ShowDialog(false))
                     }
                 )
             }
@@ -108,10 +110,10 @@ fun HomeScreenList(
 ) {
     val state = rememberLazyListState()
     LaunchedEffect(true) {
-        viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+        viewModel.sendAction(ExpenseUiAction.UpdateExpenseMonthly)
     }
 
-    val expenses by viewModel.expenses.collectAsState()
+    val expenses = viewModel.uiState.collectAsState().value.expenses
 
     if (expenses.isEmpty()) {
         EmptyContent()
@@ -127,7 +129,6 @@ fun HomeScreenList(
             ) { account ->
                 ListExpenseItem(
                     expense = account,
-                    viewModel = viewModel,
                     onDelete = onDelete,
                     navigateToTaskScreen = navigateToTaskScreen
                 )
@@ -143,22 +144,18 @@ fun HomeScreenList(
 @Composable
 private fun HomeCard(
     viewModel: ListExpenseViewModel,
+    uiModel: ExpenseUiModel,
 ) {
 
     LaunchedEffect(true) {
-        viewModel.getAllExpensesMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+        viewModel.sendAction(ExpenseUiAction.LoadData)
     }
 
-    val valueTotal by viewModel.valueTotal.collectAsState()
-    val paidOut by viewModel.paidOut.collectAsState()
-    val pending by viewModel.pending.collectAsState()
-    val percentage by viewModel.percentage.collectAsState()
-
     val cardState = CardState(
-        valueTotal = valueTotal,
-        paidOut = paidOut,
-        pending = pending,
-        percentage = percentage
+        valueTotal = uiModel.totalValue,
+        paidOut = uiModel.paidOut,
+        pending = uiModel.pending,
+        percentage = uiModel.percentage
     )
 
     Box(modifier = Modifier.padding(horizontal = MyAccountsTheme.dimensions.padding16)) {
@@ -168,12 +165,12 @@ private fun HomeCard(
 
 private fun deleteExpense(viewModel: ListExpenseViewModel, expenseView: ExpenseView) {
     CoroutineScope(Dispatchers.Default).launch {
-        viewModel.delete(expenseView)
+        viewModel.sendAction(ExpenseUiAction.DeleteExpense(expenseView))
         delay(300)
         getAllExpenseMonth(viewModel)
     }
 }
 
 private fun getAllExpenseMonth(viewModel: ListExpenseViewModel) {
-    viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+    viewModel.sendAction(ExpenseUiAction.UpdateExpenseMonthly)
 }

@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import br.com.aldemir.common.theme.HighPriorityColor
@@ -21,43 +20,29 @@ import br.com.aldemir.common.component.TextBodyTwoItem
 import br.com.aldemir.common.component.TextDescriptionItem
 import br.com.aldemir.common.component.TextSubTitleItem
 import br.com.aldemir.common.component.TextTitleItem
+import br.com.aldemir.common.theme.LowPriorityColor
+import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.formatTwoDigits
 import br.com.aldemir.expense.model.ExpenseView
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_list_item_status
-import myaccounts.common.generated.resources.delete_icon
+import myaccounts.common.generated.resources.account_pending
+import myaccounts.common.generated.resources.expense_expired
+import myaccounts.common.generated.resources.expense_paid_out
 import myaccounts.common.generated.resources.item_due_date
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-
-@Composable
-fun RedBackground(degrees: Float) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(HighPriorityColor)
-            .padding(horizontal = LARGEST_PADDING),
-        contentAlignment = Alignment.CenterEnd
-    ) {
-        Icon(
-            modifier = Modifier.rotate(degrees = degrees),
-            imageVector = Icons.Filled.Delete,
-            contentDescription = stringResource(Res.string.delete_icon),
-            tint = Color.White
-        )
-    }
-}
 
 @ExperimentalMaterialApi
 @Composable
 fun ListExpenseItem(
     expense: ExpenseView,
-    viewModel: ListExpenseViewModel,
     onDelete: (expenseView: ExpenseView) -> Unit,
     navigateToTaskScreen: (taskId: Int, nameExpense: String) -> Unit
 ) {
 
-    val statusColor = viewModel.getStatusColor(expense.status, expense.expired)
+    val statusColor = getStatusColor(expense.status, expense.expired)
     val dueDate = formatTwoDigits(expense.due_date)
 
     Surface(
@@ -94,11 +79,7 @@ fun ListExpenseItem(
                                 Canvas(
                                     modifier = Modifier
                                         .size(MyAccountsTheme.dimensions.sizing16)
-                                ) {
-//                                    drawCircle(
-//                                        color = statusColor
-//                                    )
-                                }
+                                ) { }
                             }
                         }
                         TextDescriptionItem(
@@ -125,7 +106,7 @@ fun ListExpenseItem(
                             TextBodyTwoItem(
                                 modifier = Modifier.padding(start = SMALL_PADDING),
                                 color = statusColor,
-                                text = stringResource(viewModel.getStatusText(expense.status, expense.expired))
+                                text = stringResource(getStatusText(expense.status, expense.expired))
                             )
                         }
                     }
@@ -149,4 +130,16 @@ fun ListExpenseItem(
             }
         }
     }
+}
+
+private fun getStatusColor(status: Boolean, expired: Boolean): Color {
+    return if (status) LowPriorityColor
+    else if (expired) HighPriorityColor
+    else MediumPriorityColor
+}
+
+private fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+    return if (status) Res.string.expense_paid_out
+    else if (expired) Res.string.expense_expired
+    else Res.string.account_pending
 }

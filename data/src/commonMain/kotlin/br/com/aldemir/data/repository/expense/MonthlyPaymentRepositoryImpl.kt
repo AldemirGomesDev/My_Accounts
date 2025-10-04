@@ -18,8 +18,12 @@ class MonthlyPaymentRepositoryImpl(
         return monthlyPaymentDao.insert(expenseMonthly.toDto())
     }
 
-    override suspend fun update(expenseMonthly: ExpenseMonthlyDomain): Int {
-        return monthlyPaymentDao.update(expenseMonthly.toDto())
+    override suspend fun updateSituationById(id: Int, situation: Boolean): Int {
+        return monthlyPaymentDao.updateSituationById(id, situation)
+    }
+
+    override suspend fun updateValue(id: Int, value: Double): Int {
+        return monthlyPaymentDao.updateValueById(id, value)
     }
 
     override suspend fun delete(expenseMonthly: ExpenseMonthlyDomain): Int {

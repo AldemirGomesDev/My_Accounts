@@ -16,6 +16,11 @@ fun Float.toDecimal(): Float = roundToInt().toFloat() / DECIMAL_FACTOR
 
 fun emptyFloat(): Float = 0.0f
 
+fun Double.toPercentString(): String {
+    if (this == 0.0) return emptyString()
+    return (this * 100).toInt().toString()
+}
+
 expect fun getCurrencySymbol(language: String, countryCode: String): String
 
 
