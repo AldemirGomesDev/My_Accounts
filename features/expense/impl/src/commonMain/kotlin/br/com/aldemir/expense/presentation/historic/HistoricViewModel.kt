@@ -1,13 +1,14 @@
 package br.com.aldemir.expense.presentation.historic
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.model.ExpenseMonthlyDomain
-import br.com.aldemir.domain.model.ExpensePerMonthDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensePerMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
+import br.com.aldemir.expense.presentation.historic.action.HistoricExpenseAction
+import br.com.aldemir.expense.presentation.historic.mapper.toListView
+import br.com.aldemir.expense.presentation.historic.model.HistoricExpenseUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,41 +18,73 @@ class HistoricViewModel(
     private val getAllMonthlyPaymentUseCase: GetAllMonthlyPaymentUseCase,
     private val getAllExpensePerMonthUseCase: GetAllExpensePerMonthUseCase
 ) : ViewModel() {
+    private val _uiModel = MutableStateFlow(HistoricExpenseUiModel())
+    val uiModel = _uiModel.asStateFlow()
 
-    val isLoading: MutableState<Boolean> = mutableStateOf(false)
+    fun handleEvent(event: HistoricExpenseAction) {
+        when (event) {
+            is HistoricExpenseAction.GetAllExpensePerMonth -> {
+                getAllExpensePerMonth(_uiModel.value.monthOptionSelected,event.year)
+            }
 
-    private val _expensePerMonthDomain = MutableStateFlow<List<ExpensePerMonthDomain>>(listOf())
-    val expensePerMonthDomain = _expensePerMonthDomain.asStateFlow()
+            is HistoricExpenseAction.FetchData -> {
+                getAllMonthlyPayment()
+            }
 
-    private val _yearsList = MutableStateFlow<List<String>>(listOf())
-    val yearsList = _yearsList.asStateFlow()
-
-    fun getAllMonthlyPayment() = viewModelScope.launch {
-        getAllMonthlyPaymentUseCase(this, Unit) {
-            success = { getDistinctYears(monthList = it) }
+            is HistoricExpenseAction.UpdateMonthSelected -> {
+                updateMonthSelected(event.month)
+            }
         }
     }
 
-    fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
-        isLoading.value = true
+    private fun getAllMonthlyPayment() = viewModelScope.launch {
+        getAllMonthlyPaymentUseCase(this, Unit) {
+            success = {
+                getDistinctYears(monthList = it)
+                getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
+            }
+        }
+    }
 
+    private fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
+        updateLoading(true)
         getAllExpensePerMonthUseCase(
-            this, GetAllExpensePerMonthUseCase.Params(
-                month, year
-            )
+            this, GetAllExpensePerMonthUseCase.Params(month, year)
         ) {
             success = { listExpensePerMonth ->
-                _expensePerMonthDomain.update { listExpensePerMonth }
-                isLoading.value = false
+                _uiModel.update { expensePerMonth ->
+                    expensePerMonth.copy(
+                        expensePerMonthUiModelList = listExpensePerMonth.toListView(),
+                        isLoading = false
+                    )
+                }
             }
-            error = { isLoading.value = false }
+            error = {
+                updateLoading(false)
+            }
+        }
+    }
+
+    private fun updateLoading(isLoading: Boolean) {
+        _uiModel.update { currentState ->
+            currentState.copy(
+                isLoading = isLoading
+            )
+        }
+    }
+
+    private fun updateMonthSelected(month: String) {
+        _uiModel.update { currentState ->
+            currentState.copy(
+                monthOptionSelected = month
+            )
         }
     }
 
     private fun getDistinctYears(monthList: List<ExpenseMonthlyDomain>) {
-        val myYears = mutableListOf<String>()
-        val yearUnique = monthList.distinctBy { it.year }
-        yearUnique.forEach { myYears.add(it.year) }
-        _yearsList.update { myYears }
+        val years = monthList.map { it.year }.distinct()
+        _uiModel.update { currentState ->
+            currentState.copy(yearsList = years)
+        }
     }
 }

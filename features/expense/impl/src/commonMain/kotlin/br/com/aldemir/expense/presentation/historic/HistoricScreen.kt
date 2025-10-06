@@ -31,9 +31,12 @@ import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.theme.dividerColor
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.DateUtils
+import br.com.aldemir.common.util.DateUtils.getMonthByLanguage
+import br.com.aldemir.common.util.DateUtils.getMonthNameFromPortuguese
 import br.com.aldemir.common.util.formatTwoDigits
-import br.com.aldemir.expense.mapper.toView
-import br.com.aldemir.expense.model.ExpensePerMonthView
+import br.com.aldemir.expense.presentation.historic.action.HistoricExpenseAction
+import br.com.aldemir.expense.presentation.historic.model.ExpensePerMonthUiModel
+import br.com.aldemir.expense.presentation.historic.model.HistoricExpenseUiModel
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_pending
 import myaccounts.common.generated.resources.button_search
@@ -56,19 +59,30 @@ fun HistoricScreen(
     viewModel: HistoricViewModel = koinViewModel(),
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.handleEvent(HistoricExpenseAction.FetchData)
+        viewModel.handleEvent(HistoricExpenseAction.UpdateMonthSelected(DateUtils.getMonthString()))
+    }
     val scaffoldState = rememberScaffoldState()
+
+    val uiModel by viewModel.uiModel.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues = padding)
-                    .background(MyAccountsTheme.colors.background)
-            ) {
-                HistoricContent(viewModel, navigateToHistoricScreen)
-            }
+            HistoricContent(
+                modifier = Modifier.padding(padding),
+                uiModel = uiModel,
+                navigateToHistoricScreen = navigateToHistoricScreen,
+                onSearchClicked = { month, year ->
+                    viewModel.handleEvent(
+                        HistoricExpenseAction.GetAllExpensePerMonth(month, year)
+                    )
+                },
+                onItemSelected = {
+                    viewModel.handleEvent(HistoricExpenseAction.UpdateMonthSelected(it))
+                }
+            )
         }
     )
 }
@@ -77,72 +91,78 @@ fun HistoricScreen(
 @ExperimentalMaterialApi
 @Composable
 private fun HistoricContent(
-    viewModel: HistoricViewModel,
+    modifier: Modifier = Modifier,
+    uiModel: HistoricExpenseUiModel,
+    onItemSelected: (item: String) -> Unit,
+    onSearchClicked: (month: String, year: String) -> Unit,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
-    viewModel.getAllMonthlyPayment()
 
     var enabled by remember { mutableStateOf(false) }
 
-    enabled = !viewModel.isLoading.value
+    enabled = !uiModel.isLoading
 
     val defaultOption by remember { mutableStateOf(DateUtils.getYearString()) }
-
-    val myYears by viewModel.yearsList.collectAsState()
 
     val monthOptions = stringArrayResource(Res.array.months)
     var yearOptionSelected by remember { mutableStateOf(defaultOption) }
     var monthOptionSelected by remember { mutableStateOf(DateUtils.getMonthString()) }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(MyAccountsTheme.colors.background)
     ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-                MyExposedDropdownMenu(
-                    label = stringResource(Res.string.historic_month_text),
-                    listItems = monthOptions.toList(),
-                    selected = monthOptionSelected,
-                    onItemSelected = { item ->
-                        monthOptionSelected = item
-                    },
-                    modifier = Modifier
-                        .width(200.dp)
-                        .padding(end = 16.dp)
-                )
-                MyExposedDropdownMenu(
-                    label = stringResource(Res.string.historic_year_text),
-                    listItems = myYears.toList(),
-                    selected = yearOptionSelected,
-                    onItemSelected = { item ->
-                        yearOptionSelected = item
-                    },
-                    modifier = Modifier.width(150.dp)
-                )
-            }
-            HistoricScreenList(
-                viewModel = viewModel,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 150.dp),
-                navigateToHistoricScreen = navigateToHistoricScreen
-            )
-            LoadingButton(
-                onClick = {
-                    viewModel.getAllExpensePerMonth(monthOptionSelected, yearOptionSelected)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            MyExposedDropdownMenu(
+                label = stringResource(Res.string.historic_month_text),
+                listItems = monthOptions.toList(),
+                selected = getMonthByLanguage(monthOptionSelected),
+                onItemSelected = { item ->
+                    onItemSelected(getMonthNameFromPortuguese(item))
+                    monthOptionSelected = item
                 },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 8.dp)
-                    .height(52.dp),
-                loading = viewModel.isLoading.value,
-                enabled = enabled,
-                text = stringResource(Res.string.button_search)
+                    .width(200.dp)
+                    .padding(end = 16.dp)
             )
+            MyExposedDropdownMenu(
+                label = stringResource(Res.string.historic_year_text),
+                listItems = uiModel.yearsList,
+                selected = yearOptionSelected,
+                onItemSelected = { item ->
+                    yearOptionSelected = item
+                },
+                modifier = Modifier.width(150.dp)
+            )
+        }
+        HistoricScreenList(
+            expenses = uiModel.expensePerMonthUiModelList,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 150.dp),
+            navigateToHistoricScreen = navigateToHistoricScreen
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        LoadingButton(
+            onClick = {
+                onSearchClicked.invoke(monthOptionSelected, yearOptionSelected)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 8.dp)
+                .height(52.dp),
+            loading = uiModel.isLoading,
+            enabled = enabled,
+            text = stringResource(Res.string.button_search)
+        )
 
 
     }
@@ -152,16 +172,11 @@ private fun HistoricContent(
 @ExperimentalMaterialApi
 @Composable
 fun HistoricScreenList(
-    viewModel: HistoricViewModel,
+    expenses: List<ExpensePerMonthUiModel>,
     modifier: Modifier = Modifier,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val state = rememberLazyListState()
-    LaunchedEffect(Unit) {
-        viewModel.getAllExpensePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
-    }
-
-    val expenses by viewModel.expensePerMonthDomain.collectAsState()
 
     if (expenses.isEmpty()) {
         EmptyContent(
@@ -175,11 +190,11 @@ fun HistoricScreenList(
                 items(
                     items = expenses,
                     key = { account ->
-                        account.id_expense
+                        account.idExpense
                     }
-                ) { account ->
+                ) { expense ->
                     HistoricItem(
-                        expense = account.toView(),
+                        expense = expense,
                         navigateToHistoricScreen = navigateToHistoricScreen
                     )
                     Divider(
@@ -195,11 +210,11 @@ fun HistoricScreenList(
 @ExperimentalMaterialApi
 @Composable
 fun HistoricItem(
-    expense: ExpensePerMonthView,
+    expense: ExpensePerMonthUiModel,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val statusColor = getStatusColor(expense.situation, expense.expired)
-    val dueDate = formatTwoDigits(expense.due_date)
+    val dueDate = formatTwoDigits(expense.dueDate)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -207,7 +222,7 @@ fun HistoricItem(
         shape = RectangleShape,
         elevation = MyAccountsTheme.dimensions.sizing2,
         onClick = {
-            navigateToHistoricScreen(expense.id_expense, expense.name)
+            navigateToHistoricScreen(expense.idExpense, expense.name)
         }
     ) {
         Column(

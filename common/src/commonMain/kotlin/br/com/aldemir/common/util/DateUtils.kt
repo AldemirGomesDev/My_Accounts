@@ -95,4 +95,21 @@ object DateUtils {
             month.uppercase()
         }
     }
+    fun getMonthNameFromPortuguese(monthPt: String): String {
+        return when (monthPt.uppercase()) {
+            "JANEIRO" -> Month.JANUARY.name
+            "FEVEREIRO" -> Month.FEBRUARY.name
+            "MARÇO" -> Month.MARCH.name
+            "ABRIL" -> Month.APRIL.name
+            "MAIO" -> Month.MAY.name
+            "JUNHO" -> Month.JUNE.name
+            "JULHO" -> Month.JULY.name
+            "AGOSTO" -> Month.AUGUST.name
+            "SETEMBRO" -> Month.SEPTEMBER.name
+            "OUTUBRO" -> Month.OCTOBER.name
+            "NOVEMBRO" -> Month.NOVEMBER.name
+            "DEZEMBRO" -> Month.DECEMBER.name
+            else -> monthPt.uppercase()
+        }
+    }
 }
