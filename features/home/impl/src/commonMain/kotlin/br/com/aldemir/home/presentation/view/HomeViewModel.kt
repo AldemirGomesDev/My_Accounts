@@ -20,7 +20,6 @@ import br.com.aldemir.home.presentation.model.MonthValue
 import br.com.aldemir.home.presentation.state.HomeUiState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
