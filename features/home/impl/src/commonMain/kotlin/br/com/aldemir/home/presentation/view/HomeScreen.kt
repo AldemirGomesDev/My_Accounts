@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
@@ -27,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.home.presentation.model.ButtonType
 import br.com.aldemir.common.theme.*
-import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
+import br.com.aldemir.home.presentation.action.HomeAction
 import br.com.aldemir.home.presentation.model.BarChart
 import br.com.aldemir.home.presentation.state.HomeUiState
 import ir.ehsannarmani.compose_charts.ColumnChart
@@ -51,9 +50,7 @@ fun HomeScreen(
     onFinish: () -> Unit,
 ) {
     LaunchedEffect(true) {
-        viewModel.getAllRecipeAndExpense()
-        viewModel.getAllExpenseSixMonthsPrevious()
-        viewModel.getAllRecipesSixMonthsPrevious()
+        viewModel.handleAction(HomeAction.FetchData)
     }
     val scaffoldState = rememberScaffoldState()
 
@@ -104,60 +101,6 @@ fun HomeContent(
                 )
             }
         }
-    )
-}
-
-@Composable
-private fun MyColumnChart() {
-    ColumnChart(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
-        data = remember {
-            listOf(
-                Bars(
-                    label = "Jan",
-                    values = listOf(
-                        Bars.Data(
-                            label = "Linux",
-                            value = 50.0,
-                            color = Brush.verticalGradient(
-                                0.0f to Color(0xFF3366FF),
-                                1.0f to Color(0xFF00CCFF)
-                            ),
-                        ),
-                        Bars.Data(
-                            label = "Windows",
-                            value = 70.0,
-                            color = SolidColor(Color.Red)
-                        ),
-                    )
-                ),
-//                Bars(
-//                    label = "Feb",
-//                    values = listOf(
-//                        Bars.Data(
-//                            label = "Linux", value = 80.0, color = Brush.verticalGradient(
-//                                0.0f to Color(0xFF3366FF),
-//                                1.0f to Color(0xFF00CCFF)
-//                            ),
-//                        ),
-//                        Bars.Data(
-//                            label = "Windows",
-//                            value = 60.0,
-//                            color = SolidColor(Color.Red)
-//                        )
-//                    )
-//                )
-            )
-        },
-        barProperties = BarProperties(
-            cornerRadius = Bars.Data.Radius.Rectangle(topRight = 6.dp, topLeft = 6.dp),
-            spacing = 3.dp,
-            thickness = 20.dp
-        ),
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
     )
 }
 
@@ -275,19 +218,5 @@ private fun MyBarChart(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun HomeContentPreview() {
-    MyAccountsTheme {
-//        HomeContent(
-//            labelDrawer = SimpleLabelDrawer(
-//                labelTextColor = White
-//            ),
-//            scaffoldState = rememberScaffoldState(),
-//            navigateToNextScreen = {},
-//            uiState = homeDataPreview
-//        )
     }
 }

@@ -13,6 +13,7 @@ import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase
 import br.com.aldemir.domain.usecase.expense.GetAllExpensesMonthUseCase.Params
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
+import br.com.aldemir.home.presentation.action.HomeAction
 import br.com.aldemir.home.presentation.model.BarChart
 import br.com.aldemir.home.presentation.model.HomeCardData
 import br.com.aldemir.home.presentation.model.MonthValue
@@ -35,7 +36,17 @@ class HomeViewModel(
     private var _monthValuesExpense = mutableListOf<MonthValue>()
     private var _monthValuesRecipe = mutableListOf<MonthValue>()
 
-    fun getAllRecipeAndExpense() = viewModelScope.launch {
+    fun handleAction(event: HomeAction) {
+        when (event) {
+            is HomeAction.FetchData -> {
+                getAllRecipeAndExpense()
+                getAllExpenseSixMonthsPrevious()
+                getAllRecipesSixMonthsPrevious()
+            }
+        }
+    }
+
+    private fun getAllRecipeAndExpense() = viewModelScope.launch {
         val month = DateUtils.getMonthString()
         val year = DateUtils.getYearString()
 
@@ -52,7 +63,7 @@ class HomeViewModel(
         calculateValues(recipes, expenses)
     }
 
-    fun getAllExpenseSixMonthsPrevious() = viewModelScope.launch {
+    private fun getAllExpenseSixMonthsPrevious() = viewModelScope.launch {
         _monthValuesExpense = mutableListOf()
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
@@ -65,7 +76,7 @@ class HomeViewModel(
         setValuesExpenseToChart()
     }
 
-    fun getAllRecipesSixMonthsPrevious() = viewModelScope.launch {
+    private fun getAllRecipesSixMonthsPrevious() = viewModelScope.launch {
         _monthValuesRecipe = mutableListOf()
         val months = DateUtils.getSixMonthsPrevious()
         val years = DateUtils.getYearsFromSixMonthsPrevious()
