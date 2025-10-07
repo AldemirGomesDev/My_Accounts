@@ -187,7 +187,7 @@ private fun ExpenseDetailContent(
                 .background(MyAccountsTheme.colors.background)
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onPress = {
+                        onTap = {
                             if (monthlyPayment.situation)
                                 showMessage(message)
                             else navigateToChangeScreen(monthlyPayment.id)
