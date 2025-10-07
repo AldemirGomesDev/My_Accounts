@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import br.com.aldemir.common.component.EmptyContent
+import br.com.aldemir.common.component.LoadingAnimation
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.component.TextBodyTwoItem
@@ -76,7 +77,7 @@ fun HistoricScreen(
                 navigateToHistoricScreen = navigateToHistoricScreen,
                 onSearchClicked = { month, year ->
                     viewModel.handleEvent(
-                        HistoricExpenseAction.GetAllExpensePerMonth(month, year)
+                        HistoricExpenseAction.OnSearchClicked(month, year)
                     )
                 },
                 onItemSelected = {
@@ -98,7 +99,7 @@ private fun HistoricContent(
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
 
-    var enabled by remember { mutableStateOf(false) }
+    var enabled by remember { mutableStateOf(true) }
 
     enabled = !uiModel.isLoading
 
@@ -112,6 +113,7 @@ private fun HistoricContent(
         modifier = modifier
             .fillMaxSize()
             .background(MyAccountsTheme.colors.background)
+            .padding(top = MyAccountsTheme.dimensions.padding16)
     ) {
         Row(
             modifier = Modifier
@@ -127,8 +129,8 @@ private fun HistoricContent(
                     monthOptionSelected = item
                 },
                 modifier = Modifier
-                    .width(200.dp)
-                    .padding(end = 16.dp)
+                    .weight(1f)
+                    .padding(end = MyAccountsTheme.dimensions.padding4)
             )
             MyExposedDropdownMenu(
                 label = stringResource(Res.string.historic_year_text),
@@ -137,15 +139,18 @@ private fun HistoricContent(
                 onItemSelected = { item ->
                     yearOptionSelected = item
                 },
-                modifier = Modifier.width(150.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = MyAccountsTheme.dimensions.padding4)
             )
         }
         HistoricScreenList(
-            expenses = uiModel.expensePerMonthUiModelList,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 150.dp),
-            navigateToHistoricScreen = navigateToHistoricScreen
+            navigateToHistoricScreen = navigateToHistoricScreen,
+            expenses = uiModel.expensePerMonthUiModelList,
+            isLoading = uiModel.isLoading
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -173,35 +178,51 @@ private fun HistoricContent(
 @Composable
 fun HistoricScreenList(
     expenses: List<ExpensePerMonthUiModel>,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
     navigateToHistoricScreen: (taskId: Int, nameExpense: String) -> Unit,
 ) {
     val state = rememberLazyListState()
 
-    if (expenses.isEmpty()) {
+    if (isLoading) {
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoadingAnimation(
+                circleSize = MyAccountsTheme.dimensions.sizing24,
+                circleColor = MyAccountsTheme.colors.primary
+            )
+        }
+    }
+    else if (expenses.isEmpty()) {
         EmptyContent(
             modifier = modifier
         )
-    } else {
-        Column(
-            modifier = modifier.background(MyAccountsTheme.colors.background)
+    }
+    else {
+        LazyColumn(
+            state = state,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = MyAccountsTheme.dimensions.padding16)
         ) {
-            LazyColumn(state = state, modifier = Modifier.fillMaxWidth()) {
-                items(
-                    items = expenses,
-                    key = { account ->
-                        account.idExpense
-                    }
-                ) { expense ->
-                    HistoricItem(
-                        expense = expense,
-                        navigateToHistoricScreen = navigateToHistoricScreen
-                    )
-                    Divider(
-                        modifier = Modifier.height(0.5.dp),
-                        color = MaterialTheme.colorScheme.dividerColor
-                    )
+            items(
+                items = expenses,
+                key = { account ->
+                    account.idExpense
                 }
+            ) { expense ->
+                HistoricItem(
+                    expense = expense,
+                    navigateToHistoricScreen = navigateToHistoricScreen
+                )
+                Divider(
+                    modifier = Modifier.height(0.5.dp),
+                    color = MaterialTheme.colorScheme.dividerColor
+                )
             }
         }
     }

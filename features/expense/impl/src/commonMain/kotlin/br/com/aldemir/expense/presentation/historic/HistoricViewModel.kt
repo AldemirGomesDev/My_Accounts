@@ -9,6 +9,7 @@ import br.com.aldemir.domain.usecase.expense.GetAllMonthlyPaymentUseCase
 import br.com.aldemir.expense.presentation.historic.action.HistoricExpenseAction
 import br.com.aldemir.expense.presentation.historic.mapper.toListView
 import br.com.aldemir.expense.presentation.historic.model.HistoricExpenseUiModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +24,7 @@ class HistoricViewModel(
 
     fun handleEvent(event: HistoricExpenseAction) {
         when (event) {
-            is HistoricExpenseAction.GetAllExpensePerMonth -> {
+            is HistoricExpenseAction.OnSearchClicked -> {
                 getAllExpensePerMonth(_uiModel.value.monthOptionSelected,event.year)
             }
 
@@ -48,6 +49,7 @@ class HistoricViewModel(
 
     private fun getAllExpensePerMonth(month: String, year: String) = viewModelScope.launch {
         updateLoading(true)
+        delay(1000)
         getAllExpensePerMonthUseCase(
             this, GetAllExpensePerMonthUseCase.Params(month, year)
         ) {
