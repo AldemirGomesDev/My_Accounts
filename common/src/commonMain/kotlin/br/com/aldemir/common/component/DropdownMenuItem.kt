@@ -26,7 +26,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun MyDropdownMenuItem(
     onItemClicked: (type: DropdownItemType) -> Unit,
-    listItems: Array<DropdownItemState>,
+    listItems: List<DropdownItemState>,
     disabledItem: Boolean = true,
 ) {
 
@@ -83,6 +83,6 @@ fun MyDropdownMenuItem(
 private fun DropdownMenuItemPreview() {
     MyDropdownMenuItem(
         onItemClicked = {},
-        listItems = arrayOf()
+        listItems = listOf()
     )
 }

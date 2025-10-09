@@ -21,6 +21,7 @@ import br.com.aldemir.common.component.StatisticsCard
 import br.com.aldemir.common.showMessage
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.recipe.model.RecipeView
+import br.com.aldemir.recipe.presentation.list.action.ListRecipeAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,21 +50,15 @@ fun ListRecipeScreen(
         mutableStateOf(RecipeView())
     }
 
-    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
+    val uiModel by viewModel.uiModel.collectAsState()
 
     BackHandler {
         navigateToHomeScreen()
     }
 
     LaunchedEffect(true) {
-        viewModel.getItemsMenu()
-        viewModel.getAllRecipePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
-        viewModel.getAllRecipeMonthly(DateUtils.getMonthString(), DateUtils.getYearString())
+        viewModel.handleAction(ListRecipeAction.LoadRecipes)
     }
-
-    val recipes by viewModel.recipes.collectAsState()
-    val cardState by viewModel.cardState.collectAsState()
-    val menuItems by viewModel.menuItemsState.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -75,25 +70,26 @@ fun ListRecipeScreen(
                     .background(MyAccountsTheme.colors.background),
             ) {
                 Box(modifier = Modifier.padding(horizontal = MyAccountsTheme.dimensions.padding16)) {
-                    StatisticsCard(cardState)
+                    StatisticsCard(uiModel.cardState)
                 }
-                if (recipes.isNotEmpty()) {
+                if (uiModel.recipes.isNotEmpty()) {
                     LazyColumn(
                         state = state
                     ) {
                         items(
-                            items = recipes,
+                            items = uiModel.recipes,
                             key = { recipeView ->
                                 recipeView.id
                             }
                         ) { recipeView ->
                             RecipeItem(
-                                listItems = menuItems,
+                                listItems = uiModel.menuItems,
                                 recipeView = recipeView,
                                 viewModel = viewModel,
                                 onDelete = {
                                     recipeToSave = recipeView
-                                    viewModel.onOpenDialogClicked()
+                                    viewModel.handleAction(ListRecipeAction.ShowDialog(true))
+
                                 },
                                 navigateToDetailScreen = { recipeId ->
                                     navigateToDetailScreen(recipeId)
@@ -111,14 +107,14 @@ fun ListRecipeScreen(
                 DisplayAlertDialog(
                     title = stringResource(Res.string.dialog_delete_title),
                     message = stringResource(Res.string.dialog_delete_message),
-                    openDialog = showDialogState,
+                    openDialog = uiModel.showDialog,
                     closeDialog = {
-                        viewModel.onDialogDismiss()
+                        viewModel.handleAction(ListRecipeAction.ShowDialog(false))
                     },
                     onYesClicked = {
                         deleteExpense(viewModel, recipeToSave)
                         showToast(message)
-                        viewModel.onDialogConfirm()
+                        viewModel.handleAction(ListRecipeAction.ShowDialog(false))
                     }
                 )
             }
@@ -135,12 +131,7 @@ private fun showToast(message: String) {
 
 private fun deleteExpense(viewModel: ListRecipeViewModel, recipe: RecipeView) {
     CoroutineScope(Dispatchers.Default).launch {
-        viewModel.delete(recipe)
+        viewModel.handleAction(ListRecipeAction.DeleteRecipe(recipe))
         delay(300)
-        getAllExpenseMonth(viewModel)
     }
-}
-
-private fun getAllExpenseMonth(viewModel: ListRecipeViewModel) {
-    viewModel.getAllRecipePerMonth(DateUtils.getMonthString(), DateUtils.getYearString())
 }

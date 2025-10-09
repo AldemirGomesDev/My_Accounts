@@ -36,8 +36,8 @@ class DetailRecipeViewModel(
     private val _recipeMonthlyView = MutableStateFlow<List<RecipeMonthlyView>>(emptyList())
     var recipeMonthlyView: StateFlow<List<RecipeMonthlyView>> = _recipeMonthlyView
 
-    private val _menuItemsState = MutableStateFlow<Array<DropdownItemState>>(arrayOf())
-    val menuItemsState: StateFlow<Array<DropdownItemState>> = _menuItemsState.asStateFlow()
+    private val _menuItemsState = MutableStateFlow<List<DropdownItemState>>(listOf())
+    val menuItemsState: StateFlow<List<DropdownItemState>> = _menuItemsState.asStateFlow()
 
     private val _id = MutableStateFlow<Int>(0)
     val id: StateFlow<Int> = _id
@@ -100,7 +100,7 @@ class DetailRecipeViewModel(
 
     fun getItemsMenu(){
         _menuItemsState.update {
-            arrayOf(
+            listOf(
                 DropdownItemState(
                     type = DropdownItemType.PAY,
                     titleRes = Res.string.button_text_pay,
