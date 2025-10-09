@@ -46,6 +46,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.material)
+            implementation(libs.lifecycle.runtime.compose)
         }
         iosMain.dependencies {
             implementation(compose.ui)

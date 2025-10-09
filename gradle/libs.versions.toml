@@ -4,6 +4,7 @@ kotlin = "2.2.20"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.7.3"
 logging = "2.0.3"
+lifecycle = '2.9.1'
 minSdk = "26"
 navigationMultplatform = "2.8.0-alpha08"
 targetSdk = "33"
@@ -33,7 +34,7 @@ compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose_multplatform" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesMultplatform" }
 
-
+lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging = { module = "com.diamondedge:logging", version.ref = "logging" }
