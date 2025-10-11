@@ -1,35 +1,16 @@
 package br.com.aldemir.recipe.mapper
 
 import br.com.aldemir.domain.model.RecipeDomain
-import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import br.com.aldemir.recipe.model.RecipeView
-
-fun RecipePerMonthDomain.toDatabase() =
-    RecipeMonthlyDomain(
-        id = id,
-        id_recipe = id_recipe,
-        year = year,
-        month = month,
-        value = value,
-        status = status,
-    )
-
-fun RecipeMonthlyView.viewToDomain() = RecipeMonthlyDomain(
-    id = id,
-    id_recipe = id_recipe,
-    year = year,
-    month = month,
-    value = value,
-    status = status,
-)
 
 fun RecipePerMonthDomain.toRecipeView(expired: Boolean) = RecipeView(
     id = id_recipe,
     name = name,
     description = description,
     due_date = due_date,
+    value = value,
     status = status,
     expired = expired
 )

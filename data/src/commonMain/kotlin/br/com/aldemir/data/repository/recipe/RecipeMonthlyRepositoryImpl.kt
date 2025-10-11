@@ -16,8 +16,8 @@ class RecipeMonthlyRepositoryImpl(
         return recipeMonthlyDao.insert(recipeMonthly.toDTO())
     }
 
-    override suspend fun update(recipeMonthly: RecipeMonthlyDomain): Int {
-        return recipeMonthlyDao.update(recipeMonthly.toDTO())
+    override suspend fun update(id: Int, situation: Boolean): Int {
+        return recipeMonthlyDao.updateSituationById(id, situation)
     }
 
     override suspend fun delete(recipeMonthly: RecipeMonthlyDomain): Int {

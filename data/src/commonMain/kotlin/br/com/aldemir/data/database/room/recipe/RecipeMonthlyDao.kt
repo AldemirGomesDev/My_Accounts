@@ -12,8 +12,9 @@ interface RecipeMonthlyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(recipeMonthlies: List<RecipeMonthlyDTO>): List<Long>
 
-    @Update
-    suspend fun update(recipeMonthlyDTO: RecipeMonthlyDTO): Int
+
+    @Query("UPDATE recipe_monthly SET status = :status WHERE id = :id")
+    suspend fun updateSituationById(id: Int, status: Boolean): Int
 
     @Delete
     suspend fun delete(recipeMonthlyDTO: RecipeMonthlyDTO): Int

@@ -15,7 +15,6 @@ import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
 import br.com.aldemir.recipe.mapper.toView
-import br.com.aldemir.recipe.mapper.viewToDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +31,7 @@ import org.jetbrains.compose.resources.StringResource
 class DetailRecipeViewModel(
     private val getAllByIdRecipeUseCase: GetAllByIdRecipeUseCase,
     private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _recipeMonthlyView = MutableStateFlow<List<RecipeMonthlyView>>(emptyList())
     var recipeMonthlyView: StateFlow<List<RecipeMonthlyView>> = _recipeMonthlyView
 
@@ -65,7 +64,15 @@ class DetailRecipeViewModel(
         getAllByIdRecipeUseCase(this, id) {
             success = { monthlyPaymentDomain ->
                 monthlyPaymentDomain.forEach { item ->
-                    monthlyPaymentViewList.add(item.toView(checkIfExpired(item.due_date, item.month, item.year)))
+                    monthlyPaymentViewList.add(
+                        item.toView(
+                            checkIfExpired(
+                                item.due_date,
+                                item.month,
+                                item.year
+                            )
+                        )
+                    )
                 }
                 _name.value = monthlyPaymentViewList[0].name
                 _recipeMonthlyView.update { monthlyPaymentViewList }
@@ -73,9 +80,12 @@ class DetailRecipeViewModel(
         }
     }
 
-    fun updateRecipeMonthly(recipeMonthlyView: RecipeMonthlyView) = viewModelScope.launch {
+    fun updateRecipeMonthly(id: Int) = viewModelScope.launch {
         _id.update { 0 }
-        updateRecipeMonthlyUseCase(this, recipeMonthlyView.viewToDomain()) {
+        updateRecipeMonthlyUseCase(
+            this,
+            UpdateRecipeMonthlyUseCase.Params(id, true)
+        ) {
             success = { id ->
                 _id.update { id }
             }
@@ -98,7 +108,7 @@ class DetailRecipeViewModel(
         else Res.string.account_pending
     }
 
-    fun getItemsMenu(){
+    fun getItemsMenu() {
         _menuItemsState.update {
             listOf(
                 DropdownItemState(

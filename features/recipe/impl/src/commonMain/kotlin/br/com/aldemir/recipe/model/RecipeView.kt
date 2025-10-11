@@ -8,6 +8,7 @@ data class RecipeView(
     var description: String = "",
     var created_at: Instant? = null,
     var due_date: Int = 0,
+    val value: Double = 0.0,
     var status: Boolean = false,
     var expired: Boolean = false
 )

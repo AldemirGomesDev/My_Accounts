@@ -13,7 +13,6 @@ import br.com.aldemir.domain.model.RecipeUpdateDomain
 import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
-import br.com.aldemir.recipe.mapper.toDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -61,7 +60,10 @@ class ChangeRecipeViewModel(
     fun updateMonthlyRecipe() = viewModelScope.launch {
         _recipeMonthlyView.value.value = value.value.fromCurrency()
         _recipeMonthlyView.value.status = isCheckedPaid.value
-        updateRecipeMonthlyUseCase(this, _recipeMonthlyView.value.toDatabase()) {
+        val id = _recipeMonthlyView.value.id
+        updateRecipeMonthlyUseCase(this,
+            UpdateRecipeMonthlyUseCase.Params(id = id, situation = true)
+        ) {
             success = {
                 _idMonthlyRecipe.update { it }
             }

@@ -85,7 +85,6 @@ fun ListRecipeScreen(
                             RecipeItem(
                                 listItems = uiModel.menuItems,
                                 recipeView = recipeView,
-                                viewModel = viewModel,
                                 onDelete = {
                                     recipeToSave = recipeView
                                     viewModel.handleAction(ListRecipeAction.ShowDialog(true))

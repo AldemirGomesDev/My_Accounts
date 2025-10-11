@@ -110,7 +110,7 @@ class ListRecipeViewModel(
         val recipes = _uiModel.value.recipeMonthlyDomain
         val valueTotal = recipes.sumOf { it.value }
         val paidOut = recipes.filter { it.status }.sumOf { it.value }
-        val pending = valueTotal - paidOut
+        val pending = recipes.filter { !it.status }.sumOf { it.value }
 
         val cardState = CardState(
             valueTotal = valueTotal,

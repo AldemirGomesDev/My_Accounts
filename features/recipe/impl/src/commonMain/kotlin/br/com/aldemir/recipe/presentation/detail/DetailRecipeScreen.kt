@@ -112,7 +112,7 @@ fun DetailRecipeScreen(
                         viewModel.onDialogDismiss()
                     },
                     onYesClicked = {
-                        viewModel.updateRecipeMonthly(monthlyPaymentToUpdate)
+                        viewModel.updateRecipeMonthly(monthlyPaymentToUpdate.id)
                         viewModel.onDialogConfirm()
                     }
                 )
