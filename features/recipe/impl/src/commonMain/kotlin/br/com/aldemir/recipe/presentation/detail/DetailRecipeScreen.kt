@@ -183,7 +183,7 @@ private fun DetailRecipeItem(
                 .background(MyAccountsTheme.colors.background)
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onLongPress = {
+                        onTap = {
                             if (recipeMonthlyView.status)
                                 showMessage(toastMessage)
                             else navigateToChangeScreen(recipeMonthlyView.id)

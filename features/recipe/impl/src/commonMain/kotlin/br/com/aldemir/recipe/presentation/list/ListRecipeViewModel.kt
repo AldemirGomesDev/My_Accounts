@@ -10,7 +10,6 @@ import br.com.aldemir.common.model.CardType
 import br.com.aldemir.common.model.DropdownItemState
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.util.DateUtils
-import br.com.aldemir.domain.model.RecipeMonthlyDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.domain.usecase.recipe.DeleteRecipeUseCase
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthlyUseCase
@@ -27,8 +26,6 @@ import kotlinx.coroutines.launch
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.dialog_delete_title
 import myaccounts.common.generated.resources.recipe_detail_screen_title
-
-private const val TAG = "listRecipeViewModel"
 
 class ListRecipeViewModel(
     private val getAllRecipePerMonthUseCase: GetAllRecipePerMonthUseCase,

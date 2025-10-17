@@ -13,7 +13,7 @@ import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeSituationUseCase
 import br.com.aldemir.recipe.mapper.toView
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +30,7 @@ import org.jetbrains.compose.resources.StringResource
 
 class DetailRecipeViewModel(
     private val getAllByIdRecipeUseCase: GetAllByIdRecipeUseCase,
-    private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase
+    private val updateRecipeSituationUseCase: UpdateRecipeSituationUseCase
 ) : ViewModel() {
     private val _recipeMonthlyView = MutableStateFlow<List<RecipeMonthlyView>>(emptyList())
     var recipeMonthlyView: StateFlow<List<RecipeMonthlyView>> = _recipeMonthlyView
@@ -82,9 +82,9 @@ class DetailRecipeViewModel(
 
     fun updateRecipeMonthly(id: Int) = viewModelScope.launch {
         _id.update { 0 }
-        updateRecipeMonthlyUseCase(
+        updateRecipeSituationUseCase(
             this,
-            UpdateRecipeMonthlyUseCase.Params(id, true)
+            UpdateRecipeSituationUseCase.Params(id, true)
         ) {
             success = { id ->
                 _id.update { id }

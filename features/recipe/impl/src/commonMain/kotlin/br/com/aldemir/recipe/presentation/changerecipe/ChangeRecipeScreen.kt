@@ -17,14 +17,16 @@ import br.com.aldemir.common.theme.Purple200
 import br.com.aldemir.common.theme.Purple700
 import br.com.aldemir.common.theme.SMALL_PADDING
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
-import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.component.CheckboxWithText
 import br.com.aldemir.common.component.InputTextOutlinedTextField
 import br.com.aldemir.common.component.LoadingButton
 import br.com.aldemir.common.theme.FontSize
 import br.com.aldemir.common.theme.MyAccountsTheme
-import br.com.aldemir.domain.model.RecipePerMonthDomain
+import br.com.aldemir.common.util.toPercentString
+import br.com.aldemir.recipe.presentation.changerecipe.action.ChangeRecipeAction
+import br.com.aldemir.recipe.presentation.changerecipe.effect.ChangeRecipeEffect
+import br.com.aldemir.recipe.presentation.changerecipe.model.ChangeRecipeUiModel
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.button_update
 import myaccounts.common.generated.resources.expense_month_and_year
@@ -47,61 +49,44 @@ fun ChangeRecipeScreen(
         viewModel.getAllByIdMonthlyRecipe(idMonthlyRecipe)
     }
 
-    val initValue: String by viewModel.value
-    val name: String by viewModel.name
-    val description: String by viewModel.description
+    val uiModel by viewModel.uiModel.collectAsState()
 
-    val mIdMonthlyRecipe: Int by viewModel.idMonthlyRecipe.collectAsState()
-
-    val mMonthlyRecipes = remember { mutableStateOf(RecipePerMonthDomain()) }
-
-    val monthlyRecipes by viewModel.recipeMonthlyView.collectAsState()
-
-    mMonthlyRecipes.value = monthlyRecipes
 
     val yearAndMonth = stringResource(
         Res.string.expense_month_and_year,
-        mMonthlyRecipes.value.year,
-        mMonthlyRecipes.value.month
+        uiModel.year,
+        uiModel.month
     )
-
-    viewModel.value.value =
-        viewModel.getValueWithTwoDecimal(mMonthlyRecipes.value.value.toString())
-
-    viewModel.recipeId.value = mMonthlyRecipes.value.id_recipe
-    viewModel.name.value = mMonthlyRecipes.value.name
-    viewModel.description.value = mMonthlyRecipes.value.description
-    viewModel.isCheckedPaid.value = mMonthlyRecipes.value.status
-
-    LaunchedEffect(key1 = mIdMonthlyRecipe) {
-        if (mIdMonthlyRecipe > 0) navigateToDetailScreen()
-    }
 
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
             ChangeRecipeContent(
                 yearAndMonth = yearAndMonth,
-                title = name,
-                onTitleChange = {
-                    viewModel.name.value = it
+                title = uiModel.name,
+                onClickUpdate = { isPaid ->
+                    viewModel.handleAction(
+                        ChangeRecipeAction.UpdateMonthlyRecipe(idMonthlyRecipe, isPaid)
+                    )
                 },
-                value = initValue,
-                onValueChange = {
-                    viewModel.value.value = it
-                },
-                description = description,
-                onDescriptionChange = {
-                    viewModel.description.value = it
-                },
-                onClickUpdate = {
-                    viewModel.updateMonthlyRecipe()
+                sendAction = { action ->
+                    viewModel.handleAction(action)
                 },
                 paddingValues = padding,
-                viewModel = viewModel
+                uiModel = uiModel
             )
         },
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is ChangeRecipeEffect.NavigateToRecipeList -> {
+                    navigateToDetailScreen()
+                }
+            }
+        }
+    }
 
 }
 
@@ -109,14 +94,10 @@ fun ChangeRecipeScreen(
 private fun ChangeRecipeContent(
     yearAndMonth: String,
     title: String,
-    onTitleChange: (String) -> Unit,
-    value: String,
-    onValueChange: (String) -> Unit,
-    description: String,
-    onDescriptionChange: (String) -> Unit,
-    onClickUpdate: () -> Unit,
+    onClickUpdate: (isPaid: Boolean) -> Unit,
+    sendAction: (ChangeRecipeAction) -> Unit,
     paddingValues: PaddingValues,
-    viewModel: ChangeRecipeViewModel
+    uiModel: ChangeRecipeUiModel
 ) {
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
@@ -129,7 +110,9 @@ private fun ChangeRecipeContent(
         mutableStateOf(false)
     }
 
-    enabled = (viewModel.isEnabledRegisterButton.value && !loading)
+    val valueString = uiModel.value.toPercentString()
+
+    enabled = (uiModel.isEnabledRegisterButton && !loading)
 
     Column(
         modifier = Modifier
@@ -153,14 +136,13 @@ private fun ChangeRecipeContent(
         InputTextOutlinedTextField(
             value = title,
             onValueChange = {
-                onTitleChange(it)
-                viewModel.validateName()
+                sendAction(ChangeRecipeAction.OnTitleChange(it))
             },
             label = stringResource(Res.string.form_add_name),
-            isError = viewModel.isNameValid.value
+            isError = uiModel.isNameValid
         )
         Text(
-            text = viewModel.nameError.value,
+            text = uiModel.nameError,
             color = MaterialTheme.colors.error,
             fontSize = FontSize.scale12
         )
@@ -170,37 +152,38 @@ private fun ChangeRecipeContent(
         )
 
         InputTextOutlinedTextField(
-            value = value,
+            value = valueString,
             onValueChange = {
-                onValueChange(it)
-                viewModel.validateValue()
+                sendAction(ChangeRecipeAction.OnValueChange(it))
             },
             label = stringResource(Res.string.form_add_value),
-            isError = viewModel.isValueValid.value,
+            isError = valueString.isEmpty(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Next,
             ),
             visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
         )
-        Text(
-            text = viewModel.valueError.value,
-            color = MaterialTheme.colors.error,
-            fontSize = FontSize.scale12
-        )
+        if (valueString.isEmpty()) {
+            Text(
+                text = uiModel.valueError,
+                color = MaterialTheme.colors.error,
+                fontSize = FontSize.scale12
+            )
+        }
+
         Divider(
             modifier = Modifier.height(MEDIUM_PADDING),
             color = MyAccountsTheme.colors.background
         )
 
         InputTextOutlinedTextField(
-            value = description,
+            value = uiModel.description,
             onValueChange = {
-                onDescriptionChange(it)
-                viewModel.validateDescription()
+                sendAction(ChangeRecipeAction.OnDescriptionChange(it))
             },
             label = stringResource(Res.string.form_add_description),
-            isError = viewModel.isDescriptionValid.value,
+            isError = uiModel.isDescriptionValid,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Text,
@@ -208,7 +191,7 @@ private fun ChangeRecipeContent(
             )
         )
         Text(
-            text = viewModel.descriptionError.value,
+            text = uiModel.descriptionError,
             color = MaterialTheme.colors.error,
             fontSize = FontSize.scale12
         )
@@ -219,8 +202,10 @@ private fun ChangeRecipeContent(
 
         CheckboxWithText(
             text = stringResource(Res.string.form_text_checkbox),
-            isChecked = viewModel.isCheckedPaid.value,
-            onCheckedChange = { viewModel.isCheckedPaid.value = it }
+            isChecked = uiModel.isCheckedPaid,
+            onCheckedChange = {
+                sendAction(ChangeRecipeAction.OnCheckedChange(it))
+            }
         )
         Divider(
             modifier = Modifier.height(SMALL_PADDING),
@@ -230,7 +215,7 @@ private fun ChangeRecipeContent(
         LoadingButton(
             onClick = {
                 loading = true
-                onClickUpdate()
+                onClickUpdate(uiModel.isCheckedPaid)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -242,20 +227,4 @@ private fun ChangeRecipeContent(
         )
 
     }
-}
-
-@Composable
-private fun ChangeRecipeContentPreview() {
-    ChangeRecipeContent(
-        yearAndMonth = emptyString(),
-        title = "12 - Dezembro",
-        onTitleChange = {},
-        value = "90",
-        onValueChange = {},
-        description = "",
-        onDescriptionChange = {},
-        paddingValues = PaddingValues(),
-        onClickUpdate = {},
-        viewModel = koinViewModel(),
-    )
 }

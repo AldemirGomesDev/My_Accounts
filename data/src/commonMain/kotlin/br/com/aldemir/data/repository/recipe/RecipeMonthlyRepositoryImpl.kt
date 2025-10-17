@@ -2,7 +2,6 @@ package br.com.aldemir.data.repository.recipe
 
 import br.com.aldemir.data.database.room.recipe.RecipeMonthlyDao
 import br.com.aldemir.data.mapper.toDTO
-import br.com.aldemir.data.mapper.toDomain
 import br.com.aldemir.data.mapper.toRecipeMonthlyDomain
 import br.com.aldemir.data.mapper.toRecipePerMonthDomain
 import br.com.aldemir.domain.model.RecipeMonthlyDomain
@@ -18,6 +17,10 @@ class RecipeMonthlyRepositoryImpl(
 
     override suspend fun update(id: Int, situation: Boolean): Int {
         return recipeMonthlyDao.updateSituationById(id, situation)
+    }
+
+    override suspend fun updateValueById(id: Int, value: Double): Int {
+        return recipeMonthlyDao.updateValueById(id, value)
     }
 
     override suspend fun delete(recipeMonthly: RecipeMonthlyDomain): Int {

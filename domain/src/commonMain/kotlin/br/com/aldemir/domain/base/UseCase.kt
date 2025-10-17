@@ -1,6 +1,7 @@
 package br.com.aldemir.domain.base
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -41,16 +42,47 @@ interface UseCase<in Param, R> {
     class None
 }
 
-suspend fun <P, R> UseCase<P, R>.awaitForResult(scope: CoroutineScope, params: P): R =
+//suspend fun <P, R> UseCase<P, R>.awaitForResult(params: P): R =
+//    suspendCancellableCoroutine { cont ->
+//        // Usa o escopo da própria coroutine corrente
+//        this@awaitForResult(cont.context + SupervisorJob()).invoke(
+//            CoroutineScope(cont.context),
+//            params
+//        ) {
+//            success = { result ->
+//                if (cont.isActive) cont.resume(result)
+//            }
+//            error = { throwable ->
+//                if (cont.isActive) cont.resumeWithException(throwable)
+//            }
+//        }
+//    }
+
+suspend fun <P, R> UseCase<P, R>.awaitForResult(params: P): R =
     suspendCancellableCoroutine { cont ->
-        scope.launch {
-            this@awaitForResult(this, params) {
-                success = { result ->
-                    if (cont.isActive) cont.resume(result)
-                }
-                error = { throwable ->
-                    if (cont.isActive) cont.resumeWithException(throwable)
-                }
+        // Cria um escopo com o mesmo contexto da coroutine atual
+        val scope = CoroutineScope(cont.context)
+
+        this@awaitForResult(scope, params) {
+            success = { result ->
+                if (cont.isActive) cont.resume(result)
+            }
+            error = { throwable ->
+                if (cont.isActive) cont.resumeWithException(throwable)
             }
         }
     }
+
+//suspend fun <P, R> UseCase<P, R>.awaitForResult(scope: CoroutineScope, params: P): R =
+//    suspendCancellableCoroutine { cont ->
+//        scope.launch {
+//            this@awaitForResult(this, params) {
+//                success = { result ->
+//                    if (cont.isActive) cont.resume(result)
+//                }
+//                error = { throwable ->
+//                    if (cont.isActive) cont.resumeWithException(throwable)
+//                }
+//            }
+//        }
+//    }

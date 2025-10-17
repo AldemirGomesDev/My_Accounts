@@ -4,6 +4,7 @@ import br.com.aldemir.domain.model.RecipeDomain
 import br.com.aldemir.domain.model.RecipePerMonthDomain
 import br.com.aldemir.recipe.model.RecipeMonthlyView
 import br.com.aldemir.recipe.model.RecipeView
+import br.com.aldemir.recipe.presentation.changerecipe.model.ChangeRecipeUiModel
 
 fun RecipePerMonthDomain.toRecipeView(expired: Boolean) = RecipeView(
     id = id_recipe,
@@ -25,6 +26,20 @@ fun RecipePerMonthDomain.toView(expired: Boolean) = RecipeMonthlyView(
     due_date = due_date,
     status = status,
     expired = expired
+)
+
+fun RecipePerMonthDomain.toUiModel() = ChangeRecipeUiModel(
+    recipeId = id_recipe,
+    value = value,
+    isValueValid = true,
+    name = name,
+    isNameValid = true,
+    description = description,
+    isDescriptionValid = true,
+    isCheckedPaid = status,
+    idMonthlyRecipe = id,
+    year = year,
+    month = month,
 )
 
 

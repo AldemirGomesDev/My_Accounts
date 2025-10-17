@@ -232,15 +232,4 @@ class AddExpenseViewModel(
         }
         shouldEnabledRegisterButton()
     }
-
-    fun getNumberOfTimesItRepeats(): MutableList<String> {
-        log.info { "getNumberOfTimesItRepeats: " }
-
-        val numberOfTimesItRepeats = arrayListOf<String>()
-        for (i in 1..100) {
-            numberOfTimesItRepeats.add(i.toString())
-        }
-        return numberOfTimesItRepeats
-    }
-
 }

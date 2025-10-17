@@ -1,137 +1,155 @@
 package br.com.aldemir.recipe.presentation.changerecipe
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.aldemir.common.util.emptyString
 import br.com.aldemir.common.util.fromCurrency
-import br.com.aldemir.common.util.pointString
-import br.com.aldemir.common.util.zeroString
-import br.com.aldemir.domain.model.RecipePerMonthDomain
+import br.com.aldemir.common.util.toPercentString
 import br.com.aldemir.domain.model.RecipeUpdateDomain
 import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
+import br.com.aldemir.recipe.mapper.toUiModel
+import br.com.aldemir.recipe.presentation.changerecipe.action.ChangeRecipeAction
+import br.com.aldemir.recipe.presentation.changerecipe.effect.ChangeRecipeEffect
+import br.com.aldemir.recipe.presentation.changerecipe.model.ChangeRecipeUiModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChangeRecipeViewModel(
-    private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase,
     private val getByIdRecipeMonthlyUseCase: GetByIdRecipeMonthlyUseCase,
-    private val updateRecipeNameAndDescriptionUseCase: UpdateRecipeNameAndDescriptionUseCase
+    private val updateRecipeMonthlyUseCase: UpdateRecipeMonthlyUseCase
 ) : ViewModel() {
 
-    val recipeId: MutableState<Int> = mutableStateOf(0)
+    private val _uiModel = MutableStateFlow(ChangeRecipeUiModel())
+    var uiModel = _uiModel.asStateFlow()
 
-    val value: MutableState<String> = mutableStateOf(emptyString())
-    val isValueValid: MutableState<Boolean> = mutableStateOf(false)
-    val valueError: MutableState<String> = mutableStateOf(emptyString())
+    private val _uiEffect = Channel<ChangeRecipeEffect>(Channel.BUFFERED)
+    val uiEffect = _uiEffect.receiveAsFlow()
 
-    val name: MutableState<String> = mutableStateOf(emptyString())
-    val isNameValid: MutableState<Boolean> = mutableStateOf(false)
-    val nameError: MutableState<String> = mutableStateOf(emptyString())
+    fun handleAction(action: ChangeRecipeAction) {
+        when (action) {
+            is ChangeRecipeAction.OnTitleChange -> {
+                _uiModel.update { it.copy(name = action.title) }
+                validateName()
+            }
 
-    val description: MutableState<String> = mutableStateOf(emptyString())
-    val isDescriptionValid: MutableState<Boolean> = mutableStateOf(false)
-    val descriptionError: MutableState<String> = mutableStateOf(emptyString())
+            is ChangeRecipeAction.OnValueChange -> {
+                _uiModel.update { it.copy(value = action.value.fromCurrency()) }
+                validateValue()
+            }
 
-    val isCheckedPaid: MutableState<Boolean> = mutableStateOf(false)
+            is ChangeRecipeAction.OnDescriptionChange -> {
+                _uiModel.update { it.copy(description = action.description) }
+                validateDescription()
+            }
 
-    var isEnabledRegisterButton: MutableState<Boolean> = mutableStateOf(true)
+            is ChangeRecipeAction.OnCheckedChange -> {
+                _uiModel.update { it.copy(isCheckedPaid = action.isCheckedPaid) }
+            }
 
-    private val _idMonthlyRecipe = MutableStateFlow(0)
-    val idMonthlyRecipe = _idMonthlyRecipe.asStateFlow()
-
-    private val _recipeMonthlyView = MutableStateFlow(RecipePerMonthDomain())
-    var recipeMonthlyView: StateFlow<RecipePerMonthDomain> = _recipeMonthlyView
-
+            is ChangeRecipeAction.UpdateMonthlyRecipe -> {
+                updateRecipeNameAndDescription(action.id, action.isPaid)
+            }
+        }
+    }
     fun getAllByIdMonthlyRecipe(id: Int) = viewModelScope.launch {
         getByIdRecipeMonthlyUseCase(this, id) {
             success = { monthlyRecipe ->
-                _recipeMonthlyView.update { monthlyRecipe }
+                _uiModel.update {
+                    monthlyRecipe.toUiModel()
+                }
+                validateFields()
             }
         }
     }
 
-    fun updateMonthlyRecipe() = viewModelScope.launch {
-        _recipeMonthlyView.value.value = value.value.fromCurrency()
-        _recipeMonthlyView.value.status = isCheckedPaid.value
-        val id = _recipeMonthlyView.value.id
-        updateRecipeMonthlyUseCase(this,
-            UpdateRecipeMonthlyUseCase.Params(id = id, situation = true)
-        ) {
-            success = {
-                _idMonthlyRecipe.update { it }
-            }
-        }
-        updateRecipeNameAndDescription()
-    }
-
-    private fun updateRecipeNameAndDescription() = viewModelScope.launch {
+    private fun updateRecipeNameAndDescription(idMonthlyRecipe: Int, isPaid: Boolean) = viewModelScope.launch {
         val recipeUpdateDomain = RecipeUpdateDomain(
-            id = recipeId.value,
-            name = name.value,
-            description = description.value
+            id = _uiModel.value.recipeId,
+            idMonthlyRecipe = idMonthlyRecipe,
+            value = _uiModel.value.value,
+            name = _uiModel.value.name,
+            isPaid = isPaid,
+            description = _uiModel.value.description
         )
-        updateRecipeNameAndDescriptionUseCase(this, recipeUpdateDomain) {}
+        updateRecipeMonthlyUseCase(this, recipeUpdateDomain) {
+            success = { id ->
+                if (id > 0) {
+                    sendEffect(ChangeRecipeEffect.NavigateToRecipeList)
+                }
+            }
+        }
     }
 
-    fun getValueWithTwoDecimal(value: String): String {
-        val newValue = if (verifyTwoCharactersAfterPoint(value)) "$value${zeroString()}"
-        else removePointString(value)
-        return removePointString(newValue)
+    private fun sendEffect(effect: ChangeRecipeEffect) {
+        viewModelScope.launch {
+            _uiEffect.send(effect)
+        }
     }
 
-    private fun removePointString(value: String): String {
-        return value.replace(pointString(), emptyString())
+    private fun validateFields() {
+        validateName()
+        validateValue()
+        validateDescription()
     }
 
-    private fun verifyTwoCharactersAfterPoint(value: String): Boolean {
-        val string = value.split(pointString())
-        return string[1].length == 1
+    private fun validateCheckedPaid(isPaid: Boolean) {
+        _uiModel.update {
+            it.copy(isCheckedPaid = _uiModel.value.isCheckedPaid)
+        }
     }
 
-    fun validateName() {
-        if (validateLength(name.value, 3)) {
-            isNameValid.value = true
-            nameError.value = "O nome deve conter no mínimo 3 dígitos"
+    private fun validateName() {
+        if (validateLength(_uiModel.value.name, 3)) {
+            _uiModel.update {
+                it.copy(isNameValid = true, nameError = "O nome deve conter no mínimo 3 dígitos")
+            }
         } else {
-            isNameValid.value = false
-            nameError.value = emptyString()
+            _uiModel.update {
+                it.copy(isNameValid = false, nameError = emptyString())
+            }
         }
         shouldEnabledRegisterButton()
     }
 
-    fun validateValue() {
-        if (value.value.isEmpty()) {
-            isValueValid.value = true
-            valueError.value = "O valor é obrigatório"
+    private fun validateValue() {
+        if (_uiModel.value.value == 0.0) {
+            _uiModel.update {
+                it.copy(isValueValid = true, valueError = "O valor é obrigatório")
+            }
         } else {
-            isValueValid.value = false
-            valueError.value = emptyString()
+            _uiModel.update {
+                it.copy(isValueValid = false, valueError = emptyString())
+            }
         }
         shouldEnabledRegisterButton()
     }
 
-    fun validateDescription() {
-        if (validateLength(description.value, 2)) {
-            isDescriptionValid.value = true
-            descriptionError.value = "a descrição deve conter no mínimo 2 dígitos"
+    private fun validateDescription() {
+        if (validateLength(_uiModel.value.description, 2)) {
+            _uiModel.update {
+                it.copy(isDescriptionValid = true, descriptionError = "a descrição deve conter no mínimo 2 dígitos")
+            }
         } else {
-            isDescriptionValid.value = false
-            descriptionError.value = emptyString()
+            _uiModel.update {
+                it.copy(isDescriptionValid = false, descriptionError = emptyString())
+            }
         }
         shouldEnabledRegisterButton()
     }
 
     private fun shouldEnabledRegisterButton() {
-        isEnabledRegisterButton.value = !validateLength(name.value, 3)
-                && value.value.isNotEmpty()
-                && !validateLength(description.value, 2)
+        _uiModel.update {
+            it.copy(
+                isEnabledRegisterButton = !validateLength(_uiModel.value.name, 3)
+                        && _uiModel.value.value.toPercentString().isNotEmpty()
+                        && !validateLength(_uiModel.value.value.toPercentString(), 2)
+            )
+        }
     }
 
     private fun validateLength(text: String, minLength: Int) = text.length < minLength

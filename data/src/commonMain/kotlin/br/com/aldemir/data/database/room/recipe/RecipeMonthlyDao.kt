@@ -16,6 +16,9 @@ interface RecipeMonthlyDao {
     @Query("UPDATE recipe_monthly SET status = :status WHERE id = :id")
     suspend fun updateSituationById(id: Int, status: Boolean): Int
 
+    @Query("UPDATE recipe_monthly SET value = :value WHERE id = :id")
+    suspend fun updateValueById(id: Int, value: Double): Int
+
     @Delete
     suspend fun delete(recipeMonthlyDTO: RecipeMonthlyDTO): Int
 

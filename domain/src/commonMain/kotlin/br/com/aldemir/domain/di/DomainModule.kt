@@ -28,8 +28,8 @@ import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.GetByIdRecipeMonthlyUseCase
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipeMonthUseCase
 import br.com.aldemir.domain.usecase.recipe.GetAllRecipePerMonthUseCase
+import br.com.aldemir.domain.usecase.recipe.UpdateRecipeSituationUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeMonthlyUseCase
-import br.com.aldemir.domain.usecase.recipe.UpdateRecipeNameAndDescriptionUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -58,8 +58,8 @@ val domainModule = module {
     factoryOf(::GetAllRecipeUseCase)
     factoryOf(::GetAllRecipeMonthUseCase)
     factoryOf(::GetByIdRecipeMonthlyUseCase)
+    factoryOf(::UpdateRecipeSituationUseCase)
     factoryOf(::UpdateRecipeMonthlyUseCase)
-    factoryOf(::UpdateRecipeNameAndDescriptionUseCase)
     factoryOf(::InsertUserUseCase)
     factoryOf(::LoginUseCase)
     factoryOf(::LogoutUseCase)

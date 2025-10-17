@@ -6,6 +6,7 @@ import br.com.aldemir.domain.model.RecipePerMonthDomain
 interface RecipeMonthlyRepository {
     suspend fun insert(recipeMonthly: RecipeMonthlyDomain): Long
     suspend fun update(id: Int, situation: Boolean): Int
+    suspend fun updateValueById(id: Int, value: Double): Int
     suspend fun delete(recipeMonthly: RecipeMonthlyDomain): Int
     suspend fun getAllByIdRecipe(id: Int): List<RecipePerMonthDomain>
     suspend fun getByIdRecipeMonthly(id: Int): RecipePerMonthDomain
