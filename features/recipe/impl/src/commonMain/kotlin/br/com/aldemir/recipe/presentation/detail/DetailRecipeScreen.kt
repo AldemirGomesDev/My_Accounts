@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.intl.Locale
@@ -31,15 +32,24 @@ import br.com.aldemir.common.component.TextTitleItem
 import br.com.aldemir.common.component.TextTitleLarge
 import br.com.aldemir.common.model.DropdownItemType
 import br.com.aldemir.common.showMessage
+import br.com.aldemir.common.theme.HighPriorityColor
+import br.com.aldemir.common.theme.LowPriorityColor
+import br.com.aldemir.common.theme.MediumPriorityColor
 import br.com.aldemir.common.theme.MyAccountsTheme
 import br.com.aldemir.common.util.getCurrencySymbol
 import br.com.aldemir.common.util.toCurrency
 import br.com.aldemir.recipe.model.RecipeMonthlyView
+import br.com.aldemir.recipe.presentation.detail.action.DetailRecipeAction
+import br.com.aldemir.recipe.presentation.detail.model.DetailRecipeUiModel
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.account_label_value
+import myaccounts.common.generated.resources.account_pending
 import myaccounts.common.generated.resources.dialog_confirm_alert_title
 import myaccounts.common.generated.resources.dialog_confirm_recipe_message
+import myaccounts.common.generated.resources.expense_expired
 import myaccounts.common.generated.resources.expense_no_update_message_toast
+import myaccounts.common.generated.resources.expense_paid_out
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -53,27 +63,17 @@ fun DetailRecipeScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val id by viewModel.id.collectAsState()
-
     LaunchedEffect(key1 = recipeId) {
-        viewModel.getAllByIdRecipeMonthly(recipeId)
+        viewModel.handleAction(DetailRecipeAction.FetchData(recipeId))
     }
 
     BackHandler {
         navigateToBackScreen()
     }
 
-    var monthlyPaymentToUpdate by remember {
-        mutableStateOf(RecipeMonthlyView())
-    }
+    var idRecipeMonthlySelected = 0
 
-    if (id > 0) viewModel.getAllByIdRecipeMonthly(recipeId)
-
-    val recipeMonthlyViews by viewModel.recipeMonthlyView.collectAsState()
-
-    val showDialogState: Boolean by viewModel.showDialog.collectAsState()
-
-    val name by viewModel.name.collectAsState()
+    val uiModel by viewModel.uiModel.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -83,7 +83,7 @@ fun DetailRecipeScreen(
                     .background(MyAccountsTheme.colors.background)
             ) {
                 TextTitleLarge(
-                    text = name,
+                    text = uiModel.name,
                     color = Purple700,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -97,23 +97,23 @@ fun DetailRecipeScreen(
                 )
                 DetailRecipeList(
                     navigateToChangeScreen = navigateToChangeScreen,
-                    recipesMonthly = recipeMonthlyViews,
+                    recipesMonthly = uiModel.recipesMonthlyView,
                     onClickUpdate = { _, recipeMonthlyView ->
-                        monthlyPaymentToUpdate = recipeMonthlyView.copy(status = true)
-                        viewModel.onOpenDialogClicked()
+                        idRecipeMonthlySelected = recipeMonthlyView.id
+                        viewModel.handleAction(DetailRecipeAction.UpdateShowDialog(true))
                     },
-                    viewModel = viewModel
+                    uiModel = uiModel
                 )
                 DisplayAlertDialog(
                     title = stringResource(Res.string.dialog_confirm_alert_title),
                     message = stringResource(Res.string.dialog_confirm_recipe_message),
-                    openDialog = showDialogState,
+                    openDialog = uiModel.showDialog,
                     closeDialog = {
-                        viewModel.onDialogDismiss()
+                        viewModel.handleAction(DetailRecipeAction.UpdateShowDialog(false))
                     },
                     onYesClicked = {
-                        viewModel.updateRecipeMonthly(monthlyPaymentToUpdate.id)
-                        viewModel.onDialogConfirm()
+                        viewModel.handleAction(DetailRecipeAction.UpdateShowDialog(false))
+                        viewModel.handleAction(DetailRecipeAction.UpdateRecipeMonthly(idRecipeMonthlySelected))
                     }
                 )
             }
@@ -126,7 +126,7 @@ private fun DetailRecipeList(
     navigateToChangeScreen: (idRecipe: Int) -> Unit,
     recipesMonthly: List<RecipeMonthlyView>,
     onClickUpdate: (Int, RecipeMonthlyView) -> Unit,
-    viewModel: DetailRecipeViewModel
+    uiModel: DetailRecipeUiModel
 ) {
     val state = rememberLazyListState()
 
@@ -138,7 +138,7 @@ private fun DetailRecipeList(
                 navigateToChangeScreen = navigateToChangeScreen,
                 recipeMonthlyView = recipeMonthly,
                 onClickUpdate = onClickUpdate,
-                viewModel = viewModel,
+                uiModel = uiModel,
                 index = index
             )
         }
@@ -150,23 +150,21 @@ private fun DetailRecipeItem(
     navigateToChangeScreen: (recipeId: Int) -> Unit,
     recipeMonthlyView: RecipeMonthlyView,
     onClickUpdate: (Int, RecipeMonthlyView) -> Unit,
-    viewModel: DetailRecipeViewModel,
+    uiModel: DetailRecipeUiModel,
     index: Int,
 ) {
-    LaunchedEffect(key1 = true){
-        viewModel.getItemsMenu()
-    }
+
     val currentLocal = Locale.current
     val currencySymbol = getCurrencySymbol(currentLocal.language, currentLocal.region)
 
-    val statusColor = viewModel.getStatusColor(recipeMonthlyView.status, recipeMonthlyView.expired)
-    val resourceId = viewModel.getStatusText(recipeMonthlyView.status, recipeMonthlyView.expired)
+    val statusColor = getStatusColor(recipeMonthlyView.status, recipeMonthlyView.expired)
+    val resourceId = getStatusText(recipeMonthlyView.status, recipeMonthlyView.expired)
 
     val disabledItem by remember {
         mutableStateOf(!recipeMonthlyView.status)
     }
 
-    val menuItems by viewModel.menuItemsState.collectAsState()
+    val menuItems = uiModel.menuItems
 
     Surface(
         modifier = Modifier
@@ -232,4 +230,16 @@ private fun DetailRecipeItem(
             )
         }
     }
+}
+
+private fun getStatusColor(status: Boolean, expired: Boolean): Color {
+    return if (status) LowPriorityColor
+    else if (expired) HighPriorityColor
+    else MediumPriorityColor
+}
+
+private fun getStatusText(status: Boolean, expired: Boolean): StringResource {
+    return if (status) Res.string.expense_paid_out
+    else if (expired) Res.string.expense_expired
+    else Res.string.account_pending
 }
