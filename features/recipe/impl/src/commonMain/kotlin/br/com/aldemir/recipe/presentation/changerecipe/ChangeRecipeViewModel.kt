@@ -48,7 +48,7 @@ class ChangeRecipeViewModel(
             }
 
             is ChangeRecipeAction.OnCheckedChange -> {
-                _uiModel.update { it.copy(isCheckedPaid = action.isCheckedPaid) }
+                validateCheckedPaid(action.isCheckedPaid)
             }
 
             is ChangeRecipeAction.UpdateMonthlyRecipe -> {
@@ -99,7 +99,7 @@ class ChangeRecipeViewModel(
 
     private fun validateCheckedPaid(isPaid: Boolean) {
         _uiModel.update {
-            it.copy(isCheckedPaid = _uiModel.value.isCheckedPaid)
+            it.copy(isCheckedPaid = isPaid)
         }
     }
 

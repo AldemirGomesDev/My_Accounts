@@ -10,7 +10,6 @@ import br.com.aldemir.common.util.DateUtils
 import br.com.aldemir.domain.usecase.recipe.GetAllByIdRecipeUseCase
 import br.com.aldemir.domain.usecase.recipe.UpdateRecipeSituationUseCase
 import br.com.aldemir.recipe.mapper.toView
-import br.com.aldemir.recipe.model.RecipeMonthlyView
 import br.com.aldemir.recipe.presentation.detail.action.DetailRecipeAction
 import br.com.aldemir.recipe.presentation.detail.model.DetailRecipeUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
