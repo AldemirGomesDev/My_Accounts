@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,6 +29,9 @@ import br.com.aldemir.common.component.MyExposedDropdownMenu
 import br.com.aldemir.common.theme.*
 import br.com.aldemir.common.util.MaskCurrencyVisualTransformation
 import br.com.aldemir.common.util.getCurrencySymbol
+import br.com.aldemir.recipe.presentation.addrecipe.action.AddRecipeAction
+import br.com.aldemir.recipe.presentation.addrecipe.effect.AddRecipeEffect
+import br.com.aldemir.recipe.presentation.addrecipe.model.AddRecipeUiModel
 import myaccounts.common.generated.resources.Res
 import myaccounts.common.generated.resources.button_add_text
 import myaccounts.common.generated.resources.days
@@ -55,18 +59,14 @@ fun AddRecipeScreen(
 
     val focusManager = LocalFocusManager.current
 
-    val id: Int by viewModel.id
-    val name: String by viewModel.name
-    val value: String by viewModel.value
-    val description: String by viewModel.description
+    val handleAction = viewModel::handleAction
+
+    val uiModel by viewModel.uiModel.collectAsState()
 
     BackHandler {
         navigateToListRecipeScreen()
     }
 
-    LaunchedEffect(key1 = id) {
-        if (id > 0) navigateToListRecipeScreen()
-    }
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(10) }
 
@@ -82,39 +82,33 @@ fun AddRecipeScreen(
                     .padding(16.dp)
             ) {
                 AddAccountContent(
-                    viewModel = viewModel,
-                    title = name,
-                    onTitleChange = {
-                        viewModel.name.value = it
-                    },
-                    value = value,
-                    onValueChange = {
-                        viewModel.value.value = it
-                    },
-                    description = description,
-                    onDescriptionChange = {
-                        viewModel.description.value = it
-                    },
+                    uiModel = uiModel,
+                    handleAction = handleAction,
                     onClickSave = {
-                        viewModel.saveAccount()
+                        handleAction(AddRecipeAction.SaveRecipe)
                         focusManager.clearFocus()
                     },
                 )
             }
         },
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is AddRecipeEffect.RecipeSaved -> {
+                    navigateToListRecipeScreen()
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AddAccountContent(
-    viewModel: AddRecipeViewModel,
-    title: String,
-    onTitleChange: (String) -> Unit,
-    value: String,
-    onValueChange: (String) -> Unit,
-    description: String,
-    onDescriptionChange: (String) -> Unit,
+    uiModel: AddRecipeUiModel,
+    handleAction: (AddRecipeAction) -> Unit,
     onClickSave: () -> Unit
 ) {
     val currentLocal = Locale.current
@@ -130,19 +124,18 @@ private fun AddAccountContent(
 
     var dueDateOptionSelected by remember { mutableStateOf(dueDateOptions[0]) }
 
-    enabled = (viewModel.isEnabledRegisterButton.value && !isLoading.value)
+    enabled = (uiModel.isEnabledRegisterButton && !isLoading.value)
 
     InputTextOutlinedTextField(
-        value = title,
+        value = uiModel.name,
         onValueChange = {
-            onTitleChange(it)
-            viewModel.validateName()
+            handleAction(AddRecipeAction.SetName(it))
         },
         label = stringResource(Res.string.form_add_name),
-        isError = viewModel.isNameValid.value
+        isError = uiModel.isNameValid
     )
     Text(
-        text = viewModel.nameError.value,
+        text = uiModel.nameError,
         color = MaterialTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -151,13 +144,12 @@ private fun AddAccountContent(
         color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
-        value = value,
+        value = uiModel.value,
         onValueChange = {
-            onValueChange(it)
-            viewModel.validateValue()
+            handleAction(AddRecipeAction.SetValue(it))
         },
         label = stringResource(Res.string.form_add_value),
-        isError = viewModel.isValueValid.value,
+        isError = uiModel.isValueValid,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Next,
@@ -165,7 +157,7 @@ private fun AddAccountContent(
         visualTransformation = MaskCurrencyVisualTransformation(currencySymbol)
     )
     Text(
-        text = viewModel.valueError.value,
+        text = uiModel.valueError,
         color = MaterialTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -174,13 +166,12 @@ private fun AddAccountContent(
         color = MyAccountsTheme.colors.background
     )
     InputTextOutlinedTextField(
-        value = description,
+        value = uiModel.description,
         onValueChange = {
-            onDescriptionChange(it)
-            viewModel.validateDescription()
+            handleAction(AddRecipeAction.SetDescription(it))
         },
         label = stringResource(Res.string.form_add_description),
-        isError = viewModel.isDescriptionValid.value,
+        isError = uiModel.isDescriptionValid,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Text,
@@ -188,7 +179,7 @@ private fun AddAccountContent(
         )
     )
     Text(
-        text = viewModel.descriptionError.value,
+        text = uiModel.descriptionError,
         color = MaterialTheme.colors.error,
         fontSize = FontSize.scale12
     )
@@ -202,7 +193,7 @@ private fun AddAccountContent(
         selected = dueDateOptionSelected,
         onItemSelected = { item ->
             dueDateOptionSelected = item
-            viewModel.dueDateSelected.value = item.toInt()
+            handleAction(AddRecipeAction.SetDueDateSelected(item.toInt()))
         },
         modifier = Modifier.fillMaxWidth()
     )
@@ -212,8 +203,10 @@ private fun AddAccountContent(
     )
     CheckboxWithText(
         text = stringResource(Res.string.form_text_checkbox),
-        isChecked = viewModel.isCheckedPaid.value,
-        onCheckedChange = { viewModel.isCheckedPaid.value = it }
+        isChecked = uiModel.isCheckedPaid,
+        onCheckedChange = {
+            handleAction(AddRecipeAction.SetIsCheckedPaid(it))
+        }
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
@@ -221,23 +214,22 @@ private fun AddAccountContent(
     )
     CheckboxWithText(
         text = stringResource(Res.string.form_text_checkbox_repeat),
-        isChecked = viewModel.isAccountRepeat.value,
+        isChecked = uiModel.isAccountRepeat,
         onCheckedChange = {
-            viewModel.isAccountRepeat.value = it
-            viewModel.clearRepeatAmount(it)
+            handleAction(AddRecipeAction.SetIsAccountRepeat(it))
         }
     )
     Divider(
         modifier = Modifier.height(SMALL_PADDING),
         color = MyAccountsTheme.colors.background
     )
-    if (viewModel.isAccountRepeat.value) {
+    if (uiModel.isAccountRepeat) {
         MyExposedDropdownMenu(
             label = stringResource(Res.string.form_how_many_times_repeat),
             listItems = repeatOptions.toList(),
-            selected = viewModel.amountThatRepeatsSelected.value.toString(),
+            selected = uiModel.amountThatRepeatsSelected.toString(),
             onItemSelected = { item ->
-                viewModel.amountThatRepeatsSelected.value = item.toInt()
+                handleAction(AddRecipeAction.SetAmountThatRepeatsSelected(item.toInt()))
             },
             modifier = Modifier.fillMaxWidth()
         )
