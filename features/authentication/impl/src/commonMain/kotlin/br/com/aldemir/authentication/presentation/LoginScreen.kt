@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.aldemir.authentication.data.DialogModel
+import br.com.aldemir.authentication.presentation.effect.LoginEffect
 import org.jetbrains.compose.resources.stringResource as stringRes
 import br.com.aldemir.common.component.CustomSnackBar
 import br.com.aldemir.common.component.InputTextOutlinedTextField
@@ -75,6 +76,24 @@ fun LoginScreen(
 //        viewModel.checkIfBiometricLoginEnabled()
 //    }
 
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+
+    val messageError = stringResource(uiModel.snackBarMessage)
+
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is LoginEffect.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(
+                        message = messageError,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
+
     BackHandler { onFinish.invoke() }
 
     when (uiModel.state) {
@@ -92,7 +111,8 @@ fun LoginScreen(
                 },
                 navigateToRegisterScreen = {
                     navigateToRegisterScreen()
-                }
+                },
+                snackbarHostState = snackbarHostState
             )
         }
     }
@@ -110,25 +130,27 @@ fun LoginPage(
     isDarkTheme: Boolean,
     uiModel: AuthenticationUiModel,
     loginOnclick: (userName: String, password: String) -> Unit,
-    navigateToRegisterScreen: () -> Unit
+    navigateToRegisterScreen: () -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
 
-    val snackbarHostState = remember { SnackbarHostState() }
+//    val messageError = stringResource(uiModel.snackBarMessage)
+//
+//    LaunchedEffect(uiModel.snackBarState) {
+//
+//        when (uiModel.snackBarState) {
+//            SnackBarState.ERROR -> {
+//                snackbarHostState.showSnackbar(
+//                    message = messageError,
+//                    duration = SnackbarDuration.Short
+//                )
+//            }
+//
+//            else -> Unit
+//        }
+//    }
 
-    val messageError = stringResource(uiModel.snackBarMessage)
 
-    LaunchedEffect(uiModel.snackBarState) {
-        when (uiModel.snackBarState) {
-            SnackBarState.ERROR -> {
-                snackbarHostState.showSnackbar(
-                    message = messageError,
-                    duration = SnackbarDuration.Short
-                )
-            }
-
-            else -> Unit
-        }
-    }
 
     Scaffold(
         snackbarHost = {
@@ -286,7 +308,8 @@ private fun LoginPagePreview() {
                 state = AuthenticationState.SUCCESS,
             ),
             loginOnclick = { _, _ -> },
-            navigateToRegisterScreen = {}
+            navigateToRegisterScreen = {},
+            snackbarHostState = SnackbarHostState()
         )
     }
 }

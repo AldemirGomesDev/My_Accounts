@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 //import br.com.aldemir.authentication.data.BiometricHelper
 import br.com.aldemir.authentication.data.DialogModel
+import br.com.aldemir.authentication.presentation.effect.LoginEffect
 import br.com.aldemir.common.component.SnackBarState
 import br.com.aldemir.domain.base.UseCase
 import br.com.aldemir.domain.usecase.authentication.GetLoggerUserState
@@ -15,10 +16,12 @@ import br.com.aldemir.domain.usecase.authentication.Params
 import br.com.aldemir.domain.usecase.post.GetAllPostsUseCase
 import br.com.aldemir.domain.usecase.product.GetAllProductsUseCase
 import com.diamondedge.logging.logging
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import myaccounts.common.generated.resources.Res
@@ -36,6 +39,9 @@ class LoginViewModel(
 
     private val _uiState = MutableStateFlow(AuthenticationUiModel())
     val uiState = _uiState.asStateFlow()
+
+    private val _uiEffect = Channel<LoginEffect>(Channel.BUFFERED)
+    val uiEffect = _uiEffect.receiveAsFlow()
 
     private val log = logging("TAG_auth")
 
@@ -136,7 +142,7 @@ class LoginViewModel(
                 loginUseCase(this, Params(userName, password))  {
                     success = {
                         handleLoginSuccess(it)
-                        log.info { "Login -> success: ${it.toString()}" }
+                        log.info { "Login -> success: $it" }
                     }
                     error = {
                         log.error { "Login -> error: ${it.message}" }
@@ -183,6 +189,9 @@ class LoginViewModel(
     }
 
     private fun handleUiError(message: StringResource) {
+        viewModelScope.launch {
+            _uiEffect.send(LoginEffect.ShowSnackBar)
+        }
         handleUiState(
             uiState.value.copy(
                 isLoading = false,
