@@ -34,6 +34,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.multidex)
             implementation(libs.compose.ui.backhandler)
+            implementation(libs.kotlinx.datetime)
             //Compose
             implementation(compose.runtime)
             implementation(compose.material3)

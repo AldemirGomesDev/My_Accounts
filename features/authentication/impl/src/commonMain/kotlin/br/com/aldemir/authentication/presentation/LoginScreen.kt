@@ -1,5 +1,9 @@
 package br.com.aldemir.authentication.presentation
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,17 +22,25 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
@@ -46,6 +58,7 @@ import br.com.aldemir.common.model.UserLogged
 import br.com.aldemir.common.theme.MyAccountsFont
 import br.com.aldemir.common.theme.MyAccountsTheme.MyAccountsTheme
 import br.com.aldemir.common.util.emptyString
+import com.diamondedge.logging.logging
 import myaccounts.common.generated.resources.icon_despesa
 import myaccounts.common.generated.resources.icon_despesa_light
 import myaccounts.features.authentication.impl.generated.resources.Res
@@ -71,6 +84,15 @@ fun LoginScreen(
     val viewModel: LoginViewModel = koinViewModel()
 
     val uiModel by viewModel.uiState.collectAsState()
+
+    val remainingTime = viewModel.remainingTime
+    val finished = viewModel.isFinished
+
+    val progress by animateFloatAsState(
+        targetValue = viewModel.progress,
+        animationSpec = tween(100),
+        label = "progressAnimation"
+    )
 
 //    LaunchedEffect(Unit) {
 //        viewModel.checkIfBiometricLoginEnabled()
@@ -112,7 +134,11 @@ fun LoginScreen(
                 navigateToRegisterScreen = {
                     navigateToRegisterScreen()
                 },
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                finished = finished,
+                remainingTime = remainingTime,
+                progress = progress,
+                onResetTimeClicked = { viewModel.reset() }
             )
         }
     }
@@ -131,7 +157,11 @@ fun LoginPage(
     uiModel: AuthenticationUiModel,
     loginOnclick: (userName: String, password: String) -> Unit,
     navigateToRegisterScreen: () -> Unit,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    finished: Boolean,
+    remainingTime: kotlin.time.Duration,
+    progress: Float = 0f,
+    onResetTimeClicked: () -> Unit = {}
 ) {
 
 //    val messageError = stringResource(uiModel.snackBarMessage)
@@ -248,6 +278,15 @@ fun LoginPage(
                         fontFamily = FontFamily.Default
                     )
                 )
+                CircularCountdown(progress = progress, remainingTime = remainingTime, finished = finished)
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(Modifier.height(24.dp))
+                    Button(
+                        onClick = { onResetTimeClicked.invoke() },
+                    ) {
+                        Text("Reiniciar")
+                    }
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 ClickableText(
                     text = AnnotatedString("Cadastre-se aqui"),
@@ -289,6 +328,73 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
     }
 }
 
+
+@Composable
+private fun CircularCountdown(
+    progress: Float,
+    remainingTime: kotlin.time.Duration,
+    finished: Boolean
+) {
+    val stroke = 12.dp
+
+    val green = Color(0xFF4CAF50)
+    val orange = Color(0xFFFFA000)
+    val red = Color(0xFFF44336)
+
+    val targetColor = when {
+        progress > 0.5f -> {
+            val t = (progress - 0.5f) / 0.5f
+            lerp(orange, green, t)
+        }
+        else -> {
+            val t = progress / 0.5f
+            lerp(red, orange, t)
+        }
+    }
+
+    val animatedColor by animateColorAsState(
+        targetValue = targetColor,
+        animationSpec = tween(durationMillis = 800),
+        label = "progressColor"
+    )
+
+    if (!finished) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(100.dp)
+                .padding(12.dp)
+        ) {
+            Canvas(modifier = Modifier.matchParentSize()) {
+                drawArc(
+                    color = Color.LightGray.copy(alpha = 0.3f),
+                    startAngle = -90f,
+                    sweepAngle = 360f,
+                    useCenter = false,
+                    style = Stroke(width = stroke.toPx(), cap = StrokeCap.Round)
+                )
+                drawArc(
+                    color = animatedColor,
+                    startAngle = -90f,
+                    sweepAngle = 360f * progress,
+                    useCenter = false,
+                    style = Stroke(width = stroke.toPx(), cap = StrokeCap.Round)
+                )
+            }
+            Text(
+                text = "${remainingTime.inWholeSeconds}s",
+                style = MyAccountsTheme.typography.h4,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    } else {
+        Text(
+            text = "Tempo esgotado",
+            style = MyAccountsTheme.typography.h3,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
 @Composable
 private fun getDialogModel(): DialogModel {
     return DialogModel(
@@ -309,7 +415,9 @@ private fun LoginPagePreview() {
             ),
             loginOnclick = { _, _ -> },
             navigateToRegisterScreen = {},
-            snackbarHostState = SnackbarHostState()
+            snackbarHostState = SnackbarHostState(),
+            finished = false,
+            remainingTime = kotlin.time.Duration.ZERO
         )
     }
 }
